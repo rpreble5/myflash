@@ -152,6 +152,22 @@ question over a short answer, three explanations (one long enough to fold).
 
 Delete the deck from `js/decks.js` when it has served its purpose.
 
+## Settings
+
+Stored in `localStorage` under `myflash.prefs.v1`, with defaults in
+`Store.SETTING_DEFAULTS`. Anything not listed there is not a setting —
+`setSetting` ignores unknown keys — and every default matches the previous
+behaviour, so an empty store behaves exactly as before.
+
+**Submit on release** (off by default). Number cards answer the moment you
+lift your finger instead of waiting for CHECK.
+
+There is a ~420ms window before it fires, and grabbing again cancels it.
+That is deliberate: a full sweep is around 1000px on a screen shorter than
+that, so letting go partway is a normal part of reaching a number rather
+than a decision to answer. A release that changed nothing never submits, so
+a stray tap is harmless. CHECK stays on the card as a fallback.
+
 ## Scoring
 
 Multi-row types award **partial credit** — three of four trend rows scores

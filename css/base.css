@@ -148,6 +148,47 @@ button { cursor: pointer; border: 0; background: none; }
 }
 .deck-count { font-size: .72rem; opacity: .6; letter-spacing: .04em; text-transform: uppercase; }
 
+/* ── Settings ────────────────────────────────────────────── */
+.settings { margin-top: 2.25rem; }
+.settings-head {
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  opacity: .45;
+  margin: 0 0 .85rem;
+}
+.toggle {
+  display: flex;
+  align-items: flex-start;
+  gap: .85rem;
+  width: 100%;
+  text-align: left;
+  padding: .2rem 0;
+}
+.toggle-track {
+  flex: 0 0 auto;
+  width: 46px;
+  height: 26px;
+  border-radius: 999px;
+  border: 2px solid rgba(255,255,255,.3);
+  padding: 3px;
+  transition: background-color .16s ease, border-color .16s ease;
+}
+.toggle-thumb {
+  display: block;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.55);
+  transition: transform .16s cubic-bezier(.22,1,.36,1), background-color .16s ease;
+}
+.toggle.is-on .toggle-track { background: #f5f500; border-color: #f5f500; }
+.toggle.is-on .toggle-thumb { background: #0b0b0b; transform: translateX(20px); }
+.toggle-text { display: flex; flex-direction: column; gap: .15rem; }
+.toggle-name { font-weight: 700; font-size: .95rem; }
+.toggle-note { font-size: .8rem; opacity: .55; line-height: 1.35; }
+
 .home-actions {
   display: flex;
   gap: .75rem;

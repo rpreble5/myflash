@@ -615,18 +615,13 @@
         global.Sfx.tick();
       }
 
-      ctx.enableDial({ pxPerStep: pxPerStep, onSteps: nudge });
-      ctx.keys({
-        'ArrowUp':   function () { nudge(1); },
-        'ArrowDown': function () { nudge(-1); },
-        'PageUp':    function () { nudge(10); },
-        'PageDown':  function () { nudge(-10); }
-      });
+      var check = checkBtn(function () { submit(); });
 
-      var check = checkBtn(function (btn) {
+      function submit() {
+        if (locked) return;
         locked = true;
-        btn.remove();
-        hint.remove();
+        if (check.parentNode) check.remove();
+        if (hint.parentNode) hint.remove();
 
         var ok = isCorrect(card, value);
         dial.classList.add(ok ? 'is-right' : 'is-wrong');
@@ -640,7 +635,36 @@
         area.appendChild(answer);
         requestAnimationFrame(function () { answer.classList.add('is-in'); });
         settle(ctx, ok ? 1 : 0);
+      }
+
+      /* Opt-in: answer the moment the finger lifts. The short window before
+         it fires is what makes re-gripping possible — a full sweep is about
+         1000px and the screen is shorter than that, so letting go partway
+         is a normal part of reaching a number, not a decision. */
+      var autoSubmit = global.Store.setting('submitOnRelease');
+      var pending = null;
+
+      ctx.enableDial({
+        pxPerStep: pxPerStep,
+        onSteps: nudge,
+        onGrab: function () {
+          if (pending) { clearTimeout(pending); pending = null; }
+        },
+        onRelease: function (moved) {
+          if (!autoSubmit || locked || !moved) return;
+          pending = setTimeout(submit, 420);
+        }
       });
+
+      ctx.keys({
+        'ArrowUp':   function () { nudge(1); },
+        'ArrowDown': function () { nudge(-1); },
+        'PageUp':    function () { nudge(10); },
+        'PageDown':  function () { nudge(-10); },
+        'Enter':     submit
+      });
+
+      if (autoSubmit) hint.textContent = 'release to answer';
       check.disabled = false;
       area.appendChild(check);
     }

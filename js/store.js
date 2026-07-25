@@ -6,6 +6,13 @@
 
   var KEY_DECKS = 'myflash.decks.v1';
   var KEY_STATS = 'myflash.stats.v1';
+  var KEY_PREFS = 'myflash.prefs.v1';
+
+  /* Anything not listed here is not a setting. Defaults are the current
+     behaviour, so an empty store behaves exactly as before. */
+  var DEFAULTS = {
+    submitOnRelease: false
+  };
 
   function read(key, fallback) {
     try {
@@ -61,7 +68,22 @@
 
   function resetProgress() { write(KEY_STATS, {}); }
 
+  function setting(key) {
+    var prefs = read(KEY_PREFS, {});
+    return prefs[key] == null ? DEFAULTS[key] : prefs[key];
+  }
+
+  function setSetting(key, value) {
+    if (!(key in DEFAULTS)) return;
+    var prefs = read(KEY_PREFS, {});
+    prefs[key] = value;
+    write(KEY_PREFS, prefs);
+  }
+
   global.Store = {
+    setting: setting,
+    setSetting: setSetting,
+    SETTING_DEFAULTS: DEFAULTS,
     customDecks: customDecks,
     saveDeck: saveDeck,
     allDecks: allDecks,

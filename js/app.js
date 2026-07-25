@@ -46,6 +46,24 @@
     });
   }
 
+  /* ───────────────────────── settings ──────────────────────── */
+  function bindToggle(id, key) {
+    var el = $(id);
+    if (!el) return;
+
+    function paint() {
+      var on = !!global.Store.setting(key);
+      el.classList.toggle('is-on', on);
+      el.setAttribute('aria-checked', on ? 'true' : 'false');
+    }
+
+    el.addEventListener('click', function () {
+      global.Store.setSetting(key, !global.Store.setting(key));
+      paint();
+    });
+    paint();
+  }
+
   /* ───────────────────────── session ───────────────────────── */
   var session = null;
 
@@ -199,15 +217,17 @@
          the initial y) means the value tracks the finger exactly and never
          drifts, and reversing direction responds immediately. */
       enableDial: function (opts) {
-        var y0 = 0, dragging = false;
+        var y0 = 0, dragging = false, moved = false;
         el.style.touchAction = 'none';
 
         function down(e) {
           if (e.target.closest('button, input, textarea')) return;
           dragging = true;
+          moved = false;
           y0 = e.clientY;
           el.classList.add('is-dialing');
           capture(e);
+          if (opts.onGrab) opts.onGrab();
         }
 
         function move(e) {
@@ -215,6 +235,7 @@
           var dy = y0 - e.clientY;                 // up is positive
           var steps = (dy / opts.pxPerStep) | 0;
           if (steps !== 0) {
+            moved = true;
             opts.onSteps(steps);
             y0 -= steps * opts.pxPerStep;
           }
@@ -224,6 +245,8 @@
           if (!dragging) return;
           dragging = false;
           el.classList.remove('is-dialing');
+          /* `moved` lets a mode ignore a stray tap that changed nothing. */
+          if (opts.onRelease) opts.onRelease(moved);
         }
 
         el.addEventListener('pointerdown', down);
@@ -434,6 +457,8 @@
     if (reduceMotion) document.body.classList.add('reduce-motion');
 
     renderHome();
+
+    bindToggle('#tg-submit', 'submitOnRelease');
 
     $('#btn-quit').addEventListener('click', function () { show('screen-home'); renderHome(); });
     $('#btn-home').addEventListener('click', function () { show('screen-home'); });
