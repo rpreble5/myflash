@@ -578,13 +578,10 @@
     return { min: lo - pad, max: hi + pad };
   }
 
-  function trackFor(guess, b, step, dp) {
+  function fillTrack(el, guess, b, step) {
     var w = windowFor(guess, b, step);
     var span = w.max - w.min || 1;
     var pct = function (x) { return ((x - w.min) / span) * 100; };
-
-    var el = h('div', 'num-track');
-    el.appendChild(h('div', 'num-track-line'));
 
     var bandEl = h('div', 'num-track-band');
     var left = pct(b.lo);
@@ -598,7 +595,7 @@
     mark.style.left = pct(guess).toFixed(2) + '%';
     el.appendChild(mark);
 
-    return el;
+    el.classList.add('is-shown');
   }
 
   function isCorrect(card, guess) {
@@ -632,17 +629,27 @@
         value = round(value - sc.step, sc.dp);
       }
 
+      /* Every slot is built now and merely hidden. Revealing an answer then
+         never reflows the card — removing elements shifted every line below
+         them, which is jarring on a card whose point is one number holding
+         still. */
       var dial = h('div', 'num-dial');
+      var said = h('div', 'num-said');
       var up = h('div', 'num-arrow', '▲');
       var out = h('div', 'num-out');
       var val = h('span', 'num-val', fmt(value, sc.dp));
       out.appendChild(val);
       if (card.unit) out.appendChild(h('span', 'num-unit', card.unit));
       var down = h('div', 'num-arrow', '▼');
+      dial.appendChild(said);
       dial.appendChild(up);
       dial.appendChild(out);
       dial.appendChild(down);
       area.appendChild(dial);
+
+      var track = h('div', 'num-track');
+      track.appendChild(h('div', 'num-track-line'));
+      area.appendChild(track);
 
       var hint = h('div', 'hint', 'drag up or down');
       area.appendChild(hint);
@@ -664,8 +671,8 @@
       function submit() {
         if (locked) return;
         locked = true;
-        if (check.parentNode) check.remove();
-        if (hint.parentNode) hint.remove();
+        check.classList.add('is-hidden');
+        hint.classList.add('is-gone');
 
         var ok = isCorrect(card, value);
         dial.classList.add(ok ? 'is-right' : 'is-wrong');
@@ -682,8 +689,7 @@
            size difference already say it has been superseded. */
         ctx.setKicker('THE ANSWER');
 
-        var said = h('div', 'num-said', 'you said ' + fmt(value, sc.dp));
-        dial.insertBefore(said, out);
+        said.textContent = 'you said ' + fmt(value, sc.dp);
         requestAnimationFrame(function () { said.classList.add('is-in'); });
 
         var b = band(card);
@@ -698,7 +704,7 @@
           val.classList.remove('is-swapping');
         }, 130);
 
-        area.appendChild(trackFor(value, b, sc.step, sc.dp));
+        fillTrack(track, value, b, sc.step);
         settle(ctx, 0, 2400);
       }
 
@@ -723,7 +729,10 @@
         'Enter':     submit
       });
 
-      if (autoSubmit) hint.textContent = 'release to answer';
+      if (autoSubmit) {
+        hint.textContent = 'release to answer';
+        check.classList.add('is-hidden');
+      }
       check.disabled = false;
       area.appendChild(check);
     }

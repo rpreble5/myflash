@@ -125,6 +125,13 @@ and the dial must not *start* on a correct value. For range cards the
 scale's midpoint is the answer, so the dial opens a quarter of the way up
 and steps away if it still lands inside the band.
 
+**Nothing on this card is ever added or removed.** Every slot — the "you
+said" line, the track, the hint, CHECK — exists from mount and is only
+hidden. Removing an element shifts every line below it, which is jarring on
+a card whose whole point is one number holding still. CHECK is
+`visibility: hidden` rather than absent in submit-on-release mode too, so
+the layout matches between the two modes.
+
 **The reveal.** Right: the number turns accent and the card advances in
 700ms. Nothing else appears — you just produced that number, so showing it
 back is noise.
