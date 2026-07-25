@@ -6,8 +6,8 @@
      recall     { q, a, why? }
      mcq        { q, a, distractors[] }
      truefalse  { q, a:bool, why }
-     number     { q, value, unit, tolerance, step? }   dial to a value
-     number     { q, low, high, unit, step? }         dial inside a band
+     number     { q, value, unit, tolerance, step?, min?, max? }
+     number     { q, low, high, unit, step?, min?, max? }
      trend      { q, items:[{label, dir:'up'|'down'|'same'}] }
      bucket     { q, bins:[], items:[{label, bin}] }
      order      { q, steps:[] }                    stored in correct order
@@ -53,6 +53,24 @@
           why: 'A benzodiazepine first, then a longer-acting agent such as levetiracetam or fosphenytoin.' },
         { type: 'recall', q: 'Enzyme deficient in classic PKU', a: 'Phenylalanine hydroxylase',
           why: 'Without it phenylalanine cannot be converted to tyrosine, so it accumulates and its metabolites spill into the urine. Tyrosine becomes conditionally essential, which is why treatment is a phenylalanine-restricted diet with tyrosine supplementation rather than enzyme replacement. Untreated, the classic picture is intellectual disability, seizures, and a musty odour.' }
+      ]
+    },
+
+    {
+      id: 'dialtest',
+      name: 'DIAL LAB',
+      blurb: 'Number cards only — for testing the dial',
+      cards: [
+        /* Steps from 0.1 to 10000, and both card shapes: a band you can
+           land anywhere inside, and an exact value with a tolerance. */
+        { type: 'number', q: 'Normal adult respiratory rate', low: 12, high: 20, unit: '/min', step: 1 },
+        { type: 'number', q: 'Normal adult heart rate', low: 60, high: 100, unit: 'bpm', step: 5 },
+        { type: 'number', q: 'Normal body temperature', value: 37, unit: '°C', tolerance: 0.3, step: 0.1, min: 33, max: 42 },
+        { type: 'number', q: 'Adult IM epinephrine dose for anaphylaxis', low: 0.3, high: 0.5, unit: 'mg', step: 0.1 },
+        { type: 'number', q: 'Normal serum sodium', low: 135, high: 145, unit: 'mEq/L', step: 1 },
+        { type: 'number', q: 'Normal serum osmolality', low: 275, high: 295, unit: 'mOsm/kg', step: 5 },
+        { type: 'number', q: 'Approximate adult blood volume', value: 5000, unit: 'mL', tolerance: 500, step: 100, min: 2000, max: 8000 },
+        { type: 'number', q: 'Normal platelet count', low: 150000, high: 450000, unit: '/µL', step: 10000, max: 600000 }
       ]
     },
 
@@ -273,7 +291,7 @@
         { type: 'number', q: 'Lowest possible Glasgow Coma Scale score', value: 3, unit: '', tolerance: 0 },
         { type: 'number', q: 'GCS at or below which intubation is generally considered', value: 8, unit: '', tolerance: 0 },
         { type: 'number', q: 'Normal intracranial pressure in adults', low: 5, high: 15, unit: 'mmHg' },
-        { type: 'number', q: 'Approximate adult blood volume', value: 5000, unit: 'mL', tolerance: 500, step: 100 },
+        { type: 'number', q: 'Approximate adult blood volume', value: 5000, unit: 'mL', tolerance: 500, step: 100, min: 2000, max: 8000 },
         { type: 'truefalse', q: 'Epinephrine is given every 3–5 minutes during adult cardiac arrest', a: true,
           why: 'Standard ACLS dosing is 1 mg IV/IO every 3–5 minutes for as long as the arrest continues.' },
         { type: 'mcq', q: 'First step when a trauma patient arrives unresponsive', a: 'Assess and secure the airway',

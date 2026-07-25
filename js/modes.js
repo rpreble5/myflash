@@ -524,6 +524,14 @@
       dp = decimals(card.value);
     }
 
+    /* Authored bounds win. A value card otherwise derives [0, value*2.5],
+       which is meaningless for a quantity that never approaches zero — a
+       body temperature of 37 would get a 0-92.5 scale and 925 steps. */
+    if (card.min != null) min = card.min;
+    if (card.max != null) max = card.max;
+    dp = Math.max(dp, decimals(card.min == null ? 0 : card.min),
+                      decimals(card.max == null ? 0 : card.max));
+
     /* Authored step wins. Otherwise aim for ~80 steps across the scale,
        floored so integer questions never ask for fractions. */
     var step = card.step;

@@ -94,6 +94,11 @@ Range cards ask for a single number too: "a normal serum sodium" is answered
 by any value inside the band, which is a truer question than dialling both
 ends of it.
 
+**Scale bounds where the derived one is silly.** A value card otherwise
+derives `[0, value × 2.5]`, which is meaningless for a quantity that never
+approaches zero — a body temperature of 37 got a 0–92.5 scale and 925 steps.
+`min` / `max` override it: temperature runs 33–42, blood volume 2000–8000.
+
 **Step scales per question.** `step` is authored where it matters —
 `10000` for a platelet count, `100` for blood volume, `0.1` for a 1 mg dose.
 Left out, it derives from the scale: aim for ~80 steps, round to 1/2/5 ×
@@ -112,6 +117,19 @@ The question is capped to 40vh on these cards (`data-qsize="compact"`). The
 value is the interaction and the question only the prompt — but capped too
 hard the question becomes unreadable, so this is a balance rather than a
 demotion.
+
+### DIAL LAB
+
+Eight `number` cards and nothing else, for testing the dial. Covers steps
+from `0.1` to `10000`, both card shapes (a band you can land anywhere
+inside, and an exact value with a tolerance), and both derived and authored
+scale bounds.
+
+Worth re-running the scale check after editing any number card: every answer
+must be reachable on the step grid, the dial must not *open* on a correct
+value, and the step count wants to stay in roughly the 8–150 band. A card
+can satisfy the first two and still be unusable if its scale is absurdly
+long — that is how the 925-step temperature card slipped through.
 
 ### REVEAL LAB
 
