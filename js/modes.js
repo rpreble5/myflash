@@ -314,7 +314,10 @@
       }
 
       function answer(bin, btn) {
-        if (locked) return;
+        /* idx can already be past the end while the card waits to be
+           replaced; a click landing in that window read items[idx].bin
+           off the end of the array. */
+        if (locked || idx >= items.length) return;
         locked = true;
         var ok = bin === items[idx].bin;
         btn.classList.add(ok ? 'is-right' : 'is-wrong');
@@ -330,9 +333,12 @@
             b.classList.remove('is-right', 'is-wrong', 'is-answer');
           });
           idx++;
+          if (idx >= items.length) {
+            ctx.finish(right / items.length);   // stay locked; card is done
+            return;
+          }
           locked = false;
-          if (idx >= items.length) ctx.finish(right / items.length);
-          else show();
+          show();
         }, ok ? 520 : 1200);
       }
 
@@ -558,9 +564,11 @@
       var sc = scaleFor(card);
       var steps = Math.max(1, Math.round((sc.max - sc.min) / sc.step));
 
-      /* Full sweep in roughly 600px, but never so fine it is twitchy nor
-         so coarse that a long drag moves nothing. */
-      var pxPerStep = Math.min(48, Math.max(5, 600 / steps));
+      /* Deliberately unhurried: a full sweep takes roughly 1000px, so
+         landing on one specific number is easy and a coarse scale takes a
+         couple of drags rather than a flick. Clamped so a fine scale is
+         never twitchy and a short one never sluggish. */
+      var pxPerStep = Math.min(56, Math.max(10, 1000 / steps));
 
       /* Start a quarter up the scale rather than mid — for a range card the
          midpoint IS the answer, which would hand it over. Nudge off if the

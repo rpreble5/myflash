@@ -137,8 +137,8 @@
    with the control for height. */
 .card[data-qsize="compact"] .flipper {
   flex: 0 1 auto;
-  max-height: 30vh;
-  min-height: 8vh;
+  max-height: 40vh;
+  min-height: 10vh;
 }
 
 /* ── Answer (non-flip modes) ─────────────────────────────── */
@@ -504,7 +504,7 @@
   font-family: var(--face);
   font-weight: var(--weight, 400);
   letter-spacing: var(--track, 0);
-  font-size: clamp(3.4rem, 23vw, 8.5rem);
+  font-size: clamp(3rem, 19vw, 7rem);
   line-height: 1;
   font-variant-numeric: tabular-nums;
 }

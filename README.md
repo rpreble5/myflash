@@ -100,17 +100,18 @@ Left out, it derives from the scale: aim for ~80 steps, round to 1/2/5 ×
 10ⁿ so the increments are numbers people think in, and floor at 1 for
 integer questions so they never ask for fractions.
 
-Drag sensitivity adapts too — the full scale sweeps in roughly 600px,
-clamped to 5–48px per step so a fine scale is never twitchy and a coarse one
-never sluggish. `tools/` aside, the derivation is worth checking after
+Drag sensitivity is deliberately unhurried — a full sweep takes roughly
+1000px, clamped to 10–56px per step. Landing on one specific number should
+be easy, so a coarse scale takes a couple of drags rather than a flick. `tools/` aside, the derivation is worth checking after
 editing any number card: every answer must be reachable on the step grid,
 and the dial must not *start* on a correct value. For range cards the
 scale's midpoint is the answer, so the dial opens a quarter of the way up
 and steps away if it still lands inside the band.
 
-The question is capped to 30vh on these cards (`data-qsize="compact"`). The
-value is the interaction; the question is only the prompt, and letting it
-run full height left the number looking like a footnote.
+The question is capped to 40vh on these cards (`data-qsize="compact"`). The
+value is the interaction and the question only the prompt — but capped too
+hard the question becomes unreadable, so this is a balance rather than a
+demotion.
 
 ### REVEAL LAB
 
