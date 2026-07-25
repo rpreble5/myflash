@@ -63,7 +63,7 @@ Match scores `1 − misses/pairs`, since with four pairs the last one is free.
   contrast-verified rather than eyeballed (see below).
 - **14 display faces** — each carries its own tracking and caps preference,
   because a face that needs `-.045em` at 200px looks broken at `0`.
-- **40 backdrops** across four tiers — see below.
+- **54 backdrops** across four tiers — see below.
 - **8 entrances** — four stagger per letter (cascade, drop, skew, pop), four
   animate the whole line (slam, blur, wipe, roll).
 
@@ -73,23 +73,33 @@ Flat by design: every colour stop is hard, so there are no soft gradients,
 no glow, and nothing that fakes depth. Variety comes from colour and
 composition rather than texture density.
 
+Everything is flat and two-tone; the tiers describe **loudness**, not style.
+
 | Tier | Share | What it is |
 |---|---|---|
-| **flat** | ~56% | Splits, wedges, discs, bands — plus SVG shapes, clip-path forms, and collage (below) |
-| **quiet** | ~16% | Sparse texture at 5.5% alpha — dots at 74px, grid at 132px, hairlines |
-| **mid** | ~18% | Same marks at 9% and roughly half the spacing |
-| **loud** | ~10% | Tight stripes, rays, concentric rings, crosses, halftone at 15% |
+| **flat** | ~40% | Compositions, not patterns — splits, wedges, discs, bands, SVG shapes, clip-path forms, camo, collage |
+| **quiet** | ~26% | Sparse repeats — wavy lines, thin diagonals, grain, half-drop dots, dashes, wide stripes |
+| **mid** | ~25% | The same families tighter — dense waves, cross-hatch, checkerboard, scallops, zigzag, terrazzo, bricks, triangles |
+| **loud** | ~10% | Tight stripes, rays, concentric rings, crosses, halftone |
+
+Tier also decides layout: `flat` backdrops render against the true card box
+with `no-repeat`, everything else gets a 20% oversize and tiles.
 
 The flat tier is built three ways:
 
 **CSS gradients** with hard stops — splits, corner wedges, discs, bands,
 stacked rules. Cheapest, no DOM.
 
-**Inline SVG as a data-URI** — ridges, waves, arcs, torn edges, angular
-shards, staircases, crescents, edge ticks. Shapes gradients cannot express,
-still a single `background-image`, still no network. `encodeURIComponent` is
-mandatory here: an unescaped `#` in a colour terminates the URL and the
-background silently disappears.
+**Inline SVG as a data-URI** — in two forms. `svgUrl` stretches a full-bleed
+composition to the card (ridges, waves, arcs, torn edges, shards, staircases,
+crescents, camo); `svgTile` keeps its own viewBox and does *not* stretch, so
+`background-size` scales a seamless repeat (wavy lines, scallops, zigzag,
+bricks, triangles, dashes, half-drop dots, grain, terrazzo). Grain and
+terrazzo scatter via a seeded LCG rather than `Math.random`, so a tile looks
+random but stays identical across renders.
+
+`encodeURIComponent` is mandatory in both: an unescaped `#` in a colour
+terminates the URL and the background silently disappears.
 
 **Positioned layers** — `clip-path` forms (ribbon, arrow block, notched and
 angled slabs) and **collage**, a generator rather than a fixed look. Collage

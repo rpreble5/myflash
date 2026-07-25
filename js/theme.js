@@ -139,6 +139,29 @@
 
   function svgBackdrop(body) { return { image: svgUrl(body), size: '100% 100%' }; }
 
+  /* Seamless tile. Unlike svgUrl this keeps its own viewBox and does NOT
+     stretch — background-size does the scaling, so the tile repeats. */
+  function svgTile(body, w, h, cssSize) {
+    var svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + w + ' ' + h + '" ' +
+              'width="' + w + '" height="' + h + '">' + body + '</svg>';
+    return { image: 'url("data:image/svg+xml,' + encodeURIComponent(svg) + '")', size: cssSize };
+  }
+
+  /* Deterministic scatter — grain and terrazzo need to look random but
+     stay identical across renders, so no Math.random here. */
+  function seeded(seed) {
+    return function () {
+      seed = (seed * 1664525 + 1013904223) % 4294967296;
+      return seed / 4294967296;
+    };
+  }
+
+  function scatter(seed, count, w, h, draw) {
+    var r = seeded(seed), out = '';
+    for (var i = 0; i < count; i++) out += draw(r() * w, r() * h, r(), i);
+    return out;
+  }
+
   /* ── Layout zones ──────────────────────────────────────────
      The question sits in the vertical middle of the card, so
      composed shapes stay in the top/bottom thirds or bleed in
@@ -340,6 +363,108 @@
         return out;
       } },
 
+    /* ---- camo: full-bleed two-tone, no tiling ---- */
+    { name: 'camo', tier: 'flat', weight: 1.4, drift: null,
+      make: function (c) {
+        return svgBackdrop(
+          '<path d="M-4 18 L22 6 L44 20 L38 44 L12 52 L-4 40 Z" fill="' + c.s2 + '"/>' +
+          '<path d="M56 -4 L92 4 L104 30 L80 42 L58 28 Z" fill="' + c.s1 + '"/>' +
+          '<path d="M24 68 L58 60 L76 78 L64 104 L30 108 L14 88 Z" fill="' + c.s2 + '"/>' +
+          '<path d="M78 88 L104 82 L104 118 L84 122 Z" fill="' + c.s1 + '"/>' +
+          '<path d="M-4 96 L18 92 L26 118 L4 132 L-4 126 Z" fill="' + c.s1 + '"/>' +
+          '<path d="M38 118 L70 122 L74 144 L34 144 Z" fill="' + c.s2 + '"/>'
+        );
+      } },
+
+    /* ---- quiet: sparse two-tone tiles ---- */
+    { name: 'wavy-lines', tier: 'quiet', weight: 3, drift: 'drift-horiz',
+      make: function (c) {
+        return svgTile('<path d="M0 10 Q10 2 20 10 T40 10" fill="none" stroke="' + c.s1 +
+                       '" stroke-width="1.6"/>', 40, 20, '108px 54px');
+      } },
+
+    { name: 'diagonal-thin', tier: 'quiet', weight: 3, drift: 'drift-diag',
+      make: function (c) {
+        return { image: 'repeating-linear-gradient(45deg, ' + c.s1 + ' 0 2px, transparent 2px 22px)', size: 'auto' };
+      } },
+
+    { name: 'grain', tier: 'quiet', weight: 3, drift: null,
+      make: function (c) {
+        return svgTile(scatter(7717, 130, 64, 64, function (x, y, v) {
+          var s = 0.9 + v * 0.9;
+          return '<rect x="' + x.toFixed(1) + '" y="' + y.toFixed(1) + '" width="' + s.toFixed(1) +
+                 '" height="' + s.toFixed(1) + '" fill="' + c.s2 + '"/>';
+        }), 64, 64, '128px 128px');
+      } },
+
+    { name: 'dots-halfdrop', tier: 'quiet', weight: 3, drift: 'drift-slow',
+      make: function (c) {
+        return svgTile('<circle cx="15" cy="15" r="2.6" fill="' + c.s1 + '"/>' +
+                       '<circle cx="45" cy="45" r="2.6" fill="' + c.s1 + '"/>', 60, 60, '92px 92px');
+      } },
+
+    { name: 'dashes', tier: 'quiet', weight: 3, drift: 'drift-horiz',
+      make: function (c) {
+        return svgTile('<rect x="0" y="9" width="14" height="1.8" fill="' + c.s1 + '"/>' +
+                       '<rect x="20" y="27" width="14" height="1.8" fill="' + c.s1 + '"/>', 40, 40, '86px 86px');
+      } },
+
+    /* ---- mid: the same families, tighter and a shade stronger ---- */
+    { name: 'wavy-dense', tier: 'mid', weight: 2.0, drift: 'drift-horiz',
+      make: function (c) {
+        return svgTile('<path d="M0 10 Q10 2 20 10 T40 10" fill="none" stroke="' + c.s2 +
+                       '" stroke-width="2"/>', 40, 20, '62px 31px');
+      } },
+
+    { name: 'cross-hatch', tier: 'mid', weight: 2.0, drift: 'drift-diag',
+      make: function (c) {
+        return { image: 'repeating-linear-gradient(45deg, ' + c.s1 + ' 0 1.8px, transparent 1.8px 15px),' +
+                        'repeating-linear-gradient(-45deg, ' + c.s1 + ' 0 1.8px, transparent 1.8px 15px)', size: 'auto' };
+      } },
+
+    { name: 'checkerboard', tier: 'mid', weight: 2.0, drift: 'drift-slow',
+      make: function (c) {
+        return { image: 'conic-gradient(' + c.s1 + ' 0 25%, transparent 0 50%, ' +
+                        c.s1 + ' 0 75%, transparent 0)', size: '84px 84px' };
+      } },
+
+    { name: 'scallops', tier: 'mid', weight: 2.0, drift: 'drift-vert',
+      make: function (c) {
+        return svgTile('<path d="M0 20 A20 20 0 0 1 40 20" fill="none" stroke="' + c.s2 +
+                       '" stroke-width="2"/>', 40, 20, '74px 37px');
+      } },
+
+    { name: 'zigzag', tier: 'mid', weight: 2.0, drift: 'drift-horiz',
+      make: function (c) {
+        return svgTile('<path d="M0 18 L10 5 L20 18 L30 5 L40 18" fill="none" stroke="' + c.s2 +
+                       '" stroke-width="2"/>', 40, 22, '78px 43px');
+      } },
+
+    { name: 'terrazzo', tier: 'mid', weight: 2.0, drift: null,
+      make: function (c) {
+        return svgTile(scatter(4242, 16, 90, 90, function (x, y, v, i) {
+          if (i % 3 === 0) {
+            return '<rect x="' + x.toFixed(1) + '" y="' + y.toFixed(1) + '" width="' + (3 + v * 4).toFixed(1) +
+                   '" height="' + (2 + v * 3).toFixed(1) + '" transform="rotate(' + (v * 90).toFixed(0) +
+                   ' ' + x.toFixed(1) + ' ' + y.toFixed(1) + ')" fill="' + c.s2 + '"/>';
+          }
+          return '<circle cx="' + x.toFixed(1) + '" cy="' + y.toFixed(1) + '" r="' + (1.6 + v * 2.4).toFixed(1) +
+                 '" fill="' + c.s2 + '"/>';
+        }), 90, 90, '150px 150px');
+      } },
+
+    { name: 'bricks', tier: 'mid', weight: 2.0, drift: 'drift-vert',
+      make: function (c) {
+        return svgTile('<path d="M0 0 H60 M0 15 H60 M0 30 H60 M0 0 V15 M30 0 V15 M15 15 V30 M45 15 V30" ' +
+                       'stroke="' + c.s1 + '" stroke-width="1.6" fill="none"/>', 60, 30, '104px 52px');
+      } },
+
+    { name: 'triangles', tier: 'mid', weight: 2.0, drift: 'drift-diag',
+      make: function (c) {
+        return svgTile('<polygon points="0,0 20,0 10,20" fill="' + c.s2 + '"/>' +
+                       '<polygon points="20,20 40,20 30,0" fill="' + c.s2 + '"/>', 40, 20, '80px 40px');
+      } },
+
     /* ---- quiet: sparse texture, slow drift ---- */
     { name: 'dots-quiet', tier: 'quiet', weight: 3, drift: 'drift-slow',
       make: function (c) { return { image: 'radial-gradient(' + c.tQuiet + ' 3px, transparent 3.5px)', size: '74px 74px' }; } },
@@ -357,46 +482,46 @@
       make: function (c) { return { image: 'repeating-linear-gradient(45deg, ' + c.tQuiet + ' 0 26px, transparent 26px 78px)', size: 'auto' }; } },
 
     /* ---- mid ---- */
-    { name: 'dots', tier: 'mid', weight: 2.6, drift: 'drift-slow',
+    { name: 'dots', tier: 'mid', weight: 2.0, drift: 'drift-slow',
       make: function (c) { return { image: 'radial-gradient(' + c.tMid + ' 3px, transparent 3.5px)', size: '38px 38px' }; } },
 
-    { name: 'grid', tier: 'mid', weight: 2.6, drift: 'drift-slow',
+    { name: 'grid', tier: 'mid', weight: 2.0, drift: 'drift-slow',
       make: function (c) {
         return { image: 'linear-gradient(' + c.tMid + ' 2px, transparent 2px),' +
                         'linear-gradient(90deg, ' + c.tMid + ' 2px, transparent 2px)', size: '72px 72px' };
       } },
 
-    { name: 'stripes', tier: 'mid', weight: 2.6, drift: 'drift-diag',
+    { name: 'stripes', tier: 'mid', weight: 2.0, drift: 'drift-diag',
       make: function (c) { return { image: 'repeating-linear-gradient(45deg, ' + c.tMid + ' 0 18px, transparent 18px 44px)', size: 'auto' }; } },
 
-    { name: 'chevron', tier: 'mid', weight: 2.6, drift: 'drift-vert',
+    { name: 'chevron', tier: 'mid', weight: 2.0, drift: 'drift-vert',
       make: function (c) {
         return { image: 'repeating-linear-gradient(135deg, ' + c.tMid + ' 0 12px, transparent 12px 30px),' +
                         'repeating-linear-gradient(45deg, ' + c.tMid + ' 0 12px, transparent 12px 30px)', size: '86px 86px' };
       } },
 
-    { name: 'bars', tier: 'mid', weight: 2.6, drift: 'drift-horiz',
+    { name: 'bars', tier: 'mid', weight: 2.0, drift: 'drift-horiz',
       make: function (c) { return { image: 'repeating-linear-gradient(90deg, ' + c.tMid + ' 0 5px, transparent 5px 46px)', size: 'auto' }; } },
 
     /* ---- loud: rare punctuation ---- */
-    { name: 'stripes-tight', tier: 'loud', weight: 1.5, drift: 'drift-diag',
+    { name: 'stripes-tight', tier: 'loud', weight: 2.1, drift: 'drift-diag',
       make: function (c) { return { image: 'repeating-linear-gradient(45deg, ' + c.tLoud + ' 0 20px, transparent 20px 40px)', size: 'auto' }; } },
 
     /* `repeating-` matters: a plain conic-gradient holds its last stop for
        the remaining 340deg, leaving one lonely wedge. */
-    { name: 'rays', tier: 'loud', weight: 1.5, drift: 'drift-spin',
+    { name: 'rays', tier: 'loud', weight: 2.1, drift: 'drift-spin',
       make: function (c) { return { image: 'repeating-conic-gradient(from 0deg, ' + c.tLoud + ' 0 9deg, transparent 9deg 18deg)', size: 'auto' }; } },
 
-    { name: 'rings', tier: 'loud', weight: 1.5, drift: 'drift-breathe',
+    { name: 'rings', tier: 'loud', weight: 2.1, drift: 'drift-breathe',
       make: function (c) { return { image: 'repeating-radial-gradient(circle at 50% 50%, ' + c.tLoud + ' 0 3px, transparent 3px 44px)', size: 'auto' }; } },
 
-    { name: 'crosses', tier: 'loud', weight: 1.5, drift: 'drift-diag',
+    { name: 'crosses', tier: 'loud', weight: 2.1, drift: 'drift-diag',
       make: function (c) {
         return { image: 'linear-gradient(' + c.tLoud + ' 3px, transparent 3px),' +
                         'linear-gradient(90deg, ' + c.tLoud + ' 3px, transparent 3px)', size: '44px 44px' };
       } },
 
-    { name: 'halftone', tier: 'loud', weight: 1.5, drift: 'drift-slow',
+    { name: 'halftone', tier: 'loud', weight: 2.1, drift: 'drift-slow',
       make: function (c) {
         return { image: 'radial-gradient(' + c.tAcc + ' 7px, transparent 8px),' +
                         'radial-gradient(' + c.tLoud + ' 2px, transparent 3px)', size: '58px 58px, 58px 58px' };
