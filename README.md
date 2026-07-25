@@ -58,6 +58,12 @@ and there are two reveals, picked 50/50 per card:
 Only two, deliberately. A reveal answers a tap, so it has to feel
 predictable; a large random set would read as arbitrary rather than varied.
 
+**The controls are sequenced behind the reveal.** The explanation and the
+swipe bar animate in at a 180ms delay, so the answer lands before anything
+else moves. Firing them together was the same clutter this redesign set out
+to remove, just smaller. The kicker crossfades over 130ms rather than
+snapping — it was the last hard cut on an otherwise eased card.
+
 Entrance animations are scoped to `.face-front` for the same reason. A
 question's entrance is ambient, so randomising it is fine — but the answer
 must never replay whichever entrance the card happened to draw, or the

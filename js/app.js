@@ -163,7 +163,14 @@
         });
       },
 
-      setKicker: function (text) { kicker.textContent = text; },
+      setKicker: function (text) {
+        if (kicker.textContent === text) return;
+        kicker.classList.add('is-changing');
+        setTimeout(function () {
+          kicker.textContent = text;
+          kicker.classList.remove('is-changing');
+        }, 130);
+      },
 
       /* Modes that walk through sub-items (bucket) repaint the big text. */
       setQuestion: paintQuestion,

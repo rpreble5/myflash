@@ -63,7 +63,11 @@
   letter-spacing: .24em;
   text-transform: uppercase;
   opacity: .5;
+  /* The only hard cut left on an otherwise eased card — crossfade the
+     label rather than snapping it. */
+  transition: opacity .13s ease;
 }
+.kicker.is-changing { opacity: 0; }
 
 /* ── Question ────────────────────────────────────────────── */
 .flipper {
@@ -222,12 +226,17 @@
 /* ── Explanation ─────────────────────────────────────────────
    Short notes render inline; long ones fold behind a toggle so the
    answer never gets squeezed off the card. */
+/* Held back so the reveal lands first. Everything arriving at once was
+   the same clutter the reveal redesign set out to remove — the answer
+   moves, then the note and the controls follow as one group. */
 .why-wrap {
   width: min(46ch, 100%);
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: .5rem;
+  animation: choice-in .26s cubic-bezier(.22, 1, .36, 1) both;
+  animation-delay: 180ms;
 }
 .why {
   font-family: var(--body-face);
@@ -265,7 +274,8 @@
   gap: .9rem;
   width: min(520px, 100%);
   justify-content: space-between;
-  animation: answer-in .26s cubic-bezier(.22,1,.36,1) both;
+  animation: choice-in .26s cubic-bezier(.22, 1, .36, 1) both;
+  animation-delay: 180ms;
 }
 .swipe-side {
   font-family: "Archivo Black", sans-serif;
