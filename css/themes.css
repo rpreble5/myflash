@@ -511,7 +511,7 @@
 .num-unit { font-family: var(--body-face); font-size: 1rem; opacity: .6; }
 
 .num-dial.is-right .num-val { color: var(--acc); }
-.num-dial.is-wrong .num-val { opacity: .35; text-decoration: line-through; }
+.num-dial.is-wrong .num-val { color: var(--acc); }
 .num-dial.is-right .num-arrow,
 .num-dial.is-wrong .num-arrow { opacity: 0; }
 
@@ -520,12 +520,55 @@
 .card.is-dialing .num-arrow { opacity: .6; }
 .hint.is-gone { opacity: 0; }
 
-.num-answer {
-  font-family: var(--face);
-  font-size: clamp(1.5rem, 6.5vw, 2.6rem);
-  color: var(--acc);
+/* ── Number: the reveal ──────────────────────────────────────
+   A miss stacks: your answer demotes to a small line above, the correct
+   value takes the hero slot. No strikethrough — the label and the size
+   difference already say it has been superseded. */
+.num-said {
+  font-family: var(--body-face);
+  font-size: .82rem;
+  letter-spacing: .04em;
   opacity: 0;
-  transform: scale(.7);
-  transition: opacity .24s ease, transform .26s cubic-bezier(.22,1,.36,1);
+  transform: translateY(6px);
+  transition: opacity .22s ease, transform .22s cubic-bezier(.22, 1, .36, 1);
 }
-.num-answer.is-in { opacity: 1; transform: none; }
+.num-said.is-in { opacity: .5; transform: none; }
+
+/* Crossfade the hero value rather than cutting it, same as the kicker. */
+.num-val { transition: opacity .13s ease; }
+.num-val.is-swapping { opacity: 0; }
+
+/* The track that was deliberately absent while dialling. It spans only the
+   guess and the band, so the gap is always legible — see windowFor. Your
+   mark is ink, the accepted region is accent, matching what those colours
+   mean everywhere else. Sequenced behind the stack. */
+.num-track {
+  position: relative;
+  width: min(560px, 100%);
+  height: 30px;
+  margin-top: .35rem;
+  animation: choice-in .26s cubic-bezier(.22, 1, .36, 1) both;
+  animation-delay: 190ms;
+}
+.num-track-line {
+  position: absolute;
+  left: 0; right: 0; top: 14px;
+  height: 2px;
+  background: color-mix(in srgb, var(--ink) 22%, transparent);
+}
+.num-track-band {
+  position: absolute;
+  top: 9px;
+  height: 12px;
+  min-width: 3px;
+  background: var(--acc);
+  border-radius: 2px;
+}
+.num-track-mark {
+  position: absolute;
+  top: 2px;
+  width: 3px;
+  height: 26px;
+  margin-left: -1.5px;
+  background: var(--ink);
+}

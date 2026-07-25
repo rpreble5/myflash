@@ -43,9 +43,10 @@
     return bar;
   }
 
-  /* Correct answers need longer on screen than a win does. */
-  function settle(ctx, score) {
-    setTimeout(function () { ctx.finish(score); }, score >= 1 ? 850 : 1700);
+  /* A miss needs longer on screen than a win: there is something to read. */
+  function settle(ctx, score, ms) {
+    if (ms == null) ms = score >= 1 ? 850 : 1700;
+    setTimeout(function () { ctx.finish(score); }, ms);
   }
 
   /* Optional explanation. Short notes just appear; long ones fold behind
@@ -557,6 +558,49 @@
     return parts.join('.');
   }
 
+  /* The accepted region, whichever shape the card is. A zero-tolerance
+     value collapses to a point, which the track draws as a hairline. */
+  function band(card) {
+    if (card.low != null) return { lo: card.low, hi: card.high };
+    var t = card.tolerance || 0;
+    return { lo: card.value - t, hi: card.value + t };
+  }
+
+  /* A track spanning just the guess and the band, padded. Deliberately not
+     the dial's full scale: on a 0-600000 platelet scale a 20000 miss would
+     render as two marks 3% apart, so every real miss would look like a
+     near miss. You never see a track while dialling, so there is no
+     remembered axis to stay consistent with. */
+  function windowFor(guess, b, step) {
+    var lo = Math.min(b.lo, guess);
+    var hi = Math.max(b.hi, guess);
+    var pad = Math.max((hi - lo) * 0.3, step * 2);
+    return { min: lo - pad, max: hi + pad };
+  }
+
+  function trackFor(guess, b, step, dp) {
+    var w = windowFor(guess, b, step);
+    var span = w.max - w.min || 1;
+    var pct = function (x) { return ((x - w.min) / span) * 100; };
+
+    var el = h('div', 'num-track');
+    el.appendChild(h('div', 'num-track-line'));
+
+    var bandEl = h('div', 'num-track-band');
+    var left = pct(b.lo);
+    var width = pct(b.hi) - left;
+    if (width < 1.6) { left -= (1.6 - width) / 2; width = 1.6; }
+    bandEl.style.left = left.toFixed(2) + '%';
+    bandEl.style.width = width.toFixed(2) + '%';
+    el.appendChild(bandEl);
+
+    var mark = h('div', 'num-track-mark');
+    mark.style.left = pct(guess).toFixed(2) + '%';
+    el.appendChild(mark);
+
+    return el;
+  }
+
   function isCorrect(card, guess) {
     if (card.low != null) return guess >= card.low && guess <= card.high;
     return Math.abs(guess - card.value) <= (card.tolerance || 0);
@@ -626,15 +670,36 @@
         var ok = isCorrect(card, value);
         dial.classList.add(ok ? 'is-right' : 'is-wrong');
 
+        /* Right: you just produced the number, so showing it back is noise.
+           Colour it and move on. */
+        if (ok) {
+          settle(ctx, 1, 700);
+          return;
+        }
+
+        /* Wrong: your answer demotes to a small line above, the correct
+           value takes the hero slot. No strikethrough — the label and the
+           size difference already say it has been superseded. */
+        ctx.setKicker('THE ANSWER');
+
+        var said = h('div', 'num-said', 'you said ' + fmt(value, sc.dp));
+        dial.insertBefore(said, out);
+        requestAnimationFrame(function () { said.classList.add('is-in'); });
+
+        var b = band(card);
         var truth = card.low != null
           ? fmt(card.low, sc.dp) + ' – ' + fmt(card.high, sc.dp)
           : fmt(card.value, sc.dp);
-        if (card.unit) truth += ' ' + card.unit;
 
-        var answer = h('div', 'num-answer', truth);
-        area.appendChild(answer);
-        requestAnimationFrame(function () { answer.classList.add('is-in'); });
-        settle(ctx, ok ? 1 : 0);
+        /* Crossfade the hero rather than cutting it, same as the kicker. */
+        val.classList.add('is-swapping');
+        setTimeout(function () {
+          val.textContent = truth;
+          val.classList.remove('is-swapping');
+        }, 130);
+
+        area.appendChild(trackFor(value, b, sc.step, sc.dp));
+        settle(ctx, 0, 2400);
       }
 
       /* Opt-in: answer the moment the finger lifts. The short window before

@@ -125,6 +125,23 @@ and the dial must not *start* on a correct value. For range cards the
 scale's midpoint is the answer, so the dial opens a quarter of the way up
 and steps away if it still lands inside the band.
 
+**The reveal.** Right: the number turns accent and the card advances in
+700ms. Nothing else appears — you just produced that number, so showing it
+back is noise.
+
+Wrong: your answer demotes to a small `you said 39.0` line, the correct
+value crossfades into the hero slot, and a **track** appears behind it at a
+190ms delay. There is no strikethrough; the label and the size difference
+already say your value has been superseded.
+
+The track spans **only your guess and the accepted band, padded** — not the
+dial's full scale. On the 0–600000 platelet scale a 20000 miss would render
+as two marks 3% apart, so every real miss would look like a near miss. You
+never see a track while dialling, so there is no remembered axis to stay
+consistent with. Your mark is ink, the accepted region is accent, matching
+what those colours mean everywhere else; a zero-tolerance value draws as a
+hairline rather than needing a special case.
+
 The question is capped to 40vh on these cards (`data-qsize="compact"`). The
 value is the interaction and the question only the prompt — but capped too
 hard the question becomes unreadable, so this is a balance rather than a
