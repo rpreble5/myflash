@@ -45,8 +45,15 @@ layer, which reshuffles palette, face, backdrop and entrance every render.
 
 One card, one behaviour — no random rotation between presentations.
 
-Tap anywhere to reveal. The question doesn't shrink or stay: it's replaced by
-the answer in the same slot, as a flat cross-fade rather than a 3D flip.
+Tap anywhere to reveal. The reveal is a **vertical reel**: the flipper is a
+clipped viewport and the two faces are one strip that slides up — question
+out the top, answer in from the bottom, 300ms, no fade. Cross-fading blurs
+the mechanical read, and the movement is the whole effect.
+
+Entrance animations are scoped to `.face-front`. The question's entrance is
+ambient, so randomising it is fine; the reveal is a *response to a tap* and
+must be the same motion every time, so the answer never replays whichever
+entrance the card happened to draw.
 
 An optional `why` appears **before** grading, since grading advances to the
 next card. Short explanations (≤ 140 chars) render inline; longer ones fold
@@ -103,9 +110,16 @@ short questions keep their original ripple.
 Colour already says "wrong"; oscillation just adds noise on top of
 information you have already received.
 
-Entrance selectors are scoped to `.face .letter` rather than `.letter`, or
-revealed answers would animate twice: once from their own reveal and again
-from the card's entrance rule.
+**Text fitting measures `getBoundingClientRect().height`, not
+`scrollHeight`.** Two reasons, both load-bearing now that the flipper clips.
+The rect includes the element's *own* transform, so the `stretch`
+treatment's `scaleY(1.22)` is accounted for — sizing a stretched block by
+its untransformed height would lose its top and bottom to the clip. And the
+rect *excludes* scrollable overflow, which matters because `line-height:
+.92` lets descenders spill past their line boxes by a constant ~8px. That
+spill is not clipping, and measuring it would shrink type that fits fine —
+it also produced a long run of phantom overflow reports before the metric
+was corrected. An 8px `pad` guards the real clip edge.
 
 ### Backdrops
 

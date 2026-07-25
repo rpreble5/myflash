@@ -40,18 +40,33 @@
 
   /* Binary-search the largest font size that fits the container.
      Cheap enough at ~8 iterations and far better than length buckets,
-     which guess wrong the moment a font is unusually wide. */
+     which guess wrong the moment a font is unusually wide.
+
+     Height comes from getBoundingClientRect, not scrollHeight, for two
+     reasons. It includes the element's OWN transform, so the `stretch`
+     treatment's scaleY(1.22) is accounted for — the flipper clips now, and
+     a stretched block sized by its untransformed height would lose its top
+     and bottom. And it excludes the scrollable overflow that `line-height:
+     .92` produces when descenders spill past their line boxes, which is a
+     constant ~8px that isn't clipping and shouldn't shrink the type.
+     `pad` covers that spill against the clip edge. */
   function fit(el, box, opts) {
     opts = opts || {};
     var min = opts.min || 28;
+    var pad = opts.pad == null ? 8 : opts.pad;
+    var limit = box.clientHeight - pad;
     var max = opts.max || Math.min(box.clientHeight * 0.62, 340);
     var best = min;
+
+    function overflows() {
+      return el.getBoundingClientRect().height > limit ||
+             el.scrollWidth > box.clientWidth + 1;
+    }
 
     for (var step = 0; step < 9; step++) {
       var mid = (min + max) / 2;
       el.style.fontSize = mid + 'px';
-      var fits = el.scrollHeight <= box.clientHeight && el.scrollWidth <= box.clientWidth + 1;
-      if (fits) { best = mid; min = mid; } else { max = mid; }
+      if (!overflows()) { best = mid; min = mid; } else { max = mid; }
     }
 
     var size = Math.floor(best);
@@ -61,8 +76,7 @@
        in a short box — dense modes leave the flipper close to its 15vh
        floor — still overflows at `min`. Step down to a hard floor. */
     var floor = opts.floor || 13;
-    while (size > floor &&
-           (el.scrollHeight > box.clientHeight + 1 || el.scrollWidth > box.clientWidth + 1)) {
+    while (size > floor && overflows()) {
       size -= 2;
       el.style.fontSize = size + 'px';
     }

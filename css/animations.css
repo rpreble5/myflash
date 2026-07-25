@@ -8,25 +8,27 @@
    and is what made the old motion read as bouncy.                 */
 
 /* ── Card entrances: per-letter ──────────────────────────────
-   Scoped to .face so answer text isn't animated twice: it has its
-   own reveal, and `.letter` alone would match it too.
+   Scoped to .face-front. The question's entrance is ambient, so
+   randomising it is fine; the reveal is a response to a tap and
+   must be the same motion every time, so the answer never replays
+   whichever entrance this card happened to draw.
 
    `--stagger` is computed per card in app.js, capped so the whole
    sweep lands within ~240ms however long the question is. Left
    uncapped, a 45-letter question took 2.5s to finish arriving.   */
-.card[data-entrance="cascade"] .face .letter,
-.card[data-entrance="drop"]    .face .letter,
-.card[data-entrance="skewin"]  .face .letter,
-.card[data-entrance="popin"]   .face .letter {
+.card[data-entrance="cascade"] .face-front .letter,
+.card[data-entrance="drop"]    .face-front .letter,
+.card[data-entrance="skewin"]  .face-front .letter,
+.card[data-entrance="popin"]   .face-front .letter {
   animation-duration: .34s;
   animation-fill-mode: both;
   animation-timing-function: cubic-bezier(.22, 1, .36, 1);
   animation-delay: calc(var(--i) * var(--stagger, 24ms) + 60ms);
 }
-.card[data-entrance="cascade"] .face .letter { animation-name: letter-cascade; }
-.card[data-entrance="drop"]    .face .letter { animation-name: letter-drop; }
-.card[data-entrance="skewin"]  .face .letter { animation-name: letter-skew; }
-.card[data-entrance="popin"]   .face .letter { animation-name: letter-pop; }
+.card[data-entrance="cascade"] .face-front .letter { animation-name: letter-cascade; }
+.card[data-entrance="drop"]    .face-front .letter { animation-name: letter-drop; }
+.card[data-entrance="skewin"]  .face-front .letter { animation-name: letter-skew; }
+.card[data-entrance="popin"]   .face-front .letter { animation-name: letter-pop; }
 
 @keyframes letter-cascade {
   from { opacity: 0; transform: translateY(55%); }
@@ -46,22 +48,22 @@
 }
 
 /* ── Card entrances: whole line ──────────────────────────── */
-.card[data-entrance="slam"]   .q,
-.card[data-entrance="blurin"] .q,
-.card[data-entrance="wipe"]   .q,
-.card[data-entrance="rollin"] .q {
+.card[data-entrance="slam"]   .face-front .q,
+.card[data-entrance="blurin"] .face-front .q,
+.card[data-entrance="wipe"]   .face-front .q,
+.card[data-entrance="rollin"] .face-front .q {
   animation-duration: .34s;
   animation-fill-mode: both;
   animation-delay: 60ms;
   animation-timing-function: cubic-bezier(.22, 1, .36, 1);
 }
-.card[data-entrance="slam"]   .q { animation-name: slam-in; animation-duration: .26s; }
-.card[data-entrance="blurin"] .q { animation-name: blur-in; }
-.card[data-entrance="wipe"]   .q { animation-name: wipe-in; }
-.card[data-entrance="rollin"] .q { animation-name: roll-in; }
+.card[data-entrance="slam"]   .face-front .q { animation-name: slam-in; animation-duration: .26s; }
+.card[data-entrance="blurin"] .face-front .q { animation-name: blur-in; }
+.card[data-entrance="wipe"]   .face-front .q { animation-name: wipe-in; }
+.card[data-entrance="rollin"] .face-front .q { animation-name: roll-in; }
 
 @keyframes slam-in {
-  from { opacity: 0; transform: scale(1.35); }
+  from { opacity: 0; transform: scale(1.18); }
   to   { opacity: 1; transform: scale(1); }
 }
 @keyframes blur-in {

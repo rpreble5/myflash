@@ -72,21 +72,26 @@
   flex: 1 1 auto;
   /* Dense modes eat the card; the question keeps a floor. */
   min-height: 15vh;
+  /* Viewport for the reel. Also what keeps the answer out of sight while
+     it waits one full height below. */
+  overflow: hidden;
 }
 
-/* The reveal is a flat swap, not a 3D flip — the question leaves and the
-   answer takes its slot. Nothing rotates in depth. */
+/* The reveal is a vertical reel: the two faces are one strip that slides
+   up, question out the top and answer in from the bottom. No fade — the
+   movement is the whole effect, and cross-fading blurs the mechanical read.
+   Both faces share a curve and duration so the strip stays rigid. */
 .face {
   position: absolute;
   inset: 0;
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  transition: opacity .26s ease, transform .26s cubic-bezier(.22,1,.36,1);
+  transition: transform .3s cubic-bezier(.22,1,.36,1);
 }
-.face-back { opacity: 0; pointer-events: none; transform: translateY(9%); }
-.card.is-swapped .face-front { opacity: 0; transform: translateY(-9%); pointer-events: none; }
-.card.is-swapped .face-back  { opacity: 1; transform: none; pointer-events: auto; }
+.face-back { transform: translateY(100%); pointer-events: none; }
+.card.is-swapped .face-front { transform: translateY(-100%); pointer-events: none; }
+.card.is-swapped .face-back  { transform: none; pointer-events: auto; }
 
 .q {
   width: 100%;
