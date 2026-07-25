@@ -23,22 +23,37 @@ Opening `index.html` directly off disk works too (all scripts are classic
 On Android: open in Chrome → **Add to Home Screen**. The manifest requests
 fullscreen portrait, so it launches with no browser chrome.
 
-## Input modes
+## Card types
 
-The mode is picked per card, weighted, never the same twice in a row, and
-each mode declares its own eligibility so you're never asked to unscramble a
-thirty-letter phrase.
+A card's **type** decides what it asks. A **presentation** decides how it
+asks. Most types have exactly one presentation; `recall` has four, which is
+where the original "never the same twice" variety now lives.
 
-| Mode | Interaction | Eligible when |
+| Type | Shape | Interaction |
 |---|---|---|
-| **Tap to flip** | Tap anywhere, 3D flip, self-grade | always |
-| **Hold to reveal** | Press and hold to un-blur the answer | always |
-| **Type it** | Type the answer, fuzzy-matched | answer ≤ 18 chars |
-| **Pick one** | Four options, distractors drawn from the deck | deck ≥ 4 cards |
-| **Unscramble** | Tap letter tiles into order | answer is 3–10 letters |
+| `recall` | `{ q, a }` | flip · hold-to-reveal · type it · unscramble |
+| `mcq` | `{ q, a, distractors[] }` | four options, authored distractors |
+| `truefalse` | `{ q, a:bool, why }` | two buttons, explanation on reveal |
+| `number` | `{ q, value, unit, tolerance }` | slider, giant readout |
+| `number` | `{ q, low, high, unit }` | two sliders for a normal range |
+| `trend` | `{ q, items:[{label, dir}] }` | mark each row ↑ / — / ↓ |
+| `bucket` | `{ q, bins[], items:[{label, bin}] }` | one big item at a time, tap its bin |
+| `order` | `{ q, steps[] }` | tap phrases into sequence |
+| `match` | `{ q, pairs:[{left, right}] }` | link two columns, four pairs |
 
-Keyboard: `Space` flip/hold · `1`–`4` pick an option · `←`/`→` grade ·
+`dir` is `'up' | 'down' | 'same'`. Steps and pairs are stored in the correct
+order and shuffled at render. Any card may carry an optional `ref` for its
+source citation.
+
+Keyboard: `Space` flip/hold · `1`–`4` pick an option or bin · `←`/`→` grade ·
 `Enter` submit · `Esc` quit.
+
+## Scoring
+
+Multi-row types award **partial credit** — three of four trend rows scores
+0.75, and it counts toward session accuracy. But only a clean sweep marks the
+card resolved, and anything short of one requeues it later in the session.
+Match scores `1 − misses/pairs`, since with four pairs the last one is free.
 
 ## The look engine
 
@@ -89,8 +104,13 @@ learned, which is what the deck meters on the home screen show.
 
 ## Custom decks
 
-**+ New deck** takes one card per line as `front | back`. Stored in
-`localStorage` under `myflash.decks.v1`.
+**+ New deck** takes one card per line as `front | back`, which produces
+`recall` cards. Richer types are authored in `js/decks.js` for now; a
+paste-JSON importer with validation is the next step, aimed at decks
+generated from source material.
+
+Sample decks are standard teaching material for testing the formats. Treat
+them as a study aid, not a clinical reference.
 
 ## Accessibility notes
 
@@ -101,5 +121,7 @@ and vibration is used only where the platform supports it.
 
 ## Not built yet
 
-Spaced repetition scheduling across sessions, image and audio cards,
-speech-input mode, deck import/export, and a service worker for offline use.
+Swipe-to-grade (should replace the MISSED/GOT IT buttons everywhere),
+paste-JSON import with validation, rapid-fire true/false as a timed session
+mode, spaced repetition across sessions, and a service worker for offline
+use. Timeline placement and next-step chains are deliberately parked.

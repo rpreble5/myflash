@@ -54,7 +54,8 @@
   position: relative;
   width: 100%;
   flex: 1 1 auto;
-  min-height: 0;
+  /* Dense modes eat the card; the question keeps a floor. */
+  min-height: 15vh;
   transform-style: preserve-3d;
   transition: transform .68s cubic-bezier(.2,.85,.25,1);
 }
@@ -122,8 +123,11 @@
 
 /* ── Mode area ───────────────────────────────────────────── */
 .mode-area {
-  flex: 0 0 auto;
+  flex: 0 1 auto;
   width: 100%;
+  max-height: 68vh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -259,3 +263,248 @@
 .tile:active { transform: scale(.9); }
 .tile.is-used { opacity: .16; transform: scale(.82); pointer-events: none; }
 .btn-undo { color: var(--ink); font-size: .8rem; padding: .5rem 1rem; }
+
+/* ── Shared submit ───────────────────────────────────────── */
+.btn-check {
+  background: var(--ink);
+  color: var(--bg);
+  font-family: "Archivo Black", sans-serif;
+  font-size: .9rem;
+  letter-spacing: .06em;
+  min-width: 160px;
+  transition: opacity .18s ease, transform .12s cubic-bezier(.34,1.56,.64,1);
+}
+.btn-check:disabled { opacity: .28; cursor: default; }
+
+/* ── True / false ────────────────────────────────────────── */
+.tf-bar { display: flex; gap: .7rem; width: min(560px, 100%); }
+.tf-btn {
+  flex: 1;
+  padding: 1.4rem .8rem;
+  border-radius: 20px;
+  border: 3px solid var(--ink);
+  color: var(--ink);
+  font-family: "Archivo Black", sans-serif;
+  font-size: 1.15rem;
+  letter-spacing: .06em;
+  animation: choice-in .38s cubic-bezier(.34,1.56,.64,1) both;
+  transition: transform .12s ease, background-color .18s, color .18s, opacity .18s;
+}
+.tf-btn:active { transform: scale(.96); }
+.tf-bar.is-locked .tf-btn { pointer-events: none; }
+.tf-btn.is-right { background: var(--ink); color: var(--bg); }
+.tf-btn.is-wrong { opacity: .4; animation: answer-shake .4s cubic-bezier(.36,.07,.19,.97) both; }
+
+.why {
+  max-width: 40ch;
+  font-family: var(--body-face);
+  font-size: .92rem;
+  line-height: 1.45;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity .3s ease, transform .3s cubic-bezier(.22,1,.36,1);
+}
+.why.is-in { opacity: .8; transform: none; }
+
+/* ── Trend (up / same / down) ────────────────────────────── */
+.trend-rows { width: min(560px, 100%); display: flex; flex-direction: column; gap: .5rem; }
+.trend-row {
+  display: flex;
+  align-items: center;
+  gap: .7rem;
+  padding: .45rem .5rem .45rem .9rem;
+  border-radius: 16px;
+  border: 3px solid color-mix(in srgb, var(--ink) 35%, transparent);
+  animation: choice-in .38s cubic-bezier(.34,1.56,.64,1) both;
+  animation-delay: calc(var(--i) * 60ms);
+  transition: border-color .2s, opacity .2s;
+}
+.trend-label {
+  flex: 1;
+  min-width: 0;
+  font-family: var(--body-face);
+  font-weight: 700;
+  font-size: clamp(.95rem, 4vw, 1.2rem);
+  text-align: left;
+}
+.dir-group { display: flex; gap: .3rem; flex: 0 0 auto; }
+.dir-btn {
+  width: 46px; height: 46px;
+  border-radius: 13px;
+  border: 2px solid color-mix(in srgb, var(--ink) 40%, transparent);
+  color: var(--ink);
+  font-size: 1.4rem;
+  line-height: 1;
+  transition: transform .12s cubic-bezier(.34,1.56,.64,1), background-color .15s, color .15s;
+}
+.dir-btn:active { transform: scale(.9); }
+.dir-btn.is-on { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+/* The answer the user missed, spelled out on their row. */
+.dir-btn.is-answer { border-color: var(--acc); color: var(--acc); box-shadow: inset 0 0 0 3px var(--acc); }
+.trend-row.is-right { border-color: var(--ink); }
+.trend-row.is-wrong { border-color: var(--acc); animation: answer-shake .45s cubic-bezier(.36,.07,.19,.97) both; }
+
+/* ── Bucket (one item at a time) ─────────────────────────── */
+.bucket-counter {
+  font-family: var(--body-face);
+  font-size: .72rem;
+  letter-spacing: .18em;
+  opacity: .45;
+}
+.bin-group { display: flex; gap: .6rem; flex-wrap: wrap; justify-content: center; width: min(620px, 100%); }
+.bin-btn {
+  flex: 1 1 40%;
+  min-width: 140px;
+  padding: 1.25rem .9rem;
+  border-radius: 20px;
+  border: 3px solid var(--ink);
+  color: var(--ink);
+  font-family: "Archivo Black", sans-serif;
+  font-size: 1rem;
+  animation: choice-in .38s cubic-bezier(.34,1.56,.64,1) both;
+  animation-delay: calc(var(--i) * 70ms);
+  transition: transform .12s ease, background-color .18s, color .18s, opacity .18s;
+}
+.bin-btn:active { transform: scale(.96); }
+.bin-btn.is-right { background: var(--ink); color: var(--bg); }
+.bin-btn.is-wrong { opacity: .4; animation: answer-shake .4s cubic-bezier(.36,.07,.19,.97) both; }
+.bin-btn.is-answer { border-color: var(--acc); color: var(--acc); }
+
+/* ── Order ───────────────────────────────────────────────── */
+.order-slots { width: min(560px, 100%); display: flex; flex-direction: column; gap: .35rem; }
+.order-slot {
+  display: flex;
+  align-items: center;
+  gap: .7rem;
+  min-height: 46px;
+  padding: .4rem .7rem;
+  border-radius: 13px;
+  border: 2px dashed color-mix(in srgb, var(--ink) 32%, transparent);
+  animation: choice-in .34s cubic-bezier(.34,1.56,.64,1) both;
+  animation-delay: calc(var(--i) * 50ms);
+}
+.order-num {
+  flex: 0 0 auto;
+  width: 26px; height: 26px;
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--ink) 22%, transparent);
+  color: var(--ink);
+  display: grid; place-items: center;
+  font-family: "Archivo Black", sans-serif;
+  font-size: .76rem;
+}
+.order-text {
+  flex: 1;
+  min-width: 0;
+  font-family: var(--body-face);
+  font-weight: 700;
+  font-size: .95rem;
+  text-align: left;
+}
+.order-slot.is-filled { border-style: solid; border-color: var(--ink); }
+.order-slot.is-right { border-color: var(--ink); background: color-mix(in srgb, var(--ink) 12%, transparent); }
+.order-slot.is-wrong { border-color: var(--acc); color: var(--acc); }
+.order-slot.is-wrong .order-num { background: var(--acc); color: var(--bg); }
+
+.order-chips { display: flex; gap: .4rem; flex-wrap: wrap; justify-content: center; width: min(620px, 100%); }
+.order-chip {
+  padding: .6rem .9rem;
+  border-radius: 13px;
+  background: var(--ink);
+  color: var(--bg);
+  font-family: var(--body-face);
+  font-weight: 700;
+  font-size: .9rem;
+  animation: tile-in .32s cubic-bezier(.34,1.56,.64,1) both;
+  animation-delay: calc(var(--i) * 45ms);
+  transition: transform .14s cubic-bezier(.34,1.56,.64,1), opacity .14s;
+}
+.order-chip:active { transform: scale(.94); }
+.order-chip.is-used { opacity: .16; transform: scale(.9); pointer-events: none; }
+
+/* ── Match ───────────────────────────────────────────────── */
+.match-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; width: min(620px, 100%); }
+.match-col { display: flex; flex-direction: column; gap: .45rem; }
+.match-btn {
+  padding: .85rem .7rem;
+  border-radius: 15px;
+  border: 3px solid var(--ink);
+  color: var(--ink);
+  font-family: var(--body-face);
+  font-weight: 700;
+  font-size: clamp(.82rem, 3.4vw, .98rem);
+  line-height: 1.15;
+  animation: choice-in .36s cubic-bezier(.34,1.56,.64,1) both;
+  animation-delay: calc(var(--i) * 55ms);
+  transition: transform .14s cubic-bezier(.34,1.56,.64,1), background-color .18s, color .18s, opacity .18s;
+}
+.match-btn.is-sel { background: var(--ink); color: var(--bg); transform: scale(1.03); }
+.match-btn.is-solved {
+  background: var(--acc);
+  color: var(--bg);
+  border-color: var(--acc);
+  opacity: .9;
+  pointer-events: none;
+}
+/* A whisper of rotation per pair so solved rows read as belonging together. */
+.match-btn.is-solved[data-tint="1"] { transform: rotate(-1.5deg); }
+.match-btn.is-solved[data-tint="2"] { transform: rotate(1.5deg); }
+.match-btn.is-solved[data-tint="3"] { transform: rotate(-.8deg); }
+.match-btn.is-miss { animation: answer-shake .42s cubic-bezier(.36,.07,.19,.97) both; opacity: .55; }
+
+/* ── Number ──────────────────────────────────────────────── */
+.num-wrap { width: min(560px, 100%); display: flex; flex-direction: column; gap: 1.1rem; }
+.num-row { display: flex; flex-direction: column; align-items: center; gap: .3rem; }
+.num-tag {
+  font-family: var(--body-face);
+  font-size: .68rem;
+  letter-spacing: .2em;
+  opacity: .5;
+}
+.num-out { display: flex; align-items: baseline; gap: .4rem; }
+.num-val {
+  font-family: var(--face);
+  font-weight: var(--weight, 400);
+  letter-spacing: var(--track, 0);
+  font-size: clamp(2.4rem, 12vw, 4.6rem);
+  line-height: 1;
+}
+.num-unit { font-family: var(--body-face); font-size: .95rem; opacity: .6; }
+
+.num-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 14px;
+  border-radius: 99px;
+  background: color-mix(in srgb, var(--ink) 22%, transparent);
+  outline: none;
+}
+.num-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: var(--ink);
+  border: 4px solid var(--bg);
+  cursor: grab;
+}
+.num-slider::-moz-range-thumb {
+  width: 40px; height: 40px;
+  border: 4px solid var(--bg);
+  border-radius: 50%;
+  background: var(--ink);
+  cursor: grab;
+}
+.num-row.is-right .num-val { color: var(--acc); }
+.num-row.is-wrong .num-val { opacity: .35; text-decoration: line-through; }
+
+.num-answer {
+  font-family: var(--face);
+  font-size: clamp(1.5rem, 6.5vw, 2.6rem);
+  color: var(--acc);
+  opacity: 0;
+  transform: scale(.7);
+  transition: opacity .3s ease, transform .35s cubic-bezier(.34,1.56,.64,1);
+}
+.num-answer.is-in { opacity: 1; transform: none; }

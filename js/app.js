@@ -57,6 +57,7 @@
       resolved: {},        // card index -> true once answered correctly
       answers: 0,
       correct: 0,
+      score: 0,
       streak: 0,
       best: 0,
       started: Date.now(),
@@ -125,10 +126,11 @@
     el.appendChild(body);
     stage.appendChild(el);
 
-    /* Question text — split for per-letter entrances, then size to fit. */
-    var qText = theme.font.caps ? card.q.toUpperCase() : card.q;
-    global.Txt.splitLetters(qEl, qText, { accentWords: theme.treatment === 'accent-words' });
-    fitLater(qEl, front);
+    function paintQuestion(text) {
+      var t = theme.font.caps ? String(text).toUpperCase() : String(text);
+      global.Txt.splitLetters(qEl, t, { accentWords: theme.treatment === 'accent-words' });
+      fitLater(qEl, front);
+    }
 
     session.keydown = {};
     session.keyup = {};
@@ -146,6 +148,9 @@
       },
 
       setKicker: function (text) { kicker.textContent = text; },
+
+      /* Modes that walk through sub-items (bucket) repaint the big text. */
+      setQuestion: paintQuestion,
 
       tapSurface: function (fn) {
         el.classList.add('is-tappable');
@@ -171,9 +176,17 @@
         return node;
       },
 
-      finish: function (correct) {
+      /* score is 0..1 — multi-row modes (trend, bucket, order, match,
+         range) award partial credit, but only a clean sweep counts the
+         card as resolved. */
+      finish: function (score) {
+        score = typeof score === 'boolean' ? (score ? 1 : 0) : Number(score) || 0;
+        var clean = score >= 0.999;
+
         session.answers++;
-        if (correct) {
+        session.score += score;
+
+        if (clean) {
           session.correct++;
           session.streak++;
           session.best = Math.max(session.best, session.streak);
@@ -181,19 +194,22 @@
           if (session.streak >= 3) global.Sfx.streak(Math.min(session.streak, 8)); else global.Sfx.right();
         } else {
           session.streak = 0;
-          global.Sfx.wrong();
+          if (score === 0) global.Sfx.wrong();
           /* Requeue a missed card a few positions back so it comes
              around again inside the same session. */
           var at = Math.min(3, session.queue.length);
           session.queue.splice(at, 0, cardIndex);
         }
-        global.Store.recordAnswer(deck.id, cardIndex, correct);
+        global.Store.recordAnswer(deck.id, cardIndex, clean);
         updateHud();
         setTimeout(nextCard, 180);
       }
     };
 
+    /* Mount first, then size the question — the mode decides how much
+       vertical room is left over. */
     mode.mount(area, ctx);
+    if (!qEl.childNodes.length) paintQuestion(card.q);
   }
 
   /* Fonts load async — fitting before they land measures the fallback. */
@@ -205,7 +221,8 @@
 
   function endSession() {
     var secs = Math.round((Date.now() - session.started) / 1000);
-    var acc = session.answers ? Math.round((session.correct / session.answers) * 100) : 0;
+    /* Accuracy uses partial credit; "correct" counts only clean sweeps. */
+    var acc = session.answers ? Math.round((session.score / session.answers) * 100) : 0;
 
     $('#summary-title').textContent = acc >= 90 ? 'FLAWLESS' : acc >= 70 ? 'SOLID' : 'KEEP GOING';
     var stats = $('#summary-stats');
