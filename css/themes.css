@@ -41,6 +41,7 @@
 
 .kicker {
   flex: 0 0 auto;
+  align-self: flex-start;
   font-family: var(--body-face);
   font-size: .68rem;
   font-weight: 700;
@@ -66,7 +67,7 @@
   inset: 0;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
 }
@@ -79,9 +80,9 @@
   font-weight: var(--weight, 400);
   letter-spacing: var(--track, 0);
   line-height: .92;
-  text-align: center;
-  text-wrap: balance;
-  transform: rotate(var(--tilt, 0deg));
+  text-align: left;
+  /* `balance` is for centred headlines; ragged-right wants `pretty`. */
+  text-wrap: pretty;
 }
 .a-face { color: var(--acc); }
 
@@ -96,14 +97,14 @@
 }
 .card[data-treatment="outline"] .a-face { -webkit-text-stroke-color: var(--acc); }
 .card[data-treatment="shadow-hard"] .q { text-shadow: .06em .06em 0 var(--acc); }
-.card[data-treatment="stretch"] .q { transform: rotate(var(--tilt, 0deg)) scaleY(1.22); }
+.card[data-treatment="stretch"] .q { transform: scaleY(1.22); transform-origin: left center; }
 
 /* ── Answer (non-flip modes) ─────────────────────────────── */
 .answer-inline {
   flex: 0 0 auto;
   width: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   min-height: 0;
 }
 .answer {
@@ -112,7 +113,7 @@
   letter-spacing: var(--track, 0);
   font-size: clamp(1.9rem, 8.5vw, 4.2rem);
   line-height: .95;
-  text-align: center;
+  text-align: left;
   color: var(--acc);
 }
 .answer-pop   { animation: answer-pop .45s cubic-bezier(.34,1.56,.64,1) both; }
@@ -447,10 +448,6 @@
   opacity: .9;
   pointer-events: none;
 }
-/* A whisper of rotation per pair so solved rows read as belonging together. */
-.match-btn.is-solved[data-tint="1"] { transform: rotate(-1.5deg); }
-.match-btn.is-solved[data-tint="2"] { transform: rotate(1.5deg); }
-.match-btn.is-solved[data-tint="3"] { transform: rotate(-.8deg); }
 .match-btn.is-miss { animation: answer-shake .42s cubic-bezier(.36,.07,.19,.97) both; opacity: .55; }
 
 /* ── Number ──────────────────────────────────────────────── */

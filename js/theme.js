@@ -126,8 +126,7 @@
       backdropImage: bd.image,
       backdropSize: bd.size,
       entrance: entrance,
-      treatment: pick(TREATMENTS),
-      tilt: (Math.random() * 5 - 2.5).toFixed(2) + 'deg'
+      treatment: pick(TREATMENTS)
     };
   }
 
@@ -144,7 +143,6 @@
     s.setProperty('--body-face', BODY_FACE);
     s.setProperty('--backdrop-image', theme.backdropImage);
     s.setProperty('--backdrop-size', theme.backdropSize);
-    s.setProperty('--tilt', theme.tilt);
     el.dataset.treatment = theme.treatment;
     el.dataset.drift = theme.backdrop.drift || '';
 
