@@ -181,6 +181,8 @@
   opacity: .45;
   animation: hint-pulse 2.2s ease-in-out infinite;
 }
+/* A readout, not a prompt — it stays put. */
+.hint.is-static { animation: none; }
 
 .grade-bar { display: flex; gap: .7rem; flex-wrap: wrap; justify-content: center; animation: answer-in .26s cubic-bezier(.22,1,.36,1) both; }
 .btn-grade { min-width: 132px; font-family: "Archivo Black", sans-serif; font-size: .9rem; letter-spacing: .05em; }
@@ -380,13 +382,57 @@
 .trend-row.is-right { border-color: var(--ink); }
 .trend-row.is-wrong { border-color: var(--acc); opacity: .78; }
 
-/* ── Bucket (one item at a time) ─────────────────────────── */
-.bucket-counter {
-  font-family: var(--body-face);
-  font-size: .72rem;
-  letter-spacing: .18em;
-  opacity: .45;
+/* ── Bucket ──────────────────────────────────────────────── */
+/* Two bins: swipe the item left or right and it settles into a single
+   running list, nudged to the side it belongs on. One stack, not two
+   columns — the order you met the items in stays readable. */
+.sorter { width: min(560px, 100%); display: flex; flex-direction: column; gap: .4rem; }
+/* Everything else on the card is ragged-right; the readout follows. */
+.sort-hint { align-self: flex-start; }
+
+.sort-heads { display: flex; justify-content: space-between; gap: 1rem; }
+.sort-head {
+  font-family: "Archivo Black", sans-serif;
+  font-size: .74rem;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--ink);
+  opacity: .5;
+  transition: opacity .16s ease;
 }
+/* Light up the side the item is heading for. */
+.card[data-swipe="left"]  .sort-head[data-side="left"],
+.card[data-swipe="right"] .sort-head[data-side="right"] { opacity: 1; }
+
+.sort-list { display: flex; flex-direction: column; gap: .25rem; }
+.sort-item {
+  max-width: 84%;
+  font-family: var(--body-face);
+  font-size: .84rem;
+  line-height: 1.2;
+  padding: .3rem .55rem;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--ink) 14%, transparent);
+  color: var(--ink);
+  animation: sort-drop .2s cubic-bezier(.25,.8,.4,1) both;
+}
+.sort-item[data-side="left"]  { align-self: flex-start; text-align: left; }
+.sort-item[data-side="right"] { align-self: flex-end; text-align: right; }
+/* Landed on its true side, but that isn't where the user sent it. */
+.sort-item.is-wrong {
+  background: transparent;
+  box-shadow: inset 0 0 0 2px var(--acc);
+  color: var(--acc);
+}
+
+/* Only the item moves during a sort; the card underneath holds still. */
+.q.is-sortable {
+  transition: transform .22s cubic-bezier(.25,.8,.4,1),
+              opacity   .22s cubic-bezier(.25,.8,.4,1);
+}
+.card.is-dragging .q.is-sortable { transition: none; }
+
+/* Three or more bins have nowhere to swipe to, so they keep buttons. */
 .bin-group { display: flex; gap: .6rem; flex-wrap: wrap; justify-content: center; width: min(620px, 100%); }
 .bin-btn {
   flex: 1 1 40%;

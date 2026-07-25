@@ -199,8 +199,10 @@
         }, 130);
       },
 
-      /* Modes that walk through sub-items (bucket) repaint the big text. */
+      /* Modes that walk through sub-items (bucket) repaint the big text,
+         and sorting swipes that element rather than the whole card. */
       setQuestion: paintQuestion,
+      hero: qEl,
 
       tapSurface: function (fn) {
         el.classList.add('is-tappable');
@@ -259,14 +261,19 @@
          element; modes just say what left and right mean. */
       enableSwipe: function (opts) {
         var startX = 0, startY = 0, dragging = false, committed = false, axis = null;
+        var startTarget = null;
         el.classList.add('is-gesture');
         var width = el.clientWidth || 360;
         var threshold = Math.min(110, width * 0.28);
+        /* The thing that follows the finger is not always the card: sorting
+           moves the item and leaves the card in place. */
+        var visual = opts.visual || el;
 
         function down(e) {
           if (committed || e.target.closest('button, input, textarea')) return;
           dragging = true;
           axis = null;
+          startTarget = e.target;
           startX = e.clientX;
           startY = e.clientY;
           el.classList.add('is-dragging');
@@ -285,8 +292,8 @@
           }
           if (axis !== 'x') return;
 
-          el.style.transform = 'translateX(' + dx.toFixed(1) + 'px)';
-          el.style.opacity = String(Math.max(0.4, 1 - Math.abs(dx) / (width * 1.5)));
+          visual.style.transform = 'translateX(' + dx.toFixed(1) + 'px)';
+          visual.style.opacity = String(Math.max(0.4, 1 - Math.abs(dx) / (width * 1.5)));
           el.dataset.swipe = dx > 24 ? 'right' : dx < -24 ? 'left' : '';
         }
 
@@ -296,24 +303,43 @@
           el.classList.remove('is-dragging');
           var dx = e.clientX - startX;
           if (axis === 'x' && Math.abs(dx) >= threshold) commit(dx > 0);
-          else release();
+          else {
+            release();
+            /* A pointer that never locked an axis never moved: that's a
+               tap. Pointer capture sends this event to the card, so the
+               thing under the finger is the *down* target, not e.target. */
+            if (!axis && opts.onTap) opts.onTap(startTarget);
+          }
         }
 
         function release() {
-          el.style.transform = '';
-          el.style.opacity = '';
+          visual.style.transform = '';
+          visual.style.opacity = '';
           el.dataset.swipe = '';
         }
 
         function commit(right) {
           if (committed) return;
           committed = true;
-          /* Tells renderCard to leave this card alone — it is already
-             animating itself off in the direction of the swipe. */
-          el.classList.add('is-swiped');
-          el.style.transform = 'translateX(' + (right ? width * 1.2 : -width * 1.2) + 'px)';
-          el.style.opacity = '0';
+          visual.style.transform = 'translateX(' + (right ? width * 1.2 : -width * 1.2) + 'px)';
+          visual.style.opacity = '0';
+          /* stayPut: the card survives the swipe, so it must not be marked
+             as retiring — the caller resets the visual for the next item. */
+          if (!opts.stayPut) el.classList.add('is-swiped');
           (right ? opts.onRight : opts.onLeft)();
+        }
+
+        /* Put the visual back and allow another swipe. */
+        function reset() {
+          committed = false;
+          axis = null;
+          visual.style.transition = 'none';
+          release();
+          /* Two frames: one to land the cleared transform, one to restore
+             the transition so the next drag animates again. */
+          requestAnimationFrame(function () {
+            requestAnimationFrame(function () { visual.style.transition = ''; });
+          });
         }
 
         el.addEventListener('pointerdown', down);
@@ -322,7 +348,7 @@
         el.addEventListener('pointercancel', up);
         el.addEventListener('lostpointercapture', up);
 
-        return { commit: commit };
+        return { commit: commit, reset: reset };
       },
 
       /* style: 'swap' | 'pop' | 'mark' — returns the answer node */

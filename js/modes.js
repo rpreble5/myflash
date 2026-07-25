@@ -283,34 +283,76 @@
 
   var bucket = {
     id: 'bucket', label: 'SORT IT', types: ['bucket'], weight: 1,
+    /* The sorted list is half the point of the card, so it gets room. */
+    compact: true,
     eligible: function (card) { return card.bins && card.bins.length >= 2 && card.items && card.items.length; },
     mount: function (area, ctx) {
       var items = global.Txt.shuffle(ctx.card.items.slice());
-      var idx = 0, right = 0;
+      var idx = 0, right = 0, locked = false;
+      /* Two bins map onto left and right; more than that has nowhere to
+         go, so those cards keep the buttons. */
+      var two = ctx.card.bins.length === 2;
+      var swipe = null, list = null, bins = null;
 
       ctx.setKicker(ctx.card.q);
-      var counter = h('div', 'bucket-counter');
-      var bins = h('div', 'bin-group');
-      area.appendChild(counter);
-      area.appendChild(bins);
+      var hint = h('div', 'hint');
+      area.appendChild(hint);
 
-      ctx.card.bins.forEach(function (bin, i) {
-        var b = h('button', 'bin-btn', bin);
-        b.style.setProperty('--i', i);
-        b.addEventListener('click', function () { answer(bin, b); });
-        bins.appendChild(b);
-      });
+      if (two) buildSorter(); else buildButtons();
 
       var keyMap = {};
       ctx.card.bins.forEach(function (bin, i) {
-        keyMap[String(i + 1)] = function () { bins.children[i].click(); };
+        keyMap[String(i + 1)] = function () { answer(bin, bins && bins.children[i]); };
       });
       ctx.keys(keyMap);
 
-      var locked = false;
+      function buildSorter() {
+        var sorter = h('div', 'sorter');
+        var heads = h('div', 'sort-heads');
+        ctx.card.bins.forEach(function (bin, i) {
+          var head = h('div', 'sort-head', bin);
+          head.dataset.bin = bin;
+          head.dataset.side = i === 0 ? 'left' : 'right';
+          heads.appendChild(head);
+        });
+        list = h('div', 'sort-list');
+        sorter.appendChild(heads);
+        sorter.appendChild(list);
+        area.appendChild(sorter);
+
+        /* The item follows the finger and the card stays put, so the list
+           it is being sorted into never moves under it. */
+        swipe = ctx.enableSwipe({
+          visual: ctx.hero,
+          stayPut: true,
+          onLeft: function () { answer(ctx.card.bins[0]); },
+          onRight: function () { answer(ctx.card.bins[1]); },
+          /* Mouse and cautious-finger fallback: the headings are targets. */
+          onTap: function (target) {
+            var head = target && target.closest && target.closest('.sort-head');
+            if (head) answer(head.dataset.bin);
+          }
+        });
+        ctx.hero.classList.add('is-sortable');
+      }
+
+      function buildButtons() {
+        bins = h('div', 'bin-group');
+        area.appendChild(bins);
+        ctx.card.bins.forEach(function (bin, i) {
+          var b = h('button', 'bin-btn', bin);
+          b.style.setProperty('--i', i);
+          b.addEventListener('click', function () { answer(bin, b); });
+          bins.appendChild(b);
+        });
+      }
 
       function show() {
-        counter.textContent = (idx + 1) + ' / ' + items.length;
+        var prompt = two && idx === 0;
+        /* The prompt pulses to ask for the gesture; the running count is
+           just a readout and has no business breathing. */
+        hint.className = prompt ? 'hint sort-hint' : 'hint sort-hint is-static';
+        hint.textContent = prompt ? 'SWIPE TO SORT' : (items.length - idx) + ' LEFT';
         ctx.setQuestion(items[idx].label);
       }
 
@@ -320,19 +362,35 @@
            off the end of the array. */
         if (locked || idx >= items.length) return;
         locked = true;
-        var ok = bin === items[idx].bin;
-        btn.classList.add(ok ? 'is-right' : 'is-wrong');
-        if (ok) { right++; global.Sfx.right(); }
-        else {
-          global.Sfx.wrong();
-          Array.prototype.forEach.call(bins.children, function (b) {
-            if (b.textContent === items[idx].bin) b.classList.add('is-answer');
-          });
+        var item = items[idx];
+        var ok = bin === item.bin;
+        if (ok) { right++; global.Sfx.right(); } else global.Sfx.wrong();
+
+        if (two) {
+          /* The item settles on the side it *belongs* on, marked when that
+             wasn't where the user put it. The finished list then reads as
+             the true grouping — the thing worth remembering — rather than
+             as a record of the mistakes. */
+          var side = item.bin === ctx.card.bins[0] ? 'left' : 'right';
+          var chip = h('div', 'sort-item', item.label);
+          chip.dataset.side = side;
+          if (!ok) chip.classList.add('is-wrong');
+          list.appendChild(chip);
+        } else if (btn) {
+          btn.classList.add(ok ? 'is-right' : 'is-wrong');
+          if (!ok) {
+            Array.prototype.forEach.call(bins.children, function (b) {
+              if (b.textContent === item.bin) b.classList.add('is-answer');
+            });
+          }
         }
+
         setTimeout(function () {
-          Array.prototype.forEach.call(bins.children, function (b) {
-            b.classList.remove('is-right', 'is-wrong', 'is-answer');
-          });
+          if (bins) {
+            Array.prototype.forEach.call(bins.children, function (b) {
+              b.classList.remove('is-right', 'is-wrong', 'is-answer');
+            });
+          }
           idx++;
           if (idx >= items.length) {
             ctx.finish(right / items.length);   // stay locked; card is done
@@ -340,7 +398,10 @@
           }
           locked = false;
           show();
-        }, ok ? 520 : 1200);
+          /* Repaint first, then put the hero back: the new item is already
+             in place when the transform clears, so nothing flashes. */
+          if (swipe) swipe.reset();
+        }, ok ? 260 : 900);
       }
 
       show();
