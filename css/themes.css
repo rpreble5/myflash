@@ -189,9 +189,10 @@
 .btn-miss { border: 3px solid var(--ink); color: var(--ink); }
 .btn-got  { background: var(--ink); color: var(--bg); }
 
-/* Multiple choice */
-.choice-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: .65rem; width: min(700px, 100%); }
-@media (max-width: 420px) { .choice-grid { grid-template-columns: 1fr; } }
+/* Multiple choice — the option set picks its own shape (see layoutFor). */
+.choice-grid { display: grid; gap: .65rem; width: min(700px, 100%); }
+.choice-grid[data-lay="grid"] { grid-template-columns: repeat(2, 1fr); }
+.choice-grid[data-lay="list"] { grid-template-columns: 1fr; }
 .choice-btn {
   display: flex;
   align-items: center;

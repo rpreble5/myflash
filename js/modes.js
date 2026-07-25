@@ -43,6 +43,19 @@
     return bar;
   }
 
+  /* Option sets get the shape their content asks for. Four short labels
+     read fastest as a 2×2 — the whole set lands in one glance. A clinical
+     phrase in a half-width cell wraps to three ragged lines and the set
+     becomes a wall, so anything longer goes down the page as a list.
+
+     The bound is what fits one line in a half-width cell on a phone. */
+  var GRID_MAX_CHARS = 15;
+
+  function layoutFor(options) {
+    var longest = options.reduce(function (n, o) { return Math.max(n, String(o).length); }, 0);
+    return (options.length <= 4 && longest <= GRID_MAX_CHARS) ? 'grid' : 'list';
+  }
+
   /* A miss needs longer on screen than a win: there is something to read. */
   function settle(ctx, score, ms) {
     if (ms == null) ms = score >= 1 ? 850 : 1700;
@@ -142,11 +155,15 @@
     mount: function (area, ctx) {
       var options = global.Txt.shuffle([ctx.card.a].concat(ctx.card.distractors));
       var grid = h('div', 'choice-grid');
+      grid.dataset.lay = layoutFor(options);
       var locked = false, keyMap = {};
 
       options.forEach(function (opt, i) {
         var b = h('button', 'choice-btn');
-        b.appendChild(h('span', 'choice-key', String(i + 1)));
+        /* The number is a keyboard affordance. In grid mode it costs the
+           text a third of an already narrow cell, and every option there
+           is short enough to hit directly. */
+        if (grid.dataset.lay === 'list') b.appendChild(h('span', 'choice-key', String(i + 1)));
         b.appendChild(h('span', 'choice-text', opt));
         b.style.setProperty('--i', i);
 
