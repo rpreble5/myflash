@@ -3,7 +3,7 @@
    Cards are typed. The type determines the interaction; the theme layer
    still randomizes the look on every render.
 
-     recall     { q, a }
+     recall     { q, a, why?, reveal? }   reveal pins 'reel' or 'lift'
      mcq        { q, a, distractors[] }
      truefalse  { q, a:bool, why }
      number     { q, value, unit, tolerance }      exact-ish value
@@ -21,6 +21,43 @@
   'use strict';
 
   var BUILTIN = [
+    {
+      id: 'revealtest',
+      name: 'REVEAL LAB',
+      blurb: 'Recall cards only — for judging the reveal motion',
+      cards: [
+        /* The first four pin a reveal so the two can be compared directly
+           back to back; the rest fall back to the theme's 50/50 pick. */
+        { type: 'recall', reveal: 'reel', q: 'Antidote for opioid overdose', a: 'Naloxone' },
+        { type: 'recall', reveal: 'lift', q: 'Antidote for benzodiazepine overdose', a: 'Flumazenil' },
+        { type: 'recall', reveal: 'reel', q: 'Cranial nerve VII', a: 'Facial nerve' },
+        { type: 'recall', reveal: 'lift', q: 'Cranial nerve X', a: 'Vagus nerve' },
+
+        /* Short question, short answer — the reveal at its cleanest. */
+        { type: 'recall', q: 'Vitamin B12', a: 'Cobalamin' },
+        { type: 'recall', q: 'Universal donor blood type', a: 'O negative' },
+        { type: 'recall', q: 'Bones in the adult human body', a: '206' },
+        { type: 'recall', q: 'Electrolyte lost in prolonged vomiting', a: 'Chloride' },
+
+        /* Long answer against a short question — the answer face has to
+           shrink hard while the question stays huge. */
+        { type: 'recall', q: 'Surfactant', a: 'Made by type II pneumocytes' },
+        { type: 'recall', q: 'Murmur of aortic stenosis', a: 'Crescendo-decrescendo systolic' },
+
+        /* Long question against a short answer — the reverse mismatch. */
+        { type: 'recall', q: 'Most common cause of community-acquired pneumonia', a: 'Streptococcus pneumoniae' },
+        { type: 'recall', q: 'Nerve injured in a midshaft humeral fracture', a: 'Radial nerve' },
+
+        /* With explanations — inline, and one long enough to fold. */
+        { type: 'recall', q: 'Anticoagulant reversed by protamine', a: 'Heparin',
+          why: 'Protamine binds heparin directly. It only partially reverses low molecular weight heparins.' },
+        { type: 'recall', q: 'First-line drug for status epilepticus', a: 'IV lorazepam',
+          why: 'A benzodiazepine first, then a longer-acting agent such as levetiracetam or fosphenytoin.' },
+        { type: 'recall', q: 'Enzyme deficient in classic PKU', a: 'Phenylalanine hydroxylase',
+          why: 'Without it phenylalanine cannot be converted to tyrosine, so it accumulates and its metabolites spill into the urine. Tyrosine becomes conditionally essential, which is why treatment is a phenylalanine-restricted diet with tyrosine supplementation rather than enzyme replacement. Untreated, the classic picture is intellectual disability, seizures, and a musty odour.' }
+      ]
+    },
+
     {
       id: 'acidbase',
       name: 'ACID–BASE',

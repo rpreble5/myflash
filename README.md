@@ -82,6 +82,19 @@ source citation.
 Keyboard: `Space` / `Enter` reveal · `1`–`4` pick an option or bin ·
 `←`/`→` grade · `Esc` quit.
 
+### REVEAL LAB
+
+A built-in deck of nothing but `recall` cards, for judging the reveal motion
+without other formats interrupting. Fifteen cards covering the cases that
+stress it: short-to-short, a long answer under a short question, a long
+question over a short answer, three explanations (one long enough to fold).
+
+The first four pin `reveal` so the two styles can be compared back to back —
+`reel`, `lift`, `reel`, `lift` — instead of waiting on the theme's coin flip.
+Any card may set `reveal: 'reel' | 'lift'` to override the random pick.
+
+Delete the deck from `js/decks.js` when it has served its purpose.
+
 ## Scoring
 
 Multi-row types award **partial credit** — three of four trend rows scores
