@@ -3,7 +3,7 @@
    Cards are typed. The type determines the interaction; the theme layer
    still randomizes the look on every render.
 
-     recall     { q, a, why?, reveal? }   reveal pins 'reel' or 'lift'
+     recall     { q, a, why? }
      mcq        { q, a, distractors[] }
      truefalse  { q, a:bool, why }
      number     { q, value, unit, tolerance }      exact-ish value
@@ -26,12 +26,10 @@
       name: 'REVEAL LAB',
       blurb: 'Recall cards only — for judging the reveal motion',
       cards: [
-        /* The first four pin a reveal so the two can be compared directly
-           back to back; the rest fall back to the theme's 50/50 pick. */
-        { type: 'recall', reveal: 'reel', q: 'Antidote for opioid overdose', a: 'Naloxone' },
-        { type: 'recall', reveal: 'lift', q: 'Antidote for benzodiazepine overdose', a: 'Flumazenil' },
-        { type: 'recall', reveal: 'reel', q: 'Cranial nerve VII', a: 'Facial nerve' },
-        { type: 'recall', reveal: 'lift', q: 'Cranial nerve X', a: 'Vagus nerve' },
+        { type: 'recall', q: 'Antidote for opioid overdose', a: 'Naloxone' },
+        { type: 'recall', q: 'Antidote for benzodiazepine overdose', a: 'Flumazenil' },
+        { type: 'recall', q: 'Cranial nerve VII', a: 'Facial nerve' },
+        { type: 'recall', q: 'Cranial nerve X', a: 'Vagus nerve' },
 
         /* Short question, short answer — the reveal at its cleanest. */
         { type: 'recall', q: 'Vitamin B12', a: 'Cobalamin' },

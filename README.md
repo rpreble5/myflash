@@ -46,23 +46,19 @@ layer, which reshuffles palette, face, backdrop and entrance every render.
 One card, one behaviour — no random rotation between presentations.
 
 Tap anywhere to reveal. The flipper is a clipped viewport holding two faces,
-and there are two reveals, picked 50/50 per card:
+and the reveal is a **crossfade with a short rise** — the question fades out
+as it lifts, the answer fades in behind it, both on one 200ms curve. One
+motion, every time: a reveal answers a tap, so it has to feel predictable.
 
-- **reel** — the faces are one rigid strip sliding a full height, question
-  out the top and answer in from the bottom, 300ms, no fade. Cross-fading
-  blurs the mechanical read; the movement is the whole effect.
-- **lift** — a short 18% rise and a fade together, 200ms, gentler curve.
-  Opacity is what hides the waiting answer here, since 18% would otherwise
-  leave it in view.
+Opacity is what hides the waiting answer, since an 18% offset would otherwise
+leave it in view. The flipper clips so the incoming face can't bleed past the
+viewport mid-transition.
 
-Only two, deliberately. A reveal answers a tap, so it has to feel
-predictable; a large random set would read as arbitrary rather than varied.
-
-**The controls are sequenced behind the reveal.** The explanation and the
-swipe bar animate in at a 180ms delay, so the answer lands before anything
-else moves. Firing them together was the same clutter this redesign set out
-to remove, just smaller. The kicker crossfades over 130ms rather than
-snapping — it was the last hard cut on an otherwise eased card.
+**The controls are sequenced behind it.** The explanation and the swipe bar
+animate in at a 180ms delay, so the answer lands before anything else moves.
+Firing them together was the same clutter this redesign set out to remove,
+just smaller. The kicker crossfades over 130ms rather than snapping — it was
+the last hard cut on an otherwise eased card.
 
 Entrance animations are scoped to `.face-front` for the same reason. A
 question's entrance is ambient, so randomising it is fine — but the answer
@@ -94,10 +90,6 @@ A built-in deck of nothing but `recall` cards, for judging the reveal motion
 without other formats interrupting. Fifteen cards covering the cases that
 stress it: short-to-short, a long answer under a short question, a long
 question over a short answer, three explanations (one long enough to fold).
-
-The first four pin `reveal` so the two styles can be compared back to back —
-`reel`, `lift`, `reel`, `lift` — instead of waiting on the theme's coin flip.
-Any card may set `reveal: 'reel' | 'lift'` to override the random pick.
 
 Delete the deck from `js/decks.js` when it has served its purpose.
 

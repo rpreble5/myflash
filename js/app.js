@@ -103,9 +103,6 @@
 
     var el = h('div', 'card');
     global.Theme.apply(el, theme);
-    /* A card may pin its reveal, which is mostly useful for comparing the
-       two back to back rather than waiting on the theme's coin flip. */
-    if (card.reveal) el.dataset.reveal = card.reveal;
     el.dataset.entrance = theme.entrance.name;
     /* Provisional; paintQuestion recomputes it once the letter count
        is known. */

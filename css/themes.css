@@ -92,29 +92,20 @@
 .card.is-swapped .face-front { pointer-events: none; }
 .card.is-swapped .face-back  { pointer-events: auto; }
 
-/* Two reveals, picked per card by the theme layer. Both are one fixed
-   motion — the answer never replays the question's random entrance. */
+/* The reveal is a crossfade with a short rise — question fades out as it
+   lifts, answer fades in behind it, both on one curve. One motion, every
+   time: a reveal answers a tap, so it has to feel predictable.
 
-/* REEL — the two faces are one rigid strip sliding up, question out the
-   top and answer in from the bottom. No fade: the movement is the whole
-   effect, and cross-fading blurs the mechanical read. Both faces share a
-   curve and duration so the strip doesn't flex. */
-.card[data-reveal="reel"] .face {
-  transition: transform .3s cubic-bezier(.22, 1, .36, 1);
+   Opacity is what hides the waiting answer, since an 18% offset would
+   otherwise leave it in view. The flipper still clips so the incoming
+   face can't bleed past the viewport mid-transition. */
+.card .face {
+  transition: transform .2s cubic-bezier(.25, .8, .4, 1),
+              opacity   .2s cubic-bezier(.25, .8, .4, 1);
 }
-.card[data-reveal="reel"] .face-back { transform: translateY(100%); }
-.card.is-swapped[data-reveal="reel"] .face-front { transform: translateY(-100%); }
-.card.is-swapped[data-reveal="reel"] .face-back  { transform: none; }
-
-/* LIFT — a short rise and a fade together, quicker and softer than the
-   reel. Travel stays small so the fade does the work; opacity is what
-   hides the waiting answer here, since 18% would otherwise sit in view. */
-.card[data-reveal="lift"] .face {
-  transition: transform .2s cubic-bezier(.25, .8, .4, 1), opacity .2s cubic-bezier(.25, .8, .4, 1);
-}
-.card[data-reveal="lift"] .face-back { opacity: 0; transform: translateY(18%); }
-.card.is-swapped[data-reveal="lift"] .face-front { opacity: 0; transform: translateY(-18%); }
-.card.is-swapped[data-reveal="lift"] .face-back  { opacity: 1; transform: none; }
+.card .face-back { opacity: 0; transform: translateY(18%); }
+.card.is-swapped .face-front { opacity: 0; transform: translateY(-18%); }
+.card.is-swapped .face-back  { opacity: 1; transform: none; }
 
 .q {
   width: 100%;
