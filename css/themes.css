@@ -518,7 +518,18 @@
 .num-dial.is-right .num-arrow,
 .num-dial.is-wrong .num-arrow { opacity: 0; }
 
-/* Grabbing anywhere must not also scroll or select. */
+/* Grabbing anywhere must not also scroll or select.
+
+   touch-action has to be set on .mode-area itself, not just the card: a
+   scroll container ignores an ancestor's touch-action, so the browser
+   claimed vertical drags started inside it as scrolls and fired
+   pointercancel two moves in. A 150px drag moved one step instead of
+   seven, which read as the number simply not responding. */
+.card.is-gesture,
+.card.is-gesture .mode-area { touch-action: none; }
+/* The one thing inside a card that must still scroll. */
+.card.is-gesture .why-body { touch-action: pan-y; }
+
 .card.is-dialing { cursor: grabbing; }
 .card.is-dialing .num-arrow { opacity: .6; }
 .hint.is-gone { opacity: 0; }
@@ -550,36 +561,3 @@
    guess and the band, so the gap is always legible — see windowFor. Your
    mark is ink, the accepted region is accent, matching what those colours
    mean everywhere else. Sequenced behind the stack. */
-/* Also present from the start, holding its own height. Only its contents
-   arrive on a miss, so nothing below it moves. */
-.num-track {
-  position: relative;
-  width: min(560px, 100%);
-  height: 30px;
-  margin-top: .35rem;
-  opacity: 0;
-  transition: opacity .26s ease 190ms;
-}
-.num-track.is-shown { opacity: 1; }
-.num-track-line {
-  position: absolute;
-  left: 0; right: 0; top: 14px;
-  height: 2px;
-  background: color-mix(in srgb, var(--ink) 22%, transparent);
-}
-.num-track-band {
-  position: absolute;
-  top: 9px;
-  height: 12px;
-  min-width: 3px;
-  background: var(--acc);
-  border-radius: 2px;
-}
-.num-track-mark {
-  position: absolute;
-  top: 2px;
-  width: 3px;
-  height: 26px;
-  margin-left: -1.5px;
-  background: var(--ink);
-}

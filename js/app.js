@@ -218,7 +218,7 @@
          drifts, and reversing direction responds immediately. */
       enableDial: function (opts) {
         var y0 = 0, dragging = false, moved = false;
-        el.style.touchAction = 'none';
+        el.classList.add('is-gesture');
 
         function down(e) {
           if (e.target.closest('button, input, textarea')) return;
@@ -259,6 +259,7 @@
          element; modes just say what left and right mean. */
       enableSwipe: function (opts) {
         var startX = 0, startY = 0, dragging = false, committed = false, axis = null;
+        el.classList.add('is-gesture');
         var width = el.clientWidth || 360;
         var threshold = Math.min(110, width * 0.28);
 

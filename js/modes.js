@@ -558,46 +558,6 @@
     return parts.join('.');
   }
 
-  /* The accepted region, whichever shape the card is. A zero-tolerance
-     value collapses to a point, which the track draws as a hairline. */
-  function band(card) {
-    if (card.low != null) return { lo: card.low, hi: card.high };
-    var t = card.tolerance || 0;
-    return { lo: card.value - t, hi: card.value + t };
-  }
-
-  /* A track spanning just the guess and the band, padded. Deliberately not
-     the dial's full scale: on a 0-600000 platelet scale a 20000 miss would
-     render as two marks 3% apart, so every real miss would look like a
-     near miss. You never see a track while dialling, so there is no
-     remembered axis to stay consistent with. */
-  function windowFor(guess, b, step) {
-    var lo = Math.min(b.lo, guess);
-    var hi = Math.max(b.hi, guess);
-    var pad = Math.max((hi - lo) * 0.3, step * 2);
-    return { min: lo - pad, max: hi + pad };
-  }
-
-  function fillTrack(el, guess, b, step) {
-    var w = windowFor(guess, b, step);
-    var span = w.max - w.min || 1;
-    var pct = function (x) { return ((x - w.min) / span) * 100; };
-
-    var bandEl = h('div', 'num-track-band');
-    var left = pct(b.lo);
-    var width = pct(b.hi) - left;
-    if (width < 1.6) { left -= (1.6 - width) / 2; width = 1.6; }
-    bandEl.style.left = left.toFixed(2) + '%';
-    bandEl.style.width = width.toFixed(2) + '%';
-    el.appendChild(bandEl);
-
-    var mark = h('div', 'num-track-mark');
-    mark.style.left = pct(guess).toFixed(2) + '%';
-    el.appendChild(mark);
-
-    el.classList.add('is-shown');
-  }
-
   function isCorrect(card, guess) {
     if (card.low != null) return guess >= card.low && guess <= card.high;
     return Math.abs(guess - card.value) <= (card.tolerance || 0);
@@ -647,10 +607,6 @@
       dial.appendChild(down);
       area.appendChild(dial);
 
-      var track = h('div', 'num-track');
-      track.appendChild(h('div', 'num-track-line'));
-      area.appendChild(track);
-
       var hint = h('div', 'hint', 'drag up or down');
       area.appendChild(hint);
 
@@ -692,7 +648,6 @@
         said.textContent = 'you said ' + fmt(value, sc.dp);
         requestAnimationFrame(function () { said.classList.add('is-in'); });
 
-        var b = band(card);
         var truth = card.low != null
           ? fmt(card.low, sc.dp) + ' – ' + fmt(card.high, sc.dp)
           : fmt(card.value, sc.dp);
@@ -704,8 +659,7 @@
           val.classList.remove('is-swapping');
         }, 130);
 
-        fillTrack(track, value, b, sc.step);
-        settle(ctx, 0, 2400);
+        settle(ctx, 0, 2200);
       }
 
       /* Opt-in: answer the instant the finger lifts. A release that changed

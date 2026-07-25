@@ -136,18 +136,20 @@ the layout matches between the two modes.
 700ms. Nothing else appears — you just produced that number, so showing it
 back is noise.
 
-Wrong: your answer demotes to a small `you said 39.0` line, the correct
-value crossfades into the hero slot, and a **track** appears behind it at a
-190ms delay. There is no strikethrough; the label and the size difference
-already say your value has been superseded.
+Wrong: your answer demotes to a small `you said 39.0` line and the correct
+value crossfades into the hero slot. There is no strikethrough; the label
+and the size difference already say your value has been superseded.
 
-The track spans **only your guess and the accepted band, padded** — not the
-dial's full scale. On the 0–600000 platelet scale a 20000 miss would render
-as two marks 3% apart, so every real miss would look like a near miss. You
-never see a track while dialling, so there is no remembered axis to stay
-consistent with. Your mark is ink, the accepted region is accent, matching
-what those colours mean everywhere else; a zero-tolerance value draws as a
-hairline rather than needing a special case.
+**A gesture card must silence its own scroller.** `touch-action: none` on
+the card is not enough: `.mode-area` is a scroll container, and a scroll
+container ignores an ancestor's `touch-action`. The browser therefore
+claimed vertical drags that *started inside* the mode area as scrolls and
+fired `pointercancel` two moves in — a 150px drag moved one step instead of
+seven, which reads as the number simply not responding to your finger.
+`enableDial` and `enableSwipe` both tag the card `is-gesture`, and the CSS
+sets `touch-action: none` on the mode area as well, re-enabling `pan-y` on
+`.why-body` since that is the one thing inside a card that must still
+scroll.
 
 The question is capped to 40vh on these cards (`data-qsize="compact"`). The
 value is the interaction and the question only the prompt — but capped too
