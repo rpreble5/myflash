@@ -20,12 +20,18 @@
   background-repeat: repeat;
   pointer-events: none;
 }
-.card[data-drift="drift-slow"]  .backdrop { animation: drift-slow  26s linear infinite; }
-.card[data-drift="drift-diag"]  .backdrop { animation: drift-diag  18s linear infinite; }
-.card[data-drift="drift-vert"]  .backdrop { animation: drift-vert  20s linear infinite; }
-.card[data-drift="drift-horiz"] .backdrop { animation: drift-horiz 16s linear infinite; }
-.card[data-drift="drift-spin"]  .backdrop { animation: drift-spin  60s linear infinite; }
-.card[data-drift="drift-pulse"] .backdrop { animation: drift-pulse 12s ease-in-out infinite; }
+/* Flat backdrops are compositions, not tiles — their shapes are placed in
+   percentages, so they need the real card box, not the oversized one. */
+.card[data-tier="flat"] .backdrop {
+  inset: 0;
+  background-repeat: no-repeat;
+}
+.card[data-drift="drift-slow"]    .backdrop { animation: drift-slow    110s linear infinite; }
+.card[data-drift="drift-diag"]    .backdrop { animation: drift-diag    120s linear infinite; }
+.card[data-drift="drift-vert"]    .backdrop { animation: drift-vert    115s linear infinite; }
+.card[data-drift="drift-horiz"]   .backdrop { animation: drift-horiz   105s linear infinite; }
+.card[data-drift="drift-spin"]    .backdrop { animation: drift-spin    300s linear infinite; }
+.card[data-drift="drift-breathe"] .backdrop { animation: drift-breathe  46s ease-in-out infinite; }
 
 .card-body {
   position: relative;
@@ -191,7 +197,8 @@
   font-weight: 700;
   text-align: center;
 }
-.type-input:focus { outline: none; box-shadow: 0 0 0 4px color-mix(in srgb, var(--acc) 40%, transparent); }
+/* Border swap rather than a glow ring — nothing here fakes depth. */
+.type-input:focus { outline: none; border-color: var(--acc); color: var(--acc); }
 .type-input::placeholder { color: currentColor; opacity: .3; }
 .type-go { background: var(--ink); color: var(--bg); font-family: "Archivo Black", sans-serif; font-size: .9rem; }
 .type-form.is-right .type-input { border-color: var(--acc); color: var(--acc); }

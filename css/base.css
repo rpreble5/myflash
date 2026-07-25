@@ -98,16 +98,17 @@ button { cursor: pointer; border: 0; background: none; }
   animation-delay: calc(var(--i) * 60ms);
   transition: transform .18s cubic-bezier(.34,1.56,.64,1);
 }
+/* Flat hard-edged disc, not a soft glow. */
 .deck-card::after {
   content: "";
   position: absolute;
-  right: -18%;
-  bottom: -42%;
-  width: 58%;
+  right: -14%;
+  bottom: -38%;
+  width: 52%;
   aspect-ratio: 1;
   border-radius: 50%;
-  background: radial-gradient(closest-side, var(--acc), transparent);
-  opacity: .45;
+  background: var(--acc);
+  opacity: .3;
   pointer-events: none;
 }
 .deck-card > span { position: relative; z-index: 1; }

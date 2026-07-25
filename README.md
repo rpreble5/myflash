@@ -59,14 +59,44 @@ Match scores `1 − misses/pairs`, since with four pairs the last one is free.
 
 `js/theme.js` composes each card from four axes:
 
-- **14 palettes** — hand-paired `bg` / `ink` / `acc`, not random hues. Ink is
-  chosen against its own background so contrast never depends on luck.
+- **32 palettes** — hand-paired `bg` / `ink` / `acc`, not random hues, and
+  contrast-verified rather than eyeballed (see below).
 - **14 display faces** — each carries its own tracking and caps preference,
   because a face that needs `-.045em` at 200px looks broken at `0`.
-- **12 backdrops** — CSS-generated stripes, halftone, rays, rings, blobs…
-  drawn in the palette's own accent at low alpha and slowly drifting.
-- **9 entrances** — five stagger per letter (cascade, drop, flip, skew, pop),
-  four animate the whole line (slam, blur, wipe, roll).
+- **26 backdrops** across four tiers — see below.
+- **8 entrances** — four stagger per letter (cascade, drop, skew, pop), four
+  animate the whole line (slam, blur, wipe, roll).
+
+### Backdrops
+
+Flat by design: every colour stop is hard, so there are no soft gradients,
+no glow, and nothing that fakes depth. Variety comes from colour and
+composition rather than texture density.
+
+| Tier | Share | What it is |
+|---|---|---|
+| **flat** | ~50% | Solid, diagonal/horizontal/vertical splits, corner wedges, hard-edged discs, bands, stacked rules |
+| **quiet** | ~20% | Sparse texture at 5.5% alpha — dots at 74px, grid at 132px, hairlines |
+| **mid** | ~20% | Same marks at 9% and roughly half the spacing |
+| **loud** | ~10% | Tight stripes, rays, concentric rings, crosses, halftone at 15% |
+
+Motion is slow enough to be felt rather than watched: drifts run 105–120s
+over ~100px of travel, the ray spin takes 300s, and the "breathe" scale tops
+out at 1.035. Roughly half of all cards have no motion at all.
+
+Flat backdrops render against the true card box; tiled ones get a 20%
+oversize so drift never exposes an edge.
+
+### Verifying contrast
+
+```bash
+node tools/check-contrast.js   # exits non-zero if any palette fails
+open tools/backdrops.html      # contact sheet of all 26 backdrops
+```
+
+`ink` targets 4.5:1 against its background since it's used for small UI as
+well as display type; `acc` targets 3:1 because it only ever appears large.
+All 32 palettes currently pass, 24 of them at AAA.
 
 Randomness is bounded on purpose. Palette, font, backdrop, and entrance each
 refuse to repeat back-to-back — consecutive repeats are what make shuffled
@@ -92,6 +122,8 @@ js/decks.js                built-in decks
 js/store.js                localStorage decks + per-card stats
 js/audio.js                WebAudio blips, no asset files
 js/app.js                  screens and the session engine
+tools/check-contrast.js    palette contrast gate
+tools/backdrops.html       backdrop contact sheet
 ```
 
 ## Session logic

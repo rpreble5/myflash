@@ -4,7 +4,6 @@
 /* ── Card entrances: per-letter ──────────────────────────── */
 .card[data-entrance="cascade"] .letter,
 .card[data-entrance="drop"]    .letter,
-.card[data-entrance="flipin"]  .letter,
 .card[data-entrance="skewin"]  .letter,
 .card[data-entrance="popin"]   .letter {
   animation-duration: .58s;
@@ -14,7 +13,6 @@
 }
 .card[data-entrance="cascade"] .letter { animation-name: letter-cascade; }
 .card[data-entrance="drop"]    .letter { animation-name: letter-drop; animation-timing-function: cubic-bezier(.34,1.56,.64,1); }
-.card[data-entrance="flipin"]  .letter { animation-name: letter-flip; }
 .card[data-entrance="skewin"]  .letter { animation-name: letter-skew; }
 .card[data-entrance="popin"]   .letter { animation-name: letter-pop; animation-timing-function: cubic-bezier(.34,1.56,.64,1); }
 
@@ -24,10 +22,6 @@
 }
 @keyframes letter-drop {
   from { opacity: 0; transform: translateY(-150%) scale(1.3); }
-  to   { opacity: 1; transform: none; }
-}
-@keyframes letter-flip {
-  from { opacity: 0; transform: rotateX(-95deg) translateY(30%); }
   to   { opacity: 1; transform: none; }
 }
 @keyframes letter-skew {
@@ -90,15 +84,17 @@
 @keyframes exit-spin   { to { opacity: 0; transform: scale(.5) rotate(22deg); } }
 @keyframes exit-drop   { to { opacity: 0; transform: translateY(35%) scale(.9); } }
 
-/* ── Backdrop drift ──────────────────────────────────────── */
-@keyframes drift-slow  { to { background-position: 300px 300px; } }
-@keyframes drift-diag  { to { background-position: 440px 440px; } }
-@keyframes drift-vert  { to { background-position: 0 540px; } }
-@keyframes drift-horiz { to { background-position: 400px 0; } }
-@keyframes drift-spin  { to { transform: rotate(360deg); } }
-@keyframes drift-pulse {
-  0%, 100% { transform: scale(1); opacity: 1; }
-  50%      { transform: scale(1.14); opacity: .72; }
+/* ── Backdrop drift ──────────────────────────────────────────
+   Slow enough to be felt rather than watched. Small travel over
+   long durations; nothing here should pull focus from the type. */
+@keyframes drift-slow    { to { background-position: 76px 76px; } }
+@keyframes drift-diag    { to { background-position: 104px 104px; } }
+@keyframes drift-vert    { to { background-position: 0 98px; } }
+@keyframes drift-horiz   { to { background-position: 92px 0; } }
+@keyframes drift-spin    { to { transform: rotate(360deg); } }
+@keyframes drift-breathe {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.035); }
 }
 
 /* ── Feedback ────────────────────────────────────────────── */

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MYFLASH — backdrop set</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 24px;
+    background: #0b0b0b; color: #f5f5f5;
+    font-family: "Space Grotesk", system-ui, sans-serif;
+  }
+  h1 { font-family: "Anton", sans-serif; font-size: 2rem; margin: 0 0 .25rem; letter-spacing: -.02em; }
+  .sub { opacity: .55; font-size: .85rem; margin-bottom: 1.5rem; }
+  .tier-head {
+    font-size: .72rem; letter-spacing: .2em; text-transform: uppercase;
+    opacity: .5; margin: 1.75rem 0 .6rem;
+  }
+  .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .swatch {
+    position: relative; aspect-ratio: 3/4; border-radius: 14px;
+    overflow: hidden; background: var(--bg);
+  }
+  .bd { position: absolute; inset: 0; background-repeat: no-repeat; }
+  .bd.tiled { inset: -20%; background-repeat: repeat; }
+  .label {
+    position: absolute; left: 10px; right: 10px; bottom: 9px;
+    font-size: .68rem; letter-spacing: .06em; color: var(--ink); opacity: .8;
+  }
+  .word {
+    position: absolute; left: 10px; top: 12px; right: 10px;
+    font-family: "Anton", sans-serif; font-size: 1.7rem; line-height: .9;
+    color: var(--ink); letter-spacing: -.02em;
+  }
+</style>
+</head>
+<body>
+<h1>BACKDROP SET</h1>
+<div class="sub" id="sub"></div>
+<div id="out"></div>
+
+<script src="../js/theme.js"></script>
+<script>
+  var TIERS = ['flat', 'quiet', 'mid', 'loud'];
+  var out = document.getElementById('out');
+  var P = Theme.PALETTES, B = Theme.BACKDROPS;
+
+  var totalWeight = B.reduce(function (s, b) { return s + b.weight; }, 0);
+
+  TIERS.forEach(function (tier) {
+    var items = B.filter(function (b) { return b.tier === tier; });
+    var share = items.reduce(function (s, b) { return s + b.weight; }, 0) / totalWeight;
+
+    var head = document.createElement('div');
+    head.className = 'tier-head';
+    head.textContent = tier + ' — ' + items.length + ' backdrops, ' + Math.round(share * 100) + '% of cards';
+    out.appendChild(head);
+
+    var grid = document.createElement('div');
+    grid.className = 'grid';
+
+    items.forEach(function (b, i) {
+      /* Spread palettes across the sheet so colour variety is visible too. */
+      var p = P[(TIERS.indexOf(tier) * 7 + i * 3) % P.length];
+      var bd = b.make(Theme._tones(p));
+
+      var sw = document.createElement('div');
+      sw.className = 'swatch';
+      sw.style.setProperty('--bg', p.bg);
+      sw.style.setProperty('--ink', p.ink);
+
+      var layer = document.createElement('div');
+      layer.className = 'bd' + (tier === 'flat' ? '' : ' tiled');
+      layer.style.backgroundImage = bd.image;
+      layer.style.backgroundSize = bd.size;
+
+      var word = document.createElement('div');
+      word.className = 'word';
+      word.textContent = 'Ferritin';
+
+      var label = document.createElement('div');
+      label.className = 'label';
+      label.textContent = b.name + ' · ' + p.name;
+
+      sw.appendChild(layer);
+      sw.appendChild(word);
+      sw.appendChild(label);
+      grid.appendChild(sw);
+    });
+
+    out.appendChild(grid);
+  });
+
+  document.getElementById('sub').textContent =
+    B.length + ' backdrops across ' + P.length + ' palettes — every stop hard, no soft gradients';
+</script>
+</body>
+</html>
