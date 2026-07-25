@@ -92,8 +92,12 @@
     /* Retire the outgoing card with a random exit. */
     var old = stage.querySelector('.card');
     if (old) {
-      old.classList.add(EXITS[Math.floor(Math.random() * EXITS.length)]);
-      old.addEventListener('animationend', function () { old.remove(); }, { once: true });
+      /* A swiped card is already flying off under its own transform;
+         adding an exit animation would snap it back to centre first. */
+      if (!old.classList.contains('is-swiped')) {
+        old.classList.add(EXITS[Math.floor(Math.random() * EXITS.length)]);
+        old.addEventListener('animationend', function () { old.remove(); }, { once: true });
+      }
       setTimeout(function () { if (old.parentNode) old.remove(); }, 900);
     }
 
@@ -164,18 +168,86 @@
       tapSurface: function (fn) {
         el.classList.add('is-tappable');
         el.addEventListener('click', function (e) {
-          if (e.target.closest('button, input, .grade-bar')) return;
+          if (e.target.closest('button, input, .grade-bar, .swipe-bar')) return;
           fn();
         });
       },
 
-      /* style: 'flip' | 'pop' | 'shake' | 'blur' — returns the answer node */
+      /* Drag-to-grade. Owned here because only app.js holds the card
+         element; modes just say what left and right mean. */
+      enableSwipe: function (opts) {
+        var startX = 0, startY = 0, dragging = false, committed = false, axis = null;
+        var width = el.clientWidth || 360;
+        var threshold = Math.min(110, width * 0.28);
+
+        function down(e) {
+          if (committed || e.target.closest('button, input, textarea')) return;
+          dragging = true;
+          axis = null;
+          startX = e.clientX;
+          startY = e.clientY;
+          el.classList.add('is-dragging');
+        }
+
+        function move(e) {
+          if (!dragging) return;
+          var dx = e.clientX - startX;
+          var dy = e.clientY - startY;
+
+          /* Lock to an axis on first meaningful movement so a vertical
+             scroll inside a long explanation never grades the card. */
+          if (!axis && (Math.abs(dx) > 8 || Math.abs(dy) > 8)) {
+            axis = Math.abs(dx) > Math.abs(dy) ? 'x' : 'y';
+          }
+          if (axis !== 'x') return;
+
+          el.style.transform = 'translateX(' + dx.toFixed(1) + 'px)';
+          el.style.opacity = String(Math.max(0.4, 1 - Math.abs(dx) / (width * 1.5)));
+          el.dataset.swipe = dx > 24 ? 'right' : dx < -24 ? 'left' : '';
+        }
+
+        function up(e) {
+          if (!dragging) return;
+          dragging = false;
+          el.classList.remove('is-dragging');
+          var dx = e.clientX - startX;
+          if (axis === 'x' && Math.abs(dx) >= threshold) commit(dx > 0);
+          else release();
+        }
+
+        function release() {
+          el.style.transform = '';
+          el.style.opacity = '';
+          el.dataset.swipe = '';
+        }
+
+        function commit(right) {
+          if (committed) return;
+          committed = true;
+          /* Tells renderCard to leave this card alone — it is already
+             animating itself off in the direction of the swipe. */
+          el.classList.add('is-swiped');
+          el.style.transform = 'translateX(' + (right ? width * 1.2 : -width * 1.2) + 'px)';
+          el.style.opacity = '0';
+          (right ? opts.onRight : opts.onLeft)();
+        }
+
+        el.addEventListener('pointerdown', down);
+        el.addEventListener('pointermove', move);
+        el.addEventListener('pointerup', up);
+        el.addEventListener('pointercancel', up);
+        el.addEventListener('pointerleave', up);
+
+        return { commit: commit };
+      },
+
+      /* style: 'swap' | 'pop' | 'mark' — returns the answer node */
       revealAnswer: function (style) {
         var aText = card.a;
-        if (style === 'flip') {
+        if (style === 'swap' || style === 'flip') {
           global.Txt.splitLetters(backAnswer, aText, {});
           fitLater(backAnswer, back);
-          el.classList.add('is-flipped');
+          el.classList.add('is-swapped');
           return backAnswer;
         }
         var node = h('div', 'answer answer-' + style);

@@ -4,8 +4,8 @@ Fullscreen flashcards with bold type, randomized themes, and varied inputs.
 
 Every card is a full-screen poster: one huge word set in a random display
 face, on a random palette, over a generated backdrop, arriving with a random
-animation. And you never know how it will ask you to answer — five input
-modes rotate underneath the question.
+animation. What it asks of you depends on the card: reveal, multiple choice,
+true/false, a slider, a trend panel, a sort, a sequence, or a match.
 
 No build step, no dependencies, no framework. Open `index.html` and it runs.
 
@@ -25,13 +25,13 @@ fullscreen portrait, so it launches with no browser chrome.
 
 ## Card types
 
-A card's **type** decides what it asks. A **presentation** decides how it
-asks. Most types have exactly one presentation; `recall` has four, which is
-where the original "never the same twice" variety now lives.
+A card's **type** decides what it asks, and each type has exactly one
+behaviour — content drives the format. The variety comes from the theme
+layer, which reshuffles palette, face, backdrop and entrance every render.
 
 | Type | Shape | Interaction |
 |---|---|---|
-| `recall` | `{ q, a }` | flip · hold-to-reveal · type it · unscramble |
+| `recall` | `{ q, a, why? }` | tap anywhere to reveal, then swipe to grade |
 | `mcq` | `{ q, a, distractors[] }` | four options, authored distractors |
 | `truefalse` | `{ q, a:bool, why }` | two buttons, explanation on reveal |
 | `number` | `{ q, value, unit, tolerance }` | slider, giant readout |
@@ -41,12 +41,30 @@ where the original "never the same twice" variety now lives.
 | `order` | `{ q, steps[] }` | tap phrases into sequence |
 | `match` | `{ q, pairs:[{left, right}] }` | link two columns, four pairs |
 
+### The recall card
+
+One card, one behaviour — no random rotation between presentations.
+
+Tap anywhere to reveal. The question doesn't shrink or stay: it's replaced by
+the answer in the same slot, as a flat cross-fade rather than a 3D flip.
+
+An optional `why` appears **before** grading, since grading advances to the
+next card. Short explanations (≤ 140 chars) render inline; longer ones fold
+behind a `WHY?` toggle so they can't squeeze the answer off screen.
+
+Grading is a swipe — left for missed, right for got it. The card follows your
+finger and flies off in the direction you sent it. The `MISSED` / `GOT IT`
+labels either side are real buttons, so the card still works by tap and by
+keyboard while the gesture stays discoverable; whichever side you're dragging
+toward lights up on the way. Drags lock to an axis on first movement, so
+scrolling a long explanation never grades the card by accident.
+
 `dir` is `'up' | 'down' | 'same'`. Steps and pairs are stored in the correct
 order and shuffled at render. Any card may carry an optional `ref` for its
 source citation.
 
-Keyboard: `Space` flip/hold · `1`–`4` pick an option or bin · `←`/`→` grade ·
-`Enter` submit · `Esc` quit.
+Keyboard: `Space` / `Enter` reveal · `1`–`4` pick an option or bin ·
+`←`/`→` grade · `Esc` quit.
 
 ## Scoring
 
@@ -70,7 +88,7 @@ Match scores `1 − misses/pairs`, since with four pairs the last one is free.
 ### Motion
 
 Short, eased, no overshoot, no oscillation. Nothing animates longer than
-~340ms except the deliberate card flip (680ms) and ambient backdrop drift.
+~340ms except ambient backdrop drift.
 Easing is a plain ease-out; the springy `cubic-bezier(.34,1.56,.64,1)`
 overshoots its target and is what made the old motion read as bouncy.
 
@@ -192,7 +210,7 @@ learned, which is what the deck meters on the home screen show.
 ## Custom decks
 
 **+ New deck** takes one card per line as `front | back`, which produces
-`recall` cards. Richer types are authored in `js/decks.js` for now; a
+`recall` cards (without explanations). Richer types are authored in `js/decks.js` for now; a
 paste-JSON importer with validation is the next step, aimed at decks
 generated from source material.
 

@@ -1,15 +1,16 @@
 /* modes.js — input presentations.
 
    A card's `type` decides WHAT it asks. A presentation decides HOW it asks.
-   Most types have exactly one presentation; `recall` has four, which is
-   where the original "never the same twice" variety now lives.
+   Every type has exactly one presentation: the card's content decides
+   how it is asked, and the theme layer supplies the variety.
 
    Contract:
      id, label, types[], weight
      eligible(card, deck) -> bool
      mount(area, ctx)
    ctx = { card, deck, finish(score 0..1), revealAnswer(style),
-           setKicker(text), setQuestion(text), tapSurface(fn), keys(map) }  */
+           setKicker(text), setQuestion(text), tapSurface(fn),
+           enableSwipe({onLeft,onRight}), keys(map) }                      */
 
 (function (global) {
   'use strict';
@@ -47,158 +48,88 @@
     setTimeout(function () { ctx.finish(score); }, score >= 1 ? 850 : 1700);
   }
 
-  /* ═══════════════ recall: four presentations ═══════════════ */
+  /* Optional explanation. Short notes just appear; long ones fold behind
+     a toggle so they can't squeeze the answer off the card. */
+  var WHY_INLINE_MAX = 140;
 
-  var flip = {
-    id: 'flip', label: 'TAP TO FLIP', types: ['recall'], weight: 3,
+  function explanation(text) {
+    var wrap = h('div', 'why-wrap');
+
+    if (text.length <= WHY_INLINE_MAX) {
+      var inline = h('div', 'why', text);
+      wrap.appendChild(inline);
+      requestAnimationFrame(function () { inline.classList.add('is-in'); });
+      return wrap;
+    }
+
+    var toggle = h('button', 'why-toggle', 'WHY?');
+    var body = h('div', 'why why-body', text);
+    toggle.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var open = wrap.classList.toggle('is-open');
+      toggle.textContent = open ? 'HIDE' : 'WHY?';
+      if (open) requestAnimationFrame(function () { body.classList.add('is-in'); });
+    });
+    wrap.appendChild(toggle);
+    wrap.appendChild(body);
+    return wrap;
+  }
+
+  /* Swipe-to-grade. The labels are real buttons so the gesture stays
+     discoverable and the card is still usable by tap and keyboard. */
+  function swipeBar(ctx) {
+    var bar = h('div', 'swipe-bar');
+    var miss = h('button', 'swipe-side swipe-miss', 'MISSED');
+    var got  = h('button', 'swipe-side swipe-got', 'GOT IT');
+    bar.appendChild(miss);
+    bar.appendChild(h('span', 'swipe-cue', 'swipe'));
+    bar.appendChild(got);
+
+    var swipe = ctx.enableSwipe({
+      onLeft:  function () { global.Sfx.wrong(); ctx.finish(0); },
+      onRight: function () { global.Sfx.right(); ctx.finish(1); }
+    });
+
+    miss.addEventListener('click', function (e) { e.stopPropagation(); swipe.commit(false); });
+    got.addEventListener('click',  function (e) { e.stopPropagation(); swipe.commit(true); });
+    ctx.keys({
+      'ArrowLeft':  function () { swipe.commit(false); },
+      'ArrowRight': function () { swipe.commit(true); },
+      '1': function () { swipe.commit(false); },
+      '2': function () { swipe.commit(true); }
+    });
+
+    return bar;
+  }
+
+  /* ═══════════════ recall: one card, one behaviour ═══════════════
+
+     Tap anywhere to reveal. The question is replaced by the answer —
+     a flat swap, not a 3D flip. An optional explanation appears before
+     grading, then you swipe (or tap, or use the arrow keys) to say
+     whether you knew it.                                              */
+
+  var recall = {
+    id: 'recall', label: 'TAP TO REVEAL', types: ['recall'], weight: 1,
     eligible: function () { return true; },
     mount: function (area, ctx) {
       var hint = h('div', 'hint', 'tap anywhere');
       area.appendChild(hint);
-      var flipped = false;
+      var revealed = false;
 
-      function doFlip() {
-        if (flipped) return;
-        flipped = true;
+      function doReveal() {
+        if (revealed) return;
+        revealed = true;
         global.Sfx.flip();
-        ctx.revealAnswer('flip');
-        ctx.setKicker('HOW’D YOU DO?');
+        ctx.revealAnswer('swap');
+        ctx.setKicker('KNEW IT?');
         hint.remove();
-        area.appendChild(gradeBar(ctx));
+        if (ctx.card.why) area.appendChild(explanation(ctx.card.why));
+        area.appendChild(swipeBar(ctx));
       }
 
-      ctx.tapSurface(doFlip);
-      ctx.keys({ ' ': doFlip, 'Enter': doFlip });
-    }
-  };
-
-  var reveal = {
-    id: 'reveal', label: 'HOLD TO REVEAL', types: ['recall'], weight: 2,
-    eligible: function () { return true; },
-    mount: function (area, ctx) {
-      var pad = h('button', 'hold-pad');
-      pad.appendChild(h('span', null, 'HOLD'));
-      area.appendChild(pad);
-
-      var answerEl = ctx.revealAnswer('blur');
-      var held = false, graded = false;
-
-      function down(e) {
-        if (e && e.preventDefault) e.preventDefault();
-        held = true;
-        answerEl.classList.add('is-clear');
-        pad.classList.add('is-held');
-        global.Sfx.tick();
-      }
-      function up() {
-        if (!held) return;
-        held = false;
-        answerEl.classList.remove('is-clear');
-        pad.classList.remove('is-held');
-        if (!graded) {
-          graded = true;
-          pad.remove();
-          ctx.setKicker('HOW’D YOU DO?');
-          area.appendChild(gradeBar(ctx));
-        }
-      }
-
-      pad.addEventListener('pointerdown', down);
-      pad.addEventListener('pointerup', up);
-      pad.addEventListener('pointerleave', up);
-      pad.addEventListener('pointercancel', up);
-      ctx.keys({ ' ': down, ' :up': up });
-    }
-  };
-
-  var type = {
-    id: 'type', label: 'TYPE IT', types: ['recall'], weight: 3,
-    eligible: function (card) { return card.a && card.a.length <= 18; },
-    mount: function (area, ctx) {
-      var form = h('form', 'type-form');
-      var input = h('input', 'type-input');
-      input.type = 'text';
-      input.autocomplete = 'off';
-      input.autocapitalize = 'off';
-      input.spellcheck = false;
-      input.placeholder = '…';
-      var go = h('button', 'btn btn-solid type-go', 'CHECK');
-      go.type = 'submit';
-      form.appendChild(input);
-      form.appendChild(go);
-      area.appendChild(form);
-      setTimeout(function () { input.focus(); }, 420);
-
-      form.addEventListener('submit', function (e) {
-        e.preventDefault();
-        var ok = global.Txt.matches(input.value, ctx.card.a);
-        input.disabled = true;
-        go.remove();
-        form.classList.add(ok ? 'is-right' : 'is-wrong');
-        if (!ok && input.value.trim()) area.appendChild(h('div', 'your-answer', input.value));
-        ctx.revealAnswer(ok ? 'pop' : 'mark');
-        settle(ctx, ok ? 1 : 0);
-      });
-    }
-  };
-
-  var unscramble = {
-    id: 'unscramble', label: 'UNSCRAMBLE', types: ['recall'], weight: 2,
-    eligible: function (card) {
-      if (!card.a) return false;
-      var letters = card.a.replace(/\s/g, '');
-      return letters.length >= 3 && letters.length <= 10 && /^[A-Za-z]+$/.test(letters);
-    },
-    mount: function (area, ctx) {
-      var target = ctx.card.a.replace(/\s/g, '');
-      var slotsEl = h('div', 'slots');
-      var tilesEl = h('div', 'tiles');
-      area.appendChild(slotsEl);
-      area.appendChild(tilesEl);
-
-      var slots = [], placed = [], locked = false;
-      for (var i = 0; i < target.length; i++) {
-        var s = h('div', 'slot');
-        s.style.setProperty('--i', i);
-        slotsEl.appendChild(s);
-        slots.push(s);
-      }
-
-      global.Txt.shuffle(target.split('')).forEach(function (ch, i) {
-        var t = h('button', 'tile', ch.toUpperCase());
-        t.style.setProperty('--i', i);
-        t.addEventListener('click', function () {
-          if (locked || t.classList.contains('is-used') || placed.length >= slots.length) return;
-          var slot = slots[placed.length];
-          slot.textContent = ch.toUpperCase();
-          slot.classList.add('is-filled');
-          t.classList.add('is-used');
-          placed.push({ ch: ch, tile: t, slot: slot });
-          global.Sfx.tick();
-          if (placed.length === slots.length) check();
-        });
-        tilesEl.appendChild(t);
-      });
-
-      var undo = h('button', 'btn btn-ghost btn-undo', '← Undo');
-      undo.addEventListener('click', function () {
-        if (locked || !placed.length) return;
-        var p = placed.pop();
-        p.slot.textContent = '';
-        p.slot.classList.remove('is-filled');
-        p.tile.classList.remove('is-used');
-      });
-      area.appendChild(undo);
-
-      function check() {
-        locked = true;
-        undo.remove();
-        var guess = placed.map(function (p) { return p.ch; }).join('');
-        var ok = global.Txt.normalize(guess) === global.Txt.normalize(target);
-        slotsEl.classList.add(ok ? 'is-right' : 'is-wrong');
-        ctx.revealAnswer(ok ? 'pop' : 'mark');
-        settle(ctx, ok ? 1 : 0);
-      }
+      ctx.tapSurface(doReveal);
+      ctx.keys({ ' ': doReveal, 'Enter': doReveal });
     }
   };
 
@@ -645,7 +576,7 @@
     }
   };
 
-  var ALL = [flip, reveal, type, unscramble, choice, truefalse, trend, bucket, order, match, number];
+  var ALL = [recall, choice, truefalse, trend, bucket, order, match, number];
 
   /* Presentations are chosen only from those that serve the card's type. */
   var lastId = null;
@@ -653,7 +584,7 @@
     var pool = ALL.filter(function (m) {
       return m.types.indexOf(card.type || 'recall') !== -1 && m.eligible(card, deck);
     });
-    if (!pool.length) return flip;                 // last-resort fallback
+    if (!pool.length) return recall;               // last-resort fallback
 
     var fresh = pool.filter(function (m) { return m.id !== lastId; });
     if (fresh.length) pool = fresh;

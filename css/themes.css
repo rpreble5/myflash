@@ -72,21 +72,21 @@
   flex: 1 1 auto;
   /* Dense modes eat the card; the question keeps a floor. */
   min-height: 15vh;
-  transform-style: preserve-3d;
-  transition: transform .68s cubic-bezier(.2,.85,.25,1);
 }
-.card.is-flipped .flipper { transform: rotateY(180deg); }
 
+/* The reveal is a flat swap, not a 3D flip — the question leaves and the
+   answer takes its slot. Nothing rotates in depth. */
 .face {
   position: absolute;
   inset: 0;
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
+  transition: opacity .26s ease, transform .26s cubic-bezier(.22,1,.36,1);
 }
-.face-back { transform: rotateY(180deg); }
+.face-back { opacity: 0; pointer-events: none; transform: translateY(9%); }
+.card.is-swapped .face-front { opacity: 0; transform: translateY(-9%); pointer-events: none; }
+.card.is-swapped .face-back  { opacity: 1; transform: none; pointer-events: auto; }
 
 .q {
   width: 100%;
@@ -132,10 +132,6 @@
   color: var(--acc);
 }
 .answer-pop   { animation: answer-in .28s cubic-bezier(.22,1,.36,1) both; }
-.answer-mark  { animation: answer-in .28s cubic-bezier(.22,1,.36,1) both; }
-/* Enough blur to be unreadable, little enough to still tease the shape. */
-.answer-blur  { filter: blur(clamp(7px, 1.9vw, 13px)); transition: filter .22s ease; user-select: none; }
-.answer-blur.is-clear { filter: blur(0); }
 
 /* ── Mode area ───────────────────────────────────────────── */
 .mode-area {
@@ -163,56 +159,6 @@
 .btn-grade { min-width: 132px; font-family: "Archivo Black", sans-serif; font-size: .9rem; letter-spacing: .05em; }
 .btn-miss { border: 3px solid var(--ink); color: var(--ink); }
 .btn-got  { background: var(--ink); color: var(--bg); }
-
-/* Hold to reveal */
-.hold-pad {
-  position: relative;
-  width: 132px; height: 132px;
-  border-radius: 50%;
-  border: 4px solid var(--ink);
-  color: var(--ink);
-  font-family: "Archivo Black", sans-serif;
-  font-size: .95rem;
-  letter-spacing: .12em;
-  display: grid;
-  place-items: center;
-  touch-action: none;
-  transition: transform .12s ease, background-color .12s ease, color .12s ease;
-}
-.hold-pad::after {
-  content: "";
-  position: absolute;
-  inset: -10px;
-  border-radius: 50%;
-  border: 2px solid var(--acc);
-  opacity: .34;
-  animation: hold-ripple 2.4s ease-out infinite;
-}
-.hold-pad.is-held { background: var(--ink); color: var(--bg); transform: scale(.94); }
-.hold-pad.is-held::after { animation: none; opacity: 0; }
-
-/* Type it */
-.type-form { display: flex; gap: .6rem; width: min(560px, 100%); }
-.type-input {
-  flex: 1;
-  min-width: 0;
-  padding: .95rem 1.1rem;
-  border-radius: 16px;
-  border: 3px solid var(--ink);
-  background: transparent;
-  color: var(--ink);
-  font-family: var(--body-face);
-  font-size: 1.35rem;
-  font-weight: 700;
-  text-align: center;
-}
-/* Border swap rather than a glow ring — nothing here fakes depth. */
-.type-input:focus { outline: none; border-color: var(--acc); color: var(--acc); }
-.type-input::placeholder { color: currentColor; opacity: .3; }
-.type-go { background: var(--ink); color: var(--bg); font-family: "Archivo Black", sans-serif; font-size: .9rem; }
-.type-form.is-right .type-input { border-color: var(--acc); color: var(--acc); }
-.type-form.is-wrong .type-input { opacity: .45; transform: scale(.98); }
-.your-answer { font-family: var(--body-face); font-size: 1rem; opacity: .45; text-decoration: line-through; }
 
 /* Multiple choice */
 .choice-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: .65rem; width: min(700px, 100%); }
@@ -249,37 +195,83 @@
 .choice-btn.is-right .choice-key { background: var(--bg); color: var(--ink); }
 .choice-btn.is-wrong { opacity: .45; transform: scale(.98); }
 
-/* Scramble */
-.slots { display: flex; gap: .35rem; flex-wrap: wrap; justify-content: center; }
-.slot {
-  width: clamp(34px, 9vw, 52px);
-  height: clamp(46px, 12vw, 66px);
-  border-bottom: 5px solid var(--ink);
-  display: grid; place-items: center;
-  font-family: var(--face);
-  font-size: clamp(1.3rem, 5.5vw, 2.2rem);
-  line-height: 1;
+/* ── Explanation ─────────────────────────────────────────────
+   Short notes render inline; long ones fold behind a toggle so the
+   answer never gets squeezed off the card. */
+.why-wrap {
+  width: min(46ch, 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: .5rem;
 }
-.slot.is-filled { animation: answer-in .22s cubic-bezier(.22,1,.36,1) both; }
-.slots.is-right .slot { color: var(--acc); border-color: var(--acc); }
-.slots.is-wrong .slot { opacity: .5; border-color: var(--acc); }
+.why {
+  font-family: var(--body-face);
+  font-size: .92rem;
+  line-height: 1.45;
+  text-align: left;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity .26s ease, transform .26s cubic-bezier(.22,1,.36,1);
+}
+.why.is-in { opacity: .8; transform: none; }
 
-.tiles { display: flex; gap: .4rem; flex-wrap: wrap; justify-content: center; }
-.tile {
-  width: clamp(40px, 11vw, 56px);
-  height: clamp(40px, 11vw, 56px);
-  border-radius: 14px;
+.why-toggle {
+  font-family: var(--body-face);
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .18em;
+  color: var(--ink);
+  opacity: .6;
+  padding: .35rem .8rem;
+  border: 2px solid currentColor;
+  border-radius: 999px;
+  transition: opacity .15s ease;
+}
+.why-toggle:hover { opacity: 1; }
+.why-body { display: none; max-height: 34vh; overflow-y: auto; }
+.why-wrap.is-open .why-body { display: block; }
+
+/* ── Swipe to grade ──────────────────────────────────────────
+   Labels are real buttons, so the card still works by tap and by
+   keyboard while the gesture stays discoverable. */
+.swipe-bar {
+  display: flex;
+  align-items: center;
+  gap: .9rem;
+  width: min(520px, 100%);
+  justify-content: space-between;
+  animation: answer-in .26s cubic-bezier(.22,1,.36,1) both;
+}
+.swipe-side {
+  font-family: "Archivo Black", sans-serif;
+  font-size: .82rem;
+  letter-spacing: .05em;
+  padding: .7rem 1.2rem;
+  border-radius: 999px;
+  border: 3px solid var(--ink);
+  color: var(--ink);
+  opacity: .55;
+  transition: opacity .16s ease, background-color .16s ease, color .16s ease;
+}
+.swipe-cue {
+  font-family: var(--body-face);
+  font-size: .64rem;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  opacity: .3;
+}
+/* Light up whichever side the drag is heading toward. */
+.card[data-swipe="left"]  .swipe-miss,
+.card[data-swipe="right"] .swipe-got {
+  opacity: 1;
   background: var(--ink);
   color: var(--bg);
-  font-family: "Archivo Black", sans-serif;
-  font-size: clamp(1rem, 4vw, 1.35rem);
-  animation: tile-in .24s cubic-bezier(.22,1,.36,1) both;
-  animation-delay: calc(var(--i) * 45ms);
-  transition: transform .14s cubic-bezier(.22,1,.36,1), opacity .14s;
 }
-.tile:active { transform: scale(.9); }
-.tile.is-used { opacity: .16; transform: scale(.82); pointer-events: none; }
-.btn-undo { color: var(--ink); font-size: .8rem; padding: .5rem 1rem; }
+
+.card { transition: transform .26s cubic-bezier(.22,1,.36,1), opacity .26s ease; }
+.card.is-dragging { transition: none; }
+.card.is-swiped { pointer-events: none; }
 
 /* ── Shared submit ───────────────────────────────────────── */
 .btn-check {
@@ -312,17 +304,7 @@
 .tf-btn.is-right { background: var(--ink); color: var(--bg); }
 .tf-btn.is-wrong { opacity: .4; transform: scale(.98); }
 
-.why {
-  max-width: 40ch;
-  font-family: var(--body-face);
-  font-size: .92rem;
-  line-height: 1.45;
-  text-align: center;
-  opacity: 0;
-  transform: translateY(10px);
-  transition: opacity .3s ease, transform .3s cubic-bezier(.22,1,.36,1);
-}
-.why.is-in { opacity: .8; transform: none; }
+/* `.why` itself is defined once, in the Explanation section above. */
 
 /* ── Trend (up / same / down) ────────────────────────────── */
 .trend-rows { width: min(560px, 100%); display: flex; flex-direction: column; gap: .5rem; }

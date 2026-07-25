@@ -46,7 +46,8 @@
           { label: 'PaCO₂', dir: 'down' },
           { label: 'HCO₃⁻', dir: 'down' }
         ] },
-        { type: 'recall', q: 'Anion gap formula', a: 'Na − (Cl + HCO₃)' },
+        { type: 'recall', q: 'Anion gap formula', a: 'Na − (Cl + HCO₃)',
+          why: 'Unmeasured anions. A raised gap points to added acid — ketones, lactate, salicylate — rather than lost bicarbonate.' },
         { type: 'number', q: 'Upper limit of a normal anion gap', value: 12, unit: 'mEq/L', tolerance: 0 },
         { type: 'number', q: 'Winter\'s formula: expected PaCO₂ when HCO₃⁻ is 12', value: 26, unit: 'mmHg', tolerance: 2 },
         { type: 'bucket', q: 'High anion gap or normal anion gap?',
@@ -62,7 +63,8 @@
           distractors: ['Severe diarrhea', 'Diabetic ketoacidosis', 'COPD exacerbation'] },
         { type: 'truefalse', q: 'In a pure respiratory disorder, pH and PaCO₂ move in opposite directions', a: true,
           why: 'Rising CO₂ drives pH down; falling CO₂ drives pH up. Same-direction movement suggests a metabolic process.' },
-        { type: 'recall', q: 'Primary disturbance in a patient with pH 7.52 and PaCO₂ 28', a: 'Respiratory alkalosis' }
+        { type: 'recall', q: 'Primary disturbance in a patient with pH 7.52 and PaCO₂ 28', a: 'Respiratory alkalosis',
+          why: 'Work it in order. The pH is alkalaemic, so the primary process raises pH. PaCO₂ is low, and a low PaCO₂ raises pH — so the respiratory system is the driver, not the compensator. Had this been a metabolic alkalosis with respiratory compensation, PaCO₂ would be high instead. Check the HCO₃ next to judge whether compensation has had time to develop.' }
       ]
     },
 
@@ -179,8 +181,10 @@
             { label: 'Hepatitis B', bin: 'Inactivated' },
             { label: 'Tdap', bin: 'Inactivated' }
           ] },
-        { type: 'recall', q: 'Antidote for acetaminophen overdose', a: 'N-acetylcysteine' },
-        { type: 'recall', q: 'Electrolyte to monitor closely on a loop diuretic', a: 'Potassium' }
+        { type: 'recall', q: 'Antidote for acetaminophen overdose', a: 'N-acetylcysteine',
+          why: 'Replenishes glutathione so the toxic NAPQI metabolite can be conjugated. Most effective within 8 hours of ingestion.' },
+        { type: 'recall', q: 'Electrolyte to monitor closely on a loop diuretic', a: 'Potassium',
+          why: 'Loops increase distal sodium delivery, driving potassium excretion. Magnesium and sodium are worth watching too.' }
       ]
     },
 
