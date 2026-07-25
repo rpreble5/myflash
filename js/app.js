@@ -298,6 +298,20 @@
     var run = function () { global.Txt.fit(el, box); };
     requestAnimationFrame(run);
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(run);
+
+    /* One measurement isn't enough. The mode UI can change height after the
+       first fit — a slider settling, an explanation opening — and that
+       shrinks the question's box underneath it, so text that fitted a moment
+       ago now clips. Re-fit whenever the box actually changes size.
+       Safe from feedback: `box` is the face, sized by the flipper, and
+       changing the question's font-size doesn't resize it. */
+    if (global.ResizeObserver) {
+      var ro = new global.ResizeObserver(function () {
+        if (!box.isConnected) { ro.disconnect(); return; }
+        run();
+      });
+      ro.observe(box);
+    }
   }
 
   function endSession() {
