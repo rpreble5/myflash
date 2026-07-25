@@ -83,6 +83,16 @@
     renderCard(session.deck, idx);
   }
 
+  /* Route every later pointer event to the card, however far the finger
+     travels. Without this a drag dies the moment the pointer leaves the
+     element — which made downward drags depend on where they started. */
+  function capture(e) {
+    var el = e.currentTarget;
+    if (el.setPointerCapture) {
+      try { el.setPointerCapture(e.pointerId); } catch (err) { /* stale id */ }
+    }
+  }
+
   function renderCard(deck, cardIndex) {
     var card = deck.cards[cardIndex];
     var theme = global.Theme.random();
@@ -197,6 +207,7 @@
           dragging = true;
           y0 = e.clientY;
           el.classList.add('is-dialing');
+          capture(e);
         }
 
         function move(e) {
@@ -219,7 +230,7 @@
         el.addEventListener('pointermove', move);
         el.addEventListener('pointerup', up);
         el.addEventListener('pointercancel', up);
-        el.addEventListener('pointerleave', up);
+        el.addEventListener('lostpointercapture', up);
       },
 
       /* Drag-to-grade. Owned here because only app.js holds the card
@@ -236,6 +247,7 @@
           startX = e.clientX;
           startY = e.clientY;
           el.classList.add('is-dragging');
+          capture(e);
         }
 
         function move(e) {
@@ -285,7 +297,7 @@
         el.addEventListener('pointermove', move);
         el.addEventListener('pointerup', up);
         el.addEventListener('pointercancel', up);
-        el.addEventListener('pointerleave', up);
+        el.addEventListener('lostpointercapture', up);
 
         return { commit: commit };
       },

@@ -516,7 +516,7 @@
 .num-dial.is-wrong .num-arrow { opacity: 0; }
 
 /* Grabbing anywhere must not also scroll or select. */
-.card.is-dialing { cursor: grabbing; user-select: none; }
+.card.is-dialing { cursor: grabbing; }
 .card.is-dialing .num-arrow { opacity: .6; }
 .hint.is-gone { opacity: 0; }
 

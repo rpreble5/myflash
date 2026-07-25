@@ -105,6 +105,18 @@ Left out, it derives from the scale: aim for ~80 steps, round to 1/2/5 ×
 10ⁿ so the increments are numbers people think in, and floor at 1 for
 integer questions so they never ask for fractions.
 
+Both drag gestures take **pointer capture** on `pointerdown`. Without it a
+drag ends the moment the pointer leaves the card — and the HUD strip is a
+sibling of the card, not a descendant, so dragging up into it fired
+`pointerleave` and killed the gesture. That is why decreasing a value used
+to work better if you started near the top: you simply had further to go
+before crossing an edge. `lostpointercapture` replaces `pointerleave` as the
+end signal.
+
+Selection is off across `#app` rather than only while dragging. Switching it
+off once a drag has started is already too late — the browser has begun
+selecting, and on a card made of huge text that fights the gesture.
+
 Drag sensitivity is deliberately unhurried — a full sweep takes roughly
 1000px, clamped to 10–56px per step. Landing on one specific number should
 be easy, so a coarse scale takes a couple of drags rather than a flick. `tools/` aside, the derivation is worth checking after

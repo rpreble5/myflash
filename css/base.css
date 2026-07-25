@@ -18,7 +18,16 @@ html, body {
 button, input, textarea { font: inherit; color: inherit; }
 button { cursor: pointer; border: 0; background: none; }
 
-#app { position: fixed; inset: 0; }
+#app {
+  position: fixed;
+  inset: 0;
+  /* Cards are dragged, not read-and-copied. Selection has to be off before
+     the pointer goes down — switching it off once a drag starts is already
+     too late, the browser has begun selecting. */
+  user-select: none;
+  -webkit-user-select: none;
+}
+.field input, .field textarea { user-select: text; -webkit-user-select: text; }
 
 .screen {
   position: absolute;
