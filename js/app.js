@@ -102,7 +102,7 @@
     el.dataset.entrance = theme.entrance.name;
     el.style.setProperty('--stagger', theme.entrance.stagger + 'ms');
 
-    el.appendChild(h('div', 'backdrop'));
+    el.appendChild(global.Theme.backdropNode(theme));
 
     var body = h('div', 'card-body');
     var kicker = h('div', 'kicker', mode.label);

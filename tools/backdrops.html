@@ -23,8 +23,9 @@
     position: relative; aspect-ratio: 3/4; border-radius: 14px;
     overflow: hidden; background: var(--bg);
   }
-  .bd { position: absolute; inset: 0; background-repeat: no-repeat; }
+  .bd { position: absolute; inset: 0; background-repeat: no-repeat; overflow: hidden; }
   .bd.tiled { inset: -20%; background-repeat: repeat; }
+  .bd-layer { position: absolute; }
   .label {
     position: absolute; left: 10px; right: 10px; bottom: 9px;
     font-size: .68rem; letter-spacing: .06em; color: var(--ink); opacity: .8;
@@ -50,12 +51,19 @@
   var totalWeight = B.reduce(function (s, b) { return s + b.weight; }, 0);
 
   TIERS.forEach(function (tier) {
-    var items = B.filter(function (b) { return b.tier === tier; });
-    var share = items.reduce(function (s, b) { return s + b.weight; }, 0) / totalWeight;
+    var defs = B.filter(function (b) { return b.tier === tier; });
+    var share = defs.reduce(function (s, b) { return s + b.weight; }, 0) / totalWeight;
+
+    /* Collage is a family, not a single look — show several outcomes. */
+    var items = [];
+    defs.forEach(function (b) {
+      var n = b.name === 'collage' ? 8 : 1;
+      for (var k = 0; k < n; k++) items.push(b);
+    });
 
     var head = document.createElement('div');
     head.className = 'tier-head';
-    head.textContent = tier + ' — ' + items.length + ' backdrops, ' + Math.round(share * 100) + '% of cards';
+    head.textContent = tier + ' — ' + defs.length + ' backdrops, ' + Math.round(share * 100) + '% of cards';
     out.appendChild(head);
 
     var grid = document.createElement('div');
@@ -64,7 +72,8 @@
     items.forEach(function (b, i) {
       /* Spread palettes across the sheet so colour variety is visible too. */
       var p = P[(TIERS.indexOf(tier) * 7 + i * 3) % P.length];
-      var bd = b.make(Theme._tones(p));
+      var tone = Theme._tones(p);
+      var bd = b.build ? { image: 'none', size: 'auto', layers: b.build(tone) } : b.make(tone);
 
       var sw = document.createElement('div');
       sw.className = 'swatch';
@@ -75,6 +84,13 @@
       layer.className = 'bd' + (tier === 'flat' ? '' : ' tiled');
       layer.style.backgroundImage = bd.image;
       layer.style.backgroundSize = bd.size;
+
+      (bd.layers || []).forEach(function (spec) {
+        var sh = document.createElement('div');
+        sh.className = 'bd-layer';
+        Object.keys(spec).forEach(function (k) { sh.style[k] = spec[k]; });
+        layer.appendChild(sh);
+      });
 
       var word = document.createElement('div');
       word.className = 'word';

@@ -63,7 +63,7 @@ Match scores `1 − misses/pairs`, since with four pairs the last one is free.
   contrast-verified rather than eyeballed (see below).
 - **14 display faces** — each carries its own tracking and caps preference,
   because a face that needs `-.045em` at 200px looks broken at `0`.
-- **26 backdrops** across four tiers — see below.
+- **40 backdrops** across four tiers — see below.
 - **8 entrances** — four stagger per letter (cascade, drop, skew, pop), four
   animate the whole line (slam, blur, wipe, roll).
 
@@ -75,10 +75,33 @@ composition rather than texture density.
 
 | Tier | Share | What it is |
 |---|---|---|
-| **flat** | ~50% | Solid, diagonal/horizontal/vertical splits, corner wedges, hard-edged discs, bands, stacked rules |
-| **quiet** | ~20% | Sparse texture at 5.5% alpha — dots at 74px, grid at 132px, hairlines |
-| **mid** | ~20% | Same marks at 9% and roughly half the spacing |
+| **flat** | ~56% | Splits, wedges, discs, bands — plus SVG shapes, clip-path forms, and collage (below) |
+| **quiet** | ~16% | Sparse texture at 5.5% alpha — dots at 74px, grid at 132px, hairlines |
+| **mid** | ~18% | Same marks at 9% and roughly half the spacing |
 | **loud** | ~10% | Tight stripes, rays, concentric rings, crosses, halftone at 15% |
+
+The flat tier is built three ways:
+
+**CSS gradients** with hard stops — splits, corner wedges, discs, bands,
+stacked rules. Cheapest, no DOM.
+
+**Inline SVG as a data-URI** — ridges, waves, arcs, torn edges, angular
+shards, staircases, crescents, edge ticks. Shapes gradients cannot express,
+still a single `background-image`, still no network. `encodeURIComponent` is
+mandatory here: an unescaped `#` in a colour terminates the URL and the
+background silently disappears.
+
+**Positioned layers** — `clip-path` forms (ribbon, arrow block, notched and
+angled slabs) and **collage**, a generator rather than a fixed look. Collage
+places 2–4 primitives (disc, ring, triangle, wedge, bar) into top/bottom/left
+/right zones by rule: each bleeds off an edge, and none lands in the vertical
+middle where the question sits. It carries the heaviest single weight because
+it is a family, not one design.
+
+One trap worth knowing if you extend it: a square layer's width is a share of
+card *width* while its `top`/`bottom` offset is a share of card *height*.
+Bleeding by a fraction of the width pushes shapes almost entirely off a
+portrait card, so `shapeIn` converts between the two.
 
 Motion is slow enough to be felt rather than watched: drifts run 105–120s
 over ~100px of travel, the ray spin takes 300s, and the "breathe" scale tops

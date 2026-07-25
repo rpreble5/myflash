@@ -11,12 +11,11 @@
 }
 .card.is-tappable { cursor: pointer; }
 
-/* Oversized so drifting never exposes an edge. */
+/* Oversized so drifting never exposes an edge. Image and size are set
+   inline by Theme.backdropNode. */
 .backdrop {
   position: absolute;
   inset: -20%;
-  background-image: var(--backdrop-image, none);
-  background-size: var(--backdrop-size, auto);
   background-repeat: repeat;
   pointer-events: none;
 }
@@ -25,6 +24,16 @@
 .card[data-tier="flat"] .backdrop {
   inset: 0;
   background-repeat: no-repeat;
+  overflow: hidden;
+}
+
+/* Composed flat shapes — clip-path and collage layers. All positioning
+   arrives inline; this only guarantees they stay flat and inert. */
+.bd-layer {
+  position: absolute;
+  pointer-events: none;
+  box-shadow: none;
+  filter: none;
 }
 .card[data-drift="drift-slow"]    .backdrop { animation: drift-slow    110s linear infinite; }
 .card[data-drift="drift-diag"]    .backdrop { animation: drift-diag    120s linear infinite; }
