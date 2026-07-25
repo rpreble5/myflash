@@ -100,6 +100,8 @@
     var el = h('div', 'card');
     global.Theme.apply(el, theme);
     el.dataset.entrance = theme.entrance.name;
+    /* Provisional; paintQuestion recomputes it once the letter count
+       is known. */
     el.style.setProperty('--stagger', theme.entrance.stagger + 'ms');
 
     el.appendChild(global.Theme.backdropNode(theme));
@@ -126,9 +128,16 @@
     el.appendChild(body);
     stage.appendChild(el);
 
+    /* Cap the whole stagger sweep rather than the per-letter step. At a
+       fixed 34ms, a 45-letter question took 2.5s to finish arriving —
+       almost all of it accumulated delay, not animation. */
+    var STAGGER_SPAN = 240;
+
     function paintQuestion(text) {
       var t = theme.font.caps ? String(text).toUpperCase() : String(text);
-      global.Txt.splitLetters(qEl, t, { accentWords: theme.treatment === 'accent-words' });
+      var n = global.Txt.splitLetters(qEl, t, { accentWords: theme.treatment === 'accent-words' });
+      var step = Math.min(theme.entrance.stagger, STAGGER_SPAN / Math.max(n, 1));
+      el.style.setProperty('--stagger', step.toFixed(1) + 'ms');
       fitLater(qEl, front);
     }
 

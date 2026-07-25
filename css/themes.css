@@ -7,7 +7,7 @@
   background: var(--bg, #0b0b0b);
   color: var(--ink, #f5f5f5);
   overflow: hidden;
-  animation: card-in .42s cubic-bezier(.22,1,.36,1) both;
+  animation: card-in .26s cubic-bezier(.22,1,.36,1) both;
 }
 .card.is-tappable { cursor: pointer; }
 
@@ -131,8 +131,8 @@
   text-align: left;
   color: var(--acc);
 }
-.answer-pop   { animation: answer-pop .45s cubic-bezier(.34,1.56,.64,1) both; }
-.answer-shake { animation: answer-shake .5s cubic-bezier(.36,.07,.19,.97) both; }
+.answer-pop   { animation: answer-in .28s cubic-bezier(.22,1,.36,1) both; }
+.answer-mark  { animation: answer-in .28s cubic-bezier(.22,1,.36,1) both; }
 /* Enough blur to be unreadable, little enough to still tease the shape. */
 .answer-blur  { filter: blur(clamp(7px, 1.9vw, 13px)); transition: filter .22s ease; user-select: none; }
 .answer-blur.is-clear { filter: blur(0); }
@@ -159,7 +159,7 @@
   animation: hint-pulse 2.2s ease-in-out infinite;
 }
 
-.grade-bar { display: flex; gap: .7rem; flex-wrap: wrap; justify-content: center; animation: answer-pop .35s cubic-bezier(.34,1.56,.64,1) both; }
+.grade-bar { display: flex; gap: .7rem; flex-wrap: wrap; justify-content: center; animation: answer-in .26s cubic-bezier(.22,1,.36,1) both; }
 .btn-grade { min-width: 132px; font-family: "Archivo Black", sans-serif; font-size: .9rem; letter-spacing: .05em; }
 .btn-miss { border: 3px solid var(--ink); color: var(--ink); }
 .btn-got  { background: var(--ink); color: var(--bg); }
@@ -185,8 +185,8 @@
   inset: -10px;
   border-radius: 50%;
   border: 2px solid var(--acc);
-  opacity: .5;
-  animation: hold-ripple 1.8s ease-out infinite;
+  opacity: .34;
+  animation: hold-ripple 2.4s ease-out infinite;
 }
 .hold-pad.is-held { background: var(--ink); color: var(--bg); transform: scale(.94); }
 .hold-pad.is-held::after { animation: none; opacity: 0; }
@@ -211,7 +211,7 @@
 .type-input::placeholder { color: currentColor; opacity: .3; }
 .type-go { background: var(--ink); color: var(--bg); font-family: "Archivo Black", sans-serif; font-size: .9rem; }
 .type-form.is-right .type-input { border-color: var(--acc); color: var(--acc); }
-.type-form.is-wrong .type-input { animation: answer-shake .45s cubic-bezier(.36,.07,.19,.97) both; opacity: .5; }
+.type-form.is-wrong .type-input { opacity: .45; transform: scale(.98); }
 .your-answer { font-family: var(--body-face); font-size: 1rem; opacity: .45; text-decoration: line-through; }
 
 /* Multiple choice */
@@ -229,7 +229,7 @@
   font-weight: 700;
   font-size: 1.02rem;
   text-align: left;
-  animation: choice-in .38s cubic-bezier(.34,1.56,.64,1) both;
+  animation: choice-in .24s cubic-bezier(.22,1,.36,1) both;
   animation-delay: calc(var(--i) * 65ms);
   transition: transform .12s ease, background-color .18s, color .18s, opacity .18s;
 }
@@ -247,7 +247,7 @@
 .choice-grid.is-locked .choice-btn { pointer-events: none; }
 .choice-btn.is-right { background: var(--ink); color: var(--bg); transform: scale(1.02); }
 .choice-btn.is-right .choice-key { background: var(--bg); color: var(--ink); }
-.choice-btn.is-wrong { opacity: .45; animation: answer-shake .4s cubic-bezier(.36,.07,.19,.97) both; }
+.choice-btn.is-wrong { opacity: .45; transform: scale(.98); }
 
 /* Scramble */
 .slots { display: flex; gap: .35rem; flex-wrap: wrap; justify-content: center; }
@@ -260,9 +260,9 @@
   font-size: clamp(1.3rem, 5.5vw, 2.2rem);
   line-height: 1;
 }
-.slot.is-filled { animation: answer-pop .28s cubic-bezier(.34,1.56,.64,1) both; }
+.slot.is-filled { animation: answer-in .22s cubic-bezier(.22,1,.36,1) both; }
 .slots.is-right .slot { color: var(--acc); border-color: var(--acc); }
-.slots.is-wrong { animation: answer-shake .45s cubic-bezier(.36,.07,.19,.97) both; }
+.slots.is-wrong .slot { opacity: .5; border-color: var(--acc); }
 
 .tiles { display: flex; gap: .4rem; flex-wrap: wrap; justify-content: center; }
 .tile {
@@ -273,9 +273,9 @@
   color: var(--bg);
   font-family: "Archivo Black", sans-serif;
   font-size: clamp(1rem, 4vw, 1.35rem);
-  animation: tile-in .32s cubic-bezier(.34,1.56,.64,1) both;
+  animation: tile-in .24s cubic-bezier(.22,1,.36,1) both;
   animation-delay: calc(var(--i) * 45ms);
-  transition: transform .14s cubic-bezier(.34,1.56,.64,1), opacity .14s;
+  transition: transform .14s cubic-bezier(.22,1,.36,1), opacity .14s;
 }
 .tile:active { transform: scale(.9); }
 .tile.is-used { opacity: .16; transform: scale(.82); pointer-events: none; }
@@ -289,7 +289,7 @@
   font-size: .9rem;
   letter-spacing: .06em;
   min-width: 160px;
-  transition: opacity .18s ease, transform .12s cubic-bezier(.34,1.56,.64,1);
+  transition: opacity .18s ease, transform .12s cubic-bezier(.22,1,.36,1);
 }
 .btn-check:disabled { opacity: .28; cursor: default; }
 
@@ -304,13 +304,13 @@
   font-family: "Archivo Black", sans-serif;
   font-size: 1.15rem;
   letter-spacing: .06em;
-  animation: choice-in .38s cubic-bezier(.34,1.56,.64,1) both;
+  animation: choice-in .24s cubic-bezier(.22,1,.36,1) both;
   transition: transform .12s ease, background-color .18s, color .18s, opacity .18s;
 }
 .tf-btn:active { transform: scale(.96); }
 .tf-bar.is-locked .tf-btn { pointer-events: none; }
 .tf-btn.is-right { background: var(--ink); color: var(--bg); }
-.tf-btn.is-wrong { opacity: .4; animation: answer-shake .4s cubic-bezier(.36,.07,.19,.97) both; }
+.tf-btn.is-wrong { opacity: .4; transform: scale(.98); }
 
 .why {
   max-width: 40ch;
@@ -333,7 +333,7 @@
   padding: .45rem .5rem .45rem .9rem;
   border-radius: 16px;
   border: 3px solid color-mix(in srgb, var(--ink) 35%, transparent);
-  animation: choice-in .38s cubic-bezier(.34,1.56,.64,1) both;
+  animation: choice-in .24s cubic-bezier(.22,1,.36,1) both;
   animation-delay: calc(var(--i) * 60ms);
   transition: border-color .2s, opacity .2s;
 }
@@ -353,14 +353,14 @@
   color: var(--ink);
   font-size: 1.4rem;
   line-height: 1;
-  transition: transform .12s cubic-bezier(.34,1.56,.64,1), background-color .15s, color .15s;
+  transition: transform .12s cubic-bezier(.22,1,.36,1), background-color .15s, color .15s;
 }
 .dir-btn:active { transform: scale(.9); }
 .dir-btn.is-on { background: var(--ink); color: var(--bg); border-color: var(--ink); }
 /* The answer the user missed, spelled out on their row. */
 .dir-btn.is-answer { border-color: var(--acc); color: var(--acc); box-shadow: inset 0 0 0 3px var(--acc); }
 .trend-row.is-right { border-color: var(--ink); }
-.trend-row.is-wrong { border-color: var(--acc); animation: answer-shake .45s cubic-bezier(.36,.07,.19,.97) both; }
+.trend-row.is-wrong { border-color: var(--acc); opacity: .78; }
 
 /* ── Bucket (one item at a time) ─────────────────────────── */
 .bucket-counter {
@@ -379,13 +379,13 @@
   color: var(--ink);
   font-family: "Archivo Black", sans-serif;
   font-size: 1rem;
-  animation: choice-in .38s cubic-bezier(.34,1.56,.64,1) both;
+  animation: choice-in .24s cubic-bezier(.22,1,.36,1) both;
   animation-delay: calc(var(--i) * 70ms);
   transition: transform .12s ease, background-color .18s, color .18s, opacity .18s;
 }
 .bin-btn:active { transform: scale(.96); }
 .bin-btn.is-right { background: var(--ink); color: var(--bg); }
-.bin-btn.is-wrong { opacity: .4; animation: answer-shake .4s cubic-bezier(.36,.07,.19,.97) both; }
+.bin-btn.is-wrong { opacity: .4; transform: scale(.98); }
 .bin-btn.is-answer { border-color: var(--acc); color: var(--acc); }
 
 /* ── Order ───────────────────────────────────────────────── */
@@ -398,7 +398,7 @@
   padding: .4rem .7rem;
   border-radius: 13px;
   border: 2px dashed color-mix(in srgb, var(--ink) 32%, transparent);
-  animation: choice-in .34s cubic-bezier(.34,1.56,.64,1) both;
+  animation: choice-in .24s cubic-bezier(.22,1,.36,1) both;
   animation-delay: calc(var(--i) * 50ms);
 }
 .order-num {
@@ -433,9 +433,9 @@
   font-family: var(--body-face);
   font-weight: 700;
   font-size: .9rem;
-  animation: tile-in .32s cubic-bezier(.34,1.56,.64,1) both;
+  animation: tile-in .24s cubic-bezier(.22,1,.36,1) both;
   animation-delay: calc(var(--i) * 45ms);
-  transition: transform .14s cubic-bezier(.34,1.56,.64,1), opacity .14s;
+  transition: transform .14s cubic-bezier(.22,1,.36,1), opacity .14s;
 }
 .order-chip:active { transform: scale(.94); }
 .order-chip.is-used { opacity: .16; transform: scale(.9); pointer-events: none; }
@@ -452,9 +452,9 @@
   font-weight: 700;
   font-size: clamp(.82rem, 3.4vw, .98rem);
   line-height: 1.15;
-  animation: choice-in .36s cubic-bezier(.34,1.56,.64,1) both;
+  animation: choice-in .24s cubic-bezier(.22,1,.36,1) both;
   animation-delay: calc(var(--i) * 55ms);
-  transition: transform .14s cubic-bezier(.34,1.56,.64,1), background-color .18s, color .18s, opacity .18s;
+  transition: transform .14s cubic-bezier(.22,1,.36,1), background-color .18s, color .18s, opacity .18s;
 }
 .match-btn.is-sel { background: var(--ink); color: var(--bg); transform: scale(1.03); }
 .match-btn.is-solved {
@@ -464,7 +464,7 @@
   opacity: .9;
   pointer-events: none;
 }
-.match-btn.is-miss { animation: answer-shake .42s cubic-bezier(.36,.07,.19,.97) both; opacity: .55; }
+.match-btn.is-miss { opacity: .5; transform: scale(.98); }
 
 /* ── Number ──────────────────────────────────────────────── */
 .num-wrap { width: min(560px, 100%); display: flex; flex-direction: column; gap: 1.1rem; }
@@ -518,6 +518,6 @@
   color: var(--acc);
   opacity: 0;
   transform: scale(.7);
-  transition: opacity .3s ease, transform .35s cubic-bezier(.34,1.56,.64,1);
+  transition: opacity .24s ease, transform .26s cubic-bezier(.22,1,.36,1);
 }
 .num-answer.is-in { opacity: 1; transform: none; }

@@ -136,7 +136,7 @@
         go.remove();
         form.classList.add(ok ? 'is-right' : 'is-wrong');
         if (!ok && input.value.trim()) area.appendChild(h('div', 'your-answer', input.value));
-        ctx.revealAnswer(ok ? 'pop' : 'shake');
+        ctx.revealAnswer(ok ? 'pop' : 'mark');
         settle(ctx, ok ? 1 : 0);
       });
     }
@@ -196,7 +196,7 @@
         var guess = placed.map(function (p) { return p.ch; }).join('');
         var ok = global.Txt.normalize(guess) === global.Txt.normalize(target);
         slotsEl.classList.add(ok ? 'is-right' : 'is-wrong');
-        ctx.revealAnswer(ok ? 'pop' : 'shake');
+        ctx.revealAnswer(ok ? 'pop' : 'mark');
         settle(ctx, ok ? 1 : 0);
       }
     }

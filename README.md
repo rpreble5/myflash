@@ -67,6 +67,28 @@ Match scores `1 − misses/pairs`, since with four pairs the last one is free.
 - **8 entrances** — four stagger per letter (cascade, drop, skew, pop), four
   animate the whole line (slam, blur, wipe, roll).
 
+### Motion
+
+Short, eased, no overshoot, no oscillation. Nothing animates longer than
+~340ms except the deliberate card flip (680ms) and ambient backdrop drift.
+Easing is a plain ease-out; the springy `cubic-bezier(.34,1.56,.64,1)`
+overshoots its target and is what made the old motion read as bouncy.
+
+**Stagger is capped as a span, not a step.** Per-letter entrances delay each
+letter by `index × stagger`, so a fixed 34ms step meant a 45-letter question
+took 2.5s to finish arriving — almost all of it accumulated delay rather than
+animation. `app.js` recomputes `--stagger` per card as
+`min(base, 240ms / letterCount)`, which holds the worst case at ~640ms while
+short questions keep their original ripple.
+
+**Wrong answers dim and settle** — opacity plus a `scale(.98)`, no shake.
+Colour already says "wrong"; oscillation just adds noise on top of
+information you have already received.
+
+Entrance selectors are scoped to `.face .letter` rather than `.letter`, or
+revealed answers would animate twice: once from their own reveal and again
+from the card's entrance rule.
+
 ### Backdrops
 
 Flat by design: every colour stop is hard, so there are no soft gradients,

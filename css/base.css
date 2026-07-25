@@ -35,7 +35,7 @@ button { cursor: pointer; border: 0; background: none; }
   padding: .85rem 1.6rem;
   font-weight: 700;
   letter-spacing: .02em;
-  transition: transform .12s cubic-bezier(.34,1.56,.64,1), background-color .15s, color .15s;
+  transition: transform .12s cubic-bezier(.22,1,.36,1), background-color .15s, color .15s;
 }
 .btn:active { transform: scale(.94); }
 
@@ -94,9 +94,9 @@ button { cursor: pointer; border: 0; background: none; }
   /* Dark palettes would otherwise dissolve into the dark page. */
   border: 2px solid color-mix(in srgb, var(--ink) 20%, transparent);
   overflow: hidden;
-  animation: deck-in .5s cubic-bezier(.22,1,.36,1) both;
+  animation: deck-in .32s cubic-bezier(.22,1,.36,1) both;
   animation-delay: calc(var(--i) * 60ms);
-  transition: transform .18s cubic-bezier(.34,1.56,.64,1);
+  transition: transform .18s cubic-bezier(.22,1,.36,1);
 }
 /* Flat hard-edged disc, not a soft glow. */
 .deck-card::after {
@@ -195,7 +195,7 @@ button { cursor: pointer; border: 0; background: none; }
   gap: .2rem;
   opacity: .8;
 }
-.streak.is-hot { animation: streak-pop .4s cubic-bezier(.34,1.56,.64,1); opacity: 1; }
+.streak.is-hot { animation: streak-pop .26s cubic-bezier(.22,1,.36,1); opacity: 1; }
 
 .stage { position: absolute; inset: 0; }
 
@@ -215,7 +215,7 @@ button { cursor: pointer; border: 0; background: none; }
   margin: 0 0 2rem;
   letter-spacing: -.03em;
   color: #f5f500;
-  animation: slam-in .5s cubic-bezier(.22,1,.36,1) both;
+  animation: slam-in .3s cubic-bezier(.22,1,.36,1) both;
 }
 .summary-stats {
   display: grid;
@@ -228,7 +228,7 @@ button { cursor: pointer; border: 0; background: none; }
   padding: 1.2rem .8rem;
   border-radius: 18px;
   background: #191919;
-  animation: deck-in .45s cubic-bezier(.22,1,.36,1) both;
+  animation: deck-in .3s cubic-bezier(.22,1,.36,1) both;
   animation-delay: calc(var(--i) * 80ms + 120ms);
 }
 .stat-n {
