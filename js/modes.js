@@ -702,22 +702,16 @@
         settle(ctx, 0, 2400);
       }
 
-      /* Opt-in: answer the moment the finger lifts. The short window before
-         it fires is what makes re-gripping possible — a full sweep is about
-         1000px and the screen is shorter than that, so letting go partway
-         is a normal part of reaching a number, not a decision. */
+      /* Opt-in: answer the instant the finger lifts. A release that changed
+         nothing is still ignored, so a stray tap can't answer for you. */
       var autoSubmit = global.Store.setting('submitOnRelease');
-      var pending = null;
 
       ctx.enableDial({
         pxPerStep: pxPerStep,
         onSteps: nudge,
-        onGrab: function () {
-          if (pending) { clearTimeout(pending); pending = null; }
-        },
         onRelease: function (moved) {
           if (!autoSubmit || locked || !moved) return;
-          pending = setTimeout(submit, 420);
+          submit();
         }
       });
 

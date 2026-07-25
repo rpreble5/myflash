@@ -227,7 +227,6 @@
           y0 = e.clientY;
           el.classList.add('is-dialing');
           capture(e);
-          if (opts.onGrab) opts.onGrab();
         }
 
         function move(e) {
