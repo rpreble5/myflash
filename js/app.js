@@ -104,6 +104,8 @@
     var el = h('div', 'card');
     global.Theme.apply(el, theme);
     el.dataset.entrance = theme.entrance.name;
+    /* Interaction-led modes cap the question so the control gets the room. */
+    if (mode.compact) el.dataset.qsize = 'compact';
     /* Provisional; paintQuestion recomputes it once the letter count
        is known. */
     el.style.setProperty('--stagger', theme.entrance.stagger + 'ms');
@@ -178,6 +180,46 @@
           if (e.target.closest('button, input, .grade-bar, .swipe-bar')) return;
           fn();
         });
+      },
+
+      /* Vertical drag anywhere on the card, in discrete steps. Owned here
+         for the same reason as enableSwipe: only app.js holds the element.
+
+         Rebasing the origin by whole steps (rather than recomputing from
+         the initial y) means the value tracks the finger exactly and never
+         drifts, and reversing direction responds immediately. */
+      enableDial: function (opts) {
+        var y0 = 0, dragging = false;
+        el.style.touchAction = 'none';
+
+        function down(e) {
+          if (e.target.closest('button, input, textarea')) return;
+          dragging = true;
+          y0 = e.clientY;
+          el.classList.add('is-dialing');
+        }
+
+        function move(e) {
+          if (!dragging) return;
+          var dy = y0 - e.clientY;                 // up is positive
+          var steps = (dy / opts.pxPerStep) | 0;
+          if (steps !== 0) {
+            opts.onSteps(steps);
+            y0 -= steps * opts.pxPerStep;
+          }
+        }
+
+        function up() {
+          if (!dragging) return;
+          dragging = false;
+          el.classList.remove('is-dialing');
+        }
+
+        el.addEventListener('pointerdown', down);
+        el.addEventListener('pointermove', move);
+        el.addEventListener('pointerup', up);
+        el.addEventListener('pointercancel', up);
+        el.addEventListener('pointerleave', up);
       },
 
       /* Drag-to-grade. Owned here because only app.js holds the card

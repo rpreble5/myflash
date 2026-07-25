@@ -34,8 +34,8 @@ layer, which reshuffles palette, face, backdrop and entrance every render.
 | `recall` | `{ q, a, why? }` | tap anywhere to reveal, then swipe to grade |
 | `mcq` | `{ q, a, distractors[] }` | four options, authored distractors |
 | `truefalse` | `{ q, a:bool, why }` | two buttons, explanation on reveal |
-| `number` | `{ q, value, unit, tolerance }` | slider, giant readout |
-| `number` | `{ q, low, high, unit }` | two sliders for a normal range |
+| `number` | `{ q, value, unit, tolerance, step? }` | drag anywhere to dial a value |
+| `number` | `{ q, low, high, unit, step? }` | dial to any value inside the band |
 | `trend` | `{ q, items:[{label, dir}] }` | mark each row ↑ / — / ↓ |
 | `bucket` | `{ q, bins[], items:[{label, bin}] }` | one big item at a time, tap its bin |
 | `order` | `{ q, steps[] }` | tap phrases into sequence |
@@ -83,6 +83,34 @@ source citation.
 
 Keyboard: `Space` / `Enter` reveal · `1`–`4` pick an option or bin ·
 `←`/`→` grade · `Esc` quit.
+
+### The number card
+
+No track. **The whole card is the control** — drag up to raise, down to
+lower. Horizontal sliders are awkward one-handed on a phone, and a
+full-screen vertical drag has far more travel than any track could.
+
+Range cards ask for a single number too: "a normal serum sodium" is answered
+by any value inside the band, which is a truer question than dialling both
+ends of it.
+
+**Step scales per question.** `step` is authored where it matters —
+`10000` for a platelet count, `100` for blood volume, `0.1` for a 1 mg dose.
+Left out, it derives from the scale: aim for ~80 steps, round to 1/2/5 ×
+10ⁿ so the increments are numbers people think in, and floor at 1 for
+integer questions so they never ask for fractions.
+
+Drag sensitivity adapts too — the full scale sweeps in roughly 600px,
+clamped to 5–48px per step so a fine scale is never twitchy and a coarse one
+never sluggish. `tools/` aside, the derivation is worth checking after
+editing any number card: every answer must be reachable on the step grid,
+and the dial must not *start* on a correct value. For range cards the
+scale's midpoint is the answer, so the dial opens a quarter of the way up
+and steps away if it still lands inside the band.
+
+The question is capped to 30vh on these cards (`data-qsize="compact"`). The
+value is the interaction; the question is only the prompt, and letting it
+run full height left the number looking like a footnote.
 
 ### REVEAL LAB
 

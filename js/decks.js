@@ -6,8 +6,8 @@
      recall     { q, a, why? }
      mcq        { q, a, distractors[] }
      truefalse  { q, a:bool, why }
-     number     { q, value, unit, tolerance }      exact-ish value
-     number     { q, low, high, unit }             a normal range
+     number     { q, value, unit, tolerance, step? }   dial to a value
+     number     { q, low, high, unit, step? }         dial inside a band
      trend      { q, items:[{label, dir:'up'|'down'|'same'}] }
      bucket     { q, bins:[], items:[{label, bin}] }
      order      { q, steps:[] }                    stored in correct order
@@ -168,6 +168,8 @@
         { type: 'number', q: 'Normal serum sodium', low: 135, high: 145, unit: 'mEq/L' },
         { type: 'number', q: 'Normal serum potassium', low: 3.5, high: 5.0, unit: 'mEq/L' },
         { type: 'number', q: 'Normal serum calcium', low: 8.5, high: 10.5, unit: 'mg/dL' },
+        { type: 'number', q: 'Normal platelet count', low: 150000, high: 450000, unit: '/µL', step: 10000 },
+        { type: 'number', q: 'Normal serum osmolality', low: 275, high: 295, unit: 'mOsm/kg', step: 5 },
         { type: 'mcq', q: 'Best single test to distinguish iron deficiency from anemia of chronic disease',
           a: 'Serum ferritin', distractors: ['Hemoglobin', 'Mean corpuscular volume', 'Reticulocyte count'] }
       ]
@@ -196,7 +198,7 @@
           { left: 'N-acetylcysteine', right: 'Acetaminophen' },
           { left: 'Fomepizole', right: 'Methanol' }
         ] },
-        { type: 'number', q: 'Adult epinephrine dose in cardiac arrest', value: 1, unit: 'mg IV', tolerance: 0 },
+        { type: 'number', q: 'Adult epinephrine dose in cardiac arrest', value: 1, unit: 'mg IV', tolerance: 0, step: 0.1 },
         { type: 'number', q: 'Adult IM epinephrine dose for anaphylaxis', low: 0.3, high: 0.5, unit: 'mg' },
         { type: 'number', q: 'Epinephrine dosing interval in cardiac arrest', low: 3, high: 5, unit: 'min' },
         { type: 'truefalse', q: 'Metformin should be held around iodinated contrast administration', a: true,
@@ -271,6 +273,7 @@
         { type: 'number', q: 'Lowest possible Glasgow Coma Scale score', value: 3, unit: '', tolerance: 0 },
         { type: 'number', q: 'GCS at or below which intubation is generally considered', value: 8, unit: '', tolerance: 0 },
         { type: 'number', q: 'Normal intracranial pressure in adults', low: 5, high: 15, unit: 'mmHg' },
+        { type: 'number', q: 'Approximate adult blood volume', value: 5000, unit: 'mL', tolerance: 500, step: 100 },
         { type: 'truefalse', q: 'Epinephrine is given every 3–5 minutes during adult cardiac arrest', a: true,
           why: 'Standard ACLS dosing is 1 mg IV/IO every 3–5 minutes for as long as the arrest continues.' },
         { type: 'mcq', q: 'First step when a trauma patient arrives unresponsive', a: 'Assess and secure the airway',

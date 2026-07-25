@@ -478,7 +478,15 @@
     }
   };
 
-  /* ═══════════════ number: value or range on a slider ═══════════════ */
+  /* ═══════════════ number: one vertical dial ═══════════════
+
+     Drag anywhere on the card, up to raise and down to lower. Horizontal
+     sliders are awkward on a phone held one-handed, and a full-screen
+     vertical drag gives far more travel than a track ever could.
+
+     Range cards ask for a single number too: "a normal serum sodium" is
+     answered by any value inside the band, which is a truer question than
+     dialling both ends of it.                                            */
 
   function decimals(n) {
     var s = String(n);
@@ -486,13 +494,21 @@
     return i < 0 ? 0 : s.length - i - 1;
   }
 
-  /* Derive a scale wide enough to make the answer non-obvious but tight
-     enough that the slider stays usable on a phone. */
+  /* Round to 1, 2 or 5 x 10^n so steps land on numbers people think in. */
+  function niceStep(raw) {
+    if (raw <= 0) return 1;
+    var mag = Math.pow(10, Math.floor(Math.log(raw) / Math.LN10));
+    var norm = raw / mag;
+    var pick = norm <= 1.5 ? 1 : norm <= 3.5 ? 2 : norm <= 7.5 ? 5 : 10;
+    return pick * mag;
+  }
+
   function scaleFor(card) {
-    var dp, min, max, step;
+    var dp, min, max;
+
     if (card.low != null) {
-      var span = card.high - card.low;
-      var pad = span * 2;
+      var band = card.high - card.low;
+      var pad = band * 2;
       min = Math.max(0, card.low - pad);
       max = card.high + pad;
       dp = Math.max(decimals(card.low), decimals(card.high));
@@ -501,75 +517,113 @@
       max = card.value * 2.5;
       dp = decimals(card.value);
     }
-    step = dp > 0 ? Math.pow(10, -dp) : (max - min > 200 ? 5 : 1);
-    /* Snap the ends onto the step grid so the answer is always reachable. */
+
+    /* Authored step wins. Otherwise aim for ~80 steps across the scale,
+       floored so integer questions never ask for fractions. */
+    var step = card.step;
+    if (step == null) {
+      var floorStep = dp > 0 ? Math.pow(10, -dp) : 1;
+      step = Math.max(floorStep, niceStep((max - min) / 80));
+    }
+
     min = Math.floor(min / step) * step;
     max = Math.ceil(max / step) * step;
+    dp = Math.max(dp, decimals(step));
+
     return { min: round(min, dp), max: round(max, dp), step: step, dp: dp };
   }
 
   function round(n, dp) { return Number(n.toFixed(dp)); }
 
+  /* Thousands separators once numbers get big enough to be hard to read. */
+  function fmt(n, dp) {
+    var fixed = Number(n).toFixed(dp);
+    var parts = fixed.split('.');
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    return parts.join('.');
+  }
+
+  function isCorrect(card, guess) {
+    if (card.low != null) return guess >= card.low && guess <= card.high;
+    return Math.abs(guess - card.value) <= (card.tolerance || 0);
+  }
+
   var number = {
-    id: 'number', label: 'DIAL IT IN', types: ['number'], weight: 1,
+    id: 'number', label: 'DRAG TO SET', types: ['number'], weight: 1,
+    /* The value is the interaction; the question is only the prompt. */
+    compact: true,
     eligible: function (card) { return card.value != null || card.low != null; },
     mount: function (area, ctx) {
       var card = ctx.card;
       var sc = scaleFor(card);
-      var isRange = card.low != null;
-      var wrap = h('div', 'num-wrap');
-      area.appendChild(wrap);
+      var steps = Math.max(1, Math.round((sc.max - sc.min) / sc.step));
 
-      function slider(labelText, initial) {
-        var row = h('div', 'num-row');
-        if (labelText) row.appendChild(h('span', 'num-tag', labelText));
-        var out = h('div', 'num-out');
-        var val = h('span', 'num-val', String(initial));
-        out.appendChild(val);
-        if (card.unit) out.appendChild(h('span', 'num-unit', card.unit));
-        var input = h('input', 'num-slider');
-        input.type = 'range';
-        input.min = sc.min;
-        input.max = sc.max;
-        input.step = sc.step;
-        input.value = initial;
-        input.addEventListener('input', function () {
-          val.textContent = round(Number(input.value), sc.dp);
-        });
-        row.appendChild(out);
-        row.appendChild(input);
-        wrap.appendChild(row);
-        return { input: input, val: val, row: row };
+      /* Full sweep in roughly 600px, but never so fine it is twitchy nor
+         so coarse that a long drag moves nothing. */
+      var pxPerStep = Math.min(48, Math.max(5, 600 / steps));
+
+      /* Start a quarter up the scale rather than mid — for a range card the
+         midpoint IS the answer, which would hand it over. Nudge off if the
+         opening value happens to be correct anyway. */
+      var value = round(sc.min + (sc.max - sc.min) * 0.25, sc.dp);
+      value = round(Math.round(value / sc.step) * sc.step, sc.dp);
+      var guard = 0;
+      while (isCorrect(card, value) && guard++ < 40 && value - sc.step >= sc.min) {
+        value = round(value - sc.step, sc.dp);
       }
 
-      var mid = round(sc.min + (sc.max - sc.min) / 2, sc.dp);
-      var a = slider(isRange ? 'LOW' : null, mid);
-      var b = isRange ? slider('HIGH', mid) : null;
+      var dial = h('div', 'num-dial');
+      var up = h('div', 'num-arrow', '▲');
+      var out = h('div', 'num-out');
+      var val = h('span', 'num-val', fmt(value, sc.dp));
+      out.appendChild(val);
+      if (card.unit) out.appendChild(h('span', 'num-unit', card.unit));
+      var down = h('div', 'num-arrow', '▼');
+      dial.appendChild(up);
+      dial.appendChild(out);
+      dial.appendChild(down);
+      area.appendChild(dial);
+
+      var hint = h('div', 'hint', 'drag up or down');
+      area.appendChild(hint);
+
+      var locked = false;
+
+      function nudge(n) {
+        if (locked) return;
+        var next = round(Math.min(sc.max, Math.max(sc.min, value + n * sc.step)), sc.dp);
+        if (next === value) return;
+        value = next;
+        val.textContent = fmt(value, sc.dp);
+        hint.classList.add('is-gone');
+        global.Sfx.tick();
+      }
+
+      ctx.enableDial({ pxPerStep: pxPerStep, onSteps: nudge });
+      ctx.keys({
+        'ArrowUp':   function () { nudge(1); },
+        'ArrowDown': function () { nudge(-1); },
+        'PageUp':    function () { nudge(10); },
+        'PageDown':  function () { nudge(-10); }
+      });
 
       var check = checkBtn(function (btn) {
+        locked = true;
         btn.remove();
-        a.input.disabled = true;
-        if (b) b.input.disabled = true;
+        hint.remove();
 
-        var score, truth;
-        if (isRange) {
-          var lowOk  = Math.abs(Number(a.input.value) - card.low)  <= sc.step;
-          var highOk = Math.abs(Number(b.input.value) - card.high) <= sc.step;
-          score = (Number(lowOk) + Number(highOk)) / 2;
-          a.row.classList.add(lowOk ? 'is-right' : 'is-wrong');
-          b.row.classList.add(highOk ? 'is-right' : 'is-wrong');
-          truth = card.low + ' – ' + card.high + (card.unit ? ' ' + card.unit : '');
-        } else {
-          var ok = Math.abs(Number(a.input.value) - card.value) <= (card.tolerance || 0);
-          score = ok ? 1 : 0;
-          a.row.classList.add(ok ? 'is-right' : 'is-wrong');
-          truth = card.value + (card.unit ? ' ' + card.unit : '');
-        }
+        var ok = isCorrect(card, value);
+        dial.classList.add(ok ? 'is-right' : 'is-wrong');
+
+        var truth = card.low != null
+          ? fmt(card.low, sc.dp) + ' – ' + fmt(card.high, sc.dp)
+          : fmt(card.value, sc.dp);
+        if (card.unit) truth += ' ' + card.unit;
 
         var answer = h('div', 'num-answer', truth);
         area.appendChild(answer);
         requestAnimationFrame(function () { answer.classList.add('is-in'); });
-        settle(ctx, score);
+        settle(ctx, ok ? 1 : 0);
       });
       check.disabled = false;
       area.appendChild(check);
