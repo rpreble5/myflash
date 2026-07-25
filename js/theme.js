@@ -541,6 +541,15 @@
     { name: 'rollin',  perLetter: false, stagger: 0 }
   ];
 
+  /* ── Reveals ───────────────────────────────────────────────
+     How the answer replaces the question. Only two, deliberately:
+     a reveal answers a tap, so it has to feel predictable, and a
+     large random set would read as arbitrary rather than varied. */
+  var REVEALS = [
+    { name: 'reel' },   // rigid strip slides a full height, no fade
+    { name: 'lift' }    // short rise and fade together, quicker
+  ];
+
   /* ── Text treatments — `plain` is weighted heaviest ──────── */
   var TREATMENTS = ['plain', 'plain', 'plain', 'outline', 'shadow-hard', 'accent-words', 'stretch'];
 
@@ -572,6 +581,7 @@
     var font     = pickFresh(FONTS, 'font');
     var backdrop = pickFresh(BACKDROPS, 'backdrop', true);
     var entrance = pickFresh(ENTRANCES, 'entrance');
+    var reveal   = pick(REVEALS);
     var tone     = tones(palette);
 
     /* `build` backdrops compose positioned layers; `make` backdrops are a
@@ -588,6 +598,7 @@
       backdropSize: bd.size,
       backdropLayers: bd.layers || null,
       entrance: entrance,
+      reveal: reveal,
       treatment: pick(TREATMENTS)
     };
   }
@@ -621,6 +632,7 @@
     s.setProperty('--weight', theme.font.weight);
     s.setProperty('--body-face', BODY_FACE);
     el.dataset.treatment = theme.treatment;
+    el.dataset.reveal = theme.reveal.name;
     el.dataset.drift = theme.backdrop.drift || '';
     el.dataset.tier = theme.backdrop.tier;
 
@@ -635,6 +647,7 @@
     backdropNode: backdropNode,
     PALETTES: PALETTES,
     BACKDROPS: BACKDROPS,
+    REVEALS: REVEALS,
     BODY_FACE: BODY_FACE,
     _tones: tones
   };

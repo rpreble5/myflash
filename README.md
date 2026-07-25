@@ -45,15 +45,24 @@ layer, which reshuffles palette, face, backdrop and entrance every render.
 
 One card, one behaviour — no random rotation between presentations.
 
-Tap anywhere to reveal. The reveal is a **vertical reel**: the flipper is a
-clipped viewport and the two faces are one strip that slides up — question
-out the top, answer in from the bottom, 300ms, no fade. Cross-fading blurs
-the mechanical read, and the movement is the whole effect.
+Tap anywhere to reveal. The flipper is a clipped viewport holding two faces,
+and there are two reveals, picked 50/50 per card:
 
-Entrance animations are scoped to `.face-front`. The question's entrance is
-ambient, so randomising it is fine; the reveal is a *response to a tap* and
-must be the same motion every time, so the answer never replays whichever
-entrance the card happened to draw.
+- **reel** — the faces are one rigid strip sliding a full height, question
+  out the top and answer in from the bottom, 300ms, no fade. Cross-fading
+  blurs the mechanical read; the movement is the whole effect.
+- **lift** — a short 18% rise and a fade together, 200ms, gentler curve.
+  Opacity is what hides the waiting answer here, since 18% would otherwise
+  leave it in view.
+
+Only two, deliberately. A reveal answers a tap, so it has to feel
+predictable; a large random set would read as arbitrary rather than varied.
+
+Entrance animations are scoped to `.face-front` for the same reason. A
+question's entrance is ambient, so randomising it is fine — but the answer
+must never replay whichever entrance the card happened to draw, or the
+reveal looks different every time and trails past the transition it
+belongs to.
 
 An optional `why` appears **before** grading, since grading advances to the
 next card. Short explanations (≤ 140 chars) render inline; longer ones fold
