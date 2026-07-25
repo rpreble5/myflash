@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <rect width="512" height="512" fill="#0B0B0B"/>
+  <circle cx="400" cy="120" r="150" fill="#FF2D95" opacity="0.35"/>
+  <g fill="#F2F200" font-family="Archivo Black, Arial Black, sans-serif" font-size="200" font-weight="900" text-anchor="middle">
+    <text x="256" y="250">MY</text>
+  </g>
+  <g fill="none" stroke="#F2F200" stroke-width="12" font-family="Archivo Black, Arial Black, sans-serif" font-size="128" font-weight="900" text-anchor="middle">
+    <text x="256" y="380">FLASH</text>
+  </g>
+</svg>

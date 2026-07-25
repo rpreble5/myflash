@@ -1,0 +1,255 @@
+/* base.css — reset, screens, and the chrome around the cards. */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+  background: #0b0b0b;
+  color: #f5f5f5;
+  font-family: "Space Grotesk", system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior: none;
+}
+
+button, input, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; border: 0; background: none; }
+
+#app { position: fixed; inset: 0; }
+
+.screen {
+  position: absolute;
+  inset: 0;
+  display: none;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.screen.is-active { display: block; }
+
+/* ── Buttons ─────────────────────────────────────────────── */
+.btn {
+  border-radius: 999px;
+  padding: .85rem 1.6rem;
+  font-weight: 700;
+  letter-spacing: .02em;
+  transition: transform .12s cubic-bezier(.34,1.56,.64,1), background-color .15s, color .15s;
+}
+.btn:active { transform: scale(.94); }
+
+.btn-solid { background: #f5f5f5; color: #0b0b0b; }
+.btn-ghost { border: 2px solid currentColor; opacity: .75; }
+.btn-ghost:hover { opacity: 1; }
+
+/* ── Home ────────────────────────────────────────────────── */
+.home-wrap {
+  min-height: 100%;
+  padding: max(2rem, env(safe-area-inset-top)) 1.25rem 3rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.wordmark {
+  margin: 1.5rem 0 .25rem;
+  font-size: clamp(3.5rem, 17vw, 8rem);
+  line-height: .84;
+  letter-spacing: -.045em;
+  font-family: "Archivo Black", sans-serif;
+  font-weight: 400;
+}
+.wordmark-a { color: #f5f500; }
+.wordmark-b {
+  color: transparent;
+  -webkit-text-stroke: 3px #f5f500;
+  animation: wordmark-throb 3.4s ease-in-out infinite;
+  display: inline-block;
+}
+
+.tagline {
+  margin: 0 0 2rem;
+  font-size: 1rem;
+  opacity: .55;
+  letter-spacing: .01em;
+}
+
+.deck-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1rem;
+}
+
+.deck-card {
+  --bg: #191919; --ink: #f5f5f5; --acc: #ff6b00;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: .4rem;
+  text-align: left;
+  padding: 1.4rem 1.3rem 1.2rem;
+  border-radius: 22px;
+  background: var(--bg);
+  color: var(--ink);
+  /* Dark palettes would otherwise dissolve into the dark page. */
+  border: 2px solid color-mix(in srgb, var(--ink) 20%, transparent);
+  overflow: hidden;
+  animation: deck-in .5s cubic-bezier(.22,1,.36,1) both;
+  animation-delay: calc(var(--i) * 60ms);
+  transition: transform .18s cubic-bezier(.34,1.56,.64,1);
+}
+.deck-card::after {
+  content: "";
+  position: absolute;
+  right: -18%;
+  bottom: -42%;
+  width: 58%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, var(--acc), transparent);
+  opacity: .45;
+  pointer-events: none;
+}
+.deck-card > span { position: relative; z-index: 1; }
+.deck-card:hover { transform: translateY(-4px) rotate(-1deg); }
+.deck-card:active { transform: scale(.97); }
+
+.deck-name {
+  font-family: "Anton", sans-serif;
+  font-size: clamp(1.8rem, 6vw, 2.6rem);
+  line-height: .95;
+  letter-spacing: -.01em;
+}
+.deck-blurb { font-size: .85rem; opacity: .7; }
+
+.deck-meter {
+  margin-top: .6rem;
+  height: 7px;
+  border-radius: 99px;
+  background: color-mix(in srgb, var(--ink) 22%, transparent);
+  overflow: hidden;
+}
+.deck-meter-fill {
+  display: block;
+  height: 100%;
+  background: var(--ink);
+  border-radius: 99px;
+  transition: width .5s cubic-bezier(.22,1,.36,1);
+}
+.deck-count { font-size: .72rem; opacity: .6; letter-spacing: .04em; text-transform: uppercase; }
+
+.home-actions {
+  display: flex;
+  gap: .75rem;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+}
+
+/* ── Session HUD ─────────────────────────────────────────── */
+#screen-session { overflow: hidden; }
+
+.hud {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: .9rem;
+  padding: max(.9rem, env(safe-area-inset-top)) 1rem .9rem;
+  pointer-events: none;
+  color: var(--hud-ink, #fff);
+  transition: color .35s ease;
+}
+.hud > * { pointer-events: auto; }
+
+.hud-btn {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  font-size: 1rem;
+  line-height: 1;
+  opacity: .7;
+}
+.hud-btn:hover { opacity: 1; }
+
+.progress {
+  flex: 1;
+  height: 5px;
+  border-radius: 99px;
+  background: color-mix(in srgb, currentColor 28%, transparent);
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  width: 0;
+  background: currentColor;
+  border-radius: 99px;
+  transition: width .45s cubic-bezier(.22,1,.36,1);
+}
+
+.streak {
+  font-weight: 700;
+  font-size: .95rem;
+  display: flex;
+  align-items: center;
+  gap: .2rem;
+  opacity: .8;
+}
+.streak.is-hot { animation: streak-pop .4s cubic-bezier(.34,1.56,.64,1); opacity: 1; }
+
+.stage { position: absolute; inset: 0; }
+
+/* ── Summary ─────────────────────────────────────────────── */
+.summary-wrap {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 2rem 1.25rem;
+}
+.summary-title {
+  font-family: "Anton", sans-serif;
+  font-size: clamp(3rem, 15vw, 7rem);
+  margin: 0 0 2rem;
+  letter-spacing: -.03em;
+  color: #f5f500;
+  animation: slam-in .5s cubic-bezier(.22,1,.36,1) both;
+}
+.summary-stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(120px, 1fr));
+  gap: 1rem;
+  max-width: 460px;
+  width: 100%;
+}
+.stat {
+  padding: 1.2rem .8rem;
+  border-radius: 18px;
+  background: #191919;
+  animation: deck-in .45s cubic-bezier(.22,1,.36,1) both;
+  animation-delay: calc(var(--i) * 80ms + 120ms);
+}
+.stat-n {
+  display: block;
+  font-family: "Archivo Black", sans-serif;
+  font-size: clamp(1.6rem, 7vw, 2.4rem);
+  line-height: 1;
+}
+.stat-l { display: block; margin-top: .35rem; font-size: .72rem; text-transform: uppercase; letter-spacing: .08em; opacity: .55; }
+
+/* ── Editor ──────────────────────────────────────────────── */
+.editor-wrap { max-width: 640px; margin: 0 auto; padding: max(2rem, env(safe-area-inset-top)) 1.25rem 3rem; }
+.editor-title { font-family: "Anton", sans-serif; font-size: clamp(2.4rem, 10vw, 4rem); margin: 1rem 0 1.5rem; letter-spacing: -.02em; }
+.field { display: block; margin-bottom: 1.25rem; }
+.field > span { display: block; margin-bottom: .45rem; font-size: .8rem; text-transform: uppercase; letter-spacing: .08em; opacity: .6; }
+.field input, .field textarea {
+  width: 100%;
+  padding: .9rem 1rem;
+  border-radius: 14px;
+  border: 2px solid rgba(255,255,255,.18);
+  background: #141414;
+  resize: vertical;
+}
+.field input:focus, .field textarea:focus { outline: none; border-color: #f5f500; }
+.field code { background: rgba(255,255,255,.1); padding: .1em .35em; border-radius: 5px; }
