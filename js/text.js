@@ -54,8 +54,20 @@
       if (fits) { best = mid; min = mid; } else { max = mid; }
     }
 
-    el.style.fontSize = Math.floor(best) + 'px';
-    return Math.floor(best);
+    var size = Math.floor(best);
+    el.style.fontSize = size + 'px';
+
+    /* The search can never return below its own minimum, so a long question
+       in a short box — dense modes leave the flipper close to its 15vh
+       floor — still overflows at `min`. Step down to a hard floor. */
+    var floor = opts.floor || 13;
+    while (size > floor &&
+           (el.scrollHeight > box.clientHeight + 1 || el.scrollWidth > box.clientWidth + 1)) {
+      size -= 2;
+      el.style.fontSize = size + 'px';
+    }
+
+    return size;
   }
 
   /* Loose match: case-, accent-, and punctuation-insensitive. */
