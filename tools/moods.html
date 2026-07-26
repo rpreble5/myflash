@@ -77,7 +77,7 @@
   <i id="spec">—</i>
   <span class="sp"></span>
   <i id="pos">1 / 1</i>
-  <i>H hides</i>
+  <i>tap to hide</i>
 </div>
 
 <div id="reel"></div>
@@ -285,6 +285,16 @@
   }
 
   reel.addEventListener('scroll', paint, { passive: true });
+
+  /* There is no H key on a phone, and this is a phone-first app being
+     judged on a phone. Tapping the label hides it; tapping the card
+     brings it back. */
+  document.querySelector('.tag').addEventListener('click', function () {
+    document.body.classList.add('is-bare');
+  });
+  reel.addEventListener('click', function () {
+    document.body.classList.remove('is-bare');
+  });
   document.addEventListener('keydown', function (e) {
     if (e.key === 'h' || e.key === 'H') document.body.classList.toggle('is-bare');
     else if (e.key === 'ArrowDown' || e.key === 'ArrowRight') reel.scrollBy({ top: reel.clientHeight });
