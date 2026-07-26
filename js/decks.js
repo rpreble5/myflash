@@ -22,6 +22,79 @@
   'use strict';
 
   var BUILTIN = [
+    /* One topic through every card type — a worked example of what a
+       generated deck can look like when the format follows the content
+       rather than the other way round. */
+    {
+      id: 'dka',
+      name: 'DKA',
+      blurb: 'Diabetic ketoacidosis, worked through all nine card types',
+      cards: [
+        { type: 'recall', q: 'First intravenous fluid in DKA', a: 'Isotonic saline' },
+        { type: 'recall', q: 'Insulin route of choice in DKA', a: 'IV regular insulin infusion' },
+        { type: 'recall', q: 'Ketone measured to track DKA resolution', a: 'Beta-hydroxybutyrate',
+          why: 'Urine ketones lag: they measure acetoacetate, which rises as beta-hydroxybutyrate is converted back during treatment, so urine can look worse while the patient improves.' },
+
+        { type: 'mcq', q: 'Most common precipitant of DKA in a known diabetic', a: 'Infection',
+          distractors: ['Pancreatitis', 'Myocardial infarction', 'Corticosteroids'] },
+        { type: 'mcq', q: 'Electrolyte that must be checked before starting insulin', a: 'Potassium',
+          distractors: ['Sodium', 'Calcium', 'Magnesium'] },
+
+        { type: 'multi', q: 'Diagnostic criteria for DKA',
+          answers: ['Glucose > 250 mg/dL', 'Anion gap acidosis', 'Ketonemia'],
+          distractors: ['Glucose > 600 mg/dL', 'Osmolality > 320 mOsm/kg'],
+          why: 'The two distractors are HHS. DKA is defined by the acidosis and the ketones, not by how high the glucose runs — euglycaemic DKA exists, notably on SGLT2 inhibitors.' },
+
+        { type: 'truefalse', q: 'Total body potassium is depleted in DKA even when the serum level is high', a: true,
+          why: 'Acidosis and insulin deficiency drive potassium out of cells, so serum potassium reads normal or high while total stores are badly down. Insulin reverses the shift within hours, which is why potassium is checked before the drip starts and replaced during it.' },
+        { type: 'truefalse', q: 'Bicarbonate is given routinely in DKA', a: false,
+          why: 'Reserved for pH below about 6.9. Otherwise it risks hypokalaemia and paradoxical CNS acidosis without improving outcomes.' },
+
+        { type: 'number', q: 'Hold insulin until serum potassium is at least', value: 3.3, unit: 'mEq/L',
+          tolerance: 0, step: 0.1, min: 2.5, max: 5.5 },
+        { type: 'number', q: 'Add dextrose to the fluids once glucose falls to', value: 200, unit: 'mg/dL',
+          tolerance: 0, step: 25, min: 100, max: 400 },
+        { type: 'number', q: 'Hours of overlap before stopping the insulin drip', low: 1, high: 2, unit: 'h',
+          step: 0.5, min: 0, max: 6 },
+
+        { type: 'trend', q: 'Untreated DKA', items: [
+          { label: 'Arterial pH', dir: 'down' },
+          { label: 'Anion gap', dir: 'up' },
+          { label: 'Serum bicarbonate', dir: 'down' },
+          { label: 'Serum potassium', dir: 'up' }
+        ] },
+        { type: 'trend', q: 'First hours of insulin therapy in DKA', items: [
+          { label: 'Serum glucose', dir: 'down' },
+          { label: 'Serum potassium', dir: 'down' },
+          { label: 'Anion gap', dir: 'down' }
+        ] },
+
+        { type: 'bucket', q: 'DKA or HHS?',
+          bins: ['DKA', 'HHS'],
+          items: [
+            { label: 'Ketones strongly positive', bin: 'DKA' },
+            { label: 'Anion gap acidosis', bin: 'DKA' },
+            { label: 'Type 1 diabetes more often', bin: 'DKA' },
+            { label: 'Glucose over 600', bin: 'HHS' },
+            { label: 'Osmolality over 320', bin: 'HHS' }
+          ] },
+
+        { type: 'order', q: 'DKA management sequence', steps: [
+          'Isotonic fluid resuscitation',
+          'Check serum potassium',
+          'Start IV insulin infusion',
+          'Add dextrose at glucose 200',
+          'Overlap subcutaneous insulin'
+        ] },
+
+        { type: 'match', q: 'Complication → cause', pairs: [
+          { left: 'Cerebral edema', right: 'Fast osmolar shift' },
+          { left: 'Hypokalemia', right: 'Insulin infusion' },
+          { left: 'Hyperchloremia', right: 'Saline volume' },
+          { left: 'Hypoglycemia', right: 'Missed dextrose' }
+        ] }
+      ]
+    },
     {
       id: 'tflab',
       name: 'TF LAB',
