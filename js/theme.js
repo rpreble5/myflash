@@ -192,7 +192,128 @@
     { face: '"Yatra One", serif',            track: '0',      caps: false, wght: 400, off: true },
     { face: '"Monoton", sans-serif',         track: '.02em',  caps: true,  wght: 400 },
     { face: '"Zen Dots", sans-serif',        track: '-.01em', caps: false, wght: 400, off: true },
-    { face: '"Bricolage Grotesque", sans-serif', track: '-.03em', caps: false, wght: 800, off: true }
+    { face: '"Bricolage Grotesque", sans-serif', track: '-.03em', caps: false, wght: 800, off: true },
+    /* ── Round five: sans, interesting but readable ────────────
+       The brief narrowed to sans faces with character that still read at
+       size, which is what four passes had already been saying — the
+       survivors are condensed gothics, geometric and wide faces, and
+       graphic display; the casualties are rounded-friendly, plain heavy,
+       and (in combination) high-contrast serifs.
+
+       A hundred of them, in six families, so the next pass can tell which
+       family is carrying the result rather than which individual face. */
+
+    /* condensed */
+    { face: '"Archivo Narrow", sans-serif', track: '-.005em', caps: true, wght: 700 },
+    { face: '"Barlow Condensed", sans-serif', track: '-.005em', caps: true, wght: 700 },
+    { face: '"Barlow Semi Condensed", sans-serif', track: '-.005em', caps: true, wght: 700 },
+    { face: '"Encode Sans Condensed", sans-serif', track: '-.005em', caps: true, wght: 700 },
+    { face: '"Fira Sans Condensed", sans-serif', track: '-.005em', caps: true, wght: 700 },
+    { face: '"IBM Plex Sans Condensed", sans-serif', track: '-.005em', caps: true, wght: 700 },
+    { face: '"Roboto Condensed", sans-serif', track: '-.005em', caps: true, wght: 700 },
+    { face: '"Yanone Kaffeesatz", sans-serif', track: '-.005em', caps: true, wght: 700 },
+    { face: '"Pathway Gothic One", sans-serif', track: '-.005em', caps: true, wght: 400 },
+    { face: '"Six Caps", sans-serif', track: '-.005em', caps: true, wght: 400 },
+    { face: '"Economica", sans-serif', track: '-.005em', caps: true, wght: 700 },
+    { face: '"Khand", sans-serif', track: '-.005em', caps: true, wght: 700 },
+    { face: '"Rajdhani", sans-serif', track: '-.005em', caps: true, wght: 700 },
+    { face: '"Chivo", sans-serif', track: '-.005em', caps: true, wght: 900 },
+    { face: '"Alumni Sans", sans-serif', track: '-.005em', caps: true, wght: 800 },
+    { face: '"Saira Semi Condensed", sans-serif', track: '-.005em', caps: true, wght: 800 },
+    { face: '"Saira Extra Condensed", sans-serif', track: '-.005em', caps: true, wght: 800 },
+    { face: '"Archivo", sans-serif', track: '-.005em', caps: true, wght: 900 },
+    { face: '"Cabin Condensed", sans-serif', track: '-.005em', caps: true, wght: 700 },
+    { face: '"Dosis", sans-serif', track: '-.005em', caps: true, wght: 800 },
+    { face: '"Oxanium", sans-serif', track: '-.005em', caps: true, wght: 800 },
+    { face: '"Gemunu Libre", sans-serif', track: '-.005em', caps: true, wght: 800 },
+
+    /* technical */
+    { face: '"Michroma", sans-serif', track: '0', caps: false, wght: 400 },
+    { face: '"Orbitron", sans-serif', track: '0', caps: false, wght: 800 },
+    { face: '"Audiowide", sans-serif', track: '0', caps: false, wght: 400 },
+    { face: '"Syncopate", sans-serif', track: '0', caps: false, wght: 700 },
+    { face: '"Jura", sans-serif', track: '0', caps: false, wght: 700 },
+    { face: '"Exo 2", sans-serif', track: '0', caps: false, wght: 800 },
+    { face: '"Quantico", sans-serif', track: '0', caps: false, wght: 700 },
+    { face: '"Tomorrow", sans-serif', track: '0', caps: false, wght: 700 },
+    { face: '"Chakra Petch", sans-serif', track: '0', caps: false, wght: 700 },
+    { face: '"Bai Jamjuree", sans-serif', track: '0', caps: false, wght: 700 },
+    { face: '"Kanit", sans-serif', track: '0', caps: false, wght: 800 },
+    { face: '"Sarpanch", sans-serif', track: '0', caps: false, wght: 800 },
+    { face: '"Days One", sans-serif', track: '0', caps: false, wght: 400 },
+    { face: '"Aldrich", sans-serif', track: '0', caps: false, wght: 400 },
+    { face: '"Electrolize", sans-serif', track: '0', caps: false, wght: 400 },
+    { face: '"Share Tech", sans-serif', track: '0', caps: false, wght: 400 },
+    { face: '"Turret Road", sans-serif', track: '0', caps: false, wght: 800 },
+    { face: '"Unica One", sans-serif', track: '0', caps: false, wght: 400 },
+    { face: '"Genos", sans-serif', track: '0', caps: false, wght: 800 },
+    { face: '"Reem Kufi", sans-serif', track: '0', caps: false, wght: 700 },
+
+    /* wide */
+    { face: '"Lexend Zetta", sans-serif', track: '.01em', caps: true, wght: 700 },
+    { face: '"Lexend Mega", sans-serif', track: '.01em', caps: true, wght: 700 },
+    { face: '"Lexend Giga", sans-serif', track: '.01em', caps: true, wght: 700 },
+    { face: '"Lexend Exa", sans-serif', track: '.01em', caps: true, wght: 700 },
+    { face: '"Gruppo", sans-serif', track: '.01em', caps: true, wght: 400 },
+    { face: '"Federo", sans-serif', track: '.01em', caps: true, wght: 400 },
+    { face: '"Nova Square", sans-serif', track: '.01em', caps: true, wght: 400 },
+    { face: '"Iceberg", sans-serif', track: '.01em', caps: true, wght: 400 },
+    { face: '"Rationale", sans-serif', track: '.01em', caps: true, wght: 400 },
+    { face: '"Voltaire", sans-serif', track: '.01em', caps: true, wght: 400 },
+
+    /* impact */
+    { face: '"Black Ops One", sans-serif', track: '0', caps: false, wght: 400 },
+    { face: '"Bowlby One", sans-serif', track: '0', caps: false, wght: 400 },
+    { face: '"Bowlby One SC", sans-serif', track: '0', caps: false, wght: 400 },
+    { face: '"Racing Sans One", sans-serif', track: '0', caps: false, wght: 400 },
+    { face: '"Jockey One", sans-serif', track: '0', caps: false, wght: 400 },
+    { face: '"Hammersmith One", sans-serif', track: '0', caps: false, wght: 400 },
+    { face: '"Changa", sans-serif', track: '0', caps: false, wght: 800 },
+    { face: '"Signika Negative", sans-serif', track: '0', caps: false, wght: 700 },
+    { face: '"Wendy One", sans-serif', track: '0', caps: false, wght: 400 },
+    { face: '"Poller One", sans-serif', track: '0', caps: false, wght: 400 },
+    { face: '"Spicy Rice", sans-serif', track: '0', caps: false, wght: 400 },
+    { face: '"Kumar One", sans-serif', track: '0', caps: false, wght: 400 },
+    { face: '"Yeon Sung", sans-serif', track: '0', caps: false, wght: 400 },
+    { face: '"Frijole", sans-serif', track: '0', caps: false, wght: 400 },
+    { face: '"Wallpoet", sans-serif', track: '0', caps: false, wght: 400 },
+    { face: '"Bungee Outline", sans-serif', track: '0', caps: false, wght: 400 },
+    { face: '"Sigmar One", sans-serif', track: '0', caps: false, wght: 400 },
+    { face: '"Rammetto One", sans-serif', track: '0', caps: false, wght: 400 },
+    { face: '"Erica One", sans-serif', track: '0', caps: false, wght: 400 },
+    { face: '"Skranji", sans-serif', track: '0', caps: false, wght: 700 },
+
+    /* grotesque */
+    { face: '"Figtree", sans-serif', track: '-.03em', caps: false, wght: 900 },
+    { face: '"Manrope", sans-serif', track: '-.03em', caps: false, wght: 800 },
+    { face: '"Epilogue", sans-serif', track: '-.03em', caps: false, wght: 800 },
+    { face: '"Urbanist", sans-serif', track: '-.03em', caps: false, wght: 900 },
+    { face: '"Red Hat Display", sans-serif', track: '-.03em', caps: false, wght: 900 },
+    { face: '"Be Vietnam Pro", sans-serif', track: '-.03em', caps: false, wght: 800 },
+    { face: '"Hanken Grotesk", sans-serif', track: '-.03em', caps: false, wght: 800 },
+    { face: '"Public Sans", sans-serif', track: '-.03em', caps: false, wght: 900 },
+    { face: '"Overpass", sans-serif', track: '-.03em', caps: false, wght: 900 },
+    { face: '"Karla", sans-serif', track: '-.03em', caps: false, wght: 800 },
+    { face: '"Rubik", sans-serif', track: '-.03em', caps: false, wght: 800 },
+    { face: '"Asap", sans-serif', track: '-.03em', caps: false, wght: 700 },
+    { face: '"Catamaran", sans-serif', track: '-.03em', caps: false, wght: 900 },
+    { face: '"Mulish", sans-serif', track: '-.03em', caps: false, wght: 900 },
+    { face: '"Commissioner", sans-serif', track: '-.03em', caps: false, wght: 900 },
+    { face: '"Anybody", sans-serif', track: '-.03em', caps: false, wght: 800 },
+    { face: '"Familjen Grotesk", sans-serif', track: '-.03em', caps: false, wght: 700 },
+    { face: '"Darker Grotesque", sans-serif', track: '-.03em', caps: false, wght: 800 },
+
+    /* quirky */
+    { face: '"Modak", sans-serif', track: '0', caps: false, wght: 400 },
+    { face: '"Climate Crisis", sans-serif', track: '0', caps: false, wght: 400 },
+    { face: '"Rubik Vinyl", sans-serif', track: '0', caps: false, wght: 400 },
+    { face: '"Rubik Dirt", sans-serif', track: '0', caps: false, wght: 400 },
+    { face: '"Rubik Distressed", sans-serif', track: '0', caps: false, wght: 400 },
+    { face: '"Rubik Marker Hatch", sans-serif', track: '0', caps: false, wght: 400 },
+    { face: '"Rubik Spray Paint", sans-serif', track: '0', caps: false, wght: 400 },
+    { face: '"Rubik Storm", sans-serif', track: '0', caps: false, wght: 400 },
+    { face: '"Rubik Microbe", sans-serif', track: '0', caps: false, wght: 400 },
+    { face: '"Silkscreen", sans-serif', track: '0', caps: false, wght: 700 }
   ];
 
   var BODY_FACE = '"Space Grotesk", system-ui, sans-serif';
