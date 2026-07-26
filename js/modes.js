@@ -404,11 +404,26 @@
 
   /* ═══════════════ trend: up / down / unchanged ═══════════════ */
 
+  /* Drawn rather than typed. A text arrow is whatever the resolved font
+     happens to ship — a hairline in one face, a different head angle in
+     the next, and nothing to fall back to on a platform missing the
+     glyph. These are one path each, two subpaths for the arrows: a
+     shaft, then the head. Weight and caps come from CSS.
+
+     All three share a geometry: the head's shoulders land on y=12, the
+     same line the unchanged bar sits on, and both arrows span 5 to 19
+     so the set reads as one mark in three positions. */
   var DIRS = [
-    { key: 'up',   glyph: '↑', name: 'UP' },
-    { key: 'same', glyph: '—', name: 'SAME' },
-    { key: 'down', glyph: '↓', name: 'DOWN' }
+    { key: 'up',   name: 'UP',   art: 'M12 19V5.5M5 12L12 5L19 12' },
+    { key: 'same', name: 'SAME', art: 'M5 12H19' },
+    { key: 'down', name: 'DOWN', art: 'M12 5V18.5M5 12L12 19L19 12' }
   ];
+
+  function dirArt(d) {
+    /* Static literals only — no card content reaches this. */
+    return '<svg class="dir-art" viewBox="0 0 24 24" aria-hidden="true" focusable="false">' +
+           '<path d="' + d.art + '"/></svg>';
+  }
 
   var trend = {
     id: 'trend', label: 'MARK THE CHANGES', types: ['trend'], weight: 1,
@@ -437,7 +452,8 @@
              row, and enableSwipe steps around real buttons — a submit
              swipe starting on one would die. The gesture's own onTap
              does the selecting, as it does for select-all. */
-          var b = h('div', 'dir-btn', d.glyph);
+          var b = h('div', 'dir-btn');
+          b.innerHTML = dirArt(d);
           b.setAttribute('role', 'button');
           b.setAttribute('aria-label', item.label + ' ' + d.name);
           b.setAttribute('aria-pressed', 'false');
