@@ -23,6 +23,29 @@
 
   var BUILTIN = [
     {
+      id: 'tflab',
+      name: 'TF LAB',
+      blurb: 'True or false — swipe left or right, with and without notes',
+      cards: [
+        /* No note: the card ends on the buttons alone. */
+        { type: 'truefalse', q: 'Naloxone reverses benzodiazepine overdose', a: false },
+        { type: 'truefalse', q: 'The vagus nerve is cranial nerve X', a: true },
+
+        /* Short note: renders inline under the buttons. */
+        { type: 'truefalse', q: 'In a pure respiratory disorder, pH and PaCO₂ move in opposite directions', a: true,
+          why: 'Rising CO₂ drives pH down; falling CO₂ drives pH up.' },
+        { type: 'truefalse', q: 'A normal anion gap rules out a metabolic acidosis', a: false,
+          why: 'Hyperchloraemic acidoses — diarrhoea, RTA — run a normal gap.' },
+
+        /* Long note: folds behind a WHY? toggle, which must not count as
+           the tap that continues. */
+        { type: 'truefalse', q: 'Live attenuated vaccines are safe in pregnancy', a: false,
+          why: 'Live vaccines — MMR, varicella, intranasal influenza — are contraindicated in pregnancy and in significant immunosuppression, on the theoretical risk of fetal infection. Inactivated vaccines, including Tdap and influenza by injection, are not only safe but actively recommended.' },
+        { type: 'truefalse', q: 'Epinephrine is the first-line treatment for anaphylaxis', a: true,
+          why: 'Intramuscular epinephrine into the anterolateral thigh comes first and comes early. Antihistamines and steroids treat the rash and may blunt a biphasic reaction, but neither reverses airway oedema or shock, and reaching for them first is the classic fatal delay.' }
+      ]
+    },
+    {
       id: 'picklab',
       name: 'PICK LAB',
       blurb: 'Choice and select-all — both layouts, short and long options',

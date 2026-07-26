@@ -337,38 +337,60 @@
     id: 'truefalse', label: 'TRUE OR FALSE', types: ['truefalse'], weight: 1,
     eligible: function () { return true; },
     mount: function (area, ctx) {
-      var bar = h('div', 'tf-bar');
       var locked = false;
+      var bar = h('div', 'tf-bar');
+      /* False left, true right: the same axis as everywhere else in the
+         app, where left is the negative answer and right the positive
+         one. The buttons stay real, so the card still works by tap and
+         by keyboard — and unlike a select-all list, a two-button bar
+         leaves most of the card free for the swipe to start on. */
+      var fBtn = h('button', 'tf-btn tf-false', 'FALSE');
+      var tBtn = h('button', 'tf-btn tf-true', 'TRUE');
+      bar.appendChild(fBtn);
+      bar.appendChild(h('span', 'swipe-cue', 'swipe'));
+      bar.appendChild(tBtn);
+      area.appendChild(bar);
 
-      function make(label, value) {
-        var b = h('button', 'tf-btn tf-' + String(value), label);
-        b.addEventListener('click', function () {
-          if (locked) return;
-          locked = true;
-          var ok = value === !!ctx.card.a;
-          b.classList.add(ok ? 'is-right' : 'is-wrong');
-          bar.classList.add('is-locked');
-          if (!ok) {
-            var right = bar.querySelector('.tf-' + String(!!ctx.card.a));
-            if (right) right.classList.add('is-right');
-          }
-          if (ctx.card.why) {
-            var why = h('div', 'why', ctx.card.why);
-            area.appendChild(why);
-            requestAnimationFrame(function () { why.classList.add('is-in'); });
-          }
-          settle(ctx, ok ? 1 : 0);
-        });
-        return b;
+      /* Mounted held, released on the answer. Appended at reveal time it
+         pushed the buttons down the card exactly as the result landed. */
+      var why = ctx.card.why ? explanation(ctx.card.why) : null;
+      if (why) {
+        why.classList.add('is-held');
+        area.appendChild(why);
       }
 
-      var tBtn = make('TRUE', true);
-      var fBtn = make('FALSE', false);
-      bar.appendChild(tBtn);
-      bar.appendChild(fBtn);
-      area.appendChild(bar);
-      ctx.keys({ '1': function () { tBtn.click(); }, '2': function () { fBtn.click(); },
-                 'ArrowLeft': function () { tBtn.click(); }, 'ArrowRight': function () { fBtn.click(); } });
+      function answer(value) {
+        if (locked) return;
+        locked = true;
+        var ok = value === !!ctx.card.a;
+        bar.classList.add('is-locked');
+        (value ? tBtn : fBtn).classList.add(ok ? 'is-right' : 'is-wrong');
+        /* Wrong: light the true answer as well, so the card ends showing
+           what is so rather than only what you said. */
+        if (!ok) (ctx.card.a ? tBtn : fBtn).classList.add('is-right');
+        if (why) why.classList.remove('is-held');
+        settle(ctx, ok ? 1 : 0);
+      }
+
+      /* Nothing leaves the screen — the bar follows the finger and springs
+         back while the answer resolves in place. */
+      var swipe = ctx.enableSwipe({
+        visual: bar,
+        nudge: true,
+        onLeft:  function () { answer(false); },
+        onRight: function () { answer(true); }
+      });
+
+      fBtn.addEventListener('click', function (e) { e.stopPropagation(); swipe.commit(false); });
+      tBtn.addEventListener('click', function (e) { e.stopPropagation(); swipe.commit(true); });
+      ctx.keys({
+        'ArrowLeft':  function () { swipe.commit(false); },
+        'ArrowRight': function () { swipe.commit(true); },
+        '1': function () { swipe.commit(false); },
+        '2': function () { swipe.commit(true); },
+        'f': function () { swipe.commit(false); },
+        't': function () { swipe.commit(true); }
+      });
     }
   };
 

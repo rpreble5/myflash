@@ -34,7 +34,7 @@ layer, which reshuffles palette, face, backdrop and entrance every render.
 | `recall` | `{ q, a, why? }` | tap anywhere to reveal, then swipe to grade |
 | `mcq` | `{ q, a, distractors[] }` | tap one; grid or list, decided by option length |
 | `multi` | `{ q, answers[], distractors[], why? }` | select all that apply, swipe right to submit |
-| `truefalse` | `{ q, a:bool, why }` | two buttons, explanation on reveal |
+| `truefalse` | `{ q, a:bool, why? }` | swipe left for false, right for true |
 | `number` | `{ q, value, unit, tolerance, step? }` | drag anywhere to dial a value |
 | `number` | `{ q, low, high, unit, step? }` | dial to any value inside the band |
 | `trend` | `{ q, items:[{label, dir}] }` | mark each row ↑ / — / ↓ |

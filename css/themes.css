@@ -401,7 +401,17 @@
 .btn-check.is-hidden { visibility: hidden; }
 
 /* ── True / false ────────────────────────────────────────── */
-.tf-bar { display: flex; gap: .7rem; width: min(560px, 100%); }
+.tf-bar {
+  display: flex;
+  align-items: center;
+  gap: .7rem;
+  width: min(560px, 100%);
+  /* The bar follows the finger and springs back; the transition has to
+     be off mid-drag or the travel lags behind the thumb. */
+  transition: transform .2s cubic-bezier(.25,.8,.4,1);
+}
+.card.is-dragging .tf-bar { transition: none; }
+.tf-bar .swipe-cue { flex: 0 0 auto; }
 .tf-btn {
   flex: 1;
   padding: 1.4rem .8rem;
@@ -418,6 +428,13 @@
 .tf-bar.is-locked .tf-btn { pointer-events: none; }
 .tf-btn.is-right { background: var(--ink); color: var(--bg); }
 .tf-btn.is-wrong { opacity: .4; transform: scale(.98); }
+
+/* Dragging previews the answer: a tint while heading that way, a fill
+   once release would commit it. False left, true right. */
+.card[data-swipe="left"]  .tf-false,
+.card[data-swipe="right"] .tf-true { background: color-mix(in srgb, var(--ink) 14%, transparent); }
+.card[data-armed="left"]  .tf-false,
+.card[data-armed="right"] .tf-true { background: var(--ink); color: var(--bg); }
 
 /* `.why` itself is defined once, in the Explanation section above. */
 
