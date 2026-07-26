@@ -47,7 +47,9 @@
   }
 
   /* ───────────────────────── settings ──────────────────────── */
-  function bindToggle(id, key) {
+  /* `apply` runs on bind as well as on change, so a stored preference is
+     in force from boot rather than from the first time it is touched. */
+  function bindToggle(id, key, apply) {
     var el = $(id);
     if (!el) return;
 
@@ -55,6 +57,7 @@
       var on = !!global.Store.setting(key);
       el.classList.toggle('is-on', on);
       el.setAttribute('aria-checked', on ? 'true' : 'false');
+      if (apply) apply(on);
     }
 
     el.addEventListener('click', function () {
@@ -261,7 +264,7 @@
          element; modes just say what left and right mean. */
       enableSwipe: function (opts) {
         var startX = 0, startY = 0, dragging = false, committed = false, axis = null;
-        var startTarget = null;
+        var startTarget = null, armed = false;
         el.classList.add('is-gesture');
         var width = el.clientWidth || 360;
         var threshold = Math.min(110, width * 0.28);
@@ -299,6 +302,17 @@
           visual.style.transform = 'translateX(' + (nudge ? dx * 0.35 : dx).toFixed(1) + 'px)';
           if (!nudge) visual.style.opacity = String(Math.max(0.4, 1 - Math.abs(dx) / (width * 1.5)));
           el.dataset.swipe = dx > 24 ? 'right' : dx < -24 ? 'left' : '';
+
+          /* Two separate states: `swipe` is the direction you are heading,
+             `armed` is having gone far enough that letting go commits.
+             Crossing that line ticks, so the gesture can be felt as well
+             as seen — nothing else reports it. */
+          var far = Math.abs(dx) >= threshold;
+          if (far !== armed) {
+            armed = far;
+            el.dataset.armed = armed ? (dx > 0 ? 'right' : 'left') : '';
+            if (armed) global.Sfx.arm();
+          }
         }
 
         function up(e) {
@@ -320,6 +334,8 @@
           visual.style.transform = '';
           visual.style.opacity = '';
           el.dataset.swipe = '';
+          el.dataset.armed = '';
+          armed = false;
         }
 
         function commit(right) {
@@ -493,7 +509,17 @@
     renderHome();
 
     bindToggle('#tg-submit', 'submitOnRelease');
+    bindToggle('#tg-sound', 'sound', function (on) { global.Sfx.setEnabled(on); });
+    bindToggle('#tg-haptics', 'haptics', function (on) { global.Sfx.setHaptics(on); });
+    /* Say so rather than offering a switch that does nothing: desktop
+       browsers and iOS have no vibration API at all. */
+    if (!global.Sfx.hasHaptics()) {
+      $('#tg-haptics').classList.add('is-unsupported');
+      $('#haptics-note').textContent = 'This device has no vibration motor the browser can reach.';
+    }
 
+    $('#btn-settings').addEventListener('click', function () { show('screen-settings'); });
+    $('#btn-settings-back').addEventListener('click', function () { show('screen-home'); renderHome(); });
     $('#btn-quit').addEventListener('click', function () { show('screen-home'); renderHome(); });
     $('#btn-home').addEventListener('click', function () { show('screen-home'); });
     $('#btn-again').addEventListener('click', function () { startSession(session.deck); });

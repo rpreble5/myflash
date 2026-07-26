@@ -22,6 +22,7 @@
   <!-- ───────────────────────── HOME ───────────────────────── -->
   <section class="screen is-active" id="screen-home">
     <div class="home-wrap">
+      <button class="icon-btn corner-btn" id="btn-settings" aria-label="Settings">&#9881;</button>
       <h1 class="wordmark">
         <span class="wordmark-a">MY</span><span class="wordmark-b">FLASH</span>
       </h1>
@@ -29,8 +30,22 @@
 
       <div class="deck-list" id="deck-list"></div>
 
-      <div class="settings" id="settings">
-        <h2 class="settings-head">Settings</h2>
+      <div class="home-actions">
+        <button class="btn btn-ghost" id="btn-new-deck">+ New deck</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────────────── SETTINGS ─────────────────────── -->
+  <section class="screen" id="screen-settings">
+    <div class="settings-wrap">
+      <div class="screen-head">
+        <button class="icon-btn" id="btn-settings-back" aria-label="Back">&#8592;</button>
+        <h2 class="screen-title">Settings</h2>
+      </div>
+
+      <h3 class="settings-head">Answering</h3>
+      <div class="settings-group">
         <button class="toggle" id="tg-submit" role="switch" aria-checked="false">
           <span class="toggle-track"><span class="toggle-thumb"></span></span>
           <span class="toggle-text">
@@ -40,8 +55,26 @@
         </button>
       </div>
 
-      <div class="home-actions">
-        <button class="btn btn-ghost" id="btn-new-deck">+ New deck</button>
+      <h3 class="settings-head">Feedback</h3>
+      <div class="settings-group">
+        <button class="toggle" id="tg-sound" role="switch" aria-checked="false">
+          <span class="toggle-track"><span class="toggle-thumb"></span></span>
+          <span class="toggle-text">
+            <span class="toggle-name">Sound</span>
+            <span class="toggle-note">Short blips on answers and on streaks.</span>
+          </span>
+        </button>
+        <button class="toggle" id="tg-haptics" role="switch" aria-checked="false">
+          <span class="toggle-track"><span class="toggle-thumb"></span></span>
+          <span class="toggle-text">
+            <span class="toggle-name">Vibration</span>
+            <span class="toggle-note" id="haptics-note">A tick when a swipe has gone far enough to take.</span>
+          </span>
+        </button>
+      </div>
+
+      <h3 class="settings-head">Data</h3>
+      <div class="settings-group">
         <button class="btn btn-ghost" id="btn-reset-progress">Reset progress</button>
       </div>
     </div>

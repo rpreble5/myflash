@@ -249,7 +249,7 @@
 .submit-cue.is-live { opacity: .75; }
 .submit-cue.is-hidden { visibility: hidden; }
 /* Once the drag is heading somewhere, the cue confirms rather than asks. */
-.card[data-swipe="right"] .submit-cue { opacity: 1; }
+.card[data-armed="right"] .submit-cue { opacity: 1; }
 
 /* The box is a checkbox rather than a keyboard hint: it has to show
    what is already selected, so it stays in both layouts. */
@@ -347,9 +347,14 @@
   text-transform: uppercase;
   opacity: .3;
 }
-/* Light up whichever side the drag is heading toward. */
+/* Two states, because a swipe answers two questions. Heading toward a
+   side brightens its label; having gone far enough that letting go
+   commits fills it in. The card itself never moves, so this and the
+   haptic tick are the whole of the feedback. */
 .card[data-swipe="left"]  .swipe-miss,
-.card[data-swipe="right"] .swipe-got {
+.card[data-swipe="right"] .swipe-got { opacity: 1; }
+.card[data-armed="left"]  .swipe-miss,
+.card[data-armed="right"] .swipe-got {
   opacity: 1;
   background: var(--ink);
   color: var(--bg);
@@ -451,9 +456,11 @@
   opacity: .5;
   transition: opacity .16s ease;
 }
-/* Light up the side the item is heading for. */
+/* Heading toward a side lifts its heading; far enough to commit fills it. */
 .card[data-swipe="left"]  .sort-head[data-side="left"],
-.card[data-swipe="right"] .sort-head[data-side="right"] { opacity: 1; }
+.card[data-swipe="right"] .sort-head[data-side="right"] { opacity: .8; }
+.card[data-armed="left"]  .sort-head[data-side="left"],
+.card[data-armed="right"] .sort-head[data-side="right"] { opacity: 1; }
 
 .sort-list { display: flex; flex-direction: column; gap: .25rem; }
 .sort-item {

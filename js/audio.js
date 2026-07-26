@@ -6,6 +6,9 @@
 
   var ctx = null;
   var enabled = true;
+  /* Separate from sound on purpose: they are different senses, and a
+     phone on a desk wants the opposite settings to one in a pocket. */
+  var haptics = true;
 
   function ac() {
     if (!ctx) {
@@ -35,17 +38,24 @@
   }
 
   function buzz(ms) {
+    if (!haptics) return;
     if (global.navigator && navigator.vibrate) navigator.vibrate(ms);
   }
 
   global.Sfx = {
     flip:    function () { blip(320, 620, 0.09, 'triangle', 0.05); buzz(8); },
     tick:    function () { blip(880, 880, 0.03, 'square', 0.03); },
+    /* A swipe has passed the point where letting go would commit. The
+       card itself doesn't move, so this is the only signal that the
+       gesture has taken hold. */
+    arm:     function () { blip(1040, 1040, 0.025, 'square', 0.025); buzz(12); },
     right:   function () { blip(520, 990, 0.12, 'triangle', 0.07); buzz(14); },
     wrong:   function () { blip(220, 90, 0.22, 'sawtooth', 0.05); buzz([18, 40, 18]); },
     streak:  function (n) { blip(440 + n * 60, 1200 + n * 60, 0.16, 'square', 0.06); buzz(22); },
     done:    function () { blip(392, 784, 0.35, 'triangle', 0.08); buzz([20, 60, 20, 60, 40]); },
     setEnabled: function (v) { enabled = !!v; },
-    isEnabled:  function () { return enabled; }
+    isEnabled:  function () { return enabled; },
+    setHaptics: function (v) { haptics = !!v; },
+    hasHaptics: function () { return !!(global.navigator && navigator.vibrate); }
   };
 })(window);

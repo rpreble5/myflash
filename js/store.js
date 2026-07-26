@@ -11,7 +11,9 @@
   /* Anything not listed here is not a setting. Defaults are the current
      behaviour, so an empty store behaves exactly as before. */
   var DEFAULTS = {
-    submitOnRelease: false
+    submitOnRelease: false,
+    sound: true,
+    haptics: true
   };
 
   function read(key, fallback) {
