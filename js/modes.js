@@ -660,63 +660,100 @@
 
   var order = {
     id: 'order', label: 'PUT IN ORDER', types: ['order'], weight: 1,
+    /* The question is a label — "ATLS primary survey" — and the slots are
+       the answer. */
+    compact: true,
     eligible: function (card) { return card.steps && card.steps.length >= 2; },
     mount: function (area, ctx) {
       var target = ctx.card.steps;
       var slotsEl = h('div', 'order-slots');
       var chipsEl = h('div', 'order-chips');
-      area.appendChild(slotsEl);
-      area.appendChild(chipsEl);
-
+      var hint = h('div', 'hint is-static submit-cue', 'SWIPE RIGHT TO SUBMIT →');
       var slots = [], placed = [], locked = false;
+
       target.forEach(function (_, i) {
-        var s = h('div', 'order-slot');
-        s.style.setProperty('--i', i);
-        s.appendChild(h('span', 'order-num', String(i + 1)));
-        s.appendChild(h('span', 'order-text', ''));
-        slotsEl.appendChild(s);
-        slots.push(s);
+        var slot = h('div', 'order-slot');
+        slot.style.setProperty('--i', i);
+        slot.appendChild(h('span', 'order-num', String(i + 1)));
+        slot.appendChild(h('span', 'order-text', ''));
+        slotsEl.appendChild(slot);
+        slots.push(slot);
       });
 
       global.Txt.shuffle(target.slice()).forEach(function (step, i) {
-        var c = h('button', 'order-chip', step);
+        /* Divs, as everywhere else a swipe has to be able to start on
+           them — the chips cover the lower half of the card. */
+        var c = h('div', 'order-chip', step);
+        c.setAttribute('role', 'button');
+        c.dataset.step = step;
         c.style.setProperty('--i', i);
-        c.addEventListener('click', function () {
-          if (locked || c.classList.contains('is-used') || placed.length >= slots.length) return;
-          var slot = slots[placed.length];
-          slot.querySelector('.order-text').textContent = step;
-          slot.classList.add('is-filled');
-          c.classList.add('is-used');
-          placed.push({ step: step, chip: c, slot: slot });
-          global.Sfx.tick();
-          if (placed.length === slots.length) check();
-        });
         chipsEl.appendChild(c);
       });
 
       var undo = h('button', 'btn btn-ghost btn-undo', '← Undo');
-      undo.addEventListener('click', function () {
+      undo.addEventListener('click', function (e) { e.stopPropagation(); undoOne(); });
+
+      area.appendChild(slotsEl);
+      area.appendChild(chipsEl);
+      area.appendChild(undo);
+      area.appendChild(hint);
+
+      function place(chip) {
+        if (locked || chip.classList.contains('is-used') || placed.length >= slots.length) return;
+        var slot = slots[placed.length];
+        slot.querySelector('.order-text').textContent = chip.dataset.step;
+        slot.classList.add('is-filled');
+        chip.classList.add('is-used');
+        placed.push({ step: chip.dataset.step, chip: chip, slot: slot });
+        global.Sfx.tick();
+        hint.classList.toggle('is-live', placed.length === slots.length);
+      }
+
+      function undoOne() {
         if (locked || !placed.length) return;
         var p = placed.pop();
         p.slot.querySelector('.order-text').textContent = '';
         p.slot.classList.remove('is-filled');
         p.chip.classList.remove('is-used');
-      });
-      area.appendChild(undo);
+        hint.classList.remove('is-live');
+        global.Sfx.tick();
+      }
 
-      function check() {
+      function submit() {
+        if (locked || placed.length < slots.length) return;
         locked = true;
-        undo.remove();
+        /* Both keep their boxes: filling the last slot used to grade the
+           card on the spot and take the undo button with it, so the one
+           moment you might want to change your mind was the one moment
+           you could not. */
+        undo.classList.add('is-hidden');
+        hint.classList.add('is-hidden');
+
         var right = 0;
         placed.forEach(function (p, i) {
-          if (p.step === target[i]) { right++; p.slot.classList.add('is-right'); }
-          else {
-            p.slot.classList.add('is-wrong');
-            p.slot.querySelector('.order-text').textContent = target[i];
-          }
+          var ok = p.step === target[i];
+          if (ok) right++;
+          else p.slot.querySelector('.order-text').textContent = target[i];
+          /* Every slot ends holding the true step, so the finished card
+             reads as the sequence; the marks say where you had it wrong. */
+          p.slot.classList.add(ok ? 'is-right' : 'is-wrong');
         });
+
         settle(ctx, right / target.length);
       }
+
+      var swipe = ctx.enableSwipe({
+        visual: slotsEl,
+        motion: 'nudge',
+        onRight: function () { if (placed.length === slots.length) submit(); else swipe.reset(); },
+        onLeft:  function () { swipe.reset(); },
+        onTap: function (target2) {
+          var c = target2 && target2.closest && target2.closest('.order-chip');
+          if (c) place(c);
+        }
+      });
+
+      ctx.keys({ 'Enter': submit, 'Backspace': undoOne });
     }
   };
 
@@ -724,6 +761,8 @@
 
   var match = {
     id: 'match', label: 'MATCH THEM UP', types: ['match'], weight: 1,
+    /* "Generic → brand" is a label, and the two columns are the answer. */
+    compact: true,
     eligible: function (card) { return card.pairs && card.pairs.length >= 2; },
     mount: function (area, ctx) {
       var pairs = ctx.card.pairs;
@@ -735,6 +774,10 @@
       area.appendChild(grid);
 
       var selected = null, solved = 0, misses = 0, busy = false;
+      /* Which pairs were confused, not just how many times. A finished
+         card that cannot say where you struggled has thrown away the
+         only thing worth taking from it. */
+      var fumbled = {};
 
       global.Txt.shuffle(pairs.slice()).forEach(function (p, i) {
         var b = h('button', 'match-btn', p.left);
@@ -764,20 +807,25 @@
         if (busy || btn.classList.contains('is-solved') || !selected) return;
         var ok = btn.dataset.key === selected.dataset.key;
         if (ok) {
-          var tint = solved % 4;
           selected.classList.add('is-solved');
           btn.classList.add('is-solved');
-          selected.dataset.tint = tint;
-          btn.dataset.tint = tint;
           selected.classList.remove('is-sel');
           selected = null;
           solved++;
           /* The closing pair is the card; let settle speak for it. */
-          if (solved === pairs.length) settle(ctx, Math.max(0, 1 - misses / pairs.length));
-          else global.Sfx.right();
+          if (solved === pairs.length) {
+            Array.prototype.forEach.call(grid.querySelectorAll('.match-btn'), function (x) {
+              if (fumbled[x.dataset.key]) x.classList.add('is-fumbled');
+            });
+            settle(ctx, Math.max(0, 1 - misses / pairs.length));
+          } else global.Sfx.right();
         } else {
           busy = true;
           misses++;
+          /* Both sides of a wrong attempt are implicated — the one you
+             reached for and the one you reached for it with. */
+          fumbled[selected.dataset.key] = true;
+          fumbled[btn.dataset.key] = true;
           var wrongLeft = selected;
           btn.classList.add('is-miss');
           wrongLeft.classList.add('is-miss');

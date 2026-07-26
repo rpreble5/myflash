@@ -632,7 +632,10 @@
 }
 .order-slot.is-filled { border-style: solid; border-color: var(--ink); }
 .order-slot.is-right { border-color: var(--ink); background: color-mix(in srgb, var(--ink) 12%, transparent); }
-.order-slot.is-wrong { border-color: var(--acc); color: var(--acc); }
+/* The slot holds the true step either way, so the text stays ink and only
+   the frame says you had this one in the wrong place. Colouring the text
+   accent made the correct answer look like the mistake. */
+.order-slot.is-wrong { border-color: var(--acc); }
 .order-slot.is-wrong .order-num { background: var(--acc); color: var(--bg); }
 
 .order-chips { display: flex; gap: .4rem; flex-wrap: wrap; justify-content: center; width: min(620px, 100%); }
@@ -648,7 +651,13 @@
   animation-delay: calc(var(--i) * 45ms);
   transition: transform .14s cubic-bezier(.22,1,.36,1), opacity .14s;
 }
+.order-chip[role="button"] { cursor: pointer; }
 .order-chip:active { transform: scale(.94); }
+/* Holds its box, like every other control that retires on an answer. */
+.btn-undo.is-hidden { visibility: hidden; }
+/* Only the slots move under the finger; the chips stay where they are. */
+.order-slots { transition: transform .2s cubic-bezier(.25,.8,.4,1); }
+.card.is-dragging .order-slots { transition: none; }
 .order-chip.is-used { opacity: .16; transform: scale(.9); pointer-events: none; }
 
 /* ── Match ───────────────────────────────────────────────── */
@@ -676,6 +685,9 @@
   pointer-events: none;
 }
 .match-btn.is-miss { opacity: .5; transform: scale(.98); }
+/* Solved, but not first time. An inset ring in the card's own ground cuts
+   into the accent fill, which an accent outline could not. */
+.match-btn.is-fumbled { box-shadow: inset 0 0 0 3px var(--bg); }
 
 /* ── Number ──────────────────────────────────────────────────
    No track. The whole card is the control: drag up to raise, down

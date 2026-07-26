@@ -39,8 +39,8 @@ layer, which reshuffles palette, face, backdrop and entrance every render.
 | `number` | `{ q, low, high, unit, step? }` | dial to any value inside the band |
 | `trend` | `{ q, items:[{label, dir}] }` | mark each row ↑ / — / ↓, swipe right to submit |
 | `bucket` | `{ q, bins[], items:[{label, bin}] }` | swipe each item left or right into a running list |
-| `order` | `{ q, steps[] }` | tap phrases into sequence |
-| `match` | `{ q, pairs:[{left, right}] }` | link two columns, four pairs |
+| `order` | `{ q, steps[] }` | tap phrases into sequence, swipe right to submit |
+| `match` | `{ q, pairs:[{left, right}] }` | link two columns; fumbled pairs stay marked |
 
 ### The recall card
 
