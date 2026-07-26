@@ -46,6 +46,57 @@
       ]
     },
     {
+      id: 'trendlab',
+      name: 'TREND LAB',
+      blurb: 'Up, down or unchanged — two rows up to five, long labels included',
+      cards: [
+        /* Two rows, and the one case where "unchanged" is the whole point. */
+        { type: 'trend', q: 'Subclinical hypothyroidism', items: [
+          { label: 'TSH', dir: 'up' },
+          { label: 'Free T4', dir: 'same' }
+        ] },
+        { type: 'trend', q: 'Primary hyperparathyroidism', items: [
+          { label: 'Serum calcium', dir: 'up' },
+          { label: 'Serum phosphate', dir: 'down' }
+        ] },
+
+        /* Three rows. */
+        { type: 'trend', q: 'Acute respiratory acidosis', items: [
+          { label: 'pH', dir: 'down' },
+          { label: 'PaCO₂', dir: 'up' },
+          { label: 'HCO₃⁻', dir: 'up' }
+        ] },
+        { type: 'trend', q: 'Septic (distributive) shock', items: [
+          { label: 'CVP / preload', dir: 'down' },
+          { label: 'SVR', dir: 'down' },
+          { label: 'Cardiac output', dir: 'up' }
+        ] },
+
+        /* Four rows, and four with labels long enough to crowd the arrows. */
+        { type: 'trend', q: 'Disseminated intravascular coagulation', items: [
+          { label: 'Platelets', dir: 'down' },
+          { label: 'PT', dir: 'up' },
+          { label: 'PTT', dir: 'up' },
+          { label: 'Fibrinogen', dir: 'down' }
+        ] },
+        { type: 'trend', q: 'Intravascular hemolysis', items: [
+          { label: 'LDH', dir: 'up' },
+          { label: 'Haptoglobin', dir: 'down' },
+          { label: 'Indirect bilirubin', dir: 'up' },
+          { label: 'Reticulocyte count', dir: 'up' }
+        ] },
+
+        /* Five rows — the tallest this card is asked to be. */
+        { type: 'trend', q: 'Iron deficiency anemia', items: [
+          { label: 'Serum iron', dir: 'down' },
+          { label: 'Ferritin', dir: 'down' },
+          { label: 'TIBC', dir: 'up' },
+          { label: 'Transferrin saturation', dir: 'down' },
+          { label: 'Mean corpuscular volume', dir: 'down' }
+        ] }
+      ]
+    },
+    {
       id: 'picklab',
       name: 'PICK LAB',
       blurb: 'Choice and select-all — both layouts, short and long options',
