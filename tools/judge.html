@@ -190,14 +190,24 @@ body.is-bare .jbar { opacity: 0; pointer-events: none; }
      font a backdrop is judged against. Deliberately plain, so the pass is
      rating one ingredient rather than an accident of the other two. */
   var SOLID = T.BACKDROPS.filter(function (b) { return b.name === 'solid'; })[0] || T.BACKDROPS[0];
-  var NEUTRAL_FONT = T.FONTS.filter(function (f) { return fontName(f) === 'Archivo Black'; })[0] || T.FONTS[0];
+  /* A control should be unremarkable, not liked: Archivo Black was the
+     obvious neutral until it got voted out. */
+  var NEUTRAL_FONT = T.FONTS.filter(function (f) { return fontName(f) === 'Anton'; })[0] || T.FONTS[0];
   var NO_ENTRANCE = T.ENTRANCES[0];
 
   var PHASES = [
     { id: 'palette',  label: 'Palettes',  items: function () { return T.PALETTES; },  name: function (p) { return p.name; } },
     { id: 'font',     label: 'Fonts',     items: function () { return T.FONTS; },     name: fontName },
     { id: 'backdrop', label: 'Backdrops', items: function () { return T.BACKDROPS; }, name: function (b) { return b.name; } },
-    { id: 'combo',    label: 'Free roll', items: function () { return null; },        name: function () { return 'random'; } }
+    { id: 'combo',    label: 'Free roll', items: function () { return null; },        name: function () { return 'random'; } },
+    /* A second look at what was cut. Texture strength has come down since
+       these were rated, and the note on that pass was that the motifs
+       were fine and the volume was not — so they are re-offered rather
+       than quietly resurrected. Rating writes back to the same bucket, so
+       a new verdict simply replaces the old one. */
+    { id: 'backdrop', label: 'Rejects', keep: true,
+      items: function () { return T.BACKDROPS.filter(function (b) { return b.off; }); },
+      name: function (b) { return b.name; } }
   ];
 
   var state = load();
@@ -235,7 +245,8 @@ body.is-bare .jbar { opacity: 0; pointer-events: none; }
       return T.compose(rollPalette(), T.FONTS[idx], SOLID, NO_ENTRANCE, 'plain');
     }
     if (p.id === 'backdrop') {
-      return T.compose(rollPalette(), rollFont(), T.BACKDROPS[idx], NO_ENTRANCE, 'plain');
+      var bds = p.items();
+      return T.compose(rollPalette(), rollFont(), bds[Math.min(idx, bds.length - 1)], NO_ENTRANCE, 'plain');
     }
     return T.compose(rollPalette(), rollFont(), rnd(T.BACKDROPS), NO_ENTRANCE, rnd(T.TREATMENTS));
   }
@@ -396,8 +407,10 @@ body.is-bare .jbar { opacity: 0; pointer-events: none; }
     rollP = rollF = null;
     if (!list) { render(); return; }        // free roll never runs out
     idx++;
-    /* Resume where the work is: skip anything already decided. */
-    while (idx < list.length && state[p.id][p.name(list[idx])]) idx++;
+    /* Resume where the work is: skip anything already decided. The
+       rejects pass is made entirely of decided things, so it walks
+       straight through instead. */
+    if (!p.keep) while (idx < list.length && state[p.id][p.name(list[idx])]) idx++;
     render();
   }
 
@@ -407,7 +420,7 @@ body.is-bare .jbar { opacity: 0; pointer-events: none; }
     rollP = rollF = null;
     var p = PHASES[phase];
     var list = p.items();
-    if (list) while (idx < list.length && state[p.id][p.name(list[idx])]) idx++;
+    if (list && !p.keep) while (idx < list.length && state[p.id][p.name(list[idx])]) idx++;
     render();
   }
 
@@ -514,7 +527,7 @@ body.is-bare .jbar { opacity: 0; pointer-events: none; }
     else if (e.key === 'Backspace') { e.preventDefault(); undo(); }
     else if (e.key === 'h' || e.key === 'H') document.body.classList.toggle('is-bare');
     else if (e.key === 'e' || e.key === 'E') openExport();
-    else if (e.key >= '5' && e.key <= '8') setPhase(Number(e.key) - 5);
+    else if (e.key >= '5' && e.key <= '9') setPhase(Number(e.key) - 5);
   });
 
   setPhase(0);

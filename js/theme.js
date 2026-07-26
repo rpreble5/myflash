@@ -46,19 +46,19 @@
   var PALETTES = [
     { name: 'voltage',    bg: '#0B0B0B', ink: '#F2F200', acc: '#FF2D95' },
     { name: 'siren',      bg: '#C4241B', ink: '#FFF8E7', acc: '#FFE600' },
-    { name: 'blueprint',  bg: '#1B1BFF', ink: '#FFE600', acc: '#00E5A0' },
+    { name: 'blueprint',  bg: '#1B1BFF', ink: '#FFE600', acc: '#00E5A0', off: true },
     { name: 'toxic',      bg: '#04150F', ink: '#00E5A0', acc: '#C6FF00' },
     { name: 'hyper',      bg: '#14001F', ink: '#FF2D95', acc: '#00C2FF' },
     { name: 'orchid',     bg: '#5B18D9', ink: '#F2E9FF', acc: '#FFE600' },
     { name: 'ember',      bg: '#1A0A00', ink: '#FF6B00', acc: '#FFD400' },
-    { name: 'deepdive',   bg: '#001622', ink: '#00C2FF', acc: '#FF6B5B' },
+    { name: 'deepdive',   bg: '#001622', ink: '#00C2FF', acc: '#FF6B5B', favor: 2 },
     { name: 'newsprint',  bg: '#F3F1EA', ink: '#111111', acc: '#C1002F' },
     { name: 'limelight',  bg: '#101400', ink: '#C6FF00', acc: '#FF00A8' },
     { name: 'clay',       bg: '#E8E2D6', ink: '#8F002F', acc: '#1B1BFF' },
     { name: 'graphite',   bg: '#191919', ink: '#F5F5F5', acc: '#FF6B00' },
     { name: 'bubblegum',  bg: '#FF69B4', ink: '#20003A', acc: '#0A2E00' },
     { name: 'signal',     bg: '#FFE600', ink: '#0B0B0B', acc: '#1B1BFF' },
-    { name: 'mint',       bg: '#00E5A0', ink: '#04150F', acc: '#4B0082' },
+    { name: 'mint',       bg: '#00E5A0', ink: '#04150F', acc: '#4B0082', off: true },
     { name: 'cobalt',     bg: '#002A8F', ink: '#F5F5F5', acc: '#FFB300' },
     { name: 'rust',       bg: '#8F2600', ink: '#FFE9D6', acc: '#00E5A0' },
     { name: 'forest',     bg: '#06231A', ink: '#7FFFB2', acc: '#FFD400' },
@@ -68,7 +68,7 @@
     { name: 'berry',      bg: '#4A0020', ink: '#FFC2DE', acc: '#7FFFB2' },
     { name: 'slate',      bg: '#2E3440', ink: '#ECEFF4', acc: '#8FD3E8' },
     { name: 'lemon',      bg: '#F7F7F2', ink: '#1B1B1B', acc: '#5B18D9' },
-    { name: 'inkblue',    bg: '#0A1A3F', ink: '#FFD400', acc: '#FF8A8A' },
+    { name: 'inkblue',    bg: '#0A1A3F', ink: '#FFD400', acc: '#FF8A8A', off: true },
     { name: 'moss',       bg: '#C8D96F', ink: '#17210A', acc: '#8F002F' },
     { name: 'coral',      bg: '#FF6B5B', ink: '#21060A', acc: '#00325E' },
     { name: 'steel',      bg: '#C9D1D9', ink: '#10161D', acc: '#8F002F' },
@@ -81,6 +81,12 @@
   /* Per-palette derived tones, cached — flat shapes need opaque colours,
      textures need translucent ones. */
   var toneCache = {};
+  /* How present a repeating texture is allowed to be, against the
+     original hand-set alphas. Dropped from 1 after a full taste pass:
+     the recurring note was not that the motifs were wrong but that they
+     were a shade too loud under the type. */
+  var TEXTURE = 0.62;
+
   function tones(p) {
     if (toneCache[p.name]) return toneCache[p.name];
     var t = {
@@ -92,10 +98,15 @@
       s3: mix(p.ink, p.bg, 0.22),   // assertive flat field
       a1: mix(p.acc, p.bg, 0.16),   // flat field in the accent
       a2: mix(p.acc, p.bg, 0.28),
-      tQuiet: rgba(p.ink, 0.055),
-      tMid:   rgba(p.ink, 0.09),
-      tLoud:  rgba(p.ink, 0.15),
-      tAcc:   rgba(p.acc, 0.13)
+      /* Texture washes, scaled by TEXTURE. The flat fields above are
+         shapes — a disc, an arc, a torn edge — and want their weight.
+         These are patterns that sit *under the reading*, and the whole
+         verdict on them was that they were a little too present. One
+         number so the next adjustment is one number. */
+      tQuiet: rgba(p.ink, 0.055 * TEXTURE),
+      tMid:   rgba(p.ink, 0.09  * TEXTURE),
+      tLoud:  rgba(p.ink, 0.15  * TEXTURE),
+      tAcc:   rgba(p.acc, 0.13  * TEXTURE)
     };
     toneCache[p.name] = t;
     return t;
@@ -103,22 +114,25 @@
 
   /* ── Fonts ─────────────────────────────────────────────────
      `tight` fonts get negative tracking; `caps` fonts read better
-     forced to uppercase.                                        */
+     forced to uppercase. `wght` is the CSS weight — deliberately not
+     called `weight`, which the picker reads as how often to choose a
+     thing, and which would otherwise make the 900-weight faces nine
+     times more likely than the 100s. */
   var FONTS = [
-    { face: '"Anton", sans-serif',           track: '-.02em', caps: true,  weight: 400 },
-    { face: '"Archivo Black", sans-serif',   track: '-.03em', caps: false, weight: 400 },
-    { face: '"Bebas Neue", sans-serif',      track: '.01em',  caps: true,  weight: 400 },
-    { face: '"Bungee", sans-serif',          track: '0',      caps: true,  weight: 400 },
-    { face: '"Alfa Slab One", serif',        track: '-.01em', caps: false, weight: 400 },
-    { face: '"Righteous", sans-serif',       track: '0',      caps: false, weight: 400 },
-    { face: '"Titan One", sans-serif',       track: '-.01em', caps: false, weight: 400 },
-    { face: '"Shrikhand", serif',            track: '0',      caps: false, weight: 400 },
-    { face: '"Syne", sans-serif',            track: '-.04em', caps: true,  weight: 800 },
-    { face: '"Unbounded", sans-serif',       track: '-.03em', caps: false, weight: 900 },
-    { face: '"Outfit", sans-serif',          track: '-.045em',caps: false, weight: 900 },
-    { face: '"Rubik Mono One", sans-serif',  track: '-.02em', caps: false, weight: 400 },
-    { face: '"Passion One", sans-serif',     track: '-.01em', caps: true,  weight: 900 },
-    { face: '"Sora", sans-serif',            track: '-.04em', caps: false, weight: 800 }
+    { face: '"Anton", sans-serif',           track: '-.02em', caps: true,  wght: 400 },
+    { face: '"Archivo Black", sans-serif',   track: '-.03em', caps: false, wght: 400 , off: true },
+    { face: '"Bebas Neue", sans-serif',      track: '.01em',  caps: true,  wght: 400 },
+    { face: '"Bungee", sans-serif',          track: '0',      caps: true,  wght: 400 , favor: 2 },
+    { face: '"Alfa Slab One", serif',        track: '-.01em', caps: false, wght: 400 , off: true },
+    { face: '"Righteous", sans-serif',       track: '0',      caps: false, wght: 400 },
+    { face: '"Titan One", sans-serif',       track: '-.01em', caps: false, wght: 400 },
+    { face: '"Shrikhand", serif',            track: '0',      caps: false, wght: 400 , favor: 2 },
+    { face: '"Syne", sans-serif',            track: '-.04em', caps: true,  wght: 800 },
+    { face: '"Unbounded", sans-serif',       track: '-.03em', caps: false, wght: 900 },
+    { face: '"Outfit", sans-serif',          track: '-.045em',caps: false, wght: 900 },
+    { face: '"Rubik Mono One", sans-serif',  track: '-.02em', caps: false, wght: 400 },
+    { face: '"Passion One", sans-serif',     track: '-.01em', caps: true,  wght: 900 , off: true },
+    { face: '"Sora", sans-serif',            track: '-.04em', caps: false, wght: 800 }
   ];
 
   var BODY_FACE = '"Space Grotesk", system-ui, sans-serif';
@@ -226,7 +240,7 @@
     { name: 'split-diag', tier: 'flat', weight: 1.4, drift: null,
       make: function (c) { return { image: 'linear-gradient(148deg, ' + c.s1 + ' 0 46%, transparent 46%)', size: 'auto' }; } },
 
-    { name: 'split-horiz', tier: 'flat', weight: 1.4, drift: null,
+    { name: 'split-horiz', off: true, tier: 'flat', weight: 1.4, drift: null,
       make: function (c) { return { image: 'linear-gradient(180deg, transparent 0 58%, ' + c.s1 + ' 58%)', size: 'auto' }; } },
 
     { name: 'split-vert', tier: 'flat', weight: 1.4, drift: null,
@@ -235,16 +249,16 @@
     { name: 'corner', tier: 'flat', weight: 1.4, drift: null,
       make: function (c) { return { image: 'linear-gradient(206deg, ' + c.a1 + ' 0 26%, transparent 26%)', size: 'auto' }; } },
 
-    { name: 'disc', tier: 'flat', weight: 1.4, drift: 'drift-breathe',
+    { name: 'disc', favor: 2, tier: 'flat', weight: 1.4, drift: 'drift-breathe',
       make: function (c) { return { image: 'radial-gradient(circle at 80% 16%, ' + c.s2 + ' 0 30%, transparent 30%)', size: 'auto' }; } },
 
-    { name: 'disc-low', tier: 'flat', weight: 1.4, drift: 'drift-breathe',
+    { name: 'disc-low', favor: 2, tier: 'flat', weight: 1.4, drift: 'drift-breathe',
       make: function (c) { return { image: 'radial-gradient(circle at 14% 86%, ' + c.a1 + ' 0 42%, transparent 42%)', size: 'auto' }; } },
 
-    { name: 'band', tier: 'flat', weight: 1.4, drift: null,
+    { name: 'band', off: true, tier: 'flat', weight: 1.4, drift: null,
       make: function (c) { return { image: 'linear-gradient(180deg, transparent 0 38%, ' + c.s2 + ' 38% 54%, transparent 54%)', size: 'auto' }; } },
 
-    { name: 'quarter', tier: 'flat', weight: 1.4, drift: null,
+    { name: 'quarter', favor: 2, tier: 'flat', weight: 1.4, drift: null,
       make: function (c) { return { image: 'radial-gradient(circle at 100% 100%, ' + c.s1 + ' 0 50%, transparent 50%)', size: 'auto' }; } },
 
     { name: 'twin-disc', tier: 'flat', weight: 1.4, drift: 'drift-breathe',
@@ -253,12 +267,12 @@
                         'radial-gradient(circle at 84% 74%, ' + c.a1 + ' 0 28%, transparent 28%)', size: 'auto' };
       } },
 
-    { name: 'ring-flat', tier: 'flat', weight: 1.4, drift: 'drift-breathe',
+    { name: 'ring-flat', off: true, tier: 'flat', weight: 1.4, drift: 'drift-breathe',
       make: function (c) {
         return { image: 'radial-gradient(circle at 50% 34%, transparent 0 32%, ' + c.s2 + ' 32% 34.5%, transparent 34.5%)', size: 'auto' };
       } },
 
-    { name: 'stack', tier: 'flat', weight: 1.4, drift: null,
+    { name: 'stack', off: true, tier: 'flat', weight: 1.4, drift: null,
       make: function (c) {
         return { image: 'linear-gradient(180deg, transparent 0 52%, ' + c.s1 + ' 52% 64%, transparent 64% 72%,' +
                         c.s1 + ' 72% 84%, transparent 84%)', size: 'auto' };
@@ -270,44 +284,44 @@
         return svgBackdrop('<path d="M0 140 L0 98 L17 79 L33 101 L52 66 L71 93 L87 71 L100 88 L100 140 Z" fill="' + c.s2 + '"/>');
       } },
 
-    { name: 'wave', tier: 'flat', weight: 1.4, drift: null,
+    { name: 'wave', favor: 2, tier: 'flat', weight: 1.4, drift: null,
       make: function (c) {
         return svgBackdrop('<path d="M0 140 L0 88 Q25 66 50 88 T100 88 L100 140 Z" fill="' + c.s1 + '"/>');
       } },
 
-    { name: 'arc-top', tier: 'flat', weight: 1.4, drift: null,
+    { name: 'arc-top', favor: 2, tier: 'flat', weight: 1.4, drift: null,
       make: function (c) {
         return svgBackdrop('<path d="M0 0 L100 0 L100 34 Q50 6 0 34 Z" fill="' + c.a1 + '"/>');
       } },
 
-    { name: 'torn', tier: 'flat', weight: 1.4, drift: null,
+    { name: 'torn', favor: 2, tier: 'flat', weight: 1.4, drift: null,
       make: function (c) {
         return svgBackdrop('<polygon points="0,0 100,0 100,44 76,36 52,50 28,38 0,52" fill="' + c.s2 + '"/>');
       } },
 
-    { name: 'shard', tier: 'flat', weight: 1.4, drift: null,
+    { name: 'shard', off: true, tier: 'flat', weight: 1.4, drift: null,
       make: function (c) {
         return svgBackdrop('<polygon points="12,14 60,3 93,30 84,64 42,74 6,50" fill="' + c.s1 + '"/>');
       } },
 
-    { name: 'triads', tier: 'flat', weight: 1.4, drift: null,
+    { name: 'triads', off: true, tier: 'flat', weight: 1.4, drift: null,
       make: function (c) {
         return svgBackdrop('<polygon points="0,140 38,88 76,140" fill="' + c.s2 + '"/>' +
                            '<polygon points="62,140 100,102 100,140" fill="' + c.a1 + '"/>');
       } },
 
-    { name: 'steps-svg', tier: 'flat', weight: 1.4, drift: null,
+    { name: 'steps-svg', off: true, tier: 'flat', weight: 1.4, drift: null,
       make: function (c) {
         return svgBackdrop('<polygon points="0,140 0,118 25,118 25,130 50,130 50,116 75,116 75,102 100,102 100,140" fill="' + c.s1 + '"/>');
       } },
 
-    { name: 'crescent', tier: 'flat', weight: 1.4, drift: 'drift-breathe',
+    { name: 'crescent', off: true, tier: 'flat', weight: 1.4, drift: 'drift-breathe',
       make: function (c) {
         return svgBackdrop('<circle cx="72" cy="26" r="30" fill="' + c.a1 + '"/>' +
                            '<circle cx="58" cy="18" r="28" fill="' + c.bg + '"/>');
       } },
 
-    { name: 'ticks', tier: 'flat', weight: 1.4, drift: null,
+    { name: 'ticks', off: true, tier: 'flat', weight: 1.4, drift: null,
       make: function (c) {
         var out = '';
         for (var y = 8; y < 140; y += 10) {
@@ -317,7 +331,7 @@
       } },
 
     /* ---- flat, clip-path layers: angular forms ---- */
-    { name: 'ribbon', tier: 'flat', weight: 1.4, drift: null,
+    { name: 'ribbon', off: true, tier: 'flat', weight: 1.4, drift: null,
       build: function (c) {
         return [{ position: 'absolute', inset: '0', background: c.s2,
                   clipPath: 'polygon(0 12%, 100% 0, 100% 22%, 0 34%)' }];
@@ -329,13 +343,13 @@
                   background: c.s1, clipPath: 'polygon(0 38%, 50% 0, 100% 38%, 100% 100%, 0 100%)' }];
       } },
 
-    { name: 'notch-slab', tier: 'flat', weight: 1.4, drift: null,
+    { name: 'notch-slab', off: true, tier: 'flat', weight: 1.4, drift: null,
       build: function (c) {
         return [{ position: 'absolute', left: '0', top: '0', width: '46%', height: '30%',
                   background: c.a1, clipPath: 'polygon(0 0, 100% 0, 100% 62%, 64% 100%, 0 100%)' }];
       } },
 
-    { name: 'angle-slab', tier: 'flat', weight: 1.4, drift: null,
+    { name: 'angle-slab', off: true, tier: 'flat', weight: 1.4, drift: null,
       build: function (c) {
         return [
           { position: 'absolute', left: '0', right: '0', bottom: '0', height: '28%',
@@ -349,7 +363,7 @@
        One entry, many outcomes: 2-4 shapes placed in the top and
        bottom thirds or bled in from the sides, never behind the
        question. Weighted high because it is a family, not a look. */
-    { name: 'collage', tier: 'flat', weight: 5, drift: null,
+    { name: 'collage', off: true, tier: 'flat', weight: 5, drift: null,
       build: function (c) {
         var palette = [c.s1, c.s2, c.a1, c.a2];
         var zones = ZONES.slice().sort(function () { return Math.random() - 0.5; });
@@ -364,7 +378,7 @@
       } },
 
     /* ---- camo: full-bleed two-tone, no tiling ---- */
-    { name: 'camo', tier: 'flat', weight: 1.4, drift: null,
+    { name: 'camo', off: true, tier: 'flat', weight: 1.4, drift: null,
       make: function (c) {
         return svgBackdrop(
           '<path d="M-4 18 L22 6 L44 20 L38 44 L12 52 L-4 40 Z" fill="' + c.s2 + '"/>' +
@@ -428,7 +442,7 @@
                         c.s1 + ' 0 75%, transparent 0)', size: '84px 84px' };
       } },
 
-    { name: 'scallops', tier: 'mid', weight: 2.0, drift: 'drift-vert',
+    { name: 'scallops', off: true, tier: 'mid', weight: 2.0, drift: 'drift-vert',
       make: function (c) {
         return svgTile('<path d="M0 20 A20 20 0 0 1 40 20" fill="none" stroke="' + c.s2 +
                        '" stroke-width="2"/>', 40, 20, '74px 37px');
@@ -453,13 +467,13 @@
         }), 90, 90, '150px 150px');
       } },
 
-    { name: 'bricks', tier: 'mid', weight: 2.0, drift: 'drift-vert',
+    { name: 'bricks', off: true, tier: 'mid', weight: 2.0, drift: 'drift-vert',
       make: function (c) {
         return svgTile('<path d="M0 0 H60 M0 15 H60 M0 30 H60 M0 0 V15 M30 0 V15 M15 15 V30 M45 15 V30" ' +
                        'stroke="' + c.s1 + '" stroke-width="1.6" fill="none"/>', 60, 30, '104px 52px');
       } },
 
-    { name: 'triangles', tier: 'mid', weight: 2.0, drift: 'drift-diag',
+    { name: 'triangles', off: true, tier: 'mid', weight: 2.0, drift: 'drift-diag',
       make: function (c) {
         return svgTile('<polygon points="0,0 20,0 10,20" fill="' + c.s2 + '"/>' +
                        '<polygon points="20,20 40,20 30,0" fill="' + c.s2 + '"/>', 40, 20, '80px 40px');
@@ -475,7 +489,7 @@
                         'linear-gradient(90deg, ' + c.tQuiet + ' 2px, transparent 2px)', size: '132px 132px' };
       } },
 
-    { name: 'hairlines', tier: 'quiet', weight: 3, drift: 'drift-vert',
+    { name: 'hairlines', off: true, tier: 'quiet', weight: 3, drift: 'drift-vert',
       make: function (c) { return { image: 'repeating-linear-gradient(0deg, ' + c.tQuiet + ' 0 2px, transparent 2px 98px)', size: 'auto' }; } },
 
     { name: 'stripes-wide', tier: 'quiet', weight: 3, drift: 'drift-diag',
@@ -485,7 +499,7 @@
     { name: 'dots', tier: 'mid', weight: 2.0, drift: 'drift-slow',
       make: function (c) { return { image: 'radial-gradient(' + c.tMid + ' 3px, transparent 3.5px)', size: '38px 38px' }; } },
 
-    { name: 'grid', tier: 'mid', weight: 2.0, drift: 'drift-slow',
+    { name: 'grid', off: true, tier: 'mid', weight: 2.0, drift: 'drift-slow',
       make: function (c) {
         return { image: 'linear-gradient(' + c.tMid + ' 2px, transparent 2px),' +
                         'linear-gradient(90deg, ' + c.tMid + ' 2px, transparent 2px)', size: '72px 72px' };
@@ -494,13 +508,13 @@
     { name: 'stripes', tier: 'mid', weight: 2.0, drift: 'drift-diag',
       make: function (c) { return { image: 'repeating-linear-gradient(45deg, ' + c.tMid + ' 0 18px, transparent 18px 44px)', size: 'auto' }; } },
 
-    { name: 'chevron', tier: 'mid', weight: 2.0, drift: 'drift-vert',
+    { name: 'chevron', off: true, tier: 'mid', weight: 2.0, drift: 'drift-vert',
       make: function (c) {
         return { image: 'repeating-linear-gradient(135deg, ' + c.tMid + ' 0 12px, transparent 12px 30px),' +
                         'repeating-linear-gradient(45deg, ' + c.tMid + ' 0 12px, transparent 12px 30px)', size: '86px 86px' };
       } },
 
-    { name: 'bars', tier: 'mid', weight: 2.0, drift: 'drift-horiz',
+    { name: 'bars', off: true, tier: 'mid', weight: 2.0, drift: 'drift-horiz',
       make: function (c) { return { image: 'repeating-linear-gradient(90deg, ' + c.tMid + ' 0 5px, transparent 5px 46px)', size: 'auto' }; } },
 
     /* ---- loud: rare punctuation ---- */
@@ -512,16 +526,16 @@
     { name: 'rays', tier: 'loud', weight: 2.1, drift: 'drift-spin',
       make: function (c) { return { image: 'repeating-conic-gradient(from 0deg, ' + c.tLoud + ' 0 9deg, transparent 9deg 18deg)', size: 'auto' }; } },
 
-    { name: 'rings', tier: 'loud', weight: 2.1, drift: 'drift-breathe',
+    { name: 'rings', off: true, tier: 'loud', weight: 2.1, drift: 'drift-breathe',
       make: function (c) { return { image: 'repeating-radial-gradient(circle at 50% 50%, ' + c.tLoud + ' 0 3px, transparent 3px 44px)', size: 'auto' }; } },
 
-    { name: 'crosses', tier: 'loud', weight: 2.1, drift: 'drift-diag',
+    { name: 'crosses', off: true, tier: 'loud', weight: 2.1, drift: 'drift-diag',
       make: function (c) {
         return { image: 'linear-gradient(' + c.tLoud + ' 3px, transparent 3px),' +
                         'linear-gradient(90deg, ' + c.tLoud + ' 3px, transparent 3px)', size: '44px 44px' };
       } },
 
-    { name: 'halftone', tier: 'loud', weight: 2.1, drift: 'drift-slow',
+    { name: 'halftone', off: true, tier: 'loud', weight: 2.1, drift: 'drift-slow',
       make: function (c) {
         return { image: 'radial-gradient(' + c.tAcc + ' 7px, transparent 8px),' +
                         'radial-gradient(' + c.tLoud + ' 2px, transparent 3px)', size: '58px 58px, 58px 58px' };
@@ -546,15 +560,25 @@
 
   function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
 
+  /* `weight` is how often a tier should turn up; `favor` is how much it
+     was liked. They answer different questions, so they multiply rather
+     than one overwriting the other. */
+  function pickWeight(x) { return (x.weight || 1) * (x.favor || 1); }
+
   function pickWeighted(arr) {
-    var total = arr.reduce(function (s, x) { return s + (x.weight || 1); }, 0);
+    var total = arr.reduce(function (s, x) { return s + pickWeight(x); }, 0);
     var r = Math.random() * total;
     for (var i = 0; i < arr.length; i++) {
-      r -= (arr[i].weight || 1);
+      r -= pickWeight(arr[i]);
       if (r <= 0) return arr[i];
     }
     return arr[arr.length - 1];
   }
+
+  /* Rejected entries stay in the file rather than being deleted: they are
+     the record of a decision, and the judging tool re-offers them when
+     the thing that sank them — texture strength, mostly — has changed. */
+  function live(arr) { return arr.filter(function (x) { return !x.off; }); }
 
   /* Back-to-back repeats are what make randomness look broken. */
   var last = { palette: null, font: null, backdrop: null, entrance: null };
@@ -592,11 +616,15 @@
     };
   }
 
+  var LIVE_PALETTES = live(PALETTES);
+  var LIVE_FONTS = live(FONTS);
+  var LIVE_BACKDROPS = live(BACKDROPS);
+
   function random() {
     return compose(
-      pickFresh(PALETTES, 'palette'),
-      pickFresh(FONTS, 'font'),
-      pickFresh(BACKDROPS, 'backdrop', true),
+      pickFresh(LIVE_PALETTES, 'palette', true),
+      pickFresh(LIVE_FONTS, 'font', true),
+      pickFresh(LIVE_BACKDROPS, 'backdrop', true),
       pickFresh(ENTRANCES, 'entrance'),
       pick(TREATMENTS)
     );
@@ -628,7 +656,7 @@
     s.setProperty('--acc', theme.palette.acc);
     s.setProperty('--face', theme.font.face);
     s.setProperty('--track', theme.font.track);
-    s.setProperty('--weight', theme.font.weight);
+    s.setProperty('--weight', theme.font.wght);
     s.setProperty('--body-face', BODY_FACE);
     el.dataset.treatment = theme.treatment;
     el.dataset.drift = theme.backdrop.drift || '';
@@ -647,6 +675,7 @@
     PALETTES: PALETTES,
     FONTS: FONTS,
     BACKDROPS: BACKDROPS,
+    live: live,
     ENTRANCES: ENTRANCES,
     TREATMENTS: TREATMENTS,
     BODY_FACE: BODY_FACE,
