@@ -263,7 +263,7 @@
      pitch far finer than a hand-placed rect can reach. Mean coverage
      stays a few percent while neighbouring pixels still differ sharply,
      which is what film actually does. */
-  function grainTile(colour, freq, octaves, slope, intercept, px) {
+  function grainTile(colour, o) {
     var c = rgbOf(colour);
     var m = [
       0, 0, 0, 0, (c[0] / 255).toFixed(4),
@@ -271,16 +271,32 @@
       0, 0, 0, 0, (c[2] / 255).toFixed(4),
       1, 0, 0, 0, 0
     ].join(' ');
+
+    var chain =
+      '<feTurbulence type="' + (o.type || 'fractalNoise') + '" baseFrequency="' + o.freq +
+        '" numOctaves="' + o.oct + '" stitchTiles="stitch" result="n"/>' +
+      '<feColorMatrix in="n" type="matrix" values="' + m + '"/>';
+
+    /* Dilating before the threshold fuses neighbouring peaks, which reads
+       as a coarser emulsion without making the noise itself coarser. Both
+       this and the blur below spread alpha outward, so anything using
+       them needs a harder threshold to land at the same coverage. */
+    if (o.morph) chain += '<feMorphology operator="' + o.morph + '" radius="' + o.radius + '"/>';
+
+    chain += '<feComponentTransfer>' +
+      (o.table
+        ? '<feFuncA type="discrete" tableValues="' + o.table + '"/>'
+        : '<feFuncA type="linear" slope="' + o.slope + '" intercept="' + o.intercept + '"/>') +
+      '</feComponentTransfer>';
+
+    /* A touch of blur after the threshold rounds the specks off — the
+       difference between digital dither and something photographic. */
+    if (o.blur) chain += '<feGaussianBlur stdDeviation="' + o.blur + '"/>';
+
     return svgTile(
-      '<filter id="g" x="0" y="0" width="100%" height="100%">' +
-        '<feTurbulence type="fractalNoise" baseFrequency="' + freq + '" numOctaves="' + octaves +
-          '" stitchTiles="stitch" result="n"/>' +
-        '<feColorMatrix in="n" type="matrix" values="' + m + '"/>' +
-        '<feComponentTransfer><feFuncA type="linear" slope="' + slope +
-          '" intercept="' + intercept + '"/></feComponentTransfer>' +
-      '</filter>' +
+      '<filter id="g" x="0" y="0" width="100%" height="100%">' + chain + '</filter>' +
       '<rect width="240" height="240" filter="url(#g)"/>',
-      240, 240, px + 'px ' + px + 'px');
+      240, 240, o.px + 'px ' + o.px + 'px');
   }
 
   /* ── Layout zones ──────────────────────────────────────────
@@ -827,18 +843,64 @@
           }));
       } },
 
-    /* Four densities of real grain, replacing the speckle. */
+    /* Grain, across a range of sizes and a few different techniques.
+       Apparent size is the noise wavelength times the downscale — 1/freq
+       times px/240 — so it runs from about a third of a CSS pixel at the
+       fine end to two and a half at the coarse one. */
+
+    /* The four that landed. */
     { name: 'grain-film', tier: 'quiet', weight: 2.6, drift: null,
-      make: function (c) { return grainTile(c.ink, 0.9,  4, 1.10, -0.48, 120); } },
+      make: function (c) { return grainTile(c.ink, { freq: 0.9,  oct: 4, slope: 1.10, intercept: -0.48, px: 120 }); } },
 
     { name: 'grain-silk', tier: 'quiet', weight: 2.6, drift: null,
-      make: function (c) { return grainTile(c.ink, 1.4,  3, 0.95, -0.44, 100); } },
+      make: function (c) { return grainTile(c.ink, { freq: 1.4,  oct: 3, slope: 0.95, intercept: -0.44, px: 100 }); } },
 
     { name: 'grain-paper', tier: 'quiet', weight: 2.6, drift: null,
-      make: function (c) { return grainTile(c.ink, 0.62, 5, 1.30, -0.56, 140); } },
+      make: function (c) { return grainTile(c.ink, { freq: 0.62, oct: 5, slope: 1.30, intercept: -0.56, px: 140 }); } },
 
     { name: 'grain-ash', tier: 'quiet', weight: 2.6, drift: null,
-      make: function (c) { return grainTile(c.ink, 1.1,  4, 1.50, -0.62, 110); } },
+      make: function (c) { return grainTile(c.ink, { freq: 1.1,  oct: 4, slope: 1.50, intercept: -0.62, px: 110 }); } },
+
+    /* Coarser, which is the part that was missing. */
+    { name: 'grain-sand', tier: 'quiet', weight: 1.6, drift: null,
+      make: function (c) { return grainTile(c.ink, { freq: 0.45, oct: 4, slope: 1.35, intercept: -0.58, px: 160 }); } },
+
+    { name: 'grain-tooth', tier: 'quiet', weight: 1.6, drift: null,
+      make: function (c) { return grainTile(c.ink, { freq: 0.30, oct: 3, slope: 1.40, intercept: -0.62, px: 180 }); } },
+
+    /* Dilated: fine noise fused into bigger clusters, so the specks grow
+       without the texture beneath them getting coarser. */
+    { name: 'grain-clump', tier: 'quiet', weight: 1.6, drift: null,
+      make: function (c) { return grainTile(c.ink, { freq: 0.8, oct: 4, morph: 'dilate', radius: 0.9,
+                                                     slope: 1.25, intercept: -0.82, px: 130 }); } },
+
+    /* turbulence rather than fractalNoise — veined and wispy instead of
+       evenly distributed. */
+    { name: 'grain-veil', tier: 'quiet', weight: 1.6, drift: null,
+      make: function (c) { return grainTile(c.ink, { type: 'turbulence', freq: 1.0, oct: 3,
+                                                     slope: 1.20, intercept: -0.30, px: 110 }); } },
+
+    /* Posterised: a discrete transfer quantises the noise into a few
+       fixed densities, so specks arrive at distinct weights. */
+    { name: 'grain-step', tier: 'quiet', weight: 1.6, drift: null,
+      make: function (c) { return grainTile(c.ink, { freq: 1.1, oct: 4, px: 120,
+                                                     table: '0 0 0 0 0 0.22 0.5 0.85' }); } },
+
+    /* Blurred after thresholding: rounded specks with soft shoulders. */
+    { name: 'grain-soft', tier: 'quiet', weight: 1.6, drift: null,
+      make: function (c) { return grainTile(c.ink, { freq: 0.85, oct: 4, blur: 0.7,
+                                                     slope: 1.45, intercept: -0.76, px: 130 }); } },
+
+    /* Anisotropic: stretched along one axis, so it brushes rather than
+       speckles. */
+    { name: 'grain-weave', tier: 'quiet', weight: 1.6, drift: null,
+      make: function (c) { return grainTile(c.ink, { freq: '0.30 1.7', oct: 3,
+                                                     slope: 1.30, intercept: -0.55, px: 150 }); } },
+
+    /* Six octaves: detail at every scale at once, the way a real
+       emulsion has both fine and coarse structure. */
+    { name: 'grain-mica', tier: 'quiet', weight: 1.6, drift: null,
+      make: function (c) { return grainTile(c.ink, { freq: 0.5, oct: 6, slope: 1.35, intercept: -0.58, px: 150 }); } },
 
     { name: 'halftone', off: true, tier: 'loud', weight: 2.1, drift: 'drift-slow',
       make: function (c) {
