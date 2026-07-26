@@ -567,12 +567,12 @@
     return choice;
   }
 
-  function random() {
-    var palette  = pickFresh(PALETTES, 'palette');
-    var font     = pickFresh(FONTS, 'font');
-    var backdrop = pickFresh(BACKDROPS, 'backdrop', true);
-    var entrance = pickFresh(ENTRANCES, 'entrance');
-    var tone     = tones(palette);
+  /* Assemble a theme from named parts. Split out of random() so a caller
+     can hold one ingredient fixed and vary the rest — which is what the
+     judging tool does, and the only way to rate a font or a backdrop
+     without the other choices confounding the verdict. */
+  function compose(palette, font, backdrop, entrance, treatment) {
+    var tone = tones(palette);
 
     /* `build` backdrops compose positioned layers; `make` backdrops are a
        single background-image. Collage resolves its randomness here so the
@@ -588,8 +588,18 @@
       backdropSize: bd.size,
       backdropLayers: bd.layers || null,
       entrance: entrance,
-      treatment: pick(TREATMENTS)
+      treatment: treatment
     };
+  }
+
+  function random() {
+    return compose(
+      pickFresh(PALETTES, 'palette'),
+      pickFresh(FONTS, 'font'),
+      pickFresh(BACKDROPS, 'backdrop', true),
+      pickFresh(ENTRANCES, 'entrance'),
+      pick(TREATMENTS)
+    );
   }
 
   /* Build the backdrop element for a card. Owned here rather than in
@@ -631,10 +641,14 @@
 
   global.Theme = {
     random: random,
+    compose: compose,
     apply: apply,
     backdropNode: backdropNode,
     PALETTES: PALETTES,
+    FONTS: FONTS,
     BACKDROPS: BACKDROPS,
+    ENTRANCES: ENTRANCES,
+    TREATMENTS: TREATMENTS,
     BODY_FACE: BODY_FACE,
     _tones: tones
   };

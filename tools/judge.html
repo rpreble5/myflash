@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>MYFLASH — judge</title>
+
+<!-- The real fonts, the real stylesheets, the real theme engine. Nothing
+     here is a mockup: a verdict is only worth having if it was cast on
+     what the app actually draws. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Anton&family=Archivo+Black&family=Bebas+Neue&family=Bungee&family=Monoton&family=Outfit:wght@900&family=Passion+One:wght@900&family=Righteous&family=Rubik+Mono+One&family=Shrikhand&family=Sora:wght@800&family=Space+Grotesk:wght@700&family=Syne:wght@800&family=Titan+One&family=Unbounded:wght@900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/themes.css">
+<link rel="stylesheet" href="../css/animations.css">
+
+<style>
+  /* Chrome for the tool only. The card below it is untouched. */
+  body { overflow: hidden; }
+  #stage { position: fixed; inset: 0; }
+
+  .jbar {
+    position: fixed;
+    left: 0; right: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    /* Everything wraps. At 390px a single row of votes plus tools is
+       twice the width of the screen, and a dev tool that only works on a
+       desktop is no use for judging a phone-first app. */
+    flex-wrap: wrap;
+    gap: .45rem;
+    padding: .5rem .7rem;
+    transition: opacity .15s ease;
+    font-family: "Space Grotesk", system-ui, sans-serif;
+    font-size: .74rem;
+    background: rgba(8,8,8,.82);
+    color: #f5f5f5;
+    backdrop-filter: blur(6px);
+  }
+  .jbar-top { top: 0; }
+  .jbar-bottom { bottom: 0; justify-content: center; }
+/* The bars sit over a fullscreen card, so the card keeps true
+   proportions and the chrome gets out of the way on demand. */
+body.is-bare .jbar { opacity: 0; pointer-events: none; }
+
+  .jphase { display: flex; gap: .3rem; }
+  .jphase button {
+    padding: .3rem .6rem;
+    border-radius: 999px;
+    border: 1px solid rgba(255,255,255,.22);
+    color: #f5f5f5;
+    font-size: .7rem;
+    letter-spacing: .04em;
+  }
+  .jphase button.is-on { background: #f5f500; border-color: #f5f500; color: #0b0b0b; font-weight: 700; }
+
+  .jwhat { font-weight: 700; letter-spacing: .02em; }
+  .jmeta { opacity: .55; font-size: .68rem; }
+  .jspace { flex: 1; }
+  .jcount { opacity: .7; font-variant-numeric: tabular-nums; }
+
+  .jvote {
+    flex: 1 1 auto;
+    min-width: 74px;
+    max-width: 130px;
+    padding: .55rem .7rem;
+    border-radius: 12px;
+    border: 2px solid rgba(255,255,255,.25);
+    color: #f5f5f5;
+    font-weight: 700;
+    font-size: .8rem;
+    letter-spacing: .04em;
+  }
+  .jvote small { display: block; opacity: .5; font-weight: 400; font-size: .62rem; letter-spacing: .1em; }
+  .jvote-love  { border-color: #6ee7a8; color: #6ee7a8; }
+  .jvote-fine  { border-color: #cfcfcf; }
+  .jvote-never { border-color: #ff7a7a; color: #ff7a7a; }
+  .jvote.is-cast { background: currentColor; }
+  .jvote.is-cast span { color: #0b0b0b; }
+
+  /* Folded away by default. Every one of these is a key, and an extra row
+   of buttons costs 54px of the card — which is exactly where the small
+   type being judged sits. */
+.jaux { display: none; flex-wrap: wrap; justify-content: center; gap: .35rem; flex-basis: 100%; }
+.jbar-bottom.is-open .jaux { display: flex; }
+.jmore { min-width: 44px; padding: .55rem; border-radius: 12px; border: 1px solid rgba(255,255,255,.2); color: #f5f5f5; }
+  .jaux button {
+    padding: .4rem .55rem;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,.2);
+    color: #f5f5f5;
+    font-size: .64rem;
+    opacity: .8;
+  }
+
+  /* Entrances are a separate axis and would only slow the pass down. */
+  #stage .letter { animation: none !important; opacity: 1 !important; transform: none !important; }
+  #stage .card   { animation: none !important; }
+
+  .jout {
+    position: fixed;
+    inset: 3rem 1rem;
+    z-index: 60;
+    display: none;
+    flex-direction: column;
+    gap: .6rem;
+    padding: 1rem;
+    border-radius: 14px;
+    background: #101010;
+    color: #f5f5f5;
+    font-family: ui-monospace, Menlo, monospace;
+  }
+  .jout.is-open { display: flex; }
+  .jout textarea {
+    flex: 1;
+    background: #000;
+    color: #9ef;
+    border: 1px solid #333;
+    border-radius: 8px;
+    padding: .7rem;
+    font: inherit;
+    font-size: .7rem;
+    resize: none;
+  }
+  .jout-row { display: flex; gap: .5rem; }
+</style>
+</head>
+<body>
+
+<div id="stage"></div>
+
+<div class="jbar jbar-top">
+  <div class="jphase" id="phases"></div>
+  <div>
+    <div class="jwhat" id="what">—</div>
+    <div class="jmeta" id="meta">—</div>
+  </div>
+  <div class="jspace"></div>
+  <div class="jcount" id="count">0 / 0</div>
+</div>
+
+<div class="jbar jbar-bottom">
+  <button class="jvote jvote-never" data-vote="never"><span>NEVER</span><small>1</small></button>
+  <button class="jvote jvote-fine"  data-vote="fine"><span>FINE</span><small>2</small></button>
+  <button class="jvote jvote-love"  data-vote="love"><span>LOVE</span><small>3</small></button>
+  <button class="jmore" id="more" aria-label="More tools">&#8943;</button>
+  <div class="jaux">
+    <button id="reroll">Reroll · R</button>
+    <button id="swap">Text · T</button>
+    <button id="skip">Skip · ␣</button>
+    <button id="back">Undo · ⌫</button>
+    <button id="export">Export · E</button>
+    <button id="bare">Hide · H</button>
+  </div>
+</div>
+
+<div class="jout" id="out">
+  <div>Paste into <code>js/theme.js</code>, or hand the JSON back to Claude.</div>
+  <textarea id="outtext" readonly></textarea>
+  <div class="jout-row">
+    <button class="jaux" id="copy">Copy</button>
+    <button class="jaux" id="close">Close</button>
+    <button class="jaux" id="wipe">Wipe all ratings</button>
+  </div>
+</div>
+
+<script src="../js/theme.js"></script>
+<script src="../js/text.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  var T = window.Theme;
+  var KEY = 'myflash.judge.v1';
+
+  /* Real questions, short and long. A face can be lovely at 8vw and
+     unreadable once the fitter has shrunk it to fit four lines, so the
+     sample has to be swappable without changing anything else. */
+  var SAMPLES = [
+    'Antidote for opioid overdose',
+    'Most common cause of metabolic alkalosis',
+    'First step when a trauma patient arrives unresponsive and hypotensive'
+  ];
+
+  var fontName = function (f) { return f.face.split('"')[1] || f.face; };
+
+  /* Controls: the fixed backdrop under a palette pass, and the palette and
+     font a backdrop is judged against. Deliberately plain, so the pass is
+     rating one ingredient rather than an accident of the other two. */
+  var SOLID = T.BACKDROPS.filter(function (b) { return b.name === 'solid'; })[0] || T.BACKDROPS[0];
+  var NEUTRAL_FONT = T.FONTS.filter(function (f) { return fontName(f) === 'Archivo Black'; })[0] || T.FONTS[0];
+  var NO_ENTRANCE = T.ENTRANCES[0];
+
+  var PHASES = [
+    { id: 'palette',  label: 'Palettes',  items: function () { return T.PALETTES; },  name: function (p) { return p.name; } },
+    { id: 'font',     label: 'Fonts',     items: function () { return T.FONTS; },     name: fontName },
+    { id: 'backdrop', label: 'Backdrops', items: function () { return T.BACKDROPS; }, name: function (b) { return b.name; } },
+    { id: 'combo',    label: 'Free roll', items: function () { return null; },        name: function () { return 'random'; } }
+  ];
+
+  var state = load();
+  var phase = 0;
+  var idx = 0;
+  var sample = 0;
+  var current = null;      // the theme on screen
+  var history = [];        // {phase, key, previous} for undo
+
+  function load() {
+    try {
+      var raw = localStorage.getItem(KEY);
+      var v = raw ? JSON.parse(raw) : null;
+      if (v && v.palette) return v;
+    } catch (e) { /* fall through */ }
+    return { palette: {}, font: {}, backdrop: {}, combo: {} };
+  }
+
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) { /* private mode */ }
+  }
+
+  /* ── Rendering ───────────────────────────────────────────── */
+
+  function rnd(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+
+  function themeFor() {
+    var p = PHASES[phase];
+    if (p.id === 'palette') {
+      return T.compose(T.PALETTES[idx], NEUTRAL_FONT, SOLID, NO_ENTRANCE, 'plain');
+    }
+    if (p.id === 'font') {
+      /* Reroll varies the palette so a face isn't condemned for the
+         company it happened to keep. */
+      return T.compose(rollPalette(), T.FONTS[idx], SOLID, NO_ENTRANCE, 'plain');
+    }
+    if (p.id === 'backdrop') {
+      return T.compose(rollPalette(), rollFont(), T.BACKDROPS[idx], NO_ENTRANCE, 'plain');
+    }
+    return T.compose(rollPalette(), rollFont(), rnd(T.BACKDROPS), NO_ENTRANCE, rnd(T.TREATMENTS));
+  }
+
+  /* Rerolling holds the dimension under judgment and varies the rest, but
+     never reaches for something already rated `never` — no point spending
+     a look on a pairing that is already out. */
+  var rollP = null, rollF = null;
+  function rollPalette() {
+    if (!rollP) rollP = rnd(alive(T.PALETTES, 'palette', function (p) { return p.name; }));
+    return rollP;
+  }
+  function rollFont() {
+    if (!rollF) rollF = rnd(alive(T.FONTS, 'font', fontName));
+    return rollF;
+  }
+  function alive(arr, bucket, name) {
+    var ok = arr.filter(function (x) { return state[bucket][name(x)] !== 'never'; });
+    return ok.length ? ok : arr;
+  }
+
+  function render() {
+    var p = PHASES[phase];
+    var list = p.items();
+
+    if (list && idx >= list.length) {
+      document.getElementById('what').textContent = p.label + ' — done';
+      document.getElementById('meta').textContent = 'pick another pass above, or Export';
+      document.getElementById('count').textContent = list.length + ' / ' + list.length;
+      return;
+    }
+
+    current = themeFor();
+
+    var stage = document.getElementById('stage');
+    stage.textContent = '';
+
+    var card = document.createElement('div');
+    card.className = 'card';
+    T.apply(card, current);
+    card.dataset.entrance = current.entrance.name;
+    card.appendChild(T.backdropNode(current));
+
+    var body = document.createElement('div');
+    body.className = 'card-body';
+
+    var kicker = document.createElement('div');
+    kicker.className = 'kicker';
+    kicker.textContent = 'TAP TO REVEAL';
+
+    var flipper = document.createElement('div');
+    flipper.className = 'flipper';
+    var face = document.createElement('div');
+    face.className = 'face face-front';
+    var q = document.createElement('h2');
+    q.className = 'q';
+    face.appendChild(q);
+    flipper.appendChild(face);
+
+    /* A strip of real mode furniture, so a palette is also judged on the
+       thing that actually fails: small type and outlined controls. */
+    var area = document.createElement('div');
+    area.className = 'mode-area';
+    var bar = document.createElement('div');
+    bar.className = 'tf-bar';
+    ['FALSE', 'TRUE'].forEach(function (t, i) {
+      var b = document.createElement('button');
+      b.className = 'tf-btn tf-' + (i ? 'true' : 'false');
+      var s = document.createElement('span');
+      s.className = 'tf-label';
+      s.textContent = t;
+      b.appendChild(s);
+      if (i) bar.appendChild(cue());
+      bar.appendChild(b);
+    });
+    area.appendChild(bar);
+    var note = document.createElement('div');
+    note.className = 'why is-in';
+    note.textContent = 'Rising CO₂ drives pH down; falling CO₂ drives pH up.';
+    area.appendChild(note);
+
+    body.appendChild(kicker);
+    body.appendChild(flipper);
+    body.appendChild(area);
+    card.appendChild(body);
+    stage.appendChild(card);
+
+    var text = SAMPLES[sample];
+    window.Txt.splitLetters(q, current.font.caps ? text.toUpperCase() : text, {});
+    requestAnimationFrame(function () { window.Txt.fit(q, face); });
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(function () { window.Txt.fit(q, face); });
+    }
+
+    paintChrome();
+  }
+
+  function cue() {
+    var s = document.createElement('span');
+    s.className = 'swipe-cue';
+    s.textContent = 'swipe';
+    return s;
+  }
+
+  function subjectKey() {
+    var p = PHASES[phase];
+    if (p.id === 'combo') {
+      return current.palette.name + ' + ' + fontName(current.font) + ' + ' + current.backdrop.name;
+    }
+    var list = p.items();
+    return list && idx < list.length ? p.name(list[idx]) : null;
+  }
+
+  function paintChrome() {
+    var p = PHASES[phase];
+    var list = p.items();
+    var key = subjectKey();
+
+    document.getElementById('what').textContent = key || '—';
+    document.getElementById('meta').textContent = p.id === 'palette'
+      ? current.palette.bg + ' · ' + current.palette.ink + ' · ' + current.palette.acc
+      : p.id === 'combo'
+        ? 'treatment: ' + current.treatment
+        : current.palette.name + ' · ' + fontName(current.font) + ' · ' + current.backdrop.name;
+
+    if (list) {
+      var rated = list.filter(function (x) { return state[p.id][p.name(x)]; }).length;
+      document.getElementById('count').textContent = rated + ' / ' + list.length + '  ·  #' + (idx + 1);
+    } else {
+      document.getElementById('count').textContent = Object.keys(state.combo).length + ' rated';
+    }
+
+    var cast = key ? state[p.id][key] : null;
+    Array.prototype.forEach.call(document.querySelectorAll('.jvote'), function (b) {
+      b.classList.toggle('is-cast', b.dataset.vote === cast);
+    });
+
+    Array.prototype.forEach.call(document.querySelectorAll('#phases button'), function (b, i) {
+      b.classList.toggle('is-on', i === phase);
+    });
+  }
+
+  /* ── Actions ─────────────────────────────────────────────── */
+
+  function vote(v) {
+    var p = PHASES[phase];
+    var key = subjectKey();
+    if (!key) return;
+    history.push({ phase: phase, bucket: p.id, key: key, previous: state[p.id][key], idx: idx });
+    state[p.id][key] = v;
+    save();
+    advance();
+  }
+
+  function advance() {
+    var p = PHASES[phase];
+    var list = p.items();
+    rollP = rollF = null;
+    if (!list) { render(); return; }        // free roll never runs out
+    idx++;
+    /* Resume where the work is: skip anything already decided. */
+    while (idx < list.length && state[p.id][p.name(list[idx])]) idx++;
+    render();
+  }
+
+  function setPhase(n) {
+    phase = n;
+    idx = 0;
+    rollP = rollF = null;
+    var p = PHASES[phase];
+    var list = p.items();
+    if (list) while (idx < list.length && state[p.id][p.name(list[idx])]) idx++;
+    render();
+  }
+
+  function undo() {
+    var h = history.pop();
+    if (!h) return;
+    if (h.previous === undefined) delete state[h.bucket][h.key];
+    else state[h.bucket][h.key] = h.previous;
+    save();
+    phase = h.phase;
+    idx = h.idx;
+    rollP = rollF = null;
+    render();
+  }
+
+  /* ── Export ──────────────────────────────────────────────── */
+
+  function exportText() {
+    var lines = [];
+    lines.push('/* myflash theme verdicts — ' + new Date().toISOString().slice(0, 10) + ' */');
+    lines.push('');
+    ['palette', 'font', 'backdrop'].forEach(function (bucket) {
+      var byVote = { love: [], fine: [], never: [] };
+      Object.keys(state[bucket]).forEach(function (k) {
+        if (byVote[state[bucket][k]]) byVote[state[bucket][k]].push(k);
+      });
+      lines.push(bucket.toUpperCase() + '  (' + Object.keys(state[bucket]).length + ' rated)');
+      ['never', 'fine', 'love'].forEach(function (v) {
+        if (byVote[v].length) lines.push('  ' + v.padEnd(6) + byVote[v].sort().join(', '));
+      });
+      lines.push('');
+    });
+    var combos = Object.keys(state.combo);
+    if (combos.length) {
+      lines.push('COMBINATIONS');
+      combos.sort().forEach(function (k) { lines.push('  ' + state.combo[k].padEnd(6) + k); });
+      lines.push('');
+    }
+    lines.push('JSON');
+    lines.push(JSON.stringify(state, null, 2));
+    return lines.join('\n');
+  }
+
+  /* ── Wiring ──────────────────────────────────────────────── */
+
+  var phases = document.getElementById('phases');
+  PHASES.forEach(function (p, i) {
+    var b = document.createElement('button');
+    b.textContent = p.label;
+    b.addEventListener('click', function () { setPhase(i); });
+    phases.appendChild(b);
+  });
+
+  Array.prototype.forEach.call(document.querySelectorAll('.jvote'), function (b) {
+    b.addEventListener('click', function () { vote(b.dataset.vote); });
+  });
+
+  document.getElementById('reroll').addEventListener('click', function () {
+    rollP = rollF = null;
+    render();
+  });
+  document.getElementById('swap').addEventListener('click', function () {
+    sample = (sample + 1) % SAMPLES.length;
+    render();
+  });
+  document.getElementById('skip').addEventListener('click', advance);
+  document.getElementById('back').addEventListener('click', undo);
+
+  var out = document.getElementById('out');
+  function openExport() {
+    document.getElementById('outtext').value = exportText();
+    out.classList.add('is-open');
+  }
+  document.getElementById('export').addEventListener('click', openExport);
+  document.getElementById('bare').addEventListener('click', function () {
+    document.body.classList.toggle('is-bare');
+  });
+  document.getElementById('more').addEventListener('click', function () {
+    document.querySelector('.jbar-bottom').classList.toggle('is-open');
+  });
+  document.getElementById('close').addEventListener('click', function () { out.classList.remove('is-open'); });
+  document.getElementById('copy').addEventListener('click', function () {
+    var t = document.getElementById('outtext');
+    t.select();
+    try { document.execCommand('copy'); } catch (e) { /* user can select manually */ }
+  });
+  document.getElementById('wipe').addEventListener('click', function () {
+    if (!confirm('Wipe every rating?')) return;
+    state = { palette: {}, font: {}, backdrop: {}, combo: {} };
+    history = [];
+    save();
+    setPhase(phase);
+    out.classList.remove('is-open');
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (out.classList.contains('is-open')) return;
+    if (e.key === '1') vote('never');
+    else if (e.key === '2') vote('fine');
+    else if (e.key === '3') vote('love');
+    else if (e.key === 'r' || e.key === 'R') { rollP = rollF = null; render(); }
+    else if (e.key === 't' || e.key === 'T') { sample = (sample + 1) % SAMPLES.length; render(); }
+    else if (e.key === ' ') { e.preventDefault(); advance(); }
+    else if (e.key === 'Backspace') { e.preventDefault(); undo(); }
+    else if (e.key === 'h' || e.key === 'H') document.body.classList.toggle('is-bare');
+    else if (e.key === 'e' || e.key === 'E') openExport();
+    else if (e.key >= '5' && e.key <= '8') setPhase(Number(e.key) - 5);
+  });
+
+  setPhase(0);
+})();
+</script>
+</body>
+</html>

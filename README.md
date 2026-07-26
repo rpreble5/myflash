@@ -302,7 +302,8 @@ oversize so drift never exposes an edge.
 
 ```bash
 node tools/check-contrast.js   # exits non-zero if any palette fails
-open tools/backdrops.html      # contact sheet of all 26 backdrops
+open tools/backdrops.html      # contact sheet of all 54 backdrops
+open tools/judge.html          # rate palettes, fonts and backdrops by eye
 ```
 
 `ink` targets 4.5:1 against its background since it's used for small UI as
@@ -335,6 +336,7 @@ js/audio.js                WebAudio blips, no asset files
 js/app.js                  screens and the session engine
 tools/check-contrast.js    palette contrast gate
 tools/backdrops.html       backdrop contact sheet
+tools/judge.html           taste pass — rate one ingredient at a time
 ```
 
 ## Session logic
