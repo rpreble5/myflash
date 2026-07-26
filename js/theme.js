@@ -263,7 +263,15 @@
      pitch far finer than a hand-placed rect can reach. Mean coverage
      stays a few percent while neighbouring pixels still differ sharply,
      which is what film actually does. */
-  function grainTile(colour, o) {
+  /* How hard grain is allowed to hit. The threshold sets where specks
+     start; this scales what survives it. Dropped below 1 after the note
+     that some of them carried too much contrast — lowering the peak
+     rather than the pitch, since pitch was the part that worked. */
+  var GRAIN = 0.8;
+  /* Laid over another backdrop it is an accent, not the subject. */
+  var GRAIN_OVER = 0.5;
+
+  function grainTile(colour, o, alpha) {
     var c = rgbOf(colour);
     var m = [
       0, 0, 0, 0, (c[0] / 255).toFixed(4),
@@ -295,7 +303,8 @@
 
     return svgTile(
       '<filter id="g" x="0" y="0" width="100%" height="100%">' + chain + '</filter>' +
-      '<rect width="240" height="240" filter="url(#g)"/>',
+      '<rect width="240" height="240" filter="url(#g)" opacity="' +
+        ((alpha == null ? GRAIN : alpha)).toFixed(3) + '"/>',
       240, 240, o.px + 'px ' + o.px + 'px');
   }
 
@@ -850,57 +859,57 @@
 
     /* The four that landed. */
     { name: 'grain-film', tier: 'quiet', weight: 2.6, drift: null,
-      make: function (c) { return grainTile(c.ink, { freq: 0.9,  oct: 4, slope: 1.10, intercept: -0.48, px: 120 }); } },
+      make: function (c, a) { return grainTile(c.ink, { freq: 0.9,  oct: 4, slope: 1.10, intercept: -0.48, px: 120 }, a); } },
 
     { name: 'grain-silk', tier: 'quiet', weight: 2.6, drift: null,
-      make: function (c) { return grainTile(c.ink, { freq: 1.4,  oct: 3, slope: 0.95, intercept: -0.44, px: 100 }); } },
+      make: function (c, a) { return grainTile(c.ink, { freq: 1.4,  oct: 3, slope: 0.95, intercept: -0.44, px: 100 }, a); } },
 
     { name: 'grain-paper', tier: 'quiet', weight: 2.6, drift: null,
-      make: function (c) { return grainTile(c.ink, { freq: 0.62, oct: 5, slope: 1.30, intercept: -0.56, px: 140 }); } },
+      make: function (c, a) { return grainTile(c.ink, { freq: 0.62, oct: 5, slope: 1.30, intercept: -0.56, px: 140 }, a); } },
 
-    { name: 'grain-ash', tier: 'quiet', weight: 2.6, drift: null,
-      make: function (c) { return grainTile(c.ink, { freq: 1.1,  oct: 4, slope: 1.50, intercept: -0.62, px: 110 }); } },
+    { name: 'grain-ash', off: true, tier: 'quiet', weight: 2.6, drift: null,
+      make: function (c, a) { return grainTile(c.ink, { freq: 1.1,  oct: 4, slope: 1.50, intercept: -0.62, px: 110 }, a); } },
 
     /* Coarser, which is the part that was missing. */
-    { name: 'grain-sand', tier: 'quiet', weight: 1.6, drift: null,
-      make: function (c) { return grainTile(c.ink, { freq: 0.45, oct: 4, slope: 1.35, intercept: -0.58, px: 160 }); } },
+    { name: 'grain-sand', off: true, tier: 'quiet', weight: 1.6, drift: null,
+      make: function (c, a) { return grainTile(c.ink, { freq: 0.45, oct: 4, slope: 1.35, intercept: -0.58, px: 160 }, a); } },
 
-    { name: 'grain-tooth', tier: 'quiet', weight: 1.6, drift: null,
-      make: function (c) { return grainTile(c.ink, { freq: 0.30, oct: 3, slope: 1.40, intercept: -0.62, px: 180 }); } },
+    { name: 'grain-tooth', off: true, tier: 'quiet', weight: 1.6, drift: null,
+      make: function (c, a) { return grainTile(c.ink, { freq: 0.30, oct: 3, slope: 1.40, intercept: -0.62, px: 180 }, a); } },
 
     /* Dilated: fine noise fused into bigger clusters, so the specks grow
        without the texture beneath them getting coarser. */
-    { name: 'grain-clump', tier: 'quiet', weight: 1.6, drift: null,
-      make: function (c) { return grainTile(c.ink, { freq: 0.8, oct: 4, morph: 'dilate', radius: 0.9,
-                                                     slope: 1.25, intercept: -0.82, px: 130 }); } },
+    { name: 'grain-clump', off: true, tier: 'quiet', weight: 1.6, drift: null,
+      make: function (c, a) { return grainTile(c.ink, { freq: 0.8, oct: 4, morph: 'dilate', radius: 0.9,
+                                                     slope: 1.25, intercept: -0.82, px: 130 }, a); } },
 
     /* turbulence rather than fractalNoise — veined and wispy instead of
        evenly distributed. */
     { name: 'grain-veil', tier: 'quiet', weight: 1.6, drift: null,
-      make: function (c) { return grainTile(c.ink, { type: 'turbulence', freq: 1.0, oct: 3,
-                                                     slope: 1.20, intercept: -0.30, px: 110 }); } },
+      make: function (c, a) { return grainTile(c.ink, { type: 'turbulence', freq: 1.0, oct: 3,
+                                                     slope: 1.20, intercept: -0.30, px: 110 }, a); } },
 
     /* Posterised: a discrete transfer quantises the noise into a few
        fixed densities, so specks arrive at distinct weights. */
     { name: 'grain-step', tier: 'quiet', weight: 1.6, drift: null,
-      make: function (c) { return grainTile(c.ink, { freq: 1.1, oct: 4, px: 120,
-                                                     table: '0 0 0 0 0 0.22 0.5 0.85' }); } },
+      make: function (c, a) { return grainTile(c.ink, { freq: 1.1, oct: 4, px: 120,
+                                                     table: '0 0 0 0 0 0.22 0.5 0.85' }, a); } },
 
     /* Blurred after thresholding: rounded specks with soft shoulders. */
     { name: 'grain-soft', tier: 'quiet', weight: 1.6, drift: null,
-      make: function (c) { return grainTile(c.ink, { freq: 0.85, oct: 4, blur: 0.7,
-                                                     slope: 1.45, intercept: -0.76, px: 130 }); } },
+      make: function (c, a) { return grainTile(c.ink, { freq: 0.85, oct: 4, blur: 0.7,
+                                                     slope: 1.45, intercept: -0.76, px: 130 }, a); } },
 
     /* Anisotropic: stretched along one axis, so it brushes rather than
        speckles. */
-    { name: 'grain-weave', tier: 'quiet', weight: 1.6, drift: null,
-      make: function (c) { return grainTile(c.ink, { freq: '0.30 1.7', oct: 3,
-                                                     slope: 1.30, intercept: -0.55, px: 150 }); } },
+    { name: 'grain-weave', off: true, tier: 'quiet', weight: 1.6, drift: null,
+      make: function (c, a) { return grainTile(c.ink, { freq: '0.30 1.7', oct: 3,
+                                                     slope: 1.30, intercept: -0.55, px: 150 }, a); } },
 
     /* Six octaves: detail at every scale at once, the way a real
        emulsion has both fine and coarse structure. */
-    { name: 'grain-mica', tier: 'quiet', weight: 1.6, drift: null,
-      make: function (c) { return grainTile(c.ink, { freq: 0.5, oct: 6, slope: 1.35, intercept: -0.58, px: 150 }); } },
+    { name: 'grain-mica', off: true, tier: 'quiet', weight: 1.6, drift: null,
+      make: function (c, a) { return grainTile(c.ink, { freq: 0.5, oct: 6, slope: 1.35, intercept: -0.58, px: 150 }, a); } },
 
     { name: 'halftone', off: true, tier: 'loud', weight: 2.1, drift: 'drift-slow',
       make: function (c) {
@@ -962,7 +971,31 @@
      can hold one ingredient fixed and vary the rest — which is what the
      judging tool does, and the only way to rate a font or a backdrop
      without the other choices confounding the verdict. */
-  function compose(palette, font, backdrop, entrance, treatment) {
+  /* Split a background list on its top-level commas only — the values
+     themselves are full of them, inside rgba() and every gradient. */
+  function topLayers(v) {
+    var out = [], depth = 0, cur = '';
+    for (var i = 0; i < v.length; i++) {
+      var ch = v[i];
+      if (ch === '(') depth++;
+      else if (ch === ')') depth--;
+      if (ch === ',' && depth === 0) { out.push(cur.trim()); cur = ''; continue; }
+      cur += ch;
+    }
+    if (cur.trim()) out.push(cur.trim());
+    return out;
+  }
+
+  /* CSS cycles a short background-size or -repeat list across the layers,
+     so a two-gradient backdrop under one grain would hand the grain's
+     size to the backdrop's second gradient. State every layer. */
+  function spread(value, n) {
+    var parts = topLayers(value);
+    while (parts.length < n) parts.push(parts[parts.length - 1]);
+    return parts.slice(0, n).join(', ');
+  }
+
+  function compose(palette, font, backdrop, entrance, treatment, grain) {
     var tone = tones(palette);
 
     /* `build` backdrops compose positioned layers; `make` backdrops are a
@@ -971,12 +1004,31 @@
     var bd = backdrop.build ? { image: 'none', size: 'auto', layers: backdrop.build(tone) }
                             : backdrop.make(tone);
 
+    var image = bd.image;
+    var size = bd.size;
+    /* Flat backdrops are compositions placed against the card box, so they
+       must not tile; everything else does. Stacking a grain on top means
+       saying so per layer, since the two disagree. */
+    var repeat = backdrop.tier === 'flat' ? 'no-repeat' : 'repeat';
+
+    /* Grain over a composition: the shape keeps its edges and the ground
+       stops being flat, which is most of what "depth" means here. */
+    if (grain) {
+      var g = grain.make(tone, GRAIN_OVER);
+      var n = topLayers(image).length;
+      image = g.image + ', ' + image;
+      size = g.size + ', ' + spread(size, n);
+      repeat = 'repeat, ' + spread(repeat, n);
+    }
+
     return {
       palette: palette,
       font: font,
       backdrop: backdrop,
-      backdropImage: bd.image,
-      backdropSize: bd.size,
+      grain: grain || null,
+      backdropImage: image,
+      backdropSize: size,
+      backdropRepeat: repeat,
       backdropLayers: bd.layers || null,
       entrance: entrance,
       treatment: treatment
@@ -987,13 +1039,26 @@
   var LIVE_FONTS = live(FONTS);
   var LIVE_BACKDROPS = live(BACKDROPS);
 
+  var LIVE_GRAINS = LIVE_BACKDROPS.filter(function (b) { return b.name.indexOf('grain') === 0; });
+
+  /* How often a card gets grain laid over its backdrop. */
+  var GRAIN_CHANCE = 0.38;
+
   function random() {
+    var backdrop = pickFresh(LIVE_BACKDROPS, 'backdrop', true);
+    /* Never grain over grain — that is just a denser grain, and a
+       muddier one. */
+    var grain = (backdrop.name.indexOf('grain') !== 0 &&
+                 LIVE_GRAINS.length && Math.random() < GRAIN_CHANCE)
+      ? pick(LIVE_GRAINS) : null;
+
     return compose(
       pickFresh(LIVE_PALETTES, 'palette', true),
       pickFresh(LIVE_FONTS, 'font', true),
-      pickFresh(LIVE_BACKDROPS, 'backdrop', true),
+      backdrop,
       pickFresh(ENTRANCES, 'entrance'),
-      pick(TREATMENTS)
+      pick(TREATMENTS),
+      grain
     );
   }
 
@@ -1004,6 +1069,7 @@
     el.className = 'backdrop';
     el.style.backgroundImage = theme.backdropImage;
     el.style.backgroundSize = theme.backdropSize;
+    if (theme.backdropRepeat) el.style.backgroundRepeat = theme.backdropRepeat;
 
     (theme.backdropLayers || []).forEach(function (spec) {
       var layer = document.createElement('div');

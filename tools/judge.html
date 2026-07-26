@@ -11,9 +11,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Alfa+Slab+One&family=Anton&family=Archivo+Black&family=Bakbak+One&family=Baloo+2:wght@800&family=Bebas+Neue&family=Bodoni+Moda:wght@700&family=Bricolage+Grotesque:wght@800&family=Bungee&family=Bungee+Inline&family=Bungee+Shade&family=Chewy&family=Chonburi&family=DM+Serif+Display&family=Fjalla+One&family=Fraunces:opsz,wght@9..144,600&family=Fredoka:wght@600&family=Instrument+Serif&family=Lilita+One&family=Monoton&family=Oswald:wght@700&family=Outfit:wght@900&family=Passion+One:wght@900&family=Playfair+Display:wght@700&family=Prata&family=Righteous&family=Rowdies:wght@700&family=Rubik+Mono+One&family=Saira+Condensed:wght@800&family=Shrikhand&family=Sora:wght@800&family=Space+Grotesk:wght@700&family=Squada+One&family=Staatliches&family=Syne:wght@800&family=Teko:wght@700&family=Titan+One&family=Unbounded:wght@900&family=Yatra+One&family=Yeseva+One&family=Zen+Dots&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/base.css?v=5">
-<link rel="stylesheet" href="../css/themes.css?v=5">
-<link rel="stylesheet" href="../css/animations.css?v=5">
+<link rel="stylesheet" href="../css/base.css?v=6">
+<link rel="stylesheet" href="../css/themes.css?v=6">
+<link rel="stylesheet" href="../css/animations.css?v=6">
 
 <style>
   /* Chrome for the tool only. The card below it is untouched. */
@@ -142,7 +142,7 @@ body.is-bare .jbar { opacity: 0; pointer-events: none; }
   </div>
   <div class="jspace"></div>
   <div class="jcount" id="count">0 / 0</div>
-  <i class="jbuild">r5</i>
+  <i class="jbuild">r6</i>
 </div>
 
 <div class="jbar jbar-bottom">
@@ -170,8 +170,8 @@ body.is-bare .jbar { opacity: 0; pointer-events: none; }
   </div>
 </div>
 
-<script src="../js/theme.js?v=5"></script>
-<script src="../js/text.js?v=5"></script>
+<script src="../js/theme.js?v=6"></script>
+<script src="../js/text.js?v=6"></script>
 <script>
 (function () {
   'use strict';
@@ -252,7 +252,13 @@ body.is-bare .jbar { opacity: 0; pointer-events: none; }
       var bds = p.items();
       return T.compose(rollPalette(), rollFont(), bds[Math.min(idx, bds.length - 1)], NO_ENTRANCE, 'plain');
     }
-    return T.compose(rollPalette(), rollFont(), rnd(T.BACKDROPS), NO_ENTRANCE, rnd(T.TREATMENTS));
+    /* Free roll mirrors the app, grain included — that layering is now
+       part of what a card is, so it has to be part of what gets judged. */
+    var bd = rnd(T.live(T.BACKDROPS));
+    var grains = T.live(T.BACKDROPS).filter(function (b) { return b.name.indexOf('grain') === 0; });
+    var grain = (bd.name.indexOf('grain') !== 0 && grains.length && Math.random() < 0.5)
+      ? rnd(grains) : null;
+    return T.compose(rollPalette(), rollFont(), bd, NO_ENTRANCE, rnd(T.TREATMENTS), grain);
   }
 
   /* Rerolling holds the dimension under judgment and varies the rest, but
@@ -358,7 +364,8 @@ body.is-bare .jbar { opacity: 0; pointer-events: none; }
   function subjectKey() {
     var p = PHASES[phase];
     if (p.id === 'combo') {
-      return current.palette.name + ' + ' + fontName(current.font) + ' + ' + current.backdrop.name;
+      return current.palette.name + ' + ' + fontName(current.font) + ' + ' + current.backdrop.name +
+             (current.grain ? ' + ' + current.grain.name : '');
     }
     var list = p.items();
     return list && idx < list.length ? p.name(list[idx]) : null;
@@ -373,7 +380,7 @@ body.is-bare .jbar { opacity: 0; pointer-events: none; }
     document.getElementById('meta').textContent = p.id === 'palette'
       ? current.palette.bg + ' · ' + current.palette.ink + ' · ' + current.palette.acc
       : p.id === 'combo'
-        ? 'treatment: ' + current.treatment
+        ? 'treatment: ' + current.treatment + (current.grain ? ' · grain over backdrop' : '')
         : current.palette.name + ' · ' + fontName(current.font) + ' · ' + current.backdrop.name;
 
     if (list) {
@@ -444,7 +451,7 @@ body.is-bare .jbar { opacity: 0; pointer-events: none; }
 
   function exportText() {
     var lines = [];
-    lines.push('/* myflash theme verdicts — build r5 — ' + new Date().toISOString().slice(0, 10) + ' */');
+    lines.push('/* myflash theme verdicts — build r6 — ' + new Date().toISOString().slice(0, 10) + ' */');
     lines.push('');
     ['palette', 'font', 'backdrop'].forEach(function (bucket) {
       var byVote = { love: [], fine: [], never: [] };
