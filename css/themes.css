@@ -177,6 +177,27 @@
   gap: .9rem;
 }
 
+/* Positioned against the card rather than added to the mode area: it
+   arrives while an answer is being read, so it must cost no layout. It
+   sits inside the card body's bottom padding, clear of any content. */
+.tap-cue {
+  position: absolute;
+  left: 0; right: 0;
+  bottom: calc(.55rem + env(safe-area-inset-bottom));
+  z-index: 3;
+  text-align: center;
+  font-family: var(--body-face);
+  font-size: .62rem;
+  font-weight: 700;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--ink);
+  opacity: 0;
+  transition: opacity .22s ease;
+  pointer-events: none;
+}
+.tap-cue.is-in { opacity: .45; }
+
 .hint {
   font-family: var(--body-face);
   font-size: .78rem;

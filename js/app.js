@@ -207,6 +207,38 @@
       setQuestion: paintQuestion,
       hero: qEl,
 
+      /* Hand the pace back to the reader. Every mode that reveals an
+         answer ends here rather than on a timer — how long you want to
+         look at a miss is not something a constant can know.
+
+         The cue is positioned against the card, not appended to the mode
+         area, so its arrival costs no layout: the answer being read must
+         not move out from under it. */
+      waitForTap: function (fn) {
+        var cue = h('div', 'tap-cue', 'TAP TO CONTINUE');
+        el.appendChild(cue);
+        el.classList.add('is-tappable');
+        requestAnimationFrame(function () { cue.classList.add('is-in'); });
+
+        function go() {
+          el.removeEventListener('click', onClick);
+          cue.remove();
+          fn();
+        }
+
+        function onClick(e) {
+          /* The explanation toggle is the one control still live once an
+             answer is on screen; everything else on the card is spent. */
+          if (e.target.closest('.why-toggle')) return;
+          go();
+        }
+
+        el.addEventListener('click', onClick);
+        /* The mode's own shortcuts are spent too. */
+        session.keydown = { ' ': go, 'Enter': go };
+        session.keyup = {};
+      },
+
       tapSurface: function (fn) {
         el.classList.add('is-tappable');
         el.addEventListener('click', function (e) {

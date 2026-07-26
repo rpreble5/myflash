@@ -10,7 +10,7 @@
      mount(area, ctx)
    ctx = { card, deck, finish(score 0..1), revealAnswer(style),
            setKicker(text), setQuestion(text), tapSurface(fn),
-           enableSwipe({onLeft,onRight}), keys(map) }                      */
+           enableSwipe({onLeft,onRight}), keys(map), waitForTap(fn) }      */
 
 (function (global) {
   'use strict';
@@ -59,10 +59,17 @@
     return (options.length <= (maxGrid || 4) && longest <= (maxChars || GRID_MAX_CHARS)) ? 'grid' : 'list';
   }
 
-  /* A miss needs longer on screen than a win: there is something to read. */
-  function settle(ctx, score, ms) {
-    if (ms == null) ms = score >= 1 ? 850 : 1700;
-    setTimeout(function () { ctx.finish(score); }, ms);
+  /* The answer is on screen; the card now waits for you.
+
+     The delay is not reading time — it is there so the tap that produced
+     the answer cannot also dismiss it. A swipe releases into a trailing
+     click a few milliseconds later, which would skip the reveal entirely. */
+  var ADVANCE_ARM = 350;
+
+  function settle(ctx, score) {
+    setTimeout(function () {
+      ctx.waitForTap(function () { ctx.finish(score); });
+    }, ADVANCE_ARM);
   }
 
   /* Optional explanation. Short notes just appear; long ones fold behind
@@ -284,8 +291,7 @@
         var clean = score >= 0.999;
         if (clean) global.Sfx.right(); else global.Sfx.wrong();
         if (why) why.classList.remove('is-held');
-        /* A miss leaves a whole set to read back, not one line. */
-        settle(ctx, score, clean ? 900 : why ? 2600 : 1900);
+        settle(ctx, score);
       }
 
       area.appendChild(grid);
@@ -541,7 +547,7 @@
           }
           idx++;
           if (idx >= items.length) {
-            ctx.finish(right / items.length);   // stay locked; card is done
+            settle(ctx, right / items.length);   // stay locked; card is done
             return;
           }
           locked = false;
@@ -845,7 +851,7 @@
         /* Right: you just produced the number, so showing it back is noise.
            Colour it and move on. */
         if (ok) {
-          settle(ctx, 1, 700);
+          settle(ctx, 1);
           return;
         }
 
@@ -868,7 +874,7 @@
           val.classList.remove('is-swapping');
         }, 130);
 
-        settle(ctx, 0, 2200);
+        settle(ctx, 0);
       }
 
       /* Opt-in: answer the instant the finger lifts. A release that changed
