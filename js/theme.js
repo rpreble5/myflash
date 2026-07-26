@@ -75,7 +75,25 @@
     { name: 'nocturne',   bg: '#05010F', ink: '#B14DFF', acc: '#00FFC8' },
     { name: 'paperblue',  bg: '#DCE9F5', ink: '#0B2545', acc: '#A50E1C' },
     { name: 'oxide',      bg: '#F0EDE6', ink: '#003B36', acc: '#D65108' },
-    { name: 'midnight',   bg: '#0D1B2A', ink: '#E0E1DD', acc: '#F4A259' }
+    { name: 'midnight',   bg: '#0D1B2A', ink: '#E0E1DD', acc: '#F4A259' },
+
+    /* Round two. The first pass kept one loved palette — deepdive, a deep
+       ground under a luminous ink — and cut two saturated grounds. These
+       pull in the calm and editorial directions from tools/moods.html,
+       plus a few quirky grounds, since none of that territory was
+       represented at all. */
+    { name: 'sage',       bg: '#E9EDE6', ink: '#2C3A31', acc: '#4C7358' },
+    { name: 'dusk',       bg: '#2B3440', ink: '#E7EBE8', acc: '#A8C4B6' },
+    { name: 'oat',        bg: '#F3EEE4', ink: '#3A3630', acc: '#8A5A2B' },
+    { name: 'cream',      bg: '#FBF7F0', ink: '#141110', acc: '#A8442A' },
+    { name: 'goldleaf',   bg: '#101D2B', ink: '#F1ECE2', acc: '#D4A72C' },
+    { name: 'blush',      bg: '#EEE5E1', ink: '#2A2321', acc: '#7D5A50' },
+    { name: 'lemonade',   bg: '#FFF1AE', ink: '#2B2118', acc: '#B03A16' },
+    { name: 'gumball',    bg: '#FFD8E7', ink: '#2E2440', acc: '#5B45D6' },
+    { name: 'cucumber',   bg: '#D8F2E4', ink: '#213A2D', acc: '#A8430E' },
+    { name: 'grape',      bg: '#EDE3FF', ink: '#31215C', acc: '#00705E' },
+    { name: 'abyss',      bg: '#001A1A', ink: '#5EEAD4', acc: '#FF8A5B' },
+    { name: 'terracotta', bg: '#2A1410', ink: '#F5D8C0', acc: '#E07A3F' }
   ];
 
   /* Per-palette derived tones, cached — flat shapes need opaque colours,
@@ -132,7 +150,22 @@
     { face: '"Outfit", sans-serif',          track: '-.045em',caps: false, wght: 900 },
     { face: '"Rubik Mono One", sans-serif',  track: '-.02em', caps: false, wght: 400 },
     { face: '"Passion One", sans-serif',     track: '-.01em', caps: true,  wght: 900 , off: true },
-    { face: '"Sora", sans-serif',            track: '-.04em', caps: false, wght: 800 }
+    { face: '"Sora", sans-serif',            track: '-.04em', caps: false, wght: 800 },
+
+    /* Round two. Bungee and Shrikhand were the only two loved, and the
+       three cut were the plain heavy ones — so the appetite is for faces
+       with a character of their own, not more neutral mass. The last
+       three come from the editorial direction, which had no
+       representation here at all. */
+    { face: '"Lilita One", sans-serif',      track: '.005em', caps: false, wght: 400 },
+    { face: '"Fredoka", sans-serif',         track: '-.01em', caps: false, wght: 600 },
+    { face: '"Baloo 2", sans-serif',         track: '-.01em', caps: false, wght: 800 },
+    { face: '"Rowdies", sans-serif',         track: '0',      caps: false, wght: 700 },
+    { face: '"Bakbak One", sans-serif',      track: '-.01em', caps: false, wght: 400 },
+    { face: '"Chewy", cursive',              track: '.01em',  caps: false, wght: 400 },
+    { face: '"Playfair Display", serif',     track: '-.015em',caps: false, wght: 700 },
+    { face: '"Instrument Serif", serif',     track: '0',      caps: false, wght: 400 },
+    { face: '"Fraunces", serif',             track: '-.005em',caps: false, wght: 600 }
   ];
 
   var BODY_FACE = '"Space Grotesk", system-ui, sans-serif';
@@ -533,6 +566,92 @@
       make: function (c) {
         return { image: 'linear-gradient(' + c.tLoud + ' 3px, transparent 3px),' +
                         'linear-gradient(90deg, ' + c.tLoud + ' 3px, transparent 3px)', size: '44px 44px' };
+      } },
+
+    /* ── Round two: compositions, not patterns ────────────────
+       The first taste pass loved six backdrops and cut twenty-four. All
+       six loved ones are a single large flat shape anchored to an edge;
+       every one that was cut repeats. Re-offered at 62% strength they
+       were still turned down, which settles it — the objection is to
+       repetition itself, not to how loud it is.
+
+       So these are all one or two flat shapes, edge-anchored, keeping out
+       of the vertical middle where the question sits. */
+
+    { name: 'dune', tier: 'flat', weight: 1.6, drift: null,
+      make: function (c) {
+        return svgBackdrop('<path d="M0 140 L0 104 Q28 82 56 104 L56 140 Z" fill="' + c.s1 + '"/>' +
+                           '<path d="M40 140 L40 112 Q70 88 100 112 L100 140 Z" fill="' + c.s2 + '"/>');
+      } },
+
+    { name: 'swell', tier: 'flat', weight: 1.6, drift: null,
+      make: function (c) {
+        return svgBackdrop('<path d="M0 140 L0 92 Q50 128 100 84 L100 140 Z" fill="' + c.s2 + '"/>');
+      } },
+
+    { name: 'wedge', tier: 'flat', weight: 1.6, drift: null,
+      make: function (c) {
+        return svgBackdrop('<polygon points="0,0 100,0 0,66" fill="' + c.s2 + '"/>');
+      } },
+
+    { name: 'wedge-low', tier: 'flat', weight: 1.6, drift: null,
+      make: function (c) {
+        return svgBackdrop('<polygon points="100,140 100,72 0,140" fill="' + c.a1 + '"/>');
+      } },
+
+    { name: 'arch', tier: 'flat', weight: 1.6, drift: null,
+      make: function (c) {
+        return svgBackdrop('<path d="M0 0 L100 0 L100 46 L74 46 Q74 16 50 16 Q26 16 26 46 L0 46 Z" fill="' + c.s2 + '"/>');
+      } },
+
+    { name: 'eclipse', tier: 'flat', weight: 1.6, drift: 'drift-breathe',
+      make: function (c) {
+        return svgBackdrop('<ellipse cx="78" cy="24" rx="34" ry="26" fill="' + c.s1 + '"/>' +
+                           '<ellipse cx="99" cy="36" rx="26" ry="20" fill="' + c.a1 + '"/>');
+      } },
+
+    { name: 'lens', tier: 'flat', weight: 1.6, drift: null,
+      make: function (c) {
+        return svgBackdrop('<path d="M14 34 Q50 -6 86 34 Q50 74 14 34 Z" fill="' + c.s2 + '"/>');
+      } },
+
+    { name: 'capsule', tier: 'flat', weight: 1.6, drift: null,
+      make: function (c) {
+        return svgBackdrop('<rect x="12" y="98" width="76" height="70" rx="34" fill="' + c.s1 + '"/>');
+      } },
+
+    { name: 'shelf', tier: 'flat', weight: 1.6, drift: null,
+      make: function (c) {
+        return svgBackdrop('<path d="M0 140 L0 108 L54 108 L54 94 L100 94 L100 140 Z" fill="' + c.s2 + '"/>');
+      } },
+
+    { name: 'bowl', tier: 'flat', weight: 1.6, drift: null,
+      make: function (c) {
+        return svgBackdrop('<path d="M0 140 L0 108 Q50 150 100 108 L100 140 Z" fill="' + c.a1 + '"/>');
+      } },
+
+    { name: 'corner-round', tier: 'flat', weight: 1.6, drift: null,
+      make: function (c) { return { image: 'radial-gradient(circle at 0% 0%, ' + c.s1 + ' 0 52%, transparent 52%)', size: 'auto' }; } },
+
+    { name: 'horizon', tier: 'flat', weight: 1.6, drift: 'drift-breathe',
+      make: function (c) {
+        return svgBackdrop('<path d="M0 140 L0 112 L100 112 L100 140 Z" fill="' + c.s2 + '"/>' +
+                           '<ellipse cx="66" cy="104" rx="24" ry="18" fill="' + c.a1 + '"/>');
+      } },
+
+    { name: 'drop', tier: 'flat', weight: 1.6, drift: null,
+      make: function (c) {
+        return svgBackdrop('<path d="M100 0 L100 54 Q60 54 60 20 Q60 0 78 0 Z" fill="' + c.a1 + '"/>');
+      } },
+
+    { name: 'blade', tier: 'flat', weight: 1.6, drift: null,
+      make: function (c) {
+        return svgBackdrop('<polygon points="0,10 100,0 100,26 0,42" fill="' + c.s2 + '"/>');
+      } },
+
+    { name: 'plateau', tier: 'flat', weight: 1.6, drift: null,
+      make: function (c) {
+        return svgBackdrop('<polygon points="0,140 22,96 78,96 100,140" fill="' + c.s1 + '"/>');
       } },
 
     { name: 'halftone', off: true, tier: 'loud', weight: 2.1, drift: 'drift-slow',

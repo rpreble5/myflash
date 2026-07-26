@@ -302,7 +302,7 @@ oversize so drift never exposes an edge.
 
 ```bash
 node tools/check-contrast.js   # exits non-zero if any palette fails
-open tools/backdrops.html      # contact sheet of all 54 backdrops
+open tools/backdrops.html      # contact sheet of every backdrop
 open tools/judge.html          # rate palettes, fonts and backdrops by eye
 open tools/moods.html          # calm / editorial / quirky alternatives to bold
 ```
