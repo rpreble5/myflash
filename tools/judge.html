@@ -20,9 +20,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Nova+Square&family=Iceberg&family=Rationale&family=Voltaire&family=Black+Ops+One&family=Bowlby+One&family=Bowlby+One+SC&family=Racing+Sans+One&family=Jockey+One&family=Hammersmith+One&family=Changa:wght@800&family=Signika+Negative:wght@700&family=Wendy+One&family=Poller+One&family=Spicy+Rice&family=Kumar+One&family=Yeon+Sung&family=Frijole&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Wallpoet&family=Bungee+Outline&family=Sigmar+One&family=Rammetto+One&family=Erica+One&family=Skranji:wght@700&family=Figtree:wght@900&family=Manrope:wght@800&family=Epilogue:wght@800&family=Urbanist:wght@900&family=Red+Hat+Display:wght@900&family=Be+Vietnam+Pro:wght@800&family=Hanken+Grotesk:wght@800&family=Public+Sans:wght@900&family=Overpass:wght@900&family=Karla:wght@800&family=Rubik:wght@800&family=Asap:wght@700&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Catamaran:wght@900&family=Mulish:wght@900&family=Commissioner:wght@900&family=Anybody:wght@800&family=Familjen+Grotesk:wght@700&family=Darker+Grotesque:wght@800&family=Modak&family=Climate+Crisis&family=Rubik+Vinyl&family=Rubik+Dirt&family=Rubik+Distressed&family=Rubik+Marker+Hatch&family=Rubik+Spray+Paint&family=Rubik+Storm&family=Rubik+Microbe&family=Silkscreen:wght@700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/base.css?v=8">
-<link rel="stylesheet" href="../css/themes.css?v=8">
-<link rel="stylesheet" href="../css/animations.css?v=8">
+<link rel="stylesheet" href="../css/base.css?v=9">
+<link rel="stylesheet" href="../css/themes.css?v=9">
+<link rel="stylesheet" href="../css/animations.css?v=9">
 
 <style>
   /* Chrome for the tool only. The card below it is untouched. */
@@ -69,8 +69,8 @@ body.is-bare .jbar { opacity: 0; pointer-events: none; }
   .jmeta { opacity: .55; font-size: .68rem; }
   .jspace { flex: 1; }
   .jcount { opacity: .7; font-variant-numeric: tabular-nums; }
-  /* Which round of material this page is serving. If it does not say r3,
-     the browser handed you a cached copy. */
+  /* Which round of material this page is serving. If the stamp is behind
+     the one you were given, the browser handed you a cached copy. */
   .jbuild { font-style: normal; opacity: .35; font-size: .62rem; letter-spacing: .1em; }
 
   .jvote {
@@ -151,7 +151,7 @@ body.is-bare .jbar { opacity: 0; pointer-events: none; }
   </div>
   <div class="jspace"></div>
   <div class="jcount" id="count">0 / 0</div>
-  <i class="jbuild">r8</i>
+  <i class="jbuild">r9</i>
 </div>
 
 <div class="jbar jbar-bottom">
@@ -179,8 +179,8 @@ body.is-bare .jbar { opacity: 0; pointer-events: none; }
   </div>
 </div>
 
-<script src="../js/theme.js?v=8"></script>
-<script src="../js/text.js?v=8"></script>
+<script src="../js/theme.js?v=9"></script>
+<script src="../js/text.js?v=9"></script>
 <script>
 (function () {
   'use strict';
@@ -507,7 +507,7 @@ body.is-bare .jbar { opacity: 0; pointer-events: none; }
 
   function exportText() {
     var lines = [];
-    lines.push('/* myflash theme verdicts — build r8 — ' + new Date().toISOString().slice(0, 10) + ' */');
+    lines.push('/* myflash theme verdicts — build r9 — ' + new Date().toISOString().slice(0, 10) + ' */');
     lines.push('');
     ['palette', 'font', 'backdrop'].forEach(function (bucket) {
       var byVote = { love: [], fine: [], never: [] };
