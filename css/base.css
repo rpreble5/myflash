@@ -2,6 +2,15 @@
 
 *, *::before, *::after { box-sizing: border-box; }
 
+/* No scrollbars anywhere. They are desktop chrome in a layout built to
+   run edge to edge — a grey gutter biting into a card, or into a deck
+   list, on a surface that is dragged and swiped rather than scrolled
+   with a mouse. Scrolling itself is untouched; only the bar is gone.
+   Phones draw overlay bars that fade on their own, so this shows up
+   almost entirely on desktop. */
+* { scrollbar-width: none; -ms-overflow-style: none; }
+*::-webkit-scrollbar { width: 0; height: 0; }
+
 html, body {
   margin: 0;
   padding: 0;
