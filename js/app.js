@@ -17,32 +17,92 @@
   }
 
   /* ───────────────────────── home ──────────────────────────── */
+  var LABELS = [
+    { at: 0.75, name: 'solid' },
+    { at: 0.45, name: 'shaky' },
+    { at: 0,    name: 'weakest' }
+  ];
+
+  function strengthLabel(v) {
+    for (var i = 0; i < LABELS.length; i++) if (v >= LABELS[i].at) return LABELS[i].name;
+    return 'weakest';
+  }
+
+  function meter(value) {
+    var m = h('span', 'meter');
+    var fill = h('span', 'meter-fill');
+    fill.style.width = Math.round(value * 100) + '%';
+    m.appendChild(fill);
+    return m;
+  }
+
+  /* Topics weakest first, each opening onto its decks in the same order.
+     The number itself stays out of it — a percentage invites you to farm
+     the metric instead of the material, and on a ten-card deck it is
+     mostly noise anyway. */
   function renderHome() {
     var list = $('#deck-list');
     list.textContent = '';
 
-    global.Store.allDecks().forEach(function (deck, i) {
-      var p = global.Store.deckProgress(deck);
-      var pal = global.Theme.PALETTES[i % global.Theme.PALETTES.length];
+    global.Store.topics().forEach(function (topic, ti) {
+      var pal = global.Theme.PALETTES[ti % global.Theme.PALETTES.length];
 
-      var card = h('button', 'deck-card');
-      card.style.setProperty('--bg', pal.bg);
-      card.style.setProperty('--ink', pal.ink);
-      card.style.setProperty('--acc', pal.acc);
-      card.style.setProperty('--i', i);
+      var group = h('div', 'topic');
+      group.style.setProperty('--bg', pal.bg);
+      group.style.setProperty('--ink', pal.ink);
+      group.style.setProperty('--acc', pal.acc);
+      group.style.setProperty('--i', ti);
+      if (!topic.started) group.classList.add('is-fresh');
 
-      card.appendChild(h('span', 'deck-name', deck.name));
-      card.appendChild(h('span', 'deck-blurb', deck.blurb || (deck.cards.length + ' cards')));
+      var head = h('button', 'topic-head');
+      head.setAttribute('aria-expanded', 'false');
+      head.appendChild(h('span', 'topic-name', topic.name));
 
-      var meter = h('span', 'deck-meter');
-      var fill = h('span', 'deck-meter-fill');
-      fill.style.width = (p.total ? (p.learned / p.total) * 100 : 0) + '%';
-      meter.appendChild(fill);
-      card.appendChild(meter);
-      card.appendChild(h('span', 'deck-count', p.learned + ' / ' + p.total + ' learned'));
+      var n = topic.decks.length;
+      var decks = n + (n === 1 ? ' deck' : ' decks');
+      var line = topic.started
+        ? topic.startedDecks + ' of ' + decks + ' · ' + topic.weak + ' weak'
+        : decks + ' · not started';
+      head.appendChild(h('span', 'topic-line', line));
+      head.appendChild(meter(topic.strength));
+      head.appendChild(h('span', 'topic-tag', topic.started ? strengthLabel(topic.strength) : 'new'));
 
-      card.addEventListener('click', function () { startSession(deck); });
-      list.appendChild(card);
+      var body = h('div', 'topic-decks');
+
+      /* Runs the topic's decks one after another, weakest first — a longer
+         session without mixing the cards, which is the thing to preserve. */
+      var all = h('button', 'btn btn-ghost btn-topic-all',
+                  'Study all ' + topic.cards + ' cards');
+      all.addEventListener('click', function (e) {
+        e.stopPropagation();
+        startSession(topic.decks.slice());
+      });
+      body.appendChild(all);
+
+      topic.decks.forEach(function (deck, di) {
+        var d = deck._strength;
+        var row = h('button', 'deck-row');
+        row.style.setProperty('--i', di);
+        row.appendChild(h('span', 'deck-name', deck.name));
+        row.appendChild(h('span', 'deck-line', d.started
+          ? d.weak + ' of ' + d.total + ' weak'
+          : d.total + ' cards · not started'));
+        row.appendChild(meter(d.strength));
+        row.addEventListener('click', function (e) {
+          e.stopPropagation();
+          startSession([deck]);
+        });
+        body.appendChild(row);
+      });
+
+      head.addEventListener('click', function () {
+        var open = group.classList.toggle('is-open');
+        head.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
+
+      group.appendChild(head);
+      group.appendChild(body);
+      list.appendChild(group);
     });
   }
 
@@ -70,10 +130,21 @@
   /* ───────────────────────── session ───────────────────────── */
   var session = null;
 
-  function startSession(deck) {
-    var order = global.Txt.shuffle(deck.cards.map(function (_, i) { return i; }));
+  /* Takes a list of decks. One deck is the common case; a topic hands over
+     all of its, already weakest first. Each is shuffled within itself and
+     finished before the next begins — the cards stay together, which is
+     the whole point of grouping them. */
+  function startSession(decks) {
+    if (!Array.isArray(decks)) decks = [decks];
+    var order = [];
+    decks.forEach(function (d, di) {
+      global.Txt.shuffle(d.cards.map(function (_, i) { return i; }))
+        .forEach(function (i) { order.push({ deck: di, card: i }); });
+    });
+
     session = {
-      deck: deck,
+      decks: decks,
+      deck: decks[0],
       queue: order,
       resolved: {},        // card index -> true once answered correctly
       answers: 0,
@@ -91,7 +162,7 @@
   }
 
   function updateHud() {
-    var total = session.deck.cards.length;
+    var total = session.decks.reduce(function (n, d) { return n + d.cards.length; }, 0);
     var done = Object.keys(session.resolved).length;
     $('#progress-fill').style.width = (total ? (done / total) * 100 : 0) + '%';
     $('#streak-n').textContent = session.streak;
@@ -100,8 +171,9 @@
 
   function nextCard() {
     if (!session.queue.length) return endSession();
-    var idx = session.queue.shift();
-    renderCard(session.deck, idx);
+    var next = session.queue.shift();
+    session.deck = session.decks[next.deck];
+    renderCard(session.deck, next.card, next);
   }
 
   /* Route every later pointer event to the card, however far the finger
@@ -114,7 +186,7 @@
     }
   }
 
-  function renderCard(deck, cardIndex) {
+  function renderCard(deck, cardIndex, ref) {
     var card = deck.cards[cardIndex];
     var theme = global.Theme.random();
     var mode = global.Modes.pickFor(card, deck);
@@ -467,15 +539,17 @@
           session.correct++;
           session.streak++;
           session.best = Math.max(session.best, session.streak);
-          session.resolved[cardIndex] = true;
+          session.resolved[deck.id + ':' + cardIndex] = true;
         } else {
           session.streak = 0;
           /* Requeue a missed card a few positions back so it comes
              around again inside the same session. */
           var at = Math.min(3, session.queue.length);
-          session.queue.splice(at, 0, cardIndex);
+          session.queue.splice(at, 0, ref);
         }
-        global.Store.recordAnswer(deck.id, cardIndex, clean);
+        /* The real score, not the boolean — a 4-of-5 and a 0-of-5 are not
+           the same thing and the ranking needs to know. */
+        global.Store.recordAnswer(deck.id, cardIndex, score);
         updateHud();
         setTimeout(nextCard, 180);
       }
@@ -582,7 +656,7 @@
     $('#btn-settings-back').addEventListener('click', function () { show('screen-home'); renderHome(); });
     $('#btn-quit').addEventListener('click', function () { show('screen-home'); renderHome(); });
     $('#btn-home').addEventListener('click', function () { show('screen-home'); });
-    $('#btn-again').addEventListener('click', function () { startSession(session.deck); });
+    $('#btn-again').addEventListener('click', function () { startSession(session.decks); });
     $('#btn-new-deck').addEventListener('click', function () { show('screen-editor'); });
     $('#btn-cancel-deck').addEventListener('click', function () { show('screen-home'); });
     $('#btn-save-deck').addEventListener('click', saveDeckFromForm);

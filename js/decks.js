@@ -14,6 +14,11 @@
      order      { q, steps:[] }                    stored in correct order
      match      { q, pairs:[{left, right}] }
 
+   A deck may carry `topic`, a plain string. Decks sharing one are grouped
+   and ranked together on the home screen. One flat level: a string is one
+   more field for a generator to fill in, where nesting is a structure it
+   can get wrong.
+
    `ref` is optional on any card and will carry the source citation once
    decks are model-generated. Sample content is standard teaching material;
    these are a study aid, not a clinical reference.                        */
@@ -27,6 +32,7 @@
        rather than the other way round. */
     {
       id: 'dka',
+      topic: 'Endocrine',
       name: 'DKA',
       blurb: 'Diabetic ketoacidosis, worked through all nine card types',
       cards: [
@@ -97,6 +103,7 @@
     },
     {
       id: 'tflab',
+      topic: 'Design lab',
       name: 'TF LAB',
       blurb: 'True or false — swipe left or right, with and without notes',
       cards: [
@@ -120,6 +127,7 @@
     },
     {
       id: 'trendlab',
+      topic: 'Design lab',
       name: 'TREND LAB',
       blurb: 'Up, down or unchanged — two rows up to five, long labels included',
       cards: [
@@ -171,6 +179,7 @@
     },
     {
       id: 'picklab',
+      topic: 'Design lab',
       name: 'PICK LAB',
       blurb: 'Choice and select-all — both layouts, short and long options',
       cards: [
@@ -208,6 +217,7 @@
     },
     {
       id: 'revealtest',
+      topic: 'Design lab',
       name: 'REVEAL LAB',
       blurb: 'Recall cards only — for judging the reveal motion',
       cards: [
@@ -243,6 +253,7 @@
 
     {
       id: 'dialtest',
+      topic: 'Design lab',
       name: 'DIAL LAB',
       blurb: 'Number cards only — for testing the dial',
       cards: [
@@ -261,6 +272,7 @@
 
     {
       id: 'acidbase',
+      topic: 'Renal',
       name: 'ACID–BASE',
       blurb: 'Disorders, compensation, and the gap',
       cards: [
@@ -308,6 +320,7 @@
 
     {
       id: 'labpatterns',
+      topic: 'Diagnostics',
       name: 'LAB PATTERNS',
       blurb: 'Recognizing the shape of a panel',
       cards: [
@@ -380,6 +393,7 @@
 
     {
       id: 'pharm',
+      topic: 'Pharmacology',
       name: 'PHARM',
       blurb: 'Drugs, doses, and antidotes',
       cards: [
@@ -430,6 +444,7 @@
 
     {
       id: 'protocols',
+      topic: 'Emergencies',
       name: 'PROTOCOLS',
       blurb: 'Sequences, shock states, and thresholds',
       cards: [
