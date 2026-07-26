@@ -210,12 +210,19 @@
       /* Select-all sets run longer than four, and the extra rows are what
          make the question hard — they shouldn't also force a tall list. */
       grid.dataset.lay = layoutFor(options, 6, GRID_MAX_CHARS_BOXED);
-      var check = checkBtn(submit);
 
-      var keyMap = { 'Enter': function () { if (!check.disabled) submit(); } };
+      var hint = h('div', 'hint is-static submit-cue', 'SWIPE RIGHT TO SUBMIT →');
+      var keyMap = { 'Enter': submit };
+      var btns = [];
 
       options.forEach(function (opt, i) {
-        var b = h('button', 'choice-btn');
+        /* Not a <button>: the options cover most of the lower card, and
+           enableSwipe steps around real buttons so their taps survive.
+           Divs let a submit swipe start anywhere over the list, and the
+           gesture's own onTap handles selection. */
+        var b = h('div', 'choice-btn');
+        b.setAttribute('role', 'button');
+        b.setAttribute('aria-pressed', 'false');
         /* The box carries selection state, so unlike single choice it earns
            its width in either layout. It shows the number only in list
            mode, where the column of them lines up down the edge. */
@@ -223,18 +230,22 @@
         b.appendChild(box);
         b.appendChild(h('span', 'choice-text', opt));
         b.style.setProperty('--i', i);
-
-        function toggle() {
-          if (locked) return;
-          picked[i] = !picked[i];
-          b.classList.toggle('is-picked', !!picked[i]);
-          check.disabled = !options.some(function (_, j) { return picked[j]; });
-        }
-
-        b.addEventListener('click', toggle);
-        keyMap[String(i + 1)] = toggle;
+        btns.push(b);
+        keyMap[String(i + 1)] = function () { toggle(i); };
         grid.appendChild(b);
       });
+
+      function anyPicked() {
+        return options.some(function (_, i) { return picked[i]; });
+      }
+
+      function toggle(i) {
+        if (locked) return;
+        picked[i] = !picked[i];
+        btns[i].classList.toggle('is-picked', !!picked[i]);
+        btns[i].setAttribute('aria-pressed', picked[i] ? 'true' : 'false');
+        hint.classList.toggle('is-live', anyPicked());
+      }
 
       function isAnswer(opt) {
         var n = global.Txt.normalize(opt);
@@ -242,14 +253,14 @@
       }
 
       function submit() {
-        if (locked) return;
+        if (locked || !anyPicked()) return;
         locked = true;
         grid.classList.add('is-locked');
-        check.classList.add('is-hidden');
+        hint.classList.add('is-hidden');
 
         var hits = 0, wrong = 0;
         options.forEach(function (opt, i) {
-          var b = grid.children[i];
+          var b = btns[i];
           var box = b.firstChild;
           if (isAnswer(opt)) {
             /* Every answer ends filled, picked or not: what's left on the
@@ -278,9 +289,9 @@
       }
 
       area.appendChild(grid);
-      area.appendChild(check);
+      area.appendChild(hint);
 
-      /* Built now, shown on CHECK. Appending it at reveal time pushed the
+      /* Built now, shown on submit. Appending it at reveal time pushed the
          options up by the height of the note — moving the one thing the
          user is reading at exactly the moment they start reading it. The
          card settles its layout before the answer, not during it. */
@@ -289,6 +300,23 @@
         why.classList.add('is-held');
         area.appendChild(why);
       }
+
+      /* Nothing flies away — the options slide under the finger and spring
+         back as the answer resolves in place. A swipe with nothing picked
+         has nothing to submit, so it just springs back too. */
+      var swipe = ctx.enableSwipe({
+        visual: grid,
+        nudge: true,
+        onRight: function () {
+          if (anyPicked()) submit(); else swipe.reset();
+        },
+        onLeft: function () { swipe.reset(); },
+        onTap: function (target) {
+          var b = target && target.closest && target.closest('.choice-btn');
+          var i = b ? btns.indexOf(b) : -1;
+          if (i >= 0) toggle(i);
+        }
+      });
 
       ctx.keys(keyMap);
     }

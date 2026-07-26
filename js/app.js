@@ -268,6 +268,10 @@
         /* The thing that follows the finger is not always the card: sorting
            moves the item and leaves the card in place. */
         var visual = opts.visual || el;
+        /* A nudge is a swipe that submits rather than dismisses. Nothing
+           leaves the screen, so the travel is damped and the visual springs
+           back — the answer resolving in place is the real feedback. */
+        var nudge = !!opts.nudge;
 
         function down(e) {
           if (committed || e.target.closest('button, input, textarea')) return;
@@ -292,8 +296,8 @@
           }
           if (axis !== 'x') return;
 
-          visual.style.transform = 'translateX(' + dx.toFixed(1) + 'px)';
-          visual.style.opacity = String(Math.max(0.4, 1 - Math.abs(dx) / (width * 1.5)));
+          visual.style.transform = 'translateX(' + (nudge ? dx * 0.35 : dx).toFixed(1) + 'px)';
+          if (!nudge) visual.style.opacity = String(Math.max(0.4, 1 - Math.abs(dx) / (width * 1.5)));
           el.dataset.swipe = dx > 24 ? 'right' : dx < -24 ? 'left' : '';
         }
 
@@ -321,11 +325,15 @@
         function commit(right) {
           if (committed) return;
           committed = true;
-          visual.style.transform = 'translateX(' + (right ? width * 1.2 : -width * 1.2) + 'px)';
-          visual.style.opacity = '0';
+          if (nudge) {
+            release();
+          } else {
+            visual.style.transform = 'translateX(' + (right ? width * 1.2 : -width * 1.2) + 'px)';
+            visual.style.opacity = '0';
+          }
           /* stayPut: the card survives the swipe, so it must not be marked
              as retiring — the caller resets the visual for the next item. */
-          if (!opts.stayPut) el.classList.add('is-swiped');
+          if (!opts.stayPut && !nudge) el.classList.add('is-swiped');
           (right ? opts.onRight : opts.onLeft)();
         }
 

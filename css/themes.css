@@ -217,6 +217,8 @@
   transition: transform .12s ease, background-color .18s, color .18s, opacity .18s;
 }
 .choice-btn:active { transform: scale(.97); }
+/* Select-all options are divs so a submit swipe can start on them. */
+.choice-btn[role="button"] { cursor: pointer; }
 .choice-key {
   flex: 0 0 auto;
   width: 26px; height: 26px;
@@ -235,7 +237,21 @@
 .choice-btn.is-wrong { opacity: .45; transform: scale(.98); }
 
 /* ── Select all that apply ───────────────────────────────────
-   The box is a checkbox rather than a keyboard hint: it has to show
+   Submitting is a right swipe over the options, so the block itself
+   tracks the finger and springs back — the transition has to be off
+   while dragging or the travel lags behind the thumb. */
+.is-multi { transition: transform .2s cubic-bezier(.25,.8,.4,1); }
+.card.is-dragging .is-multi { transition: none; }
+
+/* Where the CHECK button used to be. It holds that box whether or not it
+   is legible, so revealing the answer never shifts the options. */
+.submit-cue { opacity: .3; transition: opacity .18s ease; }
+.submit-cue.is-live { opacity: .75; }
+.submit-cue.is-hidden { visibility: hidden; }
+/* Once the drag is heading somewhere, the cue confirms rather than asks. */
+.card[data-swipe="right"] .submit-cue { opacity: 1; }
+
+/* The box is a checkbox rather than a keyboard hint: it has to show
    what is already selected, so it stays in both layouts. */
 .choice-box {
   background: transparent;

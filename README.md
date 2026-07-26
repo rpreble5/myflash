@@ -32,12 +32,13 @@ layer, which reshuffles palette, face, backdrop and entrance every render.
 | Type | Shape | Interaction |
 |---|---|---|
 | `recall` | `{ q, a, why? }` | tap anywhere to reveal, then swipe to grade |
-| `mcq` | `{ q, a, distractors[] }` | four options, authored distractors |
+| `mcq` | `{ q, a, distractors[] }` | tap one; grid or list, decided by option length |
+| `multi` | `{ q, answers[], distractors[], why? }` | select all that apply, swipe right to submit |
 | `truefalse` | `{ q, a:bool, why }` | two buttons, explanation on reveal |
 | `number` | `{ q, value, unit, tolerance, step? }` | drag anywhere to dial a value |
 | `number` | `{ q, low, high, unit, step? }` | dial to any value inside the band |
 | `trend` | `{ q, items:[{label, dir}] }` | mark each row ↑ / — / ↓ |
-| `bucket` | `{ q, bins[], items:[{label, bin}] }` | one big item at a time, tap its bin |
+| `bucket` | `{ q, bins[], items:[{label, bin}] }` | swipe each item left or right into a running list |
 | `order` | `{ q, steps[] }` | tap phrases into sequence |
 | `match` | `{ q, pairs:[{left, right}] }` | link two columns, four pairs |
 
