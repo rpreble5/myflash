@@ -412,57 +412,99 @@
 
   var trend = {
     id: 'trend', label: 'MARK THE CHANGES', types: ['trend'], weight: 1,
+    /* The question is a diagnosis and the rows are the answer; the rows
+       need the room. */
+    compact: true,
     eligible: function (card) { return card.items && card.items.length; },
     mount: function (area, ctx) {
+      var items = ctx.card.items;
       var rows = h('div', 'trend-rows');
-      var picks = new Array(ctx.card.items.length).fill(null);
+      var picks = new Array(items.length).fill(null);
       var locked = false;
+      var btnAt = [];
 
-      var check = checkBtn(function (btn) {
-        locked = true;
-        btn.remove();
-        var right = 0;
-        ctx.card.items.forEach(function (item, i) {
-          var row = rows.children[i];
-          var ok = picks[i] === item.dir;
-          if (ok) { right++; row.classList.add('is-right'); }
-          else {
-            row.classList.add('is-wrong');
-            row.querySelectorAll('.dir-btn').forEach(function (b) {
-              if (b.dataset.dir === item.dir) b.classList.add('is-answer');
-            });
-          }
-        });
-        settle(ctx, right / ctx.card.items.length);
-      });
+      var hint = h('div', 'hint is-static submit-cue', 'SWIPE RIGHT TO SUBMIT →');
 
-      ctx.card.items.forEach(function (item, i) {
+      items.forEach(function (item, i) {
         var row = h('div', 'trend-row');
         row.style.setProperty('--i', i);
         row.appendChild(h('span', 'trend-label', item.label));
 
         var group = h('div', 'dir-group');
+        var byDir = {};
         DIRS.forEach(function (d) {
-          var b = h('button', 'dir-btn', d.glyph);
-          b.dataset.dir = d.key;
+          /* Divs, not buttons: the dir groups run down the right of every
+             row, and enableSwipe steps around real buttons — a submit
+             swipe starting on one would die. The gesture's own onTap
+             does the selecting, as it does for select-all. */
+          var b = h('div', 'dir-btn', d.glyph);
+          b.setAttribute('role', 'button');
           b.setAttribute('aria-label', item.label + ' ' + d.name);
-          b.addEventListener('click', function () {
-            if (locked) return;
-            group.querySelectorAll('.dir-btn').forEach(function (x) { x.classList.remove('is-on'); });
-            b.classList.add('is-on');
-            picks[i] = d.key;
-            global.Sfx.tick();
-            check.disabled = picks.indexOf(null) !== -1;
-          });
+          b.setAttribute('aria-pressed', 'false');
+          b.dataset.dir = d.key;
+          b.dataset.row = String(i);
+          byDir[d.key] = b;
           group.appendChild(b);
         });
 
+        btnAt.push(byDir);
         row.appendChild(group);
         rows.appendChild(row);
       });
 
+      function complete() { return picks.indexOf(null) === -1; }
+
+      function pick(i, dir) {
+        if (locked) return;
+        global.Sfx.tick();
+        picks[i] = dir;
+        DIRS.forEach(function (d) {
+          var on = d.key === dir;
+          btnAt[i][d.key].classList.toggle('is-on', on);
+          btnAt[i][d.key].setAttribute('aria-pressed', on ? 'true' : 'false');
+        });
+        hint.classList.toggle('is-live', complete());
+      }
+
+      function submit() {
+        if (locked || !complete()) return;
+        locked = true;
+        rows.classList.add('is-locked');
+        hint.classList.add('is-hidden');
+
+        var right = 0;
+        items.forEach(function (item, i) {
+          var row = rows.children[i];
+          var ok = picks[i] === item.dir;
+          if (ok) right++;
+          else btnAt[i][picks[i]].classList.add('is-miss');
+          row.classList.add(ok ? 'is-right' : 'is-wrong');
+          /* The true direction fills on every row, right or wrong, so a
+             finished card reads as the pattern itself — platelets down,
+             PT up, PTT up — rather than as a record of the attempt. */
+          btnAt[i][item.dir].classList.add('is-truth');
+        });
+
+        settle(ctx, right / items.length);
+      }
+
       area.appendChild(rows);
-      area.appendChild(check);
+      area.appendChild(hint);
+
+      /* Same shape as select-all: several sub-answers, then one submit.
+         Nothing leaves the screen, so the rows nudge and spring back. */
+      var swipe = ctx.enableSwipe({
+        visual: rows,
+        motion: 'nudge',
+        onRight: function () { if (complete()) submit(); else swipe.reset(); },
+        onLeft:  function () { swipe.reset(); },
+        onTap: function (target) {
+          var b = target && target.closest && target.closest('.dir-btn');
+          if (b) pick(Number(b.dataset.row), b.dataset.dir);
+        }
+      });
+
+      ctx.keys({ 'Enter': submit });
     }
   };
 

@@ -458,7 +458,16 @@
 /* `.why` itself is defined once, in the Explanation section above. */
 
 /* ── Trend (up / same / down) ────────────────────────────── */
-.trend-rows { width: min(560px, 100%); display: flex; flex-direction: column; gap: .5rem; }
+.trend-rows {
+  width: min(560px, 100%);
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  /* The rows follow the finger and spring back; off mid-drag or the
+     travel trails the thumb. */
+  transition: transform .2s cubic-bezier(.25,.8,.4,1);
+}
+.card.is-dragging .trend-rows { transition: none; }
 .trend-row {
   display: flex;
   align-items: center;
@@ -488,12 +497,22 @@
   line-height: 1;
   transition: transform .12s cubic-bezier(.22,1,.36,1), background-color .15s, color .15s;
 }
+.dir-btn[role="button"] { cursor: pointer; }
 .dir-btn:active { transform: scale(.9); }
+/* Your pick, before the answer is in. */
 .dir-btn.is-on { background: var(--ink); color: var(--bg); border-color: var(--ink); }
-/* The answer the user missed, spelled out on their row. */
-.dir-btn.is-answer { border-color: var(--acc); color: var(--acc); box-shadow: inset 0 0 0 3px var(--acc); }
+
+/* After submitting. The true direction fills on every row so the card
+   reads as the pattern; a wrong pick is marked but stays secondary. */
+.dir-btn.is-truth { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.dir-btn.is-miss {
+  background: transparent;
+  border-color: var(--acc);
+  color: var(--acc);
+  opacity: .55;
+}
 .trend-row.is-right { border-color: var(--ink); }
-.trend-row.is-wrong { border-color: var(--acc); opacity: .78; }
+.trend-row.is-wrong { border-color: var(--acc); }
 
 /* ── Bucket ──────────────────────────────────────────────── */
 /* Two bins: swipe the item left or right and it settles into a single

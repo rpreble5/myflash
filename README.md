@@ -37,7 +37,7 @@ layer, which reshuffles palette, face, backdrop and entrance every render.
 | `truefalse` | `{ q, a:bool, why? }` | swipe left for false, right for true |
 | `number` | `{ q, value, unit, tolerance, step? }` | drag anywhere to dial a value |
 | `number` | `{ q, low, high, unit, step? }` | dial to any value inside the band |
-| `trend` | `{ q, items:[{label, dir}] }` | mark each row ↑ / — / ↓ |
+| `trend` | `{ q, items:[{label, dir}] }` | mark each row ↑ / — / ↓, swipe right to submit |
 | `bucket` | `{ q, bins[], items:[{label, bin}] }` | swipe each item left or right into a running list |
 | `order` | `{ q, steps[] }` | tap phrases into sequence |
 | `match` | `{ q, pairs:[{left, right}] }` | link two columns, four pairs |
