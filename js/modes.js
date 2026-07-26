@@ -50,10 +50,13 @@
 
      The bound is what fits one line in a half-width cell on a phone. */
   var GRID_MAX_CHARS = 15;
+  /* Select-all keeps its checkbox in either layout, and the box plus its
+     gap costs a narrow cell about four characters. */
+  var GRID_MAX_CHARS_BOXED = 11;
 
-  function layoutFor(options) {
+  function layoutFor(options, maxGrid, maxChars) {
     var longest = options.reduce(function (n, o) { return Math.max(n, String(o).length); }, 0);
-    return (options.length <= 4 && longest <= GRID_MAX_CHARS) ? 'grid' : 'list';
+    return (options.length <= (maxGrid || 4) && longest <= (maxChars || GRID_MAX_CHARS)) ? 'grid' : 'list';
   }
 
   /* A miss needs longer on screen than a win: there is something to read. */
@@ -187,6 +190,106 @@
       });
 
       area.appendChild(grid);
+      ctx.keys(keyMap);
+    }
+  };
+
+  /* ═══════════════ multi: select all that apply ═══════════════ */
+
+  var multi = {
+    id: 'multi', label: 'SELECT ALL THAT APPLY', types: ['multi'], weight: 1,
+    eligible: function (card) {
+      return card.answers && card.answers.length && card.distractors && card.distractors.length;
+    },
+    mount: function (area, ctx) {
+      var answers = ctx.card.answers;
+      var options = global.Txt.shuffle(answers.concat(ctx.card.distractors));
+      var picked = {}, locked = false;
+
+      var grid = h('div', 'choice-grid is-multi');
+      /* Select-all sets run longer than four, and the extra rows are what
+         make the question hard — they shouldn't also force a tall list. */
+      grid.dataset.lay = layoutFor(options, 6, GRID_MAX_CHARS_BOXED);
+      var check = checkBtn(submit);
+
+      var keyMap = { 'Enter': function () { if (!check.disabled) submit(); } };
+
+      options.forEach(function (opt, i) {
+        var b = h('button', 'choice-btn');
+        /* The box carries selection state, so unlike single choice it earns
+           its width in either layout. It shows the number only in list
+           mode, where the column of them lines up down the edge. */
+        var box = h('span', 'choice-key choice-box', grid.dataset.lay === 'list' ? String(i + 1) : '');
+        b.appendChild(box);
+        b.appendChild(h('span', 'choice-text', opt));
+        b.style.setProperty('--i', i);
+
+        function toggle() {
+          if (locked) return;
+          picked[i] = !picked[i];
+          b.classList.toggle('is-picked', !!picked[i]);
+          check.disabled = !options.some(function (_, j) { return picked[j]; });
+        }
+
+        b.addEventListener('click', toggle);
+        keyMap[String(i + 1)] = toggle;
+        grid.appendChild(b);
+      });
+
+      function isAnswer(opt) {
+        var n = global.Txt.normalize(opt);
+        return answers.some(function (a) { return global.Txt.normalize(a) === n; });
+      }
+
+      function submit() {
+        if (locked) return;
+        locked = true;
+        grid.classList.add('is-locked');
+        check.classList.add('is-hidden');
+
+        var hits = 0, wrong = 0;
+        options.forEach(function (opt, i) {
+          var b = grid.children[i];
+          var box = b.firstChild;
+          if (isAnswer(opt)) {
+            /* Every answer ends filled, picked or not: what's left on the
+               card is the true set, not a transcript of the attempt. */
+            b.classList.add('is-right');
+            box.textContent = '✓';
+            if (picked[i]) hits++; else b.classList.add('is-missed');
+          } else if (picked[i]) {
+            wrong++;
+            b.classList.add('is-wrong');
+            box.textContent = '✕';
+          } else {
+            b.classList.add('is-idle');
+            box.textContent = '';
+          }
+        });
+
+        /* Partial credit, with a wrong pick cancelling a hit — selecting
+           the whole board should not score better than knowing two. */
+        var score = Math.max(0, hits - wrong) / answers.length;
+        var clean = score >= 0.999;
+        if (clean) global.Sfx.right(); else global.Sfx.wrong();
+        if (why) why.classList.remove('is-held');
+        /* A miss leaves a whole set to read back, not one line. */
+        settle(ctx, score, clean ? 900 : why ? 2600 : 1900);
+      }
+
+      area.appendChild(grid);
+      area.appendChild(check);
+
+      /* Built now, shown on CHECK. Appending it at reveal time pushed the
+         options up by the height of the note — moving the one thing the
+         user is reading at exactly the moment they start reading it. The
+         card settles its layout before the answer, not during it. */
+      var why = ctx.card.why ? explanation(ctx.card.why) : null;
+      if (why) {
+        why.classList.add('is-held');
+        area.appendChild(why);
+      }
+
       ctx.keys(keyMap);
     }
   };
@@ -770,7 +873,7 @@
     }
   };
 
-  var ALL = [recall, choice, truefalse, trend, bucket, order, match, number];
+  var ALL = [recall, choice, multi, truefalse, trend, bucket, order, match, number];
 
   /* Presentations are chosen only from those that serve the card's type. */
   var lastId = null;

@@ -4,7 +4,8 @@
    still randomizes the look on every render.
 
      recall     { q, a, why? }
-     mcq        { q, a, distractors[] }
+     mcq        { q, a, distractors[] }              exactly one right
+     multi      { q, answers[], distractors[], why? } select all that apply
      truefalse  { q, a:bool, why }
      number     { q, value, unit, tolerance, step?, min?, max? }
      number     { q, low, high, unit, step?, min?, max? }
@@ -21,6 +22,43 @@
   'use strict';
 
   var BUILTIN = [
+    {
+      id: 'picklab',
+      name: 'PICK LAB',
+      blurb: 'Choice and select-all — both layouts, short and long options',
+      cards: [
+        /* Short options: the set lands as a 2×2. */
+        { type: 'mcq', q: 'Electrolyte lost in prolonged vomiting', a: 'Chloride',
+          distractors: ['Sodium', 'Calcium', 'Phosphate'] },
+        { type: 'mcq', q: 'Vitamin deficiency causing megaloblastic anemia with neuropathy', a: 'B12',
+          distractors: ['B1', 'B6', 'Folate'] },
+
+        /* Long options: the same mode goes down the page instead. */
+        { type: 'mcq', q: 'Most common cause of metabolic alkalosis', a: 'Vomiting or NG suction',
+          distractors: ['Severe diarrhea', 'Diabetic ketoacidosis', 'COPD exacerbation'] },
+        { type: 'mcq', q: 'First step when a trauma patient arrives unresponsive',
+          a: 'Assess and secure the airway',
+          distractors: ['Obtain IV access', 'Send a trauma panel', 'Order a CT head'] },
+
+        /* Select-all, short options — six of them, still a grid. */
+        { type: 'multi', q: 'Electrolytes that fall in refeeding syndrome',
+          answers: ['Phosphate', 'Potassium', 'Magnesium'],
+          distractors: ['Sodium', 'Chloride', 'Calcium'],
+          why: 'Insulin drives phosphate, potassium and magnesium intracellularly once feeding resumes. Phosphate is the one that kills.' },
+        { type: 'multi', q: 'Anion gap acidoses',
+          answers: ['Lactic acidosis', 'Ketoacidosis', 'Salicylates'],
+          distractors: ['Diarrhea', 'Type 1 RTA'] },
+
+        /* Select-all, long options — list. */
+        { type: 'multi', q: 'Features of nephrotic syndrome',
+          answers: ['Proteinuria > 3.5 g/day', 'Hypoalbuminemia', 'Hyperlipidemia'],
+          distractors: ['RBC casts on urinalysis', 'Oliguria with hypertension'] },
+        { type: 'multi', q: 'Live attenuated vaccines',
+          answers: ['MMR', 'Varicella', 'Intranasal influenza'],
+          distractors: ['Tdap', 'Hepatitis B', 'Inactivated polio'],
+          why: 'Live vaccines are contraindicated in pregnancy and in significant immunosuppression.' }
+      ]
+    },
     {
       id: 'revealtest',
       name: 'REVEAL LAB',

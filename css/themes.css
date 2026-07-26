@@ -165,7 +165,11 @@
   flex: 0 1 auto;
   width: 100%;
   max-height: 68vh;
-  overflow-y: auto;
+  /* Explicitly hidden, not left to default: `overflow-y: auto` alone
+     computes overflow-x to `auto` as well, and then a few pixels of
+     overhang anywhere lets the browser scroll the card sideways to bring
+     a focused button into view. Nothing on a card scrolls horizontally. */
+  overflow: hidden auto;
   overscroll-behavior: contain;
   display: flex;
   flex-direction: column;
@@ -191,8 +195,11 @@
 
 /* Multiple choice — the option set picks its own shape (see layoutFor). */
 .choice-grid { display: grid; gap: .65rem; width: min(700px, 100%); }
-.choice-grid[data-lay="grid"] { grid-template-columns: repeat(2, 1fr); }
-.choice-grid[data-lay="list"] { grid-template-columns: 1fr; }
+/* minmax(0, 1fr), not 1fr: a bare `fr` won't shrink below its min-content
+   width, so a long option quietly pushes its column — and the whole grid —
+   wider than the card and the text wraps to a line nobody can see. */
+.choice-grid[data-lay="grid"] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.choice-grid[data-lay="list"] { grid-template-columns: minmax(0, 1fr); }
 .choice-btn {
   display: flex;
   align-items: center;
@@ -205,7 +212,7 @@
   font-weight: 700;
   font-size: 1.02rem;
   text-align: left;
-  animation: choice-in .24s cubic-bezier(.22,1,.36,1) both;
+  animation: choice-in .24s cubic-bezier(.22,1,.36,1) backwards;
   animation-delay: calc(var(--i) * 65ms);
   transition: transform .12s ease, background-color .18s, color .18s, opacity .18s;
 }
@@ -221,9 +228,33 @@
 }
 .choice-text { flex: 1; min-width: 0; }
 .choice-grid.is-locked .choice-btn { pointer-events: none; }
-.choice-btn.is-right { background: var(--ink); color: var(--bg); transform: scale(1.02); }
+/* No scale-up: the fill already carries it, and on a full-width option the
+   growth is invisible everywhere except the container it overflows. */
+.choice-btn.is-right { background: var(--ink); color: var(--bg); }
 .choice-btn.is-right .choice-key { background: var(--bg); color: var(--ink); }
 .choice-btn.is-wrong { opacity: .45; transform: scale(.98); }
+
+/* ── Select all that apply ───────────────────────────────────
+   The box is a checkbox rather than a keyboard hint: it has to show
+   what is already selected, so it stays in both layouts. */
+.choice-box {
+  background: transparent;
+  border: 2px solid var(--ink);
+  color: var(--ink);
+  transition: background-color .14s ease, color .14s ease, border-color .14s ease;
+}
+/* The tint means "selected right now", so it stops meaning anything once
+   the answer is in — and must not outrank the reveal states below. */
+.choice-grid:not(.is-locked) .choice-btn.is-picked { background: color-mix(in srgb, var(--ink) 14%, transparent); }
+.choice-grid:not(.is-locked) .choice-btn.is-picked .choice-box { background: var(--ink); color: var(--bg); }
+
+/* After CHECK. Every answer fills, so the set reads as the answer; the
+   two failure states are told apart by fill, not by hue alone —
+   a missed answer is loud and solid, a wrong pick is quiet and hollow. */
+.choice-btn.is-missed { border-color: var(--acc); }
+.is-multi .choice-btn.is-wrong { border-color: var(--acc); color: var(--acc); }
+.is-multi .choice-btn.is-wrong .choice-box { border-color: var(--acc); background: transparent; color: var(--acc); }
+.is-multi .choice-btn.is-idle { opacity: .3; }
 
 /* ── Explanation ─────────────────────────────────────────────
    Short notes render inline; long ones fold behind a toggle so the
@@ -250,6 +281,9 @@
   transition: opacity .26s ease, transform .26s cubic-bezier(.22,1,.36,1);
 }
 .why.is-in { opacity: .8; transform: none; }
+/* Mounted early so it holds its box from the first frame, then released
+   on reveal — the note appears without shoving the answer around. */
+.why-wrap.is-held { animation: none; opacity: 0; pointer-events: none; }
 
 .why-toggle {
   font-family: var(--body-face);
@@ -335,7 +369,7 @@
   font-family: "Archivo Black", sans-serif;
   font-size: 1.15rem;
   letter-spacing: .06em;
-  animation: choice-in .24s cubic-bezier(.22,1,.36,1) both;
+  animation: choice-in .24s cubic-bezier(.22,1,.36,1) backwards;
   transition: transform .12s ease, background-color .18s, color .18s, opacity .18s;
 }
 .tf-btn:active { transform: scale(.96); }
@@ -354,7 +388,7 @@
   padding: .45rem .5rem .45rem .9rem;
   border-radius: 16px;
   border: 3px solid color-mix(in srgb, var(--ink) 35%, transparent);
-  animation: choice-in .24s cubic-bezier(.22,1,.36,1) both;
+  animation: choice-in .24s cubic-bezier(.22,1,.36,1) backwards;
   animation-delay: calc(var(--i) * 60ms);
   transition: border-color .2s, opacity .2s;
 }
@@ -444,7 +478,7 @@
   color: var(--ink);
   font-family: "Archivo Black", sans-serif;
   font-size: 1rem;
-  animation: choice-in .24s cubic-bezier(.22,1,.36,1) both;
+  animation: choice-in .24s cubic-bezier(.22,1,.36,1) backwards;
   animation-delay: calc(var(--i) * 70ms);
   transition: transform .12s ease, background-color .18s, color .18s, opacity .18s;
 }
@@ -463,7 +497,7 @@
   padding: .4rem .7rem;
   border-radius: 13px;
   border: 2px dashed color-mix(in srgb, var(--ink) 32%, transparent);
-  animation: choice-in .24s cubic-bezier(.22,1,.36,1) both;
+  animation: choice-in .24s cubic-bezier(.22,1,.36,1) backwards;
   animation-delay: calc(var(--i) * 50ms);
 }
 .order-num {
@@ -498,7 +532,7 @@
   font-family: var(--body-face);
   font-weight: 700;
   font-size: .9rem;
-  animation: tile-in .24s cubic-bezier(.22,1,.36,1) both;
+  animation: tile-in .24s cubic-bezier(.22,1,.36,1) backwards;
   animation-delay: calc(var(--i) * 45ms);
   transition: transform .14s cubic-bezier(.22,1,.36,1), opacity .14s;
 }
@@ -517,7 +551,7 @@
   font-weight: 700;
   font-size: clamp(.82rem, 3.4vw, .98rem);
   line-height: 1.15;
-  animation: choice-in .24s cubic-bezier(.22,1,.36,1) both;
+  animation: choice-in .24s cubic-bezier(.22,1,.36,1) backwards;
   animation-delay: calc(var(--i) * 55ms);
   transition: transform .14s cubic-bezier(.22,1,.36,1), background-color .18s, color .18s, opacity .18s;
 }
