@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>MYFLASH — moods</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- The current set, plus the faces the other four directions would need.
+     Loaded here only: the app commits to nothing until a look is picked. -->
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo+Black&family=Space+Grotesk:wght@400;700&family=Fraunces:opsz,wght@9..144,300;9..144,400&family=Newsreader:opsz,wght@6..72,300;6..72,400&family=Work+Sans:wght@300;400&family=Playfair+Display:wght@500;700&family=Cormorant+Garamond:wght@500;600&family=Instrument+Serif&family=DM+Serif+Display&family=Fredoka:wght@500;600&family=Baloo+2:wght@600;700&family=Lilita+One&family=Chewy&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/themes.css">
+
+<style>
+  body { overflow: hidden; }
+
+  #reel {
+    position: fixed;
+    inset: 0;
+    overflow-y: auto;
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+  }
+  .slide { position: relative; height: 100dvh; scroll-snap-align: start; }
+  /* The card is absolutely positioned by themes.css, which is what we
+     want — each slide is a real full-screen card. */
+  .slide .card { position: absolute; inset: 0; animation: none; }
+  .slide .letter { animation: none; opacity: 1; transform: none; }
+
+  /* Leading is hardcoded to .92 in themes.css, which is a bold-display
+     value. Calm and editorial both need air, so the look supplies it. */
+  .slide .q { line-height: var(--lead, .92); }
+
+  .tag {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 20;
+    display: flex;
+    align-items: baseline;
+    gap: .6rem;
+    padding: .5rem .8rem;
+    background: rgba(8,8,8,.8);
+    color: #f5f5f5;
+    font-family: "Space Grotesk", system-ui, sans-serif;
+    font-size: .72rem;
+    backdrop-filter: blur(6px);
+    transition: opacity .15s ease;
+  }
+  .tag b { font-size: .82rem; }
+  .tag i { font-style: normal; opacity: .5; font-size: .66rem; }
+  .tag .sp { flex: 1; }
+  body.is-bare .tag { opacity: 0; }
+
+  .mood-chip {
+    padding: .18rem .5rem;
+    border-radius: 999px;
+    font-size: .6rem;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    background: #f5f500;
+    color: #0b0b0b;
+  }
+  .mood-calm      { background: #9BB0A5; }
+  .mood-editorial { background: #C9A227; }
+  .mood-quirky    { background: #FF6B6B; color: #fff; }
+  .mood-bold      { background: #f5f500; }
+</style>
+</head>
+<body>
+
+<div class="tag">
+  <span class="mood-chip" id="chip">—</span>
+  <b id="name">—</b>
+  <i id="spec">—</i>
+  <span class="sp"></span>
+  <i id="pos">1 / 1</i>
+  <i>H hides</i>
+</div>
+
+<div id="reel"></div>
+
+<script src="../js/text.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  var svg = function (s) { return 'url("data:image/svg+xml,' + encodeURIComponent(s) + '")'; };
+
+  /* Each look is a complete position: ground, ink, accent, a face with the
+     weight/tracking/leading/case it actually wants, and a backdrop drawn
+     for that ground. Splitting these apart is what lets a random picker
+     produce combinations nobody would choose — so here they travel
+     together. */
+  var LOOKS = [
+
+    /* ── The current direction, for comparison ─────────────── */
+    { mood: 'bold', name: 'voltage', note: 'where we are now',
+      bg: '#0B0B0B', ink: '#F2F200', acc: '#FF2D95',
+      face: '"Anton", sans-serif', weight: 400, track: '-.02em', lead: .92, caps: true,
+      bd: 'repeating-linear-gradient(115deg, rgba(242,242,0,.07) 0 14px, transparent 14px 34px)' },
+
+    /* ── Calm ───────────────────────────────────────────────
+       Low chroma, close values, and — the part that matters — the
+       contrast lives only between ground and ink. The backdrop moves a
+       few percent, never more. Type gets air: lighter weight, leading
+       above 1, sentence case. Loud is a weight problem as much as a
+       colour one.                                                     */
+    { mood: 'calm', name: 'sage morning', note: 'pale ground, deep moss ink',
+      bg: '#E9EDE6', ink: '#2C3A31', acc: '#6E8F77',
+      face: '"Fraunces", serif', weight: 400, track: '-.005em', lead: 1.02, caps: false,
+      bd: 'linear-gradient(180deg, transparent 0 61%, rgba(44,58,49,.05) 61%)' },
+
+    { mood: 'calm', name: 'dusk', note: 'the same idea after dark',
+      bg: '#2B3440', ink: '#E7EBE8', acc: '#9BB0A5',
+      face: '"Work Sans", sans-serif', weight: 300, track: '-.015em', lead: 1.06, caps: false,
+      bd: 'linear-gradient(168deg, rgba(231,235,232,.055) 0 46%, transparent 46%)' },
+
+    { mood: 'calm', name: 'oat', note: 'paper, and almost nothing else',
+      bg: '#F3EEE4', ink: '#3A3630', acc: '#AC8763',
+      face: '"Newsreader", serif', weight: 300, track: '0', lead: 1.08, caps: false,
+      bd: svg('<svg xmlns="http://www.w3.org/2000/svg" width="180" height="180"><filter id="g"><feTurbulence baseFrequency="0.85" numOctaves="3"/></filter><rect width="180" height="180" filter="url(#g)" opacity="0.055"/></svg>') },
+
+    /* ── Editorial ──────────────────────────────────────────
+       Beauty here is restraint plus one confident gesture. A display
+       serif with real stroke contrast, a single arc or band, and a lot
+       of ground left alone. The accent appears once and means it.     */
+    { mood: 'editorial', name: 'ink & cream', note: 'one arc, one accent',
+      bg: '#FBF7F0', ink: '#141110', acc: '#A8442A',
+      face: '"Playfair Display", serif', weight: 700, track: '-.015em', lead: .98, caps: false,
+      bd: 'radial-gradient(circle at 50% 118%, rgba(168,68,42,.09) 0 52%, transparent 52%)' },
+
+    { mood: 'editorial', name: 'midnight gold', note: 'a flat band, no glow',
+      bg: '#101D2B', ink: '#F1ECE2', acc: '#C9A227',
+      face: '"Cormorant Garamond", serif', weight: 600, track: '.005em', lead: 1.0, caps: false,
+      bd: 'linear-gradient(180deg, rgba(201,162,39,.10) 0 30%, transparent 30%)' },
+
+    { mood: 'editorial', name: 'blush stone', note: 'two soft arcs, wide margins',
+      bg: '#EEE5E1', ink: '#2A2321', acc: '#7D5A50',
+      face: '"Instrument Serif", serif', weight: 400, track: '0', lead: 1.0, caps: false,
+      bd: 'radial-gradient(circle at 14% 10%, rgba(125,90,80,.09) 0 24%, transparent 24%),' +
+          'radial-gradient(circle at 90% 80%, rgba(125,90,80,.07) 0 30%, transparent 30%)' },
+
+    /* ── Quirky ─────────────────────────────────────────────
+       Unexpected pairings that still hold: mustard under lilac, tomato
+       over mint. Rounded faces with real personality, and motifs with a
+       sense of humour — waves, blobs, an oversized check. The rule that
+       keeps it from turning into a toy is that the motif stays quiet
+       and the colours do the talking.                                 */
+    { mood: 'quirky', name: 'lemonade', note: 'wavy stripes, tomato accent',
+      bg: '#FFF1AE', ink: '#2B2118', acc: '#E8542F',
+      face: '"Lilita One", sans-serif', weight: 400, track: '.005em', lead: .96, caps: false,
+      bd: svg('<svg xmlns="http://www.w3.org/2000/svg" width="60" height="24"><path d="M0 12 q 7.5 -9 15 0 t 15 0 t 15 0 t 15 0" fill="none" stroke="#2B2118" stroke-opacity="0.13" stroke-width="3"/></svg>') },
+
+    { mood: 'quirky', name: 'bubblegum', note: 'oversized dots, violet ink',
+      bg: '#FFD8E7', ink: '#2E2440', acc: '#6C5CE7',
+      face: '"Baloo 2", sans-serif', weight: 700, track: '-.01em', lead: 1.0, caps: false,
+      bd: 'radial-gradient(circle at 25% 25%, rgba(108,92,231,.16) 0 9%, transparent 9%),' +
+          'radial-gradient(circle at 75% 75%, rgba(108,92,231,.16) 0 9%, transparent 9%)' },
+
+    { mood: 'quirky', name: 'cucumber', note: 'big soft check, orange accent',
+      bg: '#D8F2E4', ink: '#213A2D', acc: '#F0722F',
+      face: '"Fredoka", sans-serif', weight: 600, track: '-.01em', lead: 1.0, caps: false,
+      bd: 'repeating-conic-gradient(rgba(33,58,45,.055) 0% 25%, transparent 0% 50%)' },
+
+    { mood: 'quirky', name: 'grape soda', note: 'the loudest of the three',
+      bg: '#EDE3FF', ink: '#31215C', acc: '#00A98F',
+      face: '"Chewy", cursive', weight: 400, track: '.01em', lead: 1.04, caps: false,
+      bd: svg('<svg xmlns="http://www.w3.org/2000/svg" width="90" height="90"><g fill="none" stroke="#31215C" stroke-opacity="0.12" stroke-width="3" stroke-linecap="round"><path d="M12 20 q 10 -12 20 0"/><path d="M56 58 q 10 -12 20 0"/><path d="M20 66 l 10 10"/><path d="M64 18 l 10 10"/></g></svg>') }
+  ];
+
+  var SIZES = {
+    /* Dots and checks want a real tile; gradients want to fill. */
+    bubblegum: '120px 120px',
+    cucumber: '140px 140px'
+  };
+
+  var QUESTION = 'Most common cause of metabolic alkalosis';
+  var NOTE = 'Vomiting and nasogastric suction strip chloride and hydrogen ions together.';
+
+  var reel = document.getElementById('reel');
+
+  LOOKS.forEach(function (look) {
+    var slide = document.createElement('div');
+    slide.className = 'slide';
+
+    var card = document.createElement('div');
+    card.className = 'card';
+    card.dataset.tier = 'flat';
+    card.dataset.treatment = 'plain';
+    var s = card.style;
+    s.setProperty('--bg', look.bg);
+    s.setProperty('--ink', look.ink);
+    s.setProperty('--acc', look.acc);
+    s.setProperty('--face', look.face);
+    s.setProperty('--weight', look.weight);
+    s.setProperty('--track', look.track);
+    s.setProperty('--lead', look.lead);
+    s.setProperty('--body-face', '"Space Grotesk", system-ui, sans-serif');
+
+    var bd = document.createElement('div');
+    bd.className = 'backdrop';
+    bd.style.backgroundImage = look.bd;
+    /* themes.css pins flat-tier backdrops to no-repeat, since most of them
+       are compositions. A tile has to say otherwise for itself. */
+    var tiled = SIZES[look.name] || look.bd.indexOf('url(') === 0;
+    if (SIZES[look.name]) bd.style.backgroundSize = SIZES[look.name];
+    bd.style.backgroundRepeat = tiled ? 'repeat' : 'no-repeat';
+    card.appendChild(bd);
+
+    var body = document.createElement('div');
+    body.className = 'card-body';
+
+    var kicker = document.createElement('div');
+    kicker.className = 'kicker';
+    kicker.textContent = 'PICK ONE';
+
+    var flipper = document.createElement('div');
+    flipper.className = 'flipper';
+    var face = document.createElement('div');
+    face.className = 'face face-front';
+    var q = document.createElement('h2');
+    q.className = 'q';
+    face.appendChild(q);
+    flipper.appendChild(face);
+
+    /* Real furniture. A look that only works on a headline is not a look
+       — the outlined buttons and the small note are where these fall
+       apart, exactly as they do in the app. */
+    var area = document.createElement('div');
+    area.className = 'mode-area';
+    var grid = document.createElement('div');
+    grid.className = 'choice-grid';
+    grid.dataset.lay = 'list';
+    ['Vomiting or NG suction', 'Severe diarrhea', 'Diabetic ketoacidosis'].forEach(function (t, i) {
+      var b = document.createElement('button');
+      b.className = 'choice-btn' + (i === 0 ? ' is-right' : '');
+      var k = document.createElement('span');
+      k.className = 'choice-key';
+      k.textContent = String(i + 1);
+      var x = document.createElement('span');
+      x.className = 'choice-text';
+      x.textContent = t;
+      b.appendChild(k);
+      b.appendChild(x);
+      grid.appendChild(b);
+    });
+    area.appendChild(grid);
+    var note = document.createElement('div');
+    note.className = 'why is-in';
+    note.textContent = NOTE;
+    area.appendChild(note);
+
+    body.appendChild(kicker);
+    body.appendChild(flipper);
+    body.appendChild(area);
+    card.appendChild(body);
+    slide.appendChild(card);
+    reel.appendChild(slide);
+
+    window.Txt.splitLetters(q, look.caps ? QUESTION.toUpperCase() : QUESTION, {});
+    var refit = function () { window.Txt.fit(q, face); };
+    requestAnimationFrame(refit);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(refit);
+    setTimeout(refit, 1200);
+  });
+
+  /* ── Which slide are we on ───────────────────────────────── */
+  var chip = document.getElementById('chip');
+  var nameEl = document.getElementById('name');
+  var specEl = document.getElementById('spec');
+  var posEl = document.getElementById('pos');
+
+  function paint() {
+    var i = Math.round(reel.scrollTop / reel.clientHeight);
+    i = Math.max(0, Math.min(LOOKS.length - 1, i));
+    var look = LOOKS[i];
+    chip.textContent = look.mood;
+    chip.className = 'mood-chip mood-' + look.mood;
+    nameEl.textContent = look.name;
+    specEl.textContent = (look.face.split('"')[1] || look.face) + ' · ' + look.note;
+    posEl.textContent = (i + 1) + ' / ' + LOOKS.length;
+  }
+
+  reel.addEventListener('scroll', paint, { passive: true });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'h' || e.key === 'H') document.body.classList.toggle('is-bare');
+    else if (e.key === 'ArrowDown' || e.key === 'ArrowRight') reel.scrollBy({ top: reel.clientHeight });
+    else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') reel.scrollBy({ top: -reel.clientHeight });
+  });
+  paint();
+})();
+</script>
+</body>
+</html>
