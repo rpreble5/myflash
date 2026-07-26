@@ -10,7 +10,8 @@
      mount(area, ctx)
    ctx = { card, deck, finish(score 0..1), revealAnswer(style),
            setKicker(text), setQuestion(text), tapSurface(fn),
-           enableSwipe({onLeft,onRight}), keys(map), waitForTap(fn) }      */
+           enableSwipe({onLeft,onRight}), keys(map), waitForTap(fn),
+           judge(score) }                                                 */
 
 (function (global) {
   'use strict';
@@ -67,6 +68,7 @@
   var ADVANCE_ARM = 350;
 
   function settle(ctx, score) {
+    ctx.judge(score);
     setTimeout(function () {
       ctx.waitForTap(function () { ctx.finish(score); });
     }, ADVANCE_ARM);
@@ -110,8 +112,8 @@
     bar.appendChild(got);
 
     var swipe = ctx.enableSwipe({
-      onLeft:  function () { global.Sfx.wrong(); ctx.finish(0); },
-      onRight: function () { global.Sfx.right(); ctx.finish(1); }
+      onLeft:  function () { ctx.judge(0); ctx.finish(0); },
+      onRight: function () { ctx.judge(1); ctx.finish(1); }
     });
 
     miss.addEventListener('click', function (e) { e.stopPropagation(); swipe.commit(false); });
@@ -248,6 +250,9 @@
 
       function toggle(i) {
         if (locked) return;
+        /* Selecting produces no verdict of its own, so without this the
+           only tap in the app that changes state silently is this one. */
+        global.Sfx.tick();
         picked[i] = !picked[i];
         btns[i].classList.toggle('is-picked', !!picked[i]);
         btns[i].setAttribute('aria-pressed', picked[i] ? 'true' : 'false');
@@ -288,8 +293,6 @@
         /* Partial credit, with a wrong pick cancelling a hit — selecting
            the whole board should not score better than knowing two. */
         var score = Math.max(0, hits - wrong) / answers.length;
-        var clean = score >= 0.999;
-        if (clean) global.Sfx.right(); else global.Sfx.wrong();
         if (why) why.classList.remove('is-held');
         settle(ctx, score);
       }
@@ -518,7 +521,10 @@
         locked = true;
         var item = items[idx];
         var ok = bin === item.bin;
-        if (ok) { right++; global.Sfx.right(); } else global.Sfx.wrong();
+        if (ok) right++;
+        /* The last item's verdict is the card's verdict, which settle
+           plays a moment later; two sounds for one action is noise. */
+        if (idx < items.length - 1) (ok ? global.Sfx.right : global.Sfx.wrong)();
 
         if (two) {
           /* The item settles on the side it *belongs* on, marked when that
@@ -678,10 +684,9 @@
           selected.classList.remove('is-sel');
           selected = null;
           solved++;
-          global.Sfx.right();
-          if (solved === pairs.length) {
-            settle(ctx, Math.max(0, 1 - misses / pairs.length));
-          }
+          /* The closing pair is the card; let settle speak for it. */
+          if (solved === pairs.length) settle(ctx, Math.max(0, 1 - misses / pairs.length));
+          else global.Sfx.right();
         } else {
           busy = true;
           misses++;

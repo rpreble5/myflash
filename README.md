@@ -359,8 +359,15 @@ them as a study aid, not a clinical reference.
 
 `prefers-reduced-motion` collapses every animation and stops backdrop drift.
 The HUD takes its colour from the current card's ink, so it stays legible on
-light and dark palettes alike. Audio is opt-out via `Sfx.setEnabled(false)`
-and vibration is used only where the platform supports it.
+light and dark palettes alike. Sound and vibration are separate switches in
+Settings, since they are different senses; where the browser exposes no
+vibration API the switch says so rather than sitting there inert.
+
+Sound is split by role. A verdict — right, partial, wrong, streak — plays the
+moment an answer appears. Transport, meaning the tap that moves the session
+on, gets its own flat, quiet click that judges nothing. Ticks confirm state
+changes that carry no verdict of their own, like selecting a checkbox or
+stepping the dial.
 
 ## Not built yet
 

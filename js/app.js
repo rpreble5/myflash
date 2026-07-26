@@ -207,6 +207,20 @@
       setQuestion: paintQuestion,
       hero: qEl,
 
+      /* The verdict on the answer, played the moment the answer appears.
+         It cannot live in finish() any more: finish now runs on the
+         advance tap, so a chime there lands as a verdict on the tap. */
+      judge: function (score) {
+        if (score < 0.999) {
+          if (score > 0) global.Sfx.partial(); else global.Sfx.wrong();
+          return;
+        }
+        /* The streak this answer is about to produce — finish() has not
+           run yet, so session.streak is still the previous value. */
+        var n = session.streak + 1;
+        if (n >= 3) global.Sfx.streak(Math.min(n, 8)); else global.Sfx.right();
+      },
+
       /* Hand the pace back to the reader. Every mode that reveals an
          answer ends here rather than on a timer — how long you want to
          look at a miss is not something a constant can know.
@@ -223,6 +237,7 @@
         function go() {
           el.removeEventListener('click', onClick);
           cue.remove();
+          global.Sfx.advance();
           fn();
         }
 
@@ -438,10 +453,8 @@
           session.streak++;
           session.best = Math.max(session.best, session.streak);
           session.resolved[cardIndex] = true;
-          if (session.streak >= 3) global.Sfx.streak(Math.min(session.streak, 8)); else global.Sfx.right();
         } else {
           session.streak = 0;
-          if (score === 0) global.Sfx.wrong();
           /* Requeue a missed card a few positions back so it comes
              around again inside the same session. */
           var at = Math.min(3, session.queue.length);
