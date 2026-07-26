@@ -88,7 +88,7 @@
     { name: 'cream',      bg: '#FBF7F0', ink: '#141110', acc: '#A8442A' },
     { name: 'goldleaf',   bg: '#101D2B', ink: '#F1ECE2', acc: '#D4A72C' },
     { name: 'blush',      bg: '#EEE5E1', ink: '#2A2321', acc: '#7D5A50' },
-    { name: 'lemonade',   bg: '#FFF1AE', ink: '#2B2118', acc: '#B03A16' },
+    { name: 'lemonade',   bg: '#FFF1AE', ink: '#2B2118', acc: '#B03A16', off: true },
     { name: 'gumball',    bg: '#FFD8E7', ink: '#2E2440', acc: '#5B45D6' },
     { name: 'cucumber',   bg: '#D8F2E4', ink: '#213A2D', acc: '#A8430E' },
     { name: 'grape',      bg: '#EDE3FF', ink: '#31215C', acc: '#00705E' },
@@ -157,15 +157,42 @@
        with a character of their own, not more neutral mass. The last
        three come from the editorial direction, which had no
        representation here at all. */
-    { face: '"Lilita One", sans-serif',      track: '.005em', caps: false, wght: 400 },
-    { face: '"Fredoka", sans-serif',         track: '-.01em', caps: false, wght: 600 },
-    { face: '"Baloo 2", sans-serif',         track: '-.01em', caps: false, wght: 800 },
-    { face: '"Rowdies", sans-serif',         track: '0',      caps: false, wght: 700 },
-    { face: '"Bakbak One", sans-serif',      track: '-.01em', caps: false, wght: 400 },
-    { face: '"Chewy", cursive',              track: '.01em',  caps: false, wght: 400 },
+    { face: '"Lilita One", sans-serif',      track: '.005em', caps: false, wght: 400, off: true },
+    { face: '"Fredoka", sans-serif',         track: '-.01em', caps: false, wght: 600, off: true },
+    { face: '"Baloo 2", sans-serif',         track: '-.01em', caps: false, wght: 800, off: true },
+    { face: '"Rowdies", sans-serif',         track: '0',      caps: false, wght: 700, off: true },
+    { face: '"Bakbak One", sans-serif',      track: '-.01em', caps: false, wght: 400, off: true },
+    { face: '"Chewy", cursive',              track: '.01em',  caps: false, wght: 400, off: true },
     { face: '"Playfair Display", serif',     track: '-.015em',caps: false, wght: 700 },
     { face: '"Instrument Serif", serif',     track: '0',      caps: false, wght: 400 },
-    { face: '"Fraunces", serif',             track: '-.005em',caps: false, wght: 600 }
+    { face: '"Fraunces", serif',             track: '-.005em',caps: false, wght: 600, off: true },
+
+    /* Round three. Two passes now agree on the shape of the taste: tight,
+       graphic display faces and high-contrast serifs survive; soft
+       rounded ones and plain heavy grotesques do not. Six of nine round-two
+       faces were cut and every one of them was rounded and friendly.
+
+       So: more of the two families that held — condensed gothics and
+       editorial serifs — plus the Bungee siblings and a Shrikhand
+       neighbour, since those two are the only faces loved outright. */
+    { face: '"Abril Fatface", serif',        track: '-.015em',caps: false, wght: 400 },
+    { face: '"DM Serif Display", serif',     track: '-.01em', caps: false, wght: 400 },
+    { face: '"Bodoni Moda", serif',          track: '-.01em', caps: false, wght: 700 },
+    { face: '"Prata", serif',                track: '0',      caps: false, wght: 400 },
+    { face: '"Yeseva One", serif',           track: '-.005em',caps: false, wght: 400 },
+    { face: '"Chonburi", serif',             track: '0',      caps: false, wght: 400 },
+    { face: '"Oswald", sans-serif',          track: '-.005em',caps: true,  wght: 700 },
+    { face: '"Fjalla One", sans-serif',      track: '0',      caps: true,  wght: 400 },
+    { face: '"Staatliches", sans-serif',     track: '.02em',  caps: true,  wght: 400 },
+    { face: '"Squada One", sans-serif',      track: '.01em',  caps: true,  wght: 400 },
+    { face: '"Teko", sans-serif',            track: '.01em',  caps: true,  wght: 700 },
+    { face: '"Saira Condensed", sans-serif', track: '-.01em', caps: true,  wght: 800 },
+    { face: '"Bungee Inline", sans-serif',   track: '0',      caps: true,  wght: 400 },
+    { face: '"Bungee Shade", sans-serif',    track: '0',      caps: true,  wght: 400 },
+    { face: '"Yatra One", serif',            track: '0',      caps: false, wght: 400 },
+    { face: '"Monoton", sans-serif',         track: '.02em',  caps: true,  wght: 400 },
+    { face: '"Zen Dots", sans-serif',        track: '-.01em', caps: false, wght: 400 },
+    { face: '"Bricolage Grotesque", sans-serif', track: '-.03em', caps: false, wght: 800 }
   ];
 
   var BODY_FACE = '"Space Grotesk", system-ui, sans-serif';
@@ -300,12 +327,12 @@
                         'radial-gradient(circle at 84% 74%, ' + c.a1 + ' 0 28%, transparent 28%)', size: 'auto' };
       } },
 
-    { name: 'ring-flat', off: true, tier: 'flat', weight: 1.4, drift: 'drift-breathe',
+    { name: 'ring-flat', tier: 'flat', weight: 1.4, drift: 'drift-breathe',
       make: function (c) {
         return { image: 'radial-gradient(circle at 50% 34%, transparent 0 32%, ' + c.s2 + ' 32% 34.5%, transparent 34.5%)', size: 'auto' };
       } },
 
-    { name: 'stack', off: true, tier: 'flat', weight: 1.4, drift: null,
+    { name: 'stack', tier: 'flat', weight: 1.4, drift: null,
       make: function (c) {
         return { image: 'linear-gradient(180deg, transparent 0 52%, ' + c.s1 + ' 52% 64%, transparent 64% 72%,' +
                         c.s1 + ' 72% 84%, transparent 84%)', size: 'auto' };
@@ -578,7 +605,7 @@
        So these are all one or two flat shapes, edge-anchored, keeping out
        of the vertical middle where the question sits. */
 
-    { name: 'dune', tier: 'flat', weight: 1.6, drift: null,
+    { name: 'dune', off: true, tier: 'flat', weight: 1.6, drift: null,
       make: function (c) {
         return svgBackdrop('<path d="M0 140 L0 104 Q28 82 56 104 L56 140 Z" fill="' + c.s1 + '"/>' +
                            '<path d="M40 140 L40 112 Q70 88 100 112 L100 140 Z" fill="' + c.s2 + '"/>');
@@ -599,33 +626,33 @@
         return svgBackdrop('<polygon points="100,140 100,72 0,140" fill="' + c.a1 + '"/>');
       } },
 
-    { name: 'arch', tier: 'flat', weight: 1.6, drift: null,
+    { name: 'arch', off: true, tier: 'flat', weight: 1.6, drift: null,
       make: function (c) {
         return svgBackdrop('<path d="M0 0 L100 0 L100 46 L74 46 Q74 16 50 16 Q26 16 26 46 L0 46 Z" fill="' + c.s2 + '"/>');
       } },
 
-    { name: 'eclipse', tier: 'flat', weight: 1.6, drift: 'drift-breathe',
+    { name: 'eclipse', off: true, tier: 'flat', weight: 1.6, drift: 'drift-breathe',
       make: function (c) {
         return svgBackdrop('<ellipse cx="78" cy="24" rx="34" ry="26" fill="' + c.s1 + '"/>' +
                            '<ellipse cx="99" cy="36" rx="26" ry="20" fill="' + c.a1 + '"/>');
       } },
 
-    { name: 'lens', tier: 'flat', weight: 1.6, drift: null,
+    { name: 'lens', off: true, tier: 'flat', weight: 1.6, drift: null,
       make: function (c) {
         return svgBackdrop('<path d="M14 34 Q50 -6 86 34 Q50 74 14 34 Z" fill="' + c.s2 + '"/>');
       } },
 
-    { name: 'capsule', tier: 'flat', weight: 1.6, drift: null,
+    { name: 'capsule', off: true, tier: 'flat', weight: 1.6, drift: null,
       make: function (c) {
         return svgBackdrop('<rect x="12" y="98" width="76" height="70" rx="34" fill="' + c.s1 + '"/>');
       } },
 
-    { name: 'shelf', tier: 'flat', weight: 1.6, drift: null,
+    { name: 'shelf', off: true, tier: 'flat', weight: 1.6, drift: null,
       make: function (c) {
         return svgBackdrop('<path d="M0 140 L0 108 L54 108 L54 94 L100 94 L100 140 Z" fill="' + c.s2 + '"/>');
       } },
 
-    { name: 'bowl', tier: 'flat', weight: 1.6, drift: null,
+    { name: 'bowl', off: true, tier: 'flat', weight: 1.6, drift: null,
       make: function (c) {
         return svgBackdrop('<path d="M0 140 L0 108 Q50 150 100 108 L100 140 Z" fill="' + c.a1 + '"/>');
       } },
@@ -633,25 +660,124 @@
     { name: 'corner-round', tier: 'flat', weight: 1.6, drift: null,
       make: function (c) { return { image: 'radial-gradient(circle at 0% 0%, ' + c.s1 + ' 0 52%, transparent 52%)', size: 'auto' }; } },
 
-    { name: 'horizon', tier: 'flat', weight: 1.6, drift: 'drift-breathe',
+    { name: 'horizon', off: true, tier: 'flat', weight: 1.6, drift: 'drift-breathe',
       make: function (c) {
         return svgBackdrop('<path d="M0 140 L0 112 L100 112 L100 140 Z" fill="' + c.s2 + '"/>' +
                            '<ellipse cx="66" cy="104" rx="24" ry="18" fill="' + c.a1 + '"/>');
       } },
 
-    { name: 'drop', tier: 'flat', weight: 1.6, drift: null,
+    { name: 'drop', off: true, tier: 'flat', weight: 1.6, drift: null,
       make: function (c) {
         return svgBackdrop('<path d="M100 0 L100 54 Q60 54 60 20 Q60 0 78 0 Z" fill="' + c.a1 + '"/>');
       } },
 
-    { name: 'blade', tier: 'flat', weight: 1.6, drift: null,
+    { name: 'blade', off: true, tier: 'flat', weight: 1.6, drift: null,
       make: function (c) {
         return svgBackdrop('<polygon points="0,10 100,0 100,26 0,42" fill="' + c.s2 + '"/>');
       } },
 
-    { name: 'plateau', tier: 'flat', weight: 1.6, drift: null,
+    { name: 'plateau', off: true, tier: 'flat', weight: 1.6, drift: null,
       make: function (c) {
         return svgBackdrop('<polygon points="0,140 22,96 78,96 100,140" fill="' + c.s1 + '"/>');
+      } },
+
+    /* ── Round three: two-tone, one boundary ──────────────────
+       Eleven of fifteen round-two backdrops were cut, and the four that
+       survived join the six loved ones in a single pattern: one boundary
+       running edge to edge, dividing the card into two flat fields.
+       Everything rejected was an object sitting on a ground — a floating
+       capsule, a disc above a band, two overlapping hills.
+
+       Which is what the brief said at the outset: two-tone flat is the
+       emphasis. These are organic dividing lines, plus variations on
+       grain, the one texture that has survived every pass. */
+
+    { name: 'ripple', tier: 'flat', weight: 1.6, drift: null,
+      make: function (c) {
+        return svgBackdrop('<path d="M0 140 L0 104 Q17 88 33 104 T66 104 T100 104 L100 140 Z" fill="' + c.s1 + '"/>');
+      } },
+
+    { name: 'tide', tier: 'flat', weight: 1.6, drift: null,
+      make: function (c) {
+        return svgBackdrop('<path d="M0 140 L0 96 C33 122 66 74 100 100 L100 140 Z" fill="' + c.s2 + '"/>');
+      } },
+
+    { name: 'crest', tier: 'flat', weight: 1.6, drift: null,
+      make: function (c) {
+        return svgBackdrop('<path d="M0 0 L100 0 L100 32 C74 32 70 64 44 56 C24 50 20 28 0 32 Z" fill="' + c.s2 + '"/>');
+      } },
+
+    { name: 'bay', tier: 'flat', weight: 1.6, drift: null,
+      make: function (c) {
+        return svgBackdrop('<path d="M0 0 L38 0 C38 46 12 62 38 96 L38 140 L0 140 Z" fill="' + c.s1 + '"/>');
+      } },
+
+    { name: 'pebble', tier: 'flat', weight: 1.6, drift: null,
+      make: function (c) {
+        return svgBackdrop('<path d="M100 140 L100 58 C62 58 36 90 42 140 Z" fill="' + c.a1 + '"/>');
+      } },
+
+    { name: 'driftline', tier: 'flat', weight: 1.6, drift: null,
+      make: function (c) {
+        return svgBackdrop('<path d="M0 0 L100 0 L100 36 C86 44 78 28 62 37 C48 45 40 30 24 39 C14 45 8 37 0 44 Z" fill="' + c.s2 + '"/>');
+      } },
+
+    { name: 'fold', tier: 'flat', weight: 1.6, drift: null,
+      make: function (c) {
+        return svgBackdrop('<polygon points="0,0 100,0 100,34 46,54 0,34" fill="' + c.s2 + '"/>');
+      } },
+
+    { name: 'slope', tier: 'flat', weight: 1.6, drift: null,
+      make: function (c) {
+        return svgBackdrop('<path d="M0 140 L0 72 C40 72 60 122 100 122 L100 140 Z" fill="' + c.s1 + '"/>');
+      } },
+
+    { name: 'cove', tier: 'flat', weight: 1.6, drift: null,
+      make: function (c) {
+        return svgBackdrop('<path d="M0 0 L100 0 L100 48 C72 48 66 18 40 25 C22 30 18 48 0 48 Z" fill="' + c.a1 + '"/>');
+      } },
+
+    /* Grain, which has survived every pass, at three other densities and
+       once confined to one field of a split. */
+    { name: 'grain-fine', tier: 'quiet', weight: 2.4, drift: null,
+      make: function (c) {
+        return svgTile(scatter(4231, 240, 64, 64, function (x, y, v) {
+          var sz = 0.6 + v * 0.5;
+          return '<rect x="' + x.toFixed(1) + '" y="' + y.toFixed(1) + '" width="' + sz.toFixed(1) +
+                 '" height="' + sz.toFixed(1) + '" fill="' + c.s2 + '"/>';
+        }), 64, 64, '92px 92px');
+      } },
+
+    { name: 'grain-coarse', tier: 'quiet', weight: 2.4, drift: null,
+      make: function (c) {
+        return svgTile(scatter(9091, 64, 64, 64, function (x, y, v) {
+          var sz = 1.6 + v * 1.8;
+          return '<rect x="' + x.toFixed(1) + '" y="' + y.toFixed(1) + '" width="' + sz.toFixed(1) +
+                 '" height="' + sz.toFixed(1) + '" fill="' + c.s1 + '"/>';
+        }), 64, 64, '168px 168px');
+      } },
+
+    /* Not a tile: the density has to thin out across the card, which a
+       repeating pattern cannot do. */
+    { name: 'grain-fade', tier: 'quiet', weight: 2.4, drift: null,
+      make: function (c) {
+        return svgBackdrop(scatter(5519, 900, 100, 140, function (x, y, v) {
+          if (v > y / 140) return '';        // sparse at the top, dense at the foot
+          var sz = 0.5 + v * 0.7;
+          return '<rect x="' + x.toFixed(1) + '" y="' + y.toFixed(1) + '" width="' + sz.toFixed(2) +
+                 '" height="' + sz.toFixed(2) + '" fill="' + c.s2 + '"/>';
+        }));
+      } },
+
+    { name: 'duo-grain', tier: 'flat', weight: 1.6, drift: null,
+      make: function (c) {
+        return svgBackdrop('<path d="M0 140 L0 84 L100 96 L100 140 Z" fill="' + c.s1 + '"/>' +
+          scatter(6607, 700, 100, 140, function (x, y, v) {
+            if (y < 84 + (x / 100) * 12) return '';   // specks live below the split only
+            var sz = 0.5 + v * 0.8;
+            return '<rect x="' + x.toFixed(1) + '" y="' + y.toFixed(1) + '" width="' + sz.toFixed(2) +
+                   '" height="' + sz.toFixed(2) + '" fill="' + c.s3 + '"/>';
+          }));
       } },
 
     { name: 'halftone', off: true, tier: 'loud', weight: 2.1, drift: 'drift-slow',
