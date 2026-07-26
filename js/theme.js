@@ -178,9 +178,9 @@
     { face: '"Abril Fatface", serif',        track: '-.015em',caps: false, wght: 400 },
     { face: '"DM Serif Display", serif',     track: '-.01em', caps: false, wght: 400 },
     { face: '"Bodoni Moda", serif',          track: '-.01em', caps: false, wght: 700 },
-    { face: '"Prata", serif',                track: '0',      caps: false, wght: 400 },
+    { face: '"Prata", serif',                track: '0',      caps: false, wght: 400, off: true },
     { face: '"Yeseva One", serif',           track: '-.005em',caps: false, wght: 400 },
-    { face: '"Chonburi", serif',             track: '0',      caps: false, wght: 400 },
+    { face: '"Chonburi", serif',             track: '0',      caps: false, wght: 400, off: true },
     { face: '"Oswald", sans-serif',          track: '-.005em',caps: true,  wght: 700 },
     { face: '"Fjalla One", sans-serif',      track: '0',      caps: true,  wght: 400 },
     { face: '"Staatliches", sans-serif',     track: '.02em',  caps: true,  wght: 400 },
@@ -189,10 +189,10 @@
     { face: '"Saira Condensed", sans-serif', track: '-.01em', caps: true,  wght: 800 },
     { face: '"Bungee Inline", sans-serif',   track: '0',      caps: true,  wght: 400 },
     { face: '"Bungee Shade", sans-serif',    track: '0',      caps: true,  wght: 400 },
-    { face: '"Yatra One", serif',            track: '0',      caps: false, wght: 400 },
+    { face: '"Yatra One", serif',            track: '0',      caps: false, wght: 400, off: true },
     { face: '"Monoton", sans-serif',         track: '.02em',  caps: true,  wght: 400 },
-    { face: '"Zen Dots", sans-serif',        track: '-.01em', caps: false, wght: 400 },
-    { face: '"Bricolage Grotesque", sans-serif', track: '-.03em', caps: false, wght: 800 }
+    { face: '"Zen Dots", sans-serif',        track: '-.01em', caps: false, wght: 400, off: true },
+    { face: '"Bricolage Grotesque", sans-serif', track: '-.03em', caps: false, wght: 800, off: true }
   ];
 
   var BODY_FACE = '"Space Grotesk", system-ui, sans-serif';
@@ -234,6 +234,53 @@
     var r = seeded(seed), out = '';
     for (var i = 0; i < count; i++) out += draw(r() * w, r() * h, r(), i);
     return out;
+  }
+
+  /* ── Film grain ────────────────────────────────────────────
+     Fractal noise, not scattered squares. The original grain placed 130
+     rects in a 64-unit tile and showed it at 128px — a 2x upscale, so
+     every speck was two CSS pixels across, which is why it read as
+     blocky speckle rather than grain.
+
+     These do the opposite: the noise is generated at 240 units and shown
+     smaller, so it downsamples. Downsampling is what makes it look like
+     film — the browser's own filtering softens the edges no pixel grid
+     can. `stitchTiles` matters as much as anything else here: without it
+     every tile boundary shows as a seam across the card.
+
+     The colour matrix flattens RGB to the palette's own tone and takes
+     alpha from the noise's red channel, so the grain is tinted rather
+     than grey, and `slope` scales that alpha down to a whisper.
+
+     The alpha transfer is the whole trick, and it is a threshold rather
+     than a dimmer. Fractal noise sits around 0.5, so scaling it down
+     just lays an even veil over the card — a fifth of the ink over
+     everything, which greys a pale ground and still reads as flat,
+     because what makes grain visible is local contrast, not coverage.
+
+     A steep slope with a negative intercept clips the troughs to nothing
+     and lets only the peaks through: sparse, high-contrast specks at a
+     pitch far finer than a hand-placed rect can reach. Mean coverage
+     stays a few percent while neighbouring pixels still differ sharply,
+     which is what film actually does. */
+  function grainTile(colour, freq, octaves, slope, intercept, px) {
+    var c = rgbOf(colour);
+    var m = [
+      0, 0, 0, 0, (c[0] / 255).toFixed(4),
+      0, 0, 0, 0, (c[1] / 255).toFixed(4),
+      0, 0, 0, 0, (c[2] / 255).toFixed(4),
+      1, 0, 0, 0, 0
+    ].join(' ');
+    return svgTile(
+      '<filter id="g" x="0" y="0" width="100%" height="100%">' +
+        '<feTurbulence type="fractalNoise" baseFrequency="' + freq + '" numOctaves="' + octaves +
+          '" stitchTiles="stitch" result="n"/>' +
+        '<feColorMatrix in="n" type="matrix" values="' + m + '"/>' +
+        '<feComponentTransfer><feFuncA type="linear" slope="' + slope +
+          '" intercept="' + intercept + '"/></feComponentTransfer>' +
+      '</filter>' +
+      '<rect width="240" height="240" filter="url(#g)"/>',
+      240, 240, px + 'px ' + px + 'px');
   }
 
   /* ── Layout zones ──────────────────────────────────────────
@@ -707,12 +754,12 @@
         return svgBackdrop('<path d="M0 0 L100 0 L100 32 C74 32 70 64 44 56 C24 50 20 28 0 32 Z" fill="' + c.s2 + '"/>');
       } },
 
-    { name: 'bay', tier: 'flat', weight: 1.6, drift: null,
+    { name: 'bay', off: true, tier: 'flat', weight: 1.6, drift: null,
       make: function (c) {
         return svgBackdrop('<path d="M0 0 L38 0 C38 46 12 62 38 96 L38 140 L0 140 Z" fill="' + c.s1 + '"/>');
       } },
 
-    { name: 'pebble', tier: 'flat', weight: 1.6, drift: null,
+    { name: 'pebble', off: true, tier: 'flat', weight: 1.6, drift: null,
       make: function (c) {
         return svgBackdrop('<path d="M100 140 L100 58 C62 58 36 90 42 140 Z" fill="' + c.a1 + '"/>');
       } },
@@ -722,7 +769,7 @@
         return svgBackdrop('<path d="M0 0 L100 0 L100 36 C86 44 78 28 62 37 C48 45 40 30 24 39 C14 45 8 37 0 44 Z" fill="' + c.s2 + '"/>');
       } },
 
-    { name: 'fold', tier: 'flat', weight: 1.6, drift: null,
+    { name: 'fold', off: true, tier: 'flat', weight: 1.6, drift: null,
       make: function (c) {
         return svgBackdrop('<polygon points="0,0 100,0 100,34 46,54 0,34" fill="' + c.s2 + '"/>');
       } },
@@ -748,7 +795,7 @@
         }), 64, 64, '92px 92px');
       } },
 
-    { name: 'grain-coarse', tier: 'quiet', weight: 2.4, drift: null,
+    { name: 'grain-coarse', off: true, tier: 'quiet', weight: 2.4, drift: null,
       make: function (c) {
         return svgTile(scatter(9091, 64, 64, 64, function (x, y, v) {
           var sz = 1.6 + v * 1.8;
@@ -759,7 +806,7 @@
 
     /* Not a tile: the density has to thin out across the card, which a
        repeating pattern cannot do. */
-    { name: 'grain-fade', tier: 'quiet', weight: 2.4, drift: null,
+    { name: 'grain-fade', off: true, tier: 'quiet', weight: 2.4, drift: null,
       make: function (c) {
         return svgBackdrop(scatter(5519, 900, 100, 140, function (x, y, v) {
           if (v > y / 140) return '';        // sparse at the top, dense at the foot
@@ -769,7 +816,7 @@
         }));
       } },
 
-    { name: 'duo-grain', tier: 'flat', weight: 1.6, drift: null,
+    { name: 'duo-grain', off: true, tier: 'flat', weight: 1.6, drift: null,
       make: function (c) {
         return svgBackdrop('<path d="M0 140 L0 84 L100 96 L100 140 Z" fill="' + c.s1 + '"/>' +
           scatter(6607, 700, 100, 140, function (x, y, v) {
@@ -779,6 +826,19 @@
                    '" height="' + sz.toFixed(2) + '" fill="' + c.s3 + '"/>';
           }));
       } },
+
+    /* Four densities of real grain, replacing the speckle. */
+    { name: 'grain-film', tier: 'quiet', weight: 2.6, drift: null,
+      make: function (c) { return grainTile(c.ink, 0.9,  4, 1.10, -0.48, 120); } },
+
+    { name: 'grain-silk', tier: 'quiet', weight: 2.6, drift: null,
+      make: function (c) { return grainTile(c.ink, 1.4,  3, 0.95, -0.44, 100); } },
+
+    { name: 'grain-paper', tier: 'quiet', weight: 2.6, drift: null,
+      make: function (c) { return grainTile(c.ink, 0.62, 5, 1.30, -0.56, 140); } },
+
+    { name: 'grain-ash', tier: 'quiet', weight: 2.6, drift: null,
+      make: function (c) { return grainTile(c.ink, 1.1,  4, 1.50, -0.62, 110); } },
 
     { name: 'halftone', off: true, tier: 'loud', weight: 2.1, drift: 'drift-slow',
       make: function (c) {
