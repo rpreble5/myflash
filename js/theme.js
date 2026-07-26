@@ -164,7 +164,7 @@
     { face: '"Bakbak One", sans-serif',      track: '-.01em', caps: false, wght: 400, off: true },
     { face: '"Chewy", cursive',              track: '.01em',  caps: false, wght: 400, off: true },
     { face: '"Playfair Display", serif',     track: '-.015em',caps: false, wght: 700 },
-    { face: '"Instrument Serif", serif',     track: '0',      caps: false, wght: 400 },
+    { face: '"Instrument Serif", serif', favor: 0.35, noGrain: true,     track: '0',      caps: false, wght: 400 },
     { face: '"Fraunces", serif',             track: '-.005em',caps: false, wght: 600, off: true },
 
     /* Round three. Two passes now agree on the shape of the taste: tight,
@@ -176,7 +176,7 @@
        editorial serifs — plus the Bungee siblings and a Shrikhand
        neighbour, since those two are the only faces loved outright. */
     { face: '"Abril Fatface", serif',        track: '-.015em',caps: false, wght: 400 },
-    { face: '"DM Serif Display", serif',     track: '-.01em', caps: false, wght: 400 },
+    { face: '"DM Serif Display", serif', favor: 0.35, noGrain: true,     track: '-.01em', caps: false, wght: 400 },
     { face: '"Bodoni Moda", serif',          track: '-.01em', caps: false, wght: 700 },
     { face: '"Prata", serif',                track: '0',      caps: false, wght: 400, off: true },
     { face: '"Yeseva One", serif',           track: '-.005em',caps: false, wght: 400 },
@@ -1046,15 +1046,22 @@
 
   function random() {
     var backdrop = pickFresh(LIVE_BACKDROPS, 'backdrop', true);
-    /* Never grain over grain — that is just a denser grain, and a
-       muddier one. */
-    var grain = (backdrop.name.indexOf('grain') !== 0 &&
+    var font = pickFresh(LIVE_FONTS, 'font', true);
+
+    /* Never grain over grain — that is just a denser grain, and a muddier
+       one — and never over a face that cannot carry it. Eighty-two rated
+       combinations put Instrument Serif and DM Serif Display at nought
+       for ten overall, and every one of their pairings with a grain
+       failed. The penalty for grain is not general: with those two set
+       aside it is roughly neutral, so the rule is about the faces rather
+       than about grain. */
+    var grain = (backdrop.name.indexOf('grain') !== 0 && !font.noGrain &&
                  LIVE_GRAINS.length && Math.random() < GRAIN_CHANCE)
       ? pick(LIVE_GRAINS) : null;
 
     return compose(
       pickFresh(LIVE_PALETTES, 'palette', true),
-      pickFresh(LIVE_FONTS, 'font', true),
+      font,
       backdrop,
       pickFresh(ENTRANCES, 'entrance'),
       pick(TREATMENTS),
