@@ -315,7 +315,7 @@
          has nothing to submit, so it just springs back too. */
       var swipe = ctx.enableSwipe({
         visual: grid,
-        nudge: true,
+        motion: 'nudge',
         onRight: function () {
           if (anyPicked()) submit(); else swipe.reset();
         },
@@ -344,8 +344,12 @@
          one. The buttons stay real, so the card still works by tap and
          by keyboard — and unlike a select-all list, a two-button bar
          leaves most of the card free for the swipe to start on. */
-      var fBtn = h('button', 'tf-btn tf-false', 'FALSE');
-      var tBtn = h('button', 'tf-btn tf-true', 'TRUE');
+      /* The label rides above the fill layer, so it needs to be an
+         element rather than a bare text node. */
+      var fBtn = h('button', 'tf-btn tf-false');
+      var tBtn = h('button', 'tf-btn tf-true');
+      fBtn.appendChild(h('span', 'tf-label', 'FALSE'));
+      tBtn.appendChild(h('span', 'tf-label', 'TRUE'));
       bar.appendChild(fBtn);
       bar.appendChild(h('span', 'swipe-cue', 'swipe'));
       bar.appendChild(tBtn);
@@ -372,11 +376,15 @@
         settle(ctx, ok ? 1 : 0);
       }
 
-      /* Nothing leaves the screen — the bar follows the finger and springs
-         back while the answer resolves in place. */
+      /* The bar holds still. Nothing is going anywhere — the answer
+         resolves in place — so the distance is spent on the colour of the
+         side you are heading for instead of on travel. */
       var swipe = ctx.enableSwipe({
-        visual: bar,
-        nudge: true,
+        motion: 'none',
+        onProgress: function (t, dir) {
+          bar.dataset.lean = dir;
+          bar.style.setProperty('--lean', t.toFixed(3));
+        },
         onLeft:  function () { answer(false); },
         onRight: function () { answer(true); }
       });

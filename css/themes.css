@@ -406,11 +406,7 @@
   align-items: center;
   gap: .7rem;
   width: min(560px, 100%);
-  /* The bar follows the finger and springs back; the transition has to
-     be off mid-drag or the travel lags behind the thumb. */
-  transition: transform .2s cubic-bezier(.25,.8,.4,1);
 }
-.card.is-dragging .tf-bar { transition: none; }
 .tf-bar .swipe-cue { flex: 0 0 auto; }
 .tf-btn {
   flex: 1;
@@ -421,20 +417,43 @@
   font-family: "Archivo Black", sans-serif;
   font-size: 1.15rem;
   letter-spacing: .06em;
+  position: relative;
+  overflow: hidden;
   animation: choice-in .24s cubic-bezier(.22,1,.36,1) backwards;
   transition: transform .12s ease, background-color .18s, color .18s, opacity .18s;
 }
+/* The fill layer. Its own element rather than the button's background so
+   the ramp and the settled right/wrong colour never fight over one
+   property — and so the label can sit above it. */
+.tf-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--ink);
+  opacity: 0;
+  transition: opacity .18s ease;
+  pointer-events: none;
+}
+.tf-label { position: relative; }
 .tf-btn:active { transform: scale(.96); }
 .tf-bar.is-locked .tf-btn { pointer-events: none; }
 .tf-btn.is-right { background: var(--ink); color: var(--bg); }
 .tf-btn.is-wrong { opacity: .4; transform: scale(.98); }
 
-/* Dragging previews the answer: a tint while heading that way, a fill
-   once release would commit it. False left, true right. */
-.card[data-swipe="left"]  .tf-false,
-.card[data-swipe="right"] .tf-true { background: color-mix(in srgb, var(--ink) 14%, transparent); }
+/* Dragging colours the side you are heading for, continuously with
+   distance. It stops short of solid: past about 40% the ink would start
+   swallowing its own label, and the last step belongs to the commit
+   point anyway — armed fills and flips the text, so the ramp reads as
+   "getting there" and the fill as "let go and this is your answer". */
+.tf-bar[data-lean="left"]  .tf-false::before,
+.tf-bar[data-lean="right"] .tf-true::before { opacity: calc(var(--lean, 0) * .4); }
+/* Live with the finger: a transition here would trail the thumb. */
+.card.is-dragging .tf-btn::before { transition: none; }
+
+.card[data-armed="left"]  .tf-false::before,
+.card[data-armed="right"] .tf-true::before { opacity: 1; }
 .card[data-armed="left"]  .tf-false,
-.card[data-armed="right"] .tf-true { background: var(--ink); color: var(--bg); }
+.card[data-armed="right"] .tf-true { color: var(--bg); }
 
 /* `.why` itself is defined once, in the Explanation section above. */
 

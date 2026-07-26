@@ -318,10 +318,13 @@
         /* The thing that follows the finger is not always the card: sorting
            moves the item and leaves the card in place. */
         var visual = opts.visual || el;
-        /* A nudge is a swipe that submits rather than dismisses. Nothing
-           leaves the screen, so the travel is damped and the visual springs
-           back — the answer resolving in place is the real feedback. */
-        var nudge = !!opts.nudge;
+        /* What the visual does under the finger:
+             fly   — travels with it and leaves the screen (default)
+             nudge — damped travel, springs back; the card stays put
+             none  — holds still, and the mode draws its own feedback from
+                     onProgress. Movement is only worth spending when
+                     something is actually going somewhere. */
+        var motion = opts.motion || 'fly';
 
         function down(e) {
           if (committed || e.target.closest('button, input, textarea')) return;
@@ -346,9 +349,18 @@
           }
           if (axis !== 'x') return;
 
-          visual.style.transform = 'translateX(' + (nudge ? dx * 0.35 : dx).toFixed(1) + 'px)';
-          if (!nudge) visual.style.opacity = String(Math.max(0.4, 1 - Math.abs(dx) / (width * 1.5)));
+          if (motion === 'fly') {
+            visual.style.transform = 'translateX(' + dx.toFixed(1) + 'px)';
+            visual.style.opacity = String(Math.max(0.4, 1 - Math.abs(dx) / (width * 1.5)));
+          } else if (motion === 'nudge') {
+            visual.style.transform = 'translateX(' + (dx * 0.35).toFixed(1) + 'px)';
+          }
           el.dataset.swipe = dx > 24 ? 'right' : dx < -24 ? 'left' : '';
+          /* How far along the commit is, 0..1. A mode can spend this on
+             colour instead of travel. */
+          if (opts.onProgress) {
+            opts.onProgress(Math.min(1, Math.abs(dx) / threshold), dx > 0 ? 'right' : 'left');
+          }
 
           /* Two separate states: `swipe` is the direction you are heading,
              `armed` is having gone far enough that letting go commits.
@@ -383,20 +395,23 @@
           el.dataset.swipe = '';
           el.dataset.armed = '';
           armed = false;
+          if (opts.onProgress) opts.onProgress(0, '');
         }
 
         function commit(right) {
           if (committed) return;
           committed = true;
-          if (nudge) {
-            release();
-          } else {
+          if (motion === 'fly') {
             visual.style.transform = 'translateX(' + (right ? width * 1.2 : -width * 1.2) + 'px)';
             visual.style.opacity = '0';
+            /* stayPut: the card survives the swipe, so it must not be
+               marked as retiring — the caller resets the visual for the
+               next item. Anything that didn't fly is staying by
+               definition. */
+            if (!opts.stayPut) el.classList.add('is-swiped');
+          } else {
+            release();
           }
-          /* stayPut: the card survives the swipe, so it must not be marked
-             as retiring — the caller resets the visual for the next item. */
-          if (!opts.stayPut && !nudge) el.classList.add('is-swiped');
           (right ? opts.onRight : opts.onLeft)();
         }
 
