@@ -747,6 +747,157 @@
 
         { type: 'recall', q: 'Injection-site change that makes insulin absorption erratic', a: 'Lipohypertrophy' }
       ]
+    },
+
+    /* Asthma is the first disease here whose content genuinely supports
+       all nine card types, which makes it the real test of the restraint
+       rule: each type is used once, where the material actually is that
+       shape, rather than once each because nine were available.
+
+       No citations — the trials that matter are named in `why` as prose
+       where the trial is itself the fact worth knowing. */
+
+    {
+      id: 'asthma-presentation',
+      topic: 'Asthma',
+      name: 'PRESENTATION',
+      blurb: 'The picture, the variants, and the signs that mean trouble',
+      cards: [
+        { type: 'multi', q: 'Symptoms that make up the classic asthma picture',
+          answers: ['Wheeze', 'Cough', 'Chest tightness', 'Breathlessness'],
+          distractors: ['Fever', 'Hemoptysis'] },
+
+        { type: 'truefalse', q: 'Asthma symptoms are typically worse at night and early morning', a: true,
+          why: 'Diurnal variation is one of the more useful things in the history. A cough that reliably wakes someone at four in the morning is asthma until proven otherwise.' },
+
+        { type: 'recall', q: 'Asthma variant in which cough is the only symptom', a: 'Cough-variant asthma' },
+        { type: 'recall', q: 'Two atopic conditions that commonly accompany asthma', a: 'Eczema and allergic rhinitis' },
+
+        { type: 'truefalse', q: 'A silent chest during an acute attack is a reassuring sign', a: false,
+          why: 'Wheeze needs air moving to make a sound. When a deteriorating asthmatic goes quiet it means almost nothing is moving at all, which makes the silent chest a sign of life-threatening obstruction. It is a reason to escalate immediately, not to relax — and it is the classic way an attack gets underestimated at exactly the wrong moment.' },
+
+        { type: 'truefalse', q: 'A normal PaCO2 in a visibly distressed asthmatic is reassuring', a: false,
+          why: 'Someone working that hard should be blowing off carbon dioxide and running low. A CO2 that has climbed back to normal means they are tiring, and it is the last quiet moment before respiratory failure.' },
+
+        { type: 'bucket', q: 'Asthma or COPD?',
+          bins: ['Asthma', 'COPD'],
+          items: [
+            { label: 'Onset in childhood', bin: 'Asthma' },
+            { label: 'Symptoms vary day to day', bin: 'Asthma' },
+            { label: 'Largely reversible', bin: 'Asthma' },
+            { label: 'Long smoking history', bin: 'COPD' },
+            { label: 'Progressive fixed decline', bin: 'COPD' },
+            { label: 'Reduced gas transfer', bin: 'COPD' }
+          ] }
+      ]
+    },
+
+    {
+      id: 'asthma-diagnosis',
+      topic: 'Asthma',
+      name: 'DIAGNOSIS',
+      blurb: 'Proving variable obstruction, and why one normal test proves nothing',
+      cards: [
+        { type: 'number', q: 'Rise in FEV1 that counts as significant reversibility', value: 12, unit: '%',
+          tolerance: 0 },
+        { type: 'number', q: 'Absolute FEV1 rise also needed to call it reversible', value: 200, unit: 'mL',
+          tolerance: 0,
+          why: 'Both criteria have to be met. A twelve percent rise off a very low baseline can be a handful of millilitres, which is noise rather than reversibility.' },
+
+        { type: 'trend', q: 'Spirometry in obstructive disease', items: [
+          { label: 'FEV1', dir: 'down' },
+          { label: 'FVC', dir: 'same' },
+          { label: 'FEV1/FVC ratio', dir: 'down' }
+        ], why: 'The ratio falls because the numerator falls and the denominator largely does not. That is the whole definition of an obstructive pattern.' },
+
+        { type: 'truefalse', q: 'Normal spirometry rules out asthma', a: false,
+          why: 'Asthma is variable by definition, so between episodes the lungs can test completely normally. A normal result in someone who is well at that moment excludes nothing, which is exactly why challenge testing and serial peak flows exist.' },
+
+        { type: 'multi', q: 'Objective ways to confirm variable airflow obstruction',
+          answers: ['Bronchodilator reversibility', 'Peak flow variability', 'Methacholine challenge'],
+          distractors: ['Chest radiograph', 'Sweat chloride test'] },
+
+        { type: 'recall', q: 'Agent most often used in a bronchoprovocation challenge', a: 'Methacholine' },
+        { type: 'recall', q: 'Test to consider when spirometry is normal but asthma is still likely',
+          a: 'Bronchoprovocation testing' },
+        { type: 'number', q: 'Peak flow green zone, as a share of personal best', low: 80, high: 100, unit: '%' }
+      ]
+    },
+
+    {
+      id: 'asthma-management',
+      topic: 'Asthma',
+      name: 'MANAGEMENT',
+      blurb: 'Controllers, relievers, and the two things never given alone',
+      cards: [
+        { type: 'recall', q: 'Cornerstone controller therapy in asthma', a: 'Inhaled corticosteroid' },
+
+        { type: 'truefalse', q: 'A short-acting beta agonist alone is adequate for mild asthma', a: false,
+          why: 'It relieves the bronchospasm and does nothing to the inflammation underneath, so the disease carries on while the symptoms are masked. Heavy reliever use tracks with worse outcomes including death, which is why the inhaled steroid is no longer something only moderate asthmatics get.' },
+
+        { type: 'truefalse', q: 'A long-acting beta agonist may be prescribed on its own', a: false,
+          why: 'LABA monotherapy increases asthma deaths. It is always paired with an inhaled corticosteroid, and combination inhalers exist largely so the pairing cannot be taken apart by accident.' },
+
+        { type: 'match', q: 'Inhaler → class', pairs: [
+          { left: 'Albuterol', right: 'SABA' },
+          { left: 'Salmeterol', right: 'LABA' },
+          { left: 'Budesonide', right: 'Inhaled steroid' },
+          { left: 'Tiotropium', right: 'LAMA' }
+        ] },
+
+        { type: 'order', q: 'Using a metered-dose inhaler', steps: [
+          'Breathe out fully',
+          'Seal lips on the mouthpiece',
+          'Press and breathe in slowly',
+          'Hold the breath ten seconds',
+          'Rinse the mouth'
+        ] },
+
+        { type: 'recall', q: 'Reason the mouth is rinsed after an inhaled steroid', a: 'To prevent oral thrush' },
+
+        { type: 'mcq', q: 'Add-on worth considering when allergic rhinitis is prominent',
+          a: 'Leukotriene antagonist',
+          distractors: ['Theophylline', 'Oral corticosteroid', 'Cromolyn sodium'] },
+
+        { type: 'mcq', q: 'Class added for severe eosinophilic asthma', a: 'Biologic therapy',
+          distractors: ['Oral theophylline', 'Long-term antibiotics', 'Inhaled cromolyn'] },
+
+        { type: 'multi', q: 'Part of every routine asthma review',
+          answers: ['Inhaler technique', 'Adherence', 'Symptom control', 'Trigger review'],
+          distractors: ['Chest radiograph', 'Sputum culture'] },
+
+        { type: 'truefalse', q: 'Inhaled corticosteroids permanently stunt growth in children', a: false,
+          why: 'There is a real but small effect — a slowing of growth velocity early on, amounting to about a centimetre of final adult height. Set against the harm of asthma left undertreated, that is a trade worth making, and saying so plainly is usually what settles the conversation with a parent.' }
+      ]
+    },
+
+    {
+      id: 'asthma-pitfalls',
+      topic: 'Asthma',
+      name: 'PITFALLS',
+      blurb: 'Why it looks refractory when it is not',
+      cards: [
+        { type: 'multi', q: 'Check these before escalating therapy',
+          answers: ['Inhaler technique', 'Adherence', 'Ongoing trigger exposure', 'Untreated rhinitis'],
+          distractors: ['Serum IgE level', 'Chest CT'],
+          why: 'A large share of patients use the device wrong enough that little of the drug reaches the airway. Escalating the prescription before watching someone actually take a puff treats a problem that was never there.' },
+
+        { type: 'number', q: 'Reliever uses per week above which control is inadequate', value: 2,
+          unit: 'per week', tolerance: 0,
+          why: 'Reliever frequency is the most informative question in the review and the easiest to ask. Rising use is usually the first sign of losing control, well before the peak flow moves.' },
+
+        { type: 'mcq', q: 'Drug class that can precipitate bronchospasm in asthma',
+          a: 'Non-selective beta blocker',
+          distractors: ['ACE inhibitor', 'Calcium channel blocker', 'Thiazide diuretic'],
+          why: 'Blocking beta-2 receptors in the airway removes the bronchodilator tone. Cardioselective agents are much safer and are not automatically off limits when there is a real cardiac indication.' },
+
+        { type: 'recall', q: 'Analgesic class that can trigger severe asthma in susceptible people', a: 'NSAIDs' },
+        { type: 'recall', q: 'Triad of asthma, nasal polyps and aspirin sensitivity', a: "Samter's triad" },
+        { type: 'recall', q: 'Reflux condition that quietly worsens asthma control', a: 'GERD' },
+
+        { type: 'truefalse', q: 'Antibiotics are routinely indicated for an asthma exacerbation', a: false,
+          why: 'Most exacerbations are viral or trigger-driven. Without something pointing at a bacterial infection, antibiotics add side effects and nothing else.' }
+      ]
     }
   ];
 

@@ -583,6 +583,18 @@
       }
     });
 
+    /* True/false is a coin flip, so a deck loaded with them is weaker than
+       its card count suggests. It is also the easiest card to write and
+       the natural home for "the trap", which is exactly the material the
+       prompt asks for — so the share creeps up without anyone choosing
+       it. Measured across three generated diseases it went 24, 28, 33
+       percent, which is what prompted the check. */
+    var tf = types.truefalse || 0;
+    if (count >= 10 && tf / count > 0.3) {
+      r.warn('set', Math.round(100 * tf / count) + '% of these cards are true/false (' + tf + ' of ' + count + ').',
+        'Aim for under a fifth. A trap usually works better as an mcq with the trap as the tempting wrong answer — a guess then pays 1 in 4 rather than 1 in 2.');
+    }
+
     var names = Object.keys(topics);
     if (many && names.length > 1) {
       r.err('set', 'These decks carry ' + names.length + ' different topics: ' + names.join(', ') + '.',
