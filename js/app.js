@@ -322,6 +322,12 @@
          It cannot live in finish() any more: finish now runs on the
          advance tap, so a chime there lands as a verdict on the tap. */
       judge: function (score) {
+        /* Every mode reaches judge, so releasing the note here is what
+           makes `why` work on all of them rather than on whichever ones
+           happened to wire it up. */
+        var held = el.querySelector('.why-wrap.is-held');
+        if (held) held.classList.remove('is-held');
+
         if (score < 0.999) {
           if (score > 0) global.Sfx.partial(); else global.Sfx.wrong();
           return;
@@ -339,6 +345,58 @@
          The cue is positioned against the card, not appended to the mode
          area, so its arrival costs no layout: the answer being read must
          not move out from under it. */
+      /* A long explanation takes the whole card instead of folding into a
+         strip under the answer. It is built here for the same reason
+         enableSwipe is: only app.js holds the card element, and the sheet
+         has to sit above the mode area rather than inside it.
+
+         It is positioned against the card, so it inherits the theme and
+         leaves with it — no separate teardown, no stale note surviving
+         into the next question. */
+      openNote: function (text) {
+        if (el.querySelector('.note-sheet')) return;
+
+        var sheet = h('div', 'note-sheet');
+        var body = h('div', 'note-body');
+        body.appendChild(h('p', 'note-text', text));
+        sheet.appendChild(body);
+        sheet.appendChild(h('div', 'note-cue', 'TAP TO CLOSE'));
+        el.appendChild(sheet);
+        el.classList.add('has-note');
+        requestAnimationFrame(function () { sheet.classList.add('is-in'); });
+
+        function close() {
+          sheet.classList.remove('is-in');
+          el.classList.remove('has-note');
+          session.closeNote = null;
+          var go = function () { sheet.remove(); };
+          if (reduceMotion) go(); else setTimeout(go, 200);
+        }
+
+        /* The sheet stops pointer events reaching the card: without this
+           a drag to scroll a long note reads as a swipe on the question
+           underneath it. */
+        var y0 = 0, moved = false;
+        sheet.addEventListener('pointerdown', function (e) {
+          e.stopPropagation();
+          y0 = e.clientY;
+          moved = false;
+        });
+        sheet.addEventListener('pointermove', function (e) {
+          if (Math.abs(e.clientY - y0) > 10) moved = true;
+        });
+        sheet.addEventListener('pointerup', function (e) {
+          e.stopPropagation();
+          /* Swipe down to dismiss, mirroring the swipe up that opened it.
+             A tap that never travelled closes it too — the note is read,
+             not interacted with. */
+          if (!moved || e.clientY - y0 > 40) close();
+        });
+        sheet.addEventListener('click', function (e) { e.stopPropagation(); });
+
+        session.closeNote = close;
+      },
+
       waitForTap: function (fn) {
         var cue = h('div', 'tap-cue', 'TAP TO CONTINUE');
         el.appendChild(cue);
@@ -597,6 +655,17 @@
     /* Mount first, then size the question — the mode decides how much
        vertical room is left over. */
     mode.mount(area, ctx);
+
+    /* `why` is documented as valid on every card, but only some modes
+       mount it. Any that didn't gets one here, held until the answer
+       lands — a written explanation that never reaches the screen is the
+       worst kind of defect, because the file looks right. */
+    if (card.why && !area.querySelector('.why-wrap')) {
+      var note = global.Modes.explanation(card.why, ctx);
+      note.classList.add('is-held');
+      area.appendChild(note);
+    }
+
     if (!qEl.childNodes.length) paintQuestion(card.q);
   }
 
@@ -708,7 +777,13 @@
 
     document.addEventListener('keydown', function (e) {
       if (!$('#screen-session').classList.contains('is-active')) return;
-      if (e.key === 'Escape') { show('screen-home'); renderHome(); return; }
+      /* An open note takes Escape first. Quitting the whole session out
+         from under an explanation someone is reading is never what the
+         key meant. */
+      if (e.key === 'Escape') {
+        if (session && session.closeNote) { session.closeNote(); return; }
+        show('screen-home'); renderHome(); return;
+      }
       if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
       var fn = session && session.keydown[e.key];
       if (fn) { e.preventDefault(); fn(e); }

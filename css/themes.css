@@ -322,21 +322,81 @@
    on reveal — the note appears without shoving the answer around. */
 .why-wrap.is-held { animation: none; opacity: 0; pointer-events: none; }
 
-.why-toggle {
+/* A long note is not folded into a strip under the answer — it takes the
+   whole card. What sits here is only the invitation. */
+.why-cue {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
   font-family: var(--body-face);
   font-size: .68rem;
   font-weight: 700;
   letter-spacing: .18em;
   color: var(--ink);
-  opacity: .6;
+  opacity: 0;
   padding: .35rem .8rem;
   border: 2px solid currentColor;
   border-radius: 999px;
-  transition: opacity .15s ease;
+  background: transparent;
+  transition: opacity .26s ease, transform .18s cubic-bezier(.22,1,.36,1);
+  /* The gesture is vertical, so the browser must not claim it for
+     scrolling before the handler sees it. */
+  touch-action: none;
 }
-.why-toggle:hover { opacity: 1; }
-.why-body { display: none; max-height: 34vh; overflow-y: auto; }
-.why-wrap.is-open .why-body { display: block; }
+.why-cue.is-in { opacity: .6; }
+.why-cue:hover { opacity: 1; }
+.why-cue:active { transform: translateY(-2px); }
+.why-cue-arrow { font-size: .9rem; line-height: 1; }
+
+/* The note itself, taking the card. Inside it, so the palette and the
+   backdrop carry through and nothing has to be themed twice. */
+.note-sheet {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: max(2rem, env(safe-area-inset-top)) 1.5rem
+           calc(3rem + env(safe-area-inset-bottom));
+  background: var(--bg);
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity .2s ease, transform .24s cubic-bezier(.22, 1, .36, 1);
+  touch-action: none;
+}
+.note-sheet.is-in { opacity: 1; transform: none; }
+
+/* Long notes scroll rather than shrink: reducing the type to fit is how
+   an explanation stops being read. */
+.note-body { max-height: 100%; overflow-y: auto; touch-action: pan-y; }
+
+.note-text {
+  margin: 0;
+  font-family: var(--body-face);
+  font-size: clamp(1.05rem, 4.6vw, 1.35rem);
+  line-height: 1.5;
+  text-align: left;
+  color: var(--ink);
+}
+
+.note-cue {
+  position: absolute;
+  left: 0; right: 0;
+  bottom: calc(1rem + env(safe-area-inset-bottom));
+  text-align: center;
+  font-family: var(--body-face);
+  font-size: .62rem;
+  font-weight: 700;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--ink);
+  opacity: .4;
+  pointer-events: none;
+}
+
+/* While a note is open the card underneath must not also respond. */
+.card.has-note .tap-cue { opacity: 0; }
 
 /* ── Swipe to grade ──────────────────────────────────────────
    Labels are real buttons, so the card still works by tap and by
@@ -733,7 +793,7 @@
 .card.is-gesture,
 .card.is-gesture .mode-area { touch-action: none; }
 /* The one thing inside a card that must still scroll. */
-.card.is-gesture .why-body { touch-action: pan-y; }
+.card.is-gesture .note-body { touch-action: pan-y; }
 
 .card.is-dialing { cursor: grabbing; }
 .card.is-dialing .num-arrow { opacity: .6; }

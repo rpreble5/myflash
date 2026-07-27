@@ -74,30 +74,53 @@
     }, ADVANCE_ARM);
   }
 
-  /* Optional explanation. Short notes just appear; long ones fold behind
-     a toggle so they can't squeeze the answer off the card. */
+  /* Optional explanation. A short note just appears under the answer; a
+     long one gets the whole card on a swipe up, rather than folding into
+     a strip that squeezes the answer or hides behind a button.
+
+     Two sentences is about the most that can sit under an answer without
+     competing with it, which is where the threshold comes from. */
   var WHY_INLINE_MAX = 140;
 
-  function explanation(text) {
+  function explanation(text, ctx) {
     var wrap = h('div', 'why-wrap');
 
-    if (text.length <= WHY_INLINE_MAX) {
+    if (text.length <= WHY_INLINE_MAX || !ctx || !ctx.openNote) {
       var inline = h('div', 'why', text);
       wrap.appendChild(inline);
       requestAnimationFrame(function () { inline.classList.add('is-in'); });
       return wrap;
     }
 
-    var toggle = h('button', 'why-toggle', 'WHY?');
-    var body = h('div', 'why why-body', text);
-    toggle.addEventListener('click', function (e) {
+    /* A button, so the card's own swipe handler skips it — enableSwipe
+       ignores anything inside a button, which means no pointer capture
+       fight over the same gesture. */
+    var cue = h('button', 'why-cue');
+    cue.appendChild(h('span', 'why-cue-arrow', '↑'));
+    cue.appendChild(h('span', 'why-cue-text', 'WHY'));
+
+    function open() { ctx.openNote(text); }
+
+    cue.addEventListener('click', open);
+
+    /* Swipe up from the cue opens it too. The tap is the discoverable
+       path and the swipe is the one that stays in the hand. */
+    var y0 = null;
+    cue.addEventListener('pointerdown', function (e) {
       e.stopPropagation();
-      var open = wrap.classList.toggle('is-open');
-      toggle.textContent = open ? 'HIDE' : 'WHY?';
-      if (open) requestAnimationFrame(function () { body.classList.add('is-in'); });
+      y0 = e.clientY;
+      if (cue.setPointerCapture) { try { cue.setPointerCapture(e.pointerId); } catch (err) { /* stale */ } }
     });
-    wrap.appendChild(toggle);
-    wrap.appendChild(body);
+    cue.addEventListener('pointermove', function (e) {
+      if (y0 == null) return;
+      if (y0 - e.clientY > 40) { y0 = null; open(); }
+    });
+    cue.addEventListener('pointerup', function () { y0 = null; });
+    cue.addEventListener('pointercancel', function () { y0 = null; });
+
+    wrap.appendChild(cue);
+    if (ctx.keys) ctx.keys({ 'ArrowUp': open });
+    requestAnimationFrame(function () { cue.classList.add('is-in'); });
     return wrap;
   }
 
@@ -150,7 +173,7 @@
         ctx.revealAnswer('swap');
         ctx.setKicker('KNEW IT?');
         hint.remove();
-        if (ctx.card.why) area.appendChild(explanation(ctx.card.why));
+        if (ctx.card.why) area.appendChild(explanation(ctx.card.why, ctx));
         area.appendChild(swipeBar(ctx));
       }
 
@@ -204,7 +227,7 @@
       /* Held rather than appended on reveal, the same way select-all and
          true/false do it: an mcq explanation usually says why the other
          three are wrong, which is worth more here than anywhere. */
-      var why = ctx.card.why ? explanation(ctx.card.why) : null;
+      var why = ctx.card.why ? explanation(ctx.card.why, ctx) : null;
       if (why) {
         why.classList.add('is-held');
         area.appendChild(why);
@@ -315,7 +338,7 @@
          options up by the height of the note — moving the one thing the
          user is reading at exactly the moment they start reading it. The
          card settles its layout before the answer, not during it. */
-      var why = ctx.card.why ? explanation(ctx.card.why) : null;
+      var why = ctx.card.why ? explanation(ctx.card.why, ctx) : null;
       if (why) {
         why.classList.add('is-held');
         area.appendChild(why);
@@ -368,7 +391,7 @@
 
       /* Mounted held, released on the answer. Appended at reveal time it
          pushed the buttons down the card exactly as the result landed. */
-      var why = ctx.card.why ? explanation(ctx.card.why) : null;
+      var why = ctx.card.why ? explanation(ctx.card.why, ctx) : null;
       if (why) {
         why.classList.add('is-held');
         area.appendChild(why);
@@ -519,7 +542,7 @@
       area.appendChild(rows);
       area.appendChild(hint);
 
-      var why = ctx.card.why ? explanation(ctx.card.why) : null;
+      var why = ctx.card.why ? explanation(ctx.card.why, ctx) : null;
       if (why) {
         why.classList.add('is-held');
         area.appendChild(why);
@@ -1107,7 +1130,7 @@
      dial that steps by 1 — and the only way to check that honestly is to
      ask the same function the dial asks. */
   global.Modes = {
-    ALL: ALL, pickFor: pickFor, h: h,
+    ALL: ALL, pickFor: pickFor, h: h, explanation: explanation,
     scaleFor: scaleFor, layoutFor: layoutFor,
     GRID_MAX_CHARS: GRID_MAX_CHARS
   };
