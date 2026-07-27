@@ -40,6 +40,15 @@
   }
   .tabs button[aria-selected="true"] { background: var(--paper); color: var(--ink); }
 
+  /* The same control one level down, so it reads as a choice within the
+     pane rather than a third destination. */
+  .tabs.sub { margin-bottom: .8rem; }
+  .tabs.sub button {
+    background: transparent; color: var(--dim);
+    border: 1px solid var(--line); padding: .5rem;
+  }
+  .tabs.sub button[aria-selected="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+
   main { padding: .9rem; max-width: 46rem; margin: 0 auto; }
   section[hidden] { display: none; }
 
@@ -108,8 +117,11 @@
 <main>
 
 <section id="pane-prompt">
-  <p class="lede">Copy this, paste it above your reference article, and give both to the AI.
-    Then bring the answer back to tab 2.</p>
+  <div class="tabs sub">
+    <button id="m-knowledge" aria-selected="true">FROM KNOWLEDGE</button>
+    <button id="m-article" aria-selected="false">FROM AN ARTICLE</button>
+  </div>
+  <p class="lede" id="prompt-lede"></p>
   <div class="row">
     <button class="act" id="copy-prompt">COPY THE PROMPT</button>
   </div>
@@ -140,19 +152,84 @@
 
 <!-- The prompt lives here as inert text so there is exactly one copy of
      it: the page renders it and the clipboard button ships it. -->
-<script type="text/plain" id="prompt-src">
+<script type="text/plain" id="p-article">
 You are writing a flashcard deck for a first-year medical resident. The cards
 are for fast factual recall on a phone, a few seconds each, in a spare moment.
 
 I will give you a reference article. Read it and return ONE JSON object.
 No explanation before or after it, no markdown fence.
 
+Cover the article's high-yield facts, not all of its facts. Aim for 15 to 30
+cards. If the material is bigger than that, write the best 30.
+</script>
+
+<script type="text/plain" id="p-knowledge">
+You are writing flashcards for a first-year medical resident. The cards are
+for fast factual recall on a phone, a few seconds each, in a spare moment.
+
+I will name a disease. Write its cards from your own knowledge and return ONE
+JSON ARRAY of decks. No explanation before or after it, no markdown fence.
+
+═══ SUB-DECKS ═══
+
+Split the disease into these facets, each its own deck, all sharing one topic:
+
+  PRESENTATION   how it turns up — symptoms, signs, the classic picture
+  DIAGNOSIS      tests, criteria, thresholds
+  MANAGEMENT     first steps, drugs, doses, sequence
+  PITFALLS       what gets missed, what goes wrong, what is contraindicated
+
+Skip a facet the disease does not really have. Hypertension presents by being
+silent, so it has no honest PRESENTATION deck, and an invented one is worse
+than none. Seven to twelve cards per deck.
+
+Each facet leans naturally toward certain card types — MANAGEMENT toward
+order and number, DIAGNOSIS toward bucket and multi, PRESENTATION toward
+recall. Follow that where it fits and ignore it where it does not.
+
+═══ DIFFICULTY ═══
+
+Mix the levels inside every deck rather than sorting them. Roughly:
+
+  a third   medical school basics worth having back — the definition, the
+            first-line drug, the classic triad
+  a third   what a resident is expected to know — thresholds, second-line
+            choices, when to escalate
+  a third   what separates a good senior — the trap, the exception, the
+            mechanism behind a side effect, the study that changed practice
+
+The last third is what makes the deck worth opening twice. Do not pad it with
+trivia: it should be clinically useful, not obscure.
+
+═══ ONLY WHAT YOU ARE SURE OF ═══
+
+There is no source document here, so accuracy is entirely on you.
+
+Write only settled, standard teaching. If you are not confident a fact is
+what most textbooks say, leave it out. Twenty certain cards beat thirty with
+two wrong ones, and a wrong card is worse than a missing one because it gets
+memorised.
+
+If an exact figure varies between sources, use "low" and "high" for the range
+rather than inventing a precise "value". The format wants a single number and
+that is exactly what pushes you into false precision.
+
+Do not write cards on anything where guidance has recently changed or where
+practice varies by institution, unless you name the guideline and year in
+"ref".
+
+Every card needs a "ref": the guideline, trial or standard text the fact
+comes from. Short — "ADA Standards of Care" or "PATHWAY-2, 2015" is enough.
+If you cannot name a source for a fact, that is the signal to drop it.
+</script>
+
+<script type="text/plain" id="p-core">
 ═══ WHAT MAKES A GOOD CARD HERE ═══
 
 One fact per card. If the answer needs an "and", it is two cards.
 
 The card stands alone. No "as above", no "in this patient", no reference to
-the article. It has to make sense to someone who has never read it.
+anything the reader cannot see. It has to make sense cold.
 
 Short answers. The answer is displayed very large, so keep it under about 40
 characters. "Isotonic saline", not "Isotonic saline at 15-20 mL/kg in the
@@ -161,23 +238,24 @@ first hour". If the detail matters, put it in "why".
 Ask what a resident is actually asked on the ward: thresholds, first steps,
 doses, classic associations, the thing that gets missed.
 
+One defensible answer per card. "Complication of DKA treatment" has five
+right answers and will feel unfair at 3am. Narrow the question, or make it a
+multi card.
+
 Never write "which of the following", "all of the above", or "none of the
 above". The app shows the options; the question should just ask the thing.
 
-Cover the article's high-yield facts, not all of its facts. Aim for 15 to 30
-cards. If the material is bigger than that, write the best 30.
-
 ═══ CHOOSING A CARD TYPE ═══
 
-There are nine types. Most articles support three or four of them well.
+There are nine types. Most material supports three or four of them well.
 Use only those.
 
 This matters more than variety: a deck of thirty recall and mcq cards is a
 good deck. Do not reach for a type because it exists, and do not bend a fact
-to fit a shape. A forced card is worse than no card. If the article never
+to fit a shape. A forced card is worse than no card. If the material never
 states a direction of change, it has no trend cards in it, and that is fine.
 
-Each type below has a condition. If the source does not meet it, skip it.
+Each type below has a condition. If the material does not meet it, skip it.
 
   recall     The default. One fact, one short answer. When in doubt, this.
 
@@ -239,7 +317,11 @@ Use exactly these field names. Not "answer", not "options", not
    in an mcq or multi card may be the same. Identical options cannot be told
    apart, so the card cannot be graded.
 
-5. A distractor is never the answer. Check each one is genuinely wrong.
+5. A distractor is never the answer, and never merely a less-good answer.
+   If a distractor would also be correct in some circumstance, replace it.
+   Keep them in the same category as the answer — all electrolytes, all drug
+   classes — so the card tests knowledge rather than which option looks
+   out of place.
 
 6. truefalse "a" is a JSON boolean: true or false, no quotes.
 
@@ -252,15 +334,15 @@ Use exactly these field names. Not "answer", not "options", not
 8. Only "multi" uses "answers". Every other type that has one right answer
    uses "a".
 
-═══ OPTIONAL FIELDS ═══
+═══ "why" ═══
 
-"why" — one or two sentences, on any card. Add it ONLY where the answer is
+One or two sentences, on any card. Add it ONLY where the answer is
 counterintuitive or commonly confused, and use it to explain the trap. Most
 cards should not have one; a "why" on an obvious fact is noise the reader
 has to look past. On truefalse, always include it.
+</script>
 
-"ref" — a short source citation, on any card. Useful for spot-checking later.
-
+<script type="text/plain" id="t-article">
 ═══ THE DECK ═══
 
 {
@@ -271,6 +353,9 @@ has to look past. On truefalse, always include it.
   "cards": [ ... ]
 }
 
+"ref" is optional here — the article is the source. Add it where a specific
+figure would be worth tracing back.
+
 "topic" groups decks on the home screen and ranks them together, and the
 grouping is an exact string match. Reuse one of these existing topics if the
 material belongs to it, spelled identically:
@@ -278,6 +363,36 @@ material belongs to it, spelled identically:
   §TOPICS§
 
 Only invent a new topic if none of those fit.
+</script>
+
+<script type="text/plain" id="t-knowledge">
+═══ WHAT TO RETURN ═══
+
+A JSON array of decks, one per facet, all sharing the disease as "topic":
+
+[
+  {
+    "id":    "hypertension-diagnosis",
+    "topic": "Hypertension",
+    "name":  "DIAGNOSIS",
+    "blurb": "One short line about what this facet covers",
+    "cards": [ ... ]
+  },
+  { "id": "hypertension-management", "topic": "Hypertension", "name": "MANAGEMENT", ... }
+]
+
+"topic" is the disease and must be spelled identically in every deck — the
+grouping is an exact string match, so one stray spelling splits the disease
+into two that rank separately.
+
+"id" must be unique across all of them: the disease, then the facet.
+
+Do not repeat a fact between facets. You can see all four at once, which is
+the one chance to catch it.
+
+If the disease is one of these, spell the topic exactly as shown:
+
+  §TOPICS§
 </script>
 
 <script>
@@ -296,9 +411,30 @@ Only invent a new topic if none of those fit.
   }
 
   var TOPICS = knownTopics();
-  var PROMPT = $('#prompt-src').textContent.trim()
-    .replace('§TOPICS§', TOPICS.join('\n  '));
-  $('#prompt-text').textContent = PROMPT;
+
+  /* Two prompts sharing one middle. The rules about shapes and the eight
+     things that go wrong are identical either way, and keeping two copies
+     of them is how they drift apart. */
+  function build(which) {
+    var head = $(which === 'article' ? '#p-article' : '#p-knowledge').textContent.trim();
+    var tail = $(which === 'article' ? '#t-article' : '#t-knowledge').textContent.trim();
+    return (head + '\n\n' + $('#p-core').textContent.trim() + '\n\n' + tail)
+      .replace('§TOPICS§', TOPICS.join('\n  '));
+  }
+
+  var mode = 'knowledge';
+  var PROMPT = '';
+
+  function setMode(m) {
+    mode = m;
+    PROMPT = build(m);
+    $('#prompt-text').textContent = PROMPT;
+    $('#m-knowledge').setAttribute('aria-selected', m === 'knowledge');
+    $('#m-article').setAttribute('aria-selected', m === 'article');
+    $('#prompt-lede').textContent = m === 'knowledge'
+      ? 'Copy this, add "Write cards for: hypertension", and send it. You get every sub-deck for the disease in one reply.'
+      : 'Copy this, paste your reference article underneath, and send both. You get one deck back.';
+  }
 
   /* ─────────── chrome ─────────── */
   function toast(msg) {
@@ -338,6 +474,9 @@ Only invent a new topic if none of those fit.
   $('#tab-prompt').addEventListener('click', function () { tab('prompt'); });
   $('#tab-check').addEventListener('click', function () { tab('check'); });
   $('#copy-prompt').addEventListener('click', function () { copy(PROMPT, 'Prompt copied'); });
+  $('#m-knowledge').addEventListener('click', function () { setMode('knowledge'); });
+  $('#m-article').addEventListener('click', function () { setMode('article'); });
+  setMode('knowledge');
 
   /* ─────────── the check ─────────── */
   var h = function (tag, cls, text) {
@@ -372,8 +511,8 @@ Only invent a new topic if none of those fit.
       return;
     }
 
-    var deck = parsed.deck;
-    var result = window.Validate.check(deck, TOPICS);
+    var decks = parsed.decks;
+    var result = window.Validate.checkSet(decks, TOPICS);
     var errs = result.report.errors(), warns = result.report.warnings();
 
     var box = h('div', 'verdict ' + (errs.length ? 'fail' : warns.length ? 'soft' : 'pass'));
@@ -388,7 +527,13 @@ Only invent a new topic if none of those fit.
 
     var mix = Object.keys(result.types).sort(function (a, b) { return result.types[b] - result.types[a]; })
       .map(function (t) { return result.types[t] + ' ' + t; }).join(' · ');
-    box.appendChild(h('p', 'mix', result.count + ' cards — ' + mix));
+    box.appendChild(h('p', 'mix',
+      (decks.length > 1 ? decks.length + ' decks, ' : '') + result.count + ' cards — ' + mix));
+    if (decks.length > 1) {
+      box.appendChild(h('p', 'mix', decks.map(function (d) {
+        return (d.name || '?') + ' ' + (d.cards ? d.cards.length : 0);
+      }).join('  ·  ')));
+    }
     out.appendChild(box);
 
     if (errs.length) { out.appendChild(h('h2', null, 'MUST FIX')); out.appendChild(issueList(errs)); }
@@ -405,39 +550,53 @@ Only invent a new topic if none of those fit.
     }
 
     if (!errs.length) {
-      var add = h('button', 'act go', 'ADD TO MYFLASH');
-      add.addEventListener('click', function () { install(deck); });
+      var add = h('button', 'act go', decks.length > 1 ? 'ADD ALL ' + decks.length + ' TO MYFLASH' : 'ADD TO MYFLASH');
+      add.addEventListener('click', function () { install(decks); });
       row.appendChild(add);
     }
 
     out.appendChild(row);
   }
 
-  function install(deck) {
-    if (!deck.id) {
-      deck.id = 'user-' + String(deck.name || 'deck').toLowerCase()
-        .replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-    }
-    if (!deck.blurb) deck.blurb = deck.cards.length + ' cards';
-    delete deck._wrapped;
+  function install(decks) {
+    var existing = window.Store.allDecks();
+    var clashes = [];
 
-    var clash = window.Store.allDecks().filter(function (d) { return d.id === deck.id; })[0];
-    if (clash && !confirm('A deck with id "' + deck.id + '" already exists (' +
-        clash.name + ', ' + clash.cards.length + ' cards).\n\nReplace it? Its progress is kept.')) return;
+    decks.forEach(function (deck) {
+      if (!deck.id) {
+        deck.id = 'user-' + String(deck.name || 'deck').toLowerCase()
+          .replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+      }
+      if (!deck.blurb) deck.blurb = deck.cards.length + ' cards';
+      delete deck._wrapped;
+      if (existing.some(function (d) { return d.id === deck.id; })) clashes.push(deck.id);
+    });
+
+    /* Ask once for the whole set. Four confirms for four sub-decks is how
+       someone ends up with half a disease installed. */
+    if (clashes.length && !confirm(
+        clashes.length + ' deck' + (clashes.length === 1 ? '' : 's') +
+        ' already exist:\n\n' + clashes.join('\n') +
+        '\n\nReplace? Progress on those cards is kept.')) return;
 
     try {
-      window.Store.saveDeck(deck);
+      decks.forEach(function (d) { window.Store.saveDeck(d); });
     } catch (e) {
       toast('Could not save: ' + e.message);
       return;
     }
 
-    var back = window.Store.allDecks().filter(function (d) { return d.id === deck.id; })[0];
-    if (!back || back.cards.length !== deck.cards.length) {
-      toast('Save did not stick — is this page on the same origin as the app?');
+    var after = window.Store.allDecks();
+    var landed = decks.filter(function (deck) {
+      var back = after.filter(function (d) { return d.id === deck.id; })[0];
+      return back && back.cards.length === deck.cards.length;
+    }).length;
+
+    if (landed !== decks.length) {
+      toast('Only ' + landed + ' of ' + decks.length + ' saved — same origin as the app?');
       return;
     }
-    toast('Added. Open MYFLASH under ' + (deck.topic || 'Other') + '.');
+    toast('Added. Open MYFLASH under ' + (decks[0].topic || 'Other') + '.');
   }
 
   $('#run').addEventListener('click', run);

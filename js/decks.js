@@ -497,6 +497,256 @@
         { type: 'mcq', q: 'First step when a trauma patient arrives unresponsive', a: 'Assess and secure the airway',
           distractors: ['Obtain IV access', 'Send a trauma panel', 'Order a CT head'] }
       ]
+    },
+
+    /* ══════════════════════════════════════════════════════════════
+       Two clinic diseases in the sub-deck shape: the topic is the
+       disease, the decks are its facets. Difficulty is deliberately
+       mixed inside each deck rather than sorted — the point is that a
+       first-year gets the basics back and an attending still meets
+       something they had half-forgotten.
+
+       Hypertension gets three facets, not four. It presents by being
+       silent, so there is no honest PRESENTATION deck in it, and an
+       invented one would be worse than none.
+       ══════════════════════════════════════════════════════════════ */
+
+    {
+      id: 'htn-diagnosis',
+      topic: 'Hypertension',
+      name: 'DIAGNOSIS',
+      blurb: 'Thresholds, confirmation, and when to look for a cause',
+      cards: [
+        { type: 'number', q: 'Systolic at or above which stage 2 hypertension begins', value: 140, unit: 'mmHg',
+          tolerance: 0, ref: 'ACC/AHA 2017' },
+        { type: 'number', q: 'Diastolic at or above which stage 2 hypertension begins', value: 90, unit: 'mmHg',
+          tolerance: 0, ref: 'ACC/AHA 2017' },
+        { type: 'recall', q: 'Blood pressure range that defines stage 1 hypertension', a: '130–139 / 80–89 mmHg',
+          ref: 'ACC/AHA 2017' },
+
+        { type: 'truefalse', q: 'One high office reading is enough to diagnose hypertension', a: false,
+          why: 'It takes at least two readings on two separate occasions. Treating a single high reading is how white coat hypertension becomes a lifelong prescription.' },
+        { type: 'recall', q: 'Test that confirms office hypertension before starting drugs', a: 'Home or ambulatory monitoring' },
+
+        { type: 'truefalse', q: 'Masked hypertension carries less risk than white coat hypertension', a: false,
+          why: 'It is the more dangerous of the two. Office readings look normal, so nobody treats it, while the cardiovascular risk approaches that of sustained hypertension.' },
+
+        { type: 'multi', q: 'Part of the initial workup for new hypertension',
+          answers: ['Basic metabolic panel', 'Urinalysis', 'ECG', 'Lipid panel'],
+          distractors: ['Renal artery ultrasound', 'Echocardiogram'],
+          why: 'Imaging is not routine. It is ordered when something in the history or labs points to a secondary cause.' },
+
+        { type: 'bucket', q: 'Primary or secondary hypertension?',
+          bins: ['Primary', 'Secondary'],
+          items: [
+            { label: 'Gradual rise through the 50s', bin: 'Primary' },
+            { label: 'Onset before age 30', bin: 'Secondary' },
+            { label: 'Unprovoked hypokalemia', bin: 'Secondary' },
+            { label: 'Obesity and family history', bin: 'Primary' },
+            { label: 'Abrupt loss of long control', bin: 'Secondary' },
+            { label: 'Responds to one agent', bin: 'Primary' }
+          ] },
+
+        { type: 'recall', q: 'Commonest secondary cause found in resistant hypertension', a: 'Primary aldosteronism' },
+        { type: 'mcq', q: 'Screening test for primary aldosteronism', a: 'Aldosterone-to-renin ratio',
+          distractors: ['Urine metanephrines', 'Renal artery duplex', 'Dexamethasone suppression'],
+          why: 'The other three screen for phaeochromocytoma, renovascular disease and Cushing syndrome — the differential worth knowing, not distractors for their own sake.' }
+      ]
+    },
+
+    {
+      id: 'htn-management',
+      topic: 'Hypertension',
+      name: 'MANAGEMENT',
+      blurb: 'What to start, what to add, and in what order',
+      cards: [
+        { type: 'number', q: 'Systolic target for most treated adults', value: 130, unit: 'mmHg',
+          tolerance: 0, ref: 'ACC/AHA 2017' },
+
+        { type: 'multi', q: 'First-line classes for uncomplicated hypertension',
+          answers: ['Thiazide diuretic', 'ACE inhibitor', 'ARB', 'Calcium channel blocker'],
+          distractors: ['Beta blocker', 'Alpha blocker'] },
+
+        { type: 'truefalse', q: 'Beta blockers are first-line for uncomplicated hypertension', a: false,
+          why: 'They are reserved for a compelling indication — post-infarct, heart failure, rate control. As monotherapy for blood pressure alone they protect against stroke less well than the four first-line classes.' },
+
+        { type: 'order', q: 'Escalating drug therapy in hypertension',
+          steps: ['One first-line agent', 'Add a second class', 'Add a third with a diuretic', 'Add spironolactone'] },
+
+        { type: 'mcq', q: 'Preferred fourth agent in resistant hypertension', a: 'Spironolactone',
+          distractors: ['Doxazosin', 'Bisoprolol', 'Clonidine'],
+          why: 'PATHWAY-2 tested spironolactone against exactly these comparators and it beat both.',
+          ref: 'PATHWAY-2, 2015' },
+
+        { type: 'recall', q: 'Blood pressure above goal that justifies starting two drugs at once', a: 'By 20/10 mmHg' },
+        { type: 'recall', q: 'Thiazide-like diuretic preferred over hydrochlorothiazide', a: 'Chlorthalidone',
+          why: 'Longer half-life, more potent milligram for milligram, and the better outcome data. It also drops potassium harder, so it needs watching.' },
+
+        { type: 'mcq', q: 'Class of choice in chronic kidney disease with albuminuria', a: 'ACE inhibitor or ARB',
+          distractors: ['Thiazide diuretic', 'Calcium channel blocker', 'Beta blocker'] },
+        { type: 'number', q: 'eGFR below which a thiazide stops working well', value: 30, unit: 'mL/min' },
+
+        { type: 'truefalse', q: 'An ACE inhibitor and an ARB may be combined for extra lowering', a: false,
+          why: 'No outcome benefit and clearly more harm — hyperkalaemia, acute kidney injury and syncope. The combination was abandoned after ONTARGET.',
+          ref: 'ONTARGET, 2008' },
+
+        { type: 'trend', q: 'First weeks after starting an ACE inhibitor', items: [
+          { label: 'Serum creatinine', dir: 'up' },
+          { label: 'Serum potassium', dir: 'up' },
+          { label: 'Urine protein', dir: 'down' }
+        ], why: 'The creatinine rise is expected, not a complication. Falling proteinuria is the renoprotection you were after.' }
+      ]
+    },
+
+    {
+      id: 'htn-pitfalls',
+      topic: 'Hypertension',
+      name: 'PITFALLS',
+      blurb: 'What gets missed and what gets stopped too early',
+      cards: [
+        { type: 'recall', q: 'Direction of error when the cuff is too small for the arm', a: 'Falsely high' },
+        { type: 'recall', q: 'Commonest reason hypertension looks resistant', a: 'Non-adherence' },
+        { type: 'recall', q: 'Position often skipped when measuring pressure in the elderly', a: 'Standing' },
+
+        { type: 'truefalse', q: 'A 20% creatinine rise after starting an ACE inhibitor means stopping it', a: false,
+          why: 'A rise up to about 30% is expected and settles. Stopping there throws away the renoprotection. Above 30%, or a climbing potassium, is the point to stop and look for renovascular disease.' },
+
+        { type: 'multi', q: 'Common causes of a rise in blood pressure on treatment',
+          answers: ['NSAIDs', 'Decongestants', 'Excess alcohol', 'Oral contraceptives'],
+          distractors: ['Metformin', 'Statins'] },
+
+        { type: 'mcq', q: 'Next step for a dry cough on an ACE inhibitor', a: 'Switch to an ARB',
+          distractors: ['Halve the dose', 'Add an antihistamine', 'Add a cough suppressant'],
+          why: 'The cough is bradykinin-mediated and dose-independent, so halving it does nothing. ARBs do not raise bradykinin.' },
+
+        { type: 'truefalse', q: 'Clonidine can be stopped abruptly without consequence', a: false,
+          why: 'Abrupt withdrawal causes rebound hypertension that can overshoot the original pressure badly. It has to be tapered.' },
+
+        { type: 'truefalse', q: 'Spironolactone added to an ACE inhibitor needs potassium monitoring', a: true,
+          why: 'Both raise potassium, and the combination is the classic route to dangerous hyperkalaemia in a patient who felt fine.' }
+      ]
+    },
+
+    {
+      id: 't2dm-presentation',
+      topic: 'Type 2 Diabetes',
+      name: 'PRESENTATION',
+      blurb: 'How it turns up, and telling it from type 1',
+      cards: [
+        { type: 'multi', q: 'Classic symptoms of sustained hyperglycaemia',
+          answers: ['Polyuria', 'Polydipsia', 'Weight loss', 'Blurred vision'],
+          distractors: ['Bradycardia', 'Weight gain'] },
+
+        { type: 'truefalse', q: 'Most people with type 2 diabetes have symptoms at diagnosis', a: false,
+          why: 'Most are found on screening. Symptoms need sustained glucose high enough to spill into the urine, which is late in the disease.' },
+        { type: 'truefalse', q: 'Complications can already be present the day diabetes is diagnosed', a: true,
+          why: 'Retinopathy and neuropathy are found at diagnosis often enough that both are screened for immediately — the disease has usually been running silently for years.' },
+
+        { type: 'recall', q: 'Velvety dark thickening in the axillae that signals insulin resistance', a: 'Acanthosis nigricans' },
+        { type: 'recall', q: 'Antibody checked when adult-onset diabetes may be type 1', a: 'GAD65' },
+        { type: 'number', q: 'Age at which routine screening for type 2 diabetes begins', value: 35, unit: 'years',
+          tolerance: 0, ref: 'ADA Standards of Care, 2022 onward' },
+
+        { type: 'bucket', q: 'Type 1 or type 2 at first presentation?',
+          bins: ['Type 1', 'Type 2'],
+          items: [
+            { label: 'Ketosis at onset', bin: 'Type 1' },
+            { label: 'Acanthosis nigricans', bin: 'Type 2' },
+            { label: 'Low C-peptide', bin: 'Type 1' },
+            { label: 'GAD antibodies present', bin: 'Type 1' },
+            { label: 'Central obesity', bin: 'Type 2' },
+            { label: 'Controlled on oral agents', bin: 'Type 2' }
+          ] }
+      ]
+    },
+
+    {
+      id: 't2dm-diagnosis',
+      topic: 'Type 2 Diabetes',
+      name: 'DIAGNOSIS',
+      blurb: 'The four criteria, and when the HbA1c lies',
+      cards: [
+        { type: 'number', q: 'HbA1c at or above which diabetes is diagnosed', value: 6.5, unit: '%',
+          tolerance: 0, ref: 'ADA Standards of Care' },
+        { type: 'number', q: 'Fasting glucose at or above which diabetes is diagnosed', value: 126, unit: 'mg/dL',
+          tolerance: 0, ref: 'ADA Standards of Care' },
+        { type: 'number', q: 'Two-hour glucose on an OGTT that diagnoses diabetes', value: 200, unit: 'mg/dL',
+          tolerance: 0, ref: 'ADA Standards of Care' },
+        { type: 'number', q: 'HbA1c range that defines prediabetes', low: 5.7, high: 6.4, unit: '%',
+          ref: 'ADA Standards of Care' },
+
+        { type: 'multi', q: 'Results that can establish a diagnosis of diabetes',
+          answers: ['HbA1c 6.5% or above', 'Fasting glucose 126 or above', 'Two-hour OGTT 200 or above'],
+          distractors: ['Random glucose 140 or above', 'Fasting glucose 100 or above'],
+          why: 'The two distractors are prediabetes thresholds, not diagnostic ones. A random glucose only counts at 200 or above, and only with symptoms.' },
+
+        { type: 'truefalse', q: 'One abnormal test diagnoses diabetes in someone without symptoms', a: false,
+          why: 'It takes two abnormal results — either two different tests on one sample, or the same test repeated. A single value is how a lab error becomes a diagnosis.' },
+
+        { type: 'multi', q: 'Conditions that make the HbA1c unreliable',
+          answers: ['Recent transfusion', 'Hemolytic anemia', 'Iron deficiency', 'Advanced kidney disease'],
+          distractors: ['Obesity', 'Statin therapy'],
+          why: 'Anything that changes how long red cells live changes the HbA1c. Iron deficiency pushes it up and hemolysis pulls it down, so the number can move without the glucose moving at all.' }
+      ]
+    },
+
+    {
+      id: 't2dm-management',
+      topic: 'Type 2 Diabetes',
+      name: 'MANAGEMENT',
+      blurb: 'First drug, second drug, and what gets checked every year',
+      cards: [
+        { type: 'recall', q: 'First-line drug for type 2 diabetes', a: 'Metformin' },
+        { type: 'number', q: 'HbA1c target for most non-pregnant adults', value: 7, unit: '%',
+          tolerance: 0, ref: 'ADA Standards of Care' },
+        { type: 'number', q: 'eGFR below which metformin must be stopped', value: 30, unit: 'mL/min' },
+
+        { type: 'mcq', q: 'Class to add for type 2 diabetes with heart failure', a: 'SGLT2 inhibitor',
+          distractors: ['Sulfonylurea', 'DPP-4 inhibitor', 'Thiazolidinedione'],
+          why: 'A thiazolidinedione is the trap: it causes fluid retention and is avoided in heart failure, so the intuitive-sounding answer is the harmful one.' },
+        { type: 'mcq', q: 'Class to add when weight loss matters most', a: 'GLP-1 receptor agonist',
+          distractors: ['Sulfonylurea', 'Insulin', 'DPP-4 inhibitor'],
+          why: 'Sulfonylureas and insulin both drive weight up, which is the wrong direction in a patient whose insulin resistance is the problem.' },
+
+        { type: 'truefalse', q: 'An SGLT2 inhibitor is worth adding in diabetic kidney disease even at target HbA1c', a: true,
+          why: 'The kidney and heart benefit is largely independent of glucose lowering, so it is added for organ protection rather than for the number.' },
+        { type: 'truefalse', q: 'Metformin is stopped once a second agent is started', a: false,
+          why: 'It is continued unless the kidney function or side effects force it out. Second agents are added to metformin, not swapped for it.' },
+
+        { type: 'truefalse', q: 'Long-term metformin can cause vitamin B12 deficiency', a: true,
+          why: 'It reduces B12 absorption in the terminal ileum. The trap is that the resulting neuropathy gets written off as diabetic neuropathy and nobody checks the level.' },
+
+        { type: 'multi', q: 'Checked at least once a year in type 2 diabetes',
+          answers: ['Urine albumin-to-creatinine', 'Dilated retinal exam', 'Foot examination', 'Lipid panel'],
+          distractors: ['Echocardiogram', 'Carotid ultrasound'] },
+
+        { type: 'number', q: 'Weight loss that meaningfully improves glycaemic control', low: 5, high: 7, unit: '%' },
+        { type: 'mcq', q: 'Statin intensity for a 55-year-old diabetic with no vascular disease', a: 'Moderate intensity',
+          distractors: ['High intensity', 'Low intensity', 'No statin'] }
+      ]
+    },
+
+    {
+      id: 't2dm-pitfalls',
+      topic: 'Type 2 Diabetes',
+      name: 'PITFALLS',
+      blurb: 'The traps in the newer drugs and the old ones',
+      cards: [
+        { type: 'truefalse', q: 'Ketoacidosis on an SGLT2 inhibitor always comes with a high glucose', a: false,
+          why: 'Euglycaemic ketoacidosis is the signature complication of this class — the glucose can sit under 200 while the patient is frankly acidotic. Any unwell patient on one needs ketones checked, not just a glucose.' },
+        { type: 'recall', q: 'Drug class held before surgery to avoid euglycaemic ketoacidosis', a: 'SGLT2 inhibitor' },
+        { type: 'recall', q: 'Common genitourinary side effect of SGLT2 inhibitors', a: 'Genital yeast infection' },
+
+        { type: 'mcq', q: 'Oral agent most likely to cause hypoglycaemia', a: 'Sulfonylurea',
+          distractors: ['Metformin', 'SGLT2 inhibitor', 'DPP-4 inhibitor'] },
+        { type: 'truefalse', q: 'A sulfonylurea is a safe first choice in an elderly patient with kidney disease', a: false,
+          why: 'Both the drug and its active metabolites accumulate, and the hypoglycaemia that follows can be prolonged and severe in exactly the patient least able to notice it.' },
+
+        { type: 'truefalse', q: 'Metformin causes contrast nephropathy', a: false,
+          why: 'It does not. It is held around contrast because if the kidney is injured by anything, metformin then accumulates and the risk is lactic acidosis — a different problem in the opposite direction.' },
+
+        { type: 'recall', q: 'Injection-site change that makes insulin absorption erratic', a: 'Lipohypertrophy' }
+      ]
     }
   ];
 

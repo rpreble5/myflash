@@ -111,10 +111,18 @@
       return { error: 'That is not valid JSON. ' + e.message + where };
     }
 
-    /* A bare array of cards is a reasonable thing to be handed. */
-    if (isArr(deck)) deck = { cards: deck, _wrapped: true };
     if (!deck || typeof deck !== 'object') return { error: 'Expected a deck object.' };
-    return { deck: deck };
+
+    /* Three shapes arrive in practice: one deck, the set of sub-decks for
+       one disease, and a bare list of cards someone forgot to wrap. */
+    if (isArr(deck)) {
+      if (!deck.length) return { error: 'That is an empty list.' };
+      var looksLikeDecks = deck.every(function (d) { return d && typeof d === 'object' && isArr(d.cards); });
+      if (looksLikeDecks) return { decks: deck };
+      return { decks: [{ cards: deck, _wrapped: true }] };
+    }
+    if (isArr(deck.decks)) return { decks: deck.decks };
+    return { decks: [deck] };
   }
 
   /* ─────────────────────────── checking ─────────────────────────── */
@@ -532,6 +540,58 @@
     return { report: r, types: types, count: deck.cards.length };
   }
 
+  /* One disease arrives as several sub-decks, and the defects that matters
+     most then live BETWEEN them: the same fact written into DIAGNOSIS and
+     again into MANAGEMENT, or two decks claiming one id. Neither is
+     visible while reading a deck at a time, which is exactly how they get
+     through. */
+  function checkSet(decks, knownTopics) {
+    var r = new Report(), types = {}, count = 0;
+    var ids = {}, seenQ = {}, topics = {};
+    var many = decks.length > 1;
+
+    decks.forEach(function (deck, n) {
+      var tag = many ? (isStr(deck.name) ? deck.name.trim() : 'deck ' + (n + 1)) + ' · ' : '';
+      var one = check(deck, knownTopics);
+
+      one.report.items.forEach(function (i) {
+        r.add(i.level, tag + i.where, i.msg, i.fix);
+      });
+      Object.keys(one.types || {}).forEach(function (t) { types[t] = (types[t] || 0) + one.types[t]; });
+      count += one.count || 0;
+
+      if (isStr(deck.id)) {
+        if (ids[deck.id]) {
+          r.err(tag + 'deck', 'id "' + deck.id + '" is already used by ' + ids[deck.id] + '.',
+            'Ids must be unique — name them like "hypertension-diagnosis".');
+        } else ids[deck.id] = isStr(deck.name) ? deck.name : 'another deck';
+      } else if (many) {
+        r.warn(tag + 'deck', 'No id.', 'Give each sub-deck its own, like "hypertension-diagnosis".');
+      }
+
+      if (isStr(deck.topic)) topics[deck.topic] = true;
+
+      if (isArr(deck.cards)) {
+        deck.cards.forEach(function (c, i) {
+          if (!c || !isStr(c.q)) return;
+          var k = norm(c.q).replace(/[^a-z0-9 ]/g, '');
+          if (seenQ[k]) {
+            r.err(tag + 'card ' + (i + 1), 'Same question as ' + seenQ[k] + ': "' + c.q.trim() + '".',
+              'Splitting a disease into sub-decks makes this easy to do twice. Keep one and delete the other.');
+          } else seenQ[k] = tag ? tag.replace(' · ', '') : 'an earlier card';
+        });
+      }
+    });
+
+    var names = Object.keys(topics);
+    if (many && names.length > 1) {
+      r.err('set', 'These decks carry ' + names.length + ' different topics: ' + names.join(', ') + '.',
+        'Sub-decks of one disease must share one topic exactly, or they will not group or rank together.');
+    }
+
+    return { report: r, types: types, count: count, decks: decks };
+  }
+
   /* A paste-back fix request. The point of the tool is that you never
      write one of these by hand. */
   function fixRequest(result) {
@@ -552,6 +612,6 @@
   }
 
   global.Validate = {
-    parse: parse, check: check, fixRequest: fixRequest, TYPES: TYPES
+    parse: parse, check: check, checkSet: checkSet, fixRequest: fixRequest, TYPES: TYPES
   };
 })(typeof window !== 'undefined' ? window : global);

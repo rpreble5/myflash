@@ -899,6 +899,19 @@
 
     min = Math.floor(min / step) * step;
     max = Math.ceil(max / step) * step;
+
+    /* Anchor the scale to the answer rather than to zero. An HbA1c of 6.5
+       on a 0.2 step falls between 6.4 and 6.6, and a fasting glucose of
+       126 on a 5 step falls between 125 and 130: well-formed cards that
+       cannot be got right, and nothing on the screen says why. Sliding
+       the whole scale by less than one step is invisible and makes every
+       answer land. */
+    var anchor = card.low != null ? card.low : card.value;
+    if (typeof anchor === 'number' && isFinite(anchor) && anchor >= min && anchor <= max) {
+      var off = (anchor - min) % step;
+      if (off > 1e-9 && step - off > 1e-9) { min += off; max += off; }
+    }
+
     dp = Math.max(dp, decimals(step));
 
     return { min: round(min, dp), max: round(max, dp), step: step, dp: dp };
