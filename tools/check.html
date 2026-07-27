@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>MYFLASH — deck check</title>
+
+<!-- A utility, not a card. No theme engine, no display fonts: this page
+     has to be legible at 3am on a phone, not beautiful. -->
+<style>
+  :root {
+    --ink: #14110E;
+    --paper: #F4F1EA;
+    --dim: #6B635A;
+    --line: #DAD4C8;
+    --err: #B02A15;
+    --warn: #9A6B00;
+    --ok: #1F6B3A;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--paper); color: var(--ink); }
+  body {
+    font: 15px/1.5 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    padding: 0 0 4rem;
+    -webkit-text-size-adjust: 100%;
+  }
+  header {
+    position: sticky; top: 0; z-index: 5;
+    background: var(--ink); color: var(--paper);
+    padding: .7rem .9rem calc(.7rem + env(safe-area-inset-top));
+    padding-top: calc(.7rem + env(safe-area-inset-top));
+  }
+  h1 { margin: 0 0 .5rem; font-size: 1rem; letter-spacing: .12em; font-weight: 700; }
+  h1 small { opacity: .5; font-weight: 400; letter-spacing: .04em; }
+  .tabs { display: flex; gap: .4rem; }
+  .tabs button {
+    flex: 1; padding: .55rem; border: 0; border-radius: 3px;
+    background: rgba(244,241,234,.14); color: var(--paper);
+    font: inherit; font-size: .8rem; letter-spacing: .1em; cursor: pointer;
+  }
+  .tabs button[aria-selected="true"] { background: var(--paper); color: var(--ink); }
+
+  main { padding: .9rem; max-width: 46rem; margin: 0 auto; }
+  section[hidden] { display: none; }
+
+  p.lede { color: var(--dim); margin: 0 0 .9rem; font-size: .82rem; }
+
+  textarea {
+    width: 100%; min-height: 40vh; padding: .7rem;
+    border: 1px solid var(--line); border-radius: 3px;
+    background: #fff; color: var(--ink);
+    font: inherit; font-size: 13px; resize: vertical;
+  }
+  pre.prompt {
+    white-space: pre-wrap; word-break: break-word;
+    background: #fff; border: 1px solid var(--line); border-radius: 3px;
+    padding: .8rem; font-size: 12.5px; line-height: 1.55;
+    max-height: 60vh; overflow: auto; margin: 0;
+  }
+
+  .row { display: flex; gap: .5rem; flex-wrap: wrap; margin: .7rem 0; }
+  button.act {
+    flex: 1 1 auto; min-width: 8rem; padding: .75rem 1rem;
+    border: 0; border-radius: 3px; background: var(--ink); color: var(--paper);
+    font: inherit; font-size: .8rem; letter-spacing: .1em; cursor: pointer;
+  }
+  button.act.ghost { background: transparent; color: var(--ink); border: 1px solid var(--line); }
+  button.act.go { background: var(--ok); }
+  button.act:disabled { opacity: .35; cursor: default; }
+
+  .verdict { padding: .8rem; border-radius: 3px; margin: .9rem 0; font-size: .9rem; }
+  .verdict.pass { background: #E4F0E7; border-left: 4px solid var(--ok); }
+  .verdict.fail { background: #F6E4E0; border-left: 4px solid var(--err); }
+  .verdict.soft { background: #F6EEDC; border-left: 4px solid var(--warn); }
+  .verdict b { display: block; font-size: 1rem; margin-bottom: .2rem; }
+
+  ul.issues { list-style: none; padding: 0; margin: 0 0 1rem; }
+  ul.issues li {
+    border-left: 3px solid var(--line); padding: .45rem 0 .45rem .7rem;
+    margin-bottom: .5rem; font-size: .82rem;
+  }
+  ul.issues li.error { border-left-color: var(--err); }
+  ul.issues li.warn { border-left-color: var(--warn); }
+  .where { display: block; font-size: .7rem; letter-spacing: .08em; color: var(--dim); text-transform: uppercase; }
+  .fix { display: block; color: var(--dim); margin-top: .15rem; }
+
+  h2 { font-size: .78rem; letter-spacing: .12em; margin: 1.4rem 0 .5rem; color: var(--dim); }
+  .mix { font-size: .78rem; color: var(--dim); margin: .3rem 0 0; }
+  .toast {
+    position: fixed; left: 50%; bottom: 1.4rem; transform: translateX(-50%);
+    background: var(--ink); color: var(--paper); padding: .6rem 1rem;
+    border-radius: 3px; font-size: .8rem; opacity: 0; pointer-events: none;
+    transition: opacity .18s ease;
+  }
+  .toast.on { opacity: 1; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>MYFLASH <small>deck check</small></h1>
+  <div class="tabs">
+    <button id="tab-prompt" aria-selected="true">1 · THE PROMPT</button>
+    <button id="tab-check" aria-selected="false">2 · CHECK</button>
+  </div>
+</header>
+
+<main>
+
+<section id="pane-prompt">
+  <p class="lede">Copy this, paste it above your reference article, and give both to the AI.
+    Then bring the answer back to tab 2.</p>
+  <div class="row">
+    <button class="act" id="copy-prompt">COPY THE PROMPT</button>
+  </div>
+  <pre class="prompt" id="prompt-text"></pre>
+</section>
+
+<section id="pane-check" hidden>
+  <p class="lede">Paste what the AI gave you. Fences and stray sentences are fine —
+    they get stripped.</p>
+  <textarea id="input" placeholder="Paste the deck here"></textarea>
+  <div class="row">
+    <button class="act" id="run">CHECK IT</button>
+    <button class="act ghost" id="clear">CLEAR</button>
+  </div>
+  <div id="out"></div>
+</section>
+
+</main>
+
+<div class="toast" id="toast"></div>
+
+<!-- The real deck list, the real dial maths, the real store. A check
+     against a copy of the rules is a check against nothing. -->
+<script src="../js/decks.js?v=12"></script>
+<script src="../js/modes.js?v=12"></script>
+<script src="../js/store.js?v=12"></script>
+<script src="validate.js?v=12"></script>
+
+<!-- The prompt lives here as inert text so there is exactly one copy of
+     it: the page renders it and the clipboard button ships it. -->
+<script type="text/plain" id="prompt-src">
+You are writing a flashcard deck for a first-year medical resident. The cards
+are for fast factual recall on a phone, a few seconds each, in a spare moment.
+
+I will give you a reference article. Read it and return ONE JSON object.
+No explanation before or after it, no markdown fence.
+
+═══ WHAT MAKES A GOOD CARD HERE ═══
+
+One fact per card. If the answer needs an "and", it is two cards.
+
+The card stands alone. No "as above", no "in this patient", no reference to
+the article. It has to make sense to someone who has never read it.
+
+Short answers. The answer is displayed very large, so keep it under about 40
+characters. "Isotonic saline", not "Isotonic saline at 15-20 mL/kg in the
+first hour". If the detail matters, put it in "why".
+
+Ask what a resident is actually asked on the ward: thresholds, first steps,
+doses, classic associations, the thing that gets missed.
+
+Never write "which of the following", "all of the above", or "none of the
+above". The app shows the options; the question should just ask the thing.
+
+Cover the article's high-yield facts, not all of its facts. Aim for 15 to 30
+cards. If the material is bigger than that, write the best 30.
+
+═══ CHOOSING A CARD TYPE ═══
+
+There are nine types. Most articles support three or four of them well.
+Use only those.
+
+This matters more than variety: a deck of thirty recall and mcq cards is a
+good deck. Do not reach for a type because it exists, and do not bend a fact
+to fit a shape. A forced card is worse than no card. If the article never
+states a direction of change, it has no trend cards in it, and that is fine.
+
+Each type below has a condition. If the source does not meet it, skip it.
+
+  recall     The default. One fact, one short answer. When in doubt, this.
+
+  mcq        Only when there is exactly one right answer AND you can write
+             three wrong ones a resident would genuinely consider. If your
+             wrong answers are obviously wrong, make it a recall card.
+
+  multi      Only when the source gives a set: diagnostic criteria, the
+             features of a syndrome, the members of a class. Needs at least
+             two right options and at least one wrong one.
+
+  truefalse  Only to correct a common misconception, something a resident is
+             likely to believe and get wrong. Not for facts that are merely
+             true.
+
+  number     Only when the answer IS a quantity: a threshold, a dose, a
+             normal range. Never for a number buried in a longer answer.
+
+  trend      Only when the source states the direction of change of three or
+             more related values under one named condition.
+
+  bucket     Only when the source contrasts two named categories and you have
+             at least four features that tell them apart.
+
+  order      Only when a sequence is itself the fact: a protocol, a pathway.
+             Three to six steps.
+
+  match      Only for three to five pairs where each left has exactly one
+             correct right. Drug to class, antidote to poison.
+
+═══ THE SHAPES ═══
+
+{ "type": "recall",    "q": "...", "a": "..." }
+{ "type": "mcq",       "q": "...", "a": "...", "distractors": ["...", "...", "..."] }
+{ "type": "multi",     "q": "...", "answers": ["...", "..."], "distractors": ["...", "..."] }
+{ "type": "truefalse", "q": "...", "a": true, "why": "..." }
+{ "type": "number",    "q": "...", "value": 3.3, "unit": "mEq/L", "tolerance": 0 }
+{ "type": "number",    "q": "...", "low": 0.3, "high": 0.5, "unit": "mg" }
+{ "type": "trend",     "q": "...", "items": [{ "label": "...", "dir": "up" }] }
+{ "type": "bucket",    "q": "...", "bins": ["A", "B"], "items": [{ "label": "...", "bin": "A" }] }
+{ "type": "order",     "q": "...", "steps": ["first", "second", "third"] }
+{ "type": "match",     "q": "...", "pairs": [{ "left": "...", "right": "..." }] }
+
+Use exactly these field names. Not "answer", not "options", not
+"explanation". Add no fields of your own.
+
+═══ THE EIGHT THINGS THAT GO WRONG ═══
+
+1. "dir" is exactly "up", "down" or "same". Lowercase. Not "increased",
+   not "Up", not an arrow.
+
+2. Every bucket "bin" must be one of the strings in "bins", copied character
+   for character. Use two bins; a third costs the card its best interaction.
+
+3. "steps" are written in the CORRECT order. The app shuffles them for the
+   player. No two steps may share the same text.
+
+4. No two "right" values in a match card may be the same, and no two options
+   in an mcq or multi card may be the same. Identical options cannot be told
+   apart, so the card cannot be graded.
+
+5. A distractor is never the answer. Check each one is genuinely wrong.
+
+6. truefalse "a" is a JSON boolean: true or false, no quotes.
+
+7. number: "value" for a target, "low" plus "high" for a genuine range.
+   Never both in one card. Write bare numbers, so 3.3 and not "3.3 mEq/L";
+   the unit goes in "unit". Set "tolerance" to 0 unless a near miss should
+   count as right. Do not set "step", "min" or "max" — the app works those
+   out from the answer, and a wrong one makes the card unanswerable.
+
+8. Only "multi" uses "answers". Every other type that has one right answer
+   uses "a".
+
+═══ OPTIONAL FIELDS ═══
+
+"why" — one or two sentences, on any card. Add it ONLY where the answer is
+counterintuitive or commonly confused, and use it to explain the trap. Most
+cards should not have one; a "why" on an obvious fact is noise the reader
+has to look past. On truefalse, always include it.
+
+"ref" — a short source citation, on any card. Useful for spot-checking later.
+
+═══ THE DECK ═══
+
+{
+  "id":    "kebab-case-slug",
+  "name":  "SHORT NAME IN CAPS",
+  "topic": "...",
+  "blurb": "One short line about what this covers",
+  "cards": [ ... ]
+}
+
+"topic" groups decks on the home screen and ranks them together, and the
+grouping is an exact string match. Reuse one of these existing topics if the
+material belongs to it, spelled identically:
+
+  §TOPICS§
+
+Only invent a new topic if none of those fit.
+</script>
+
+<script>
+(function () {
+  'use strict';
+
+  var $ = function (s) { return document.querySelector(s); };
+
+  /* ─────────── topics, injected live ─────────── */
+  function knownTopics() {
+    var seen = {}, out = [];
+    window.Store.allDecks().forEach(function (d) {
+      if (d.topic && !seen[d.topic]) { seen[d.topic] = 1; out.push(d.topic); }
+    });
+    return out;
+  }
+
+  var TOPICS = knownTopics();
+  var PROMPT = $('#prompt-src').textContent.trim()
+    .replace('§TOPICS§', TOPICS.join('\n  '));
+  $('#prompt-text').textContent = PROMPT;
+
+  /* ─────────── chrome ─────────── */
+  function toast(msg) {
+    var t = $('#toast');
+    t.textContent = msg;
+    t.classList.add('on');
+    clearTimeout(toast._t);
+    toast._t = setTimeout(function () { t.classList.remove('on'); }, 1800);
+  }
+
+  /* navigator.clipboard is https-only and absent under file://, so keep
+     the ancient path as a fallback rather than failing silently. */
+  function copy(text, said) {
+    function fallback() {
+      var ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.cssText = 'position:fixed;top:0;left:0;opacity:0';
+      document.body.appendChild(ta);
+      ta.focus(); ta.select();
+      try { document.execCommand('copy'); toast(said); }
+      catch (e) { toast('Copy failed — select it by hand.'); }
+      ta.remove();
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () { toast(said); }, fallback);
+    } else fallback();
+  }
+
+  function tab(which) {
+    $('#tab-prompt').setAttribute('aria-selected', which === 'prompt');
+    $('#tab-check').setAttribute('aria-selected', which === 'check');
+    $('#pane-prompt').hidden = which !== 'prompt';
+    $('#pane-check').hidden = which !== 'check';
+    window.scrollTo(0, 0);
+  }
+
+  $('#tab-prompt').addEventListener('click', function () { tab('prompt'); });
+  $('#tab-check').addEventListener('click', function () { tab('check'); });
+  $('#copy-prompt').addEventListener('click', function () { copy(PROMPT, 'Prompt copied'); });
+
+  /* ─────────── the check ─────────── */
+  var h = function (tag, cls, text) {
+    var el = document.createElement(tag);
+    if (cls) el.className = cls;
+    if (text != null) el.textContent = text;
+    return el;
+  };
+
+  function issueList(items) {
+    var ul = h('ul', 'issues');
+    items.forEach(function (i) {
+      var li = h('li', i.level);
+      li.appendChild(h('span', 'where', i.where));
+      li.appendChild(document.createTextNode(i.msg));
+      if (i.fix) li.appendChild(h('span', 'fix', i.fix));
+      ul.appendChild(li);
+    });
+    return ul;
+  }
+
+  function run() {
+    var out = $('#out');
+    out.textContent = '';
+
+    var parsed = window.Validate.parse($('#input').value);
+    if (parsed.error) {
+      var v = h('div', 'verdict fail');
+      v.appendChild(h('b', null, 'Could not read it'));
+      v.appendChild(document.createTextNode(parsed.error));
+      out.appendChild(v);
+      return;
+    }
+
+    var deck = parsed.deck;
+    var result = window.Validate.check(deck, TOPICS);
+    var errs = result.report.errors(), warns = result.report.warnings();
+
+    var box = h('div', 'verdict ' + (errs.length ? 'fail' : warns.length ? 'soft' : 'pass'));
+    box.appendChild(h('b', null,
+      errs.length ? errs.length + ' problem' + (errs.length === 1 ? '' : 's') + ' to fix'
+        : warns.length ? 'Usable, with ' + warns.length + ' thing' + (warns.length === 1 ? '' : 's') + ' worth a look'
+        : 'Clean'));
+    box.appendChild(document.createTextNode(
+      errs.length ? 'These cards will render broken or cannot be graded.'
+        : warns.length ? 'Nothing is broken. These would just read better fixed.'
+        : 'Every card is well formed. This does not check whether they are TRUE — that is still on you.'));
+
+    var mix = Object.keys(result.types).sort(function (a, b) { return result.types[b] - result.types[a]; })
+      .map(function (t) { return result.types[t] + ' ' + t; }).join(' · ');
+    box.appendChild(h('p', 'mix', result.count + ' cards — ' + mix));
+    out.appendChild(box);
+
+    if (errs.length) { out.appendChild(h('h2', null, 'MUST FIX')); out.appendChild(issueList(errs)); }
+    if (warns.length) { out.appendChild(h('h2', null, 'WORTH FIXING')); out.appendChild(issueList(warns)); }
+
+    var row = h('div', 'row');
+
+    if (errs.length || warns.length) {
+      var ask = h('button', 'act', 'COPY A FIX REQUEST');
+      ask.addEventListener('click', function () {
+        copy(window.Validate.fixRequest(result), 'Paste that back to the AI');
+      });
+      row.appendChild(ask);
+    }
+
+    if (!errs.length) {
+      var add = h('button', 'act go', 'ADD TO MYFLASH');
+      add.addEventListener('click', function () { install(deck); });
+      row.appendChild(add);
+    }
+
+    out.appendChild(row);
+  }
+
+  function install(deck) {
+    if (!deck.id) {
+      deck.id = 'user-' + String(deck.name || 'deck').toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+    }
+    if (!deck.blurb) deck.blurb = deck.cards.length + ' cards';
+    delete deck._wrapped;
+
+    var clash = window.Store.allDecks().filter(function (d) { return d.id === deck.id; })[0];
+    if (clash && !confirm('A deck with id "' + deck.id + '" already exists (' +
+        clash.name + ', ' + clash.cards.length + ' cards).\n\nReplace it? Its progress is kept.')) return;
+
+    try {
+      window.Store.saveDeck(deck);
+    } catch (e) {
+      toast('Could not save: ' + e.message);
+      return;
+    }
+
+    var back = window.Store.allDecks().filter(function (d) { return d.id === deck.id; })[0];
+    if (!back || back.cards.length !== deck.cards.length) {
+      toast('Save did not stick — is this page on the same origin as the app?');
+      return;
+    }
+    toast('Added. Open MYFLASH under ' + (deck.topic || 'Other') + '.');
+  }
+
+  $('#run').addEventListener('click', run);
+  $('#clear').addEventListener('click', function () {
+    $('#input').value = '';
+    $('#out').textContent = '';
+    $('#input').focus();
+  });
+})();
+</script>
+</body>
+</html>

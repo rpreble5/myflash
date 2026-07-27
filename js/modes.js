@@ -1071,5 +1071,13 @@
     return pool[pool.length - 1];
   }
 
-  global.Modes = { ALL: ALL, pickFor: pickFor, h: h };
+  /* scaleFor and layoutFor are exported for tools/validate.js. A generated
+     card can be well-formed and still unanswerable — a 0.3 mg answer on a
+     dial that steps by 1 — and the only way to check that honestly is to
+     ask the same function the dial asks. */
+  global.Modes = {
+    ALL: ALL, pickFor: pickFor, h: h,
+    scaleFor: scaleFor, layoutFor: layoutFor,
+    GRID_MAX_CHARS: GRID_MAX_CHARS
+  };
 })(window);
