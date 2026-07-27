@@ -102,7 +102,7 @@
       ]
     },
     {
-      id: 'tflab',
+      id: 'tflab', lab: true,
       topic: 'Design lab',
       name: 'TF LAB',
       blurb: 'True or false — swipe left or right, with and without notes',
@@ -126,7 +126,7 @@
       ]
     },
     {
-      id: 'trendlab',
+      id: 'trendlab', lab: true,
       topic: 'Design lab',
       name: 'TREND LAB',
       blurb: 'Up, down or unchanged — two rows up to five, long labels included',
@@ -178,7 +178,7 @@
       ]
     },
     {
-      id: 'picklab',
+      id: 'picklab', lab: true,
       topic: 'Design lab',
       name: 'PICK LAB',
       blurb: 'Choice and select-all — both layouts, short and long options',
@@ -216,7 +216,7 @@
       ]
     },
     {
-      id: 'revealtest',
+      id: 'revealtest', lab: true,
       topic: 'Design lab',
       name: 'REVEAL LAB',
       blurb: 'Recall cards only — for judging the reveal motion',
@@ -252,7 +252,7 @@
     },
 
     {
-      id: 'dialtest',
+      id: 'dialtest', lab: true,
       topic: 'Design lab',
       name: 'DIAL LAB',
       blurb: 'Number cards only — for testing the dial',

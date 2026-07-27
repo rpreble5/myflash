@@ -56,7 +56,14 @@
     return true;
   }
 
-  function allDecks() { return global.Decks.BUILTIN.concat(customDecks()); }
+  /* Decks the app studies. The design-lab fixtures carry `lab: true` and
+     are excluded here rather than deleted: they exist to exercise every
+     card type against the theme engine, which is still worth having, but
+     a home screen that ranks what to study next should not be offering
+     REVEAL LAB alongside a real topic. Flip the flag to get them back. */
+  function allDecks() {
+    return global.Decks.BUILTIN.filter(function (d) { return !d.lab; }).concat(customDecks());
+  }
 
   function deckById(id) {
     return allDecks().filter(function (d) { return d.id === id; })[0] || null;
