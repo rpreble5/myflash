@@ -106,6 +106,45 @@
     });
   }
 
+  /* ──────────────────── deck manager ───────────────────── */
+  /* Only generated decks appear. The built-ins live in the source file,
+     so offering a delete that cannot work would be worse than offering
+     none at all. */
+  function renderDeckManager() {
+    var wrap = $('#deck-manager');
+    if (!wrap) return;
+    wrap.textContent = '';
+
+    var mine = global.Store.customDecks();
+    if (!mine.length) {
+      wrap.appendChild(h('p', 'settings-empty',
+        'Decks you add with the deck check tool show up here.'));
+      return;
+    }
+
+    mine.forEach(function (deck) {
+      var row = h('div', 'manage-row');
+      var text = h('div', 'manage-text');
+      text.appendChild(h('span', 'manage-name', deck.name || deck.id));
+      var n = deck.cards.length;
+      text.appendChild(h('span', 'manage-line',
+        (deck.topic ? deck.topic + ' · ' : '') + n + (n === 1 ? ' card' : ' cards')));
+      row.appendChild(text);
+
+      var del = h('button', 'manage-del', 'Delete');
+      del.setAttribute('aria-label', 'Delete ' + (deck.name || deck.id));
+      del.addEventListener('click', function () {
+        if (!confirm('Delete ' + (deck.name || deck.id) + '?\n\n' +
+              deck.cards.length + ' cards and their progress go with it. This cannot be undone.')) return;
+        global.Store.deleteDeck(deck.id);
+        renderDeckManager();
+        renderHome();
+      });
+      row.appendChild(del);
+      wrap.appendChild(row);
+    });
+  }
+
   /* ───────────────────────── settings ──────────────────────── */
   /* `apply` runs on bind as well as on change, so a stored preference is
      in force from boot rather than from the first time it is touched. */
@@ -652,7 +691,10 @@
       $('#haptics-note').textContent = 'This device has no vibration motor the browser can reach.';
     }
 
-    $('#btn-settings').addEventListener('click', function () { show('screen-settings'); });
+    $('#btn-settings').addEventListener('click', function () {
+      renderDeckManager();               // decks can arrive from the tool between visits
+      show('screen-settings');
+    });
     $('#btn-settings-back').addEventListener('click', function () { show('screen-home'); renderHome(); });
     $('#btn-quit').addEventListener('click', function () { show('screen-home'); renderHome(); });
     $('#btn-home').addEventListener('click', function () { show('screen-home'); });

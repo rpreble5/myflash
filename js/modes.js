@@ -190,6 +190,7 @@
             });
           }
           grid.classList.add('is-locked');
+          if (why) why.classList.remove('is-held');
           settle(ctx, ok ? 1 : 0);
         }
 
@@ -199,6 +200,16 @@
       });
 
       area.appendChild(grid);
+
+      /* Held rather than appended on reveal, the same way select-all and
+         true/false do it: an mcq explanation usually says why the other
+         three are wrong, which is worth more here than anywhere. */
+      var why = ctx.card.why ? explanation(ctx.card.why) : null;
+      if (why) {
+        why.classList.add('is-held');
+        area.appendChild(why);
+      }
+
       ctx.keys(keyMap);
     }
   };
@@ -501,11 +512,18 @@
           btnAt[i][item.dir].classList.add('is-truth');
         });
 
+        if (why) why.classList.remove('is-held');
         settle(ctx, right / items.length);
       }
 
       area.appendChild(rows);
       area.appendChild(hint);
+
+      var why = ctx.card.why ? explanation(ctx.card.why) : null;
+      if (why) {
+        why.classList.add('is-held');
+        area.appendChild(why);
+      }
 
       /* Same shape as select-all: several sub-answers, then one submit.
          Nothing leaves the screen, so the rows nudge and spring back. */

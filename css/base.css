@@ -235,6 +235,51 @@ button { cursor: pointer; border: 0; background: none; }
   opacity: .45;
   margin: 0 0 .85rem;
 }
+
+/* ── Deck manager ────────────────────────────────────────── */
+/* The group's default gap is sized for toggles, which are far taller
+   than a deck row; these set their own. */
+#deck-manager { gap: .5rem; align-items: stretch; width: 100%; }
+
+.manage-row {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  width: 100%;
+  padding: .6rem .75rem;
+  border-radius: 12px;
+  background: color-mix(in srgb, currentColor 7%, transparent);
+}
+.manage-text { display: flex; flex-direction: column; gap: .1rem; min-width: 0; flex: 1; }
+.manage-name {
+  font-family: "Anton", sans-serif;
+  font-size: 1rem;
+  line-height: 1.1;
+  /* A generated deck name can run long; it should ellipsis rather than
+     push the delete button off the row. */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.manage-line { font-size: .7rem; opacity: .55; }
+
+.manage-del {
+  flex: none;
+  padding: .45rem .8rem;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: .68rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  opacity: .6;
+  cursor: pointer;
+}
+.manage-del:active { opacity: 1; transform: scale(.96); }
+
+.settings-empty { font-size: .8rem; opacity: .5; margin: 0; }
 .toggle {
   display: flex;
   align-items: flex-start;

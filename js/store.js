@@ -38,6 +38,24 @@
     write(KEY_DECKS, decks);
   }
 
+  /* Built-in decks live in the source file and cannot be removed from
+     here; everything a generator produces can. Progress goes with the
+     deck — leaving orphan stats behind means reinstalling the same id
+     silently inherits a stranger's history. */
+  function deleteDeck(id) {
+    var decks = customDecks();
+    var kept = decks.filter(function (d) { return d.id !== id; });
+    if (kept.length === decks.length) return false;
+    write(KEY_DECKS, kept);
+
+    var all = stats(), prefix = id + ':';
+    Object.keys(all).forEach(function (k) {
+      if (k.indexOf(prefix) === 0) delete all[k];
+    });
+    write(KEY_STATS, all);
+    return true;
+  }
+
   function allDecks() { return global.Decks.BUILTIN.concat(customDecks()); }
 
   function deckById(id) {
@@ -197,6 +215,7 @@
     SETTING_DEFAULTS: DEFAULTS,
     customDecks: customDecks,
     saveDeck: saveDeck,
+    deleteDeck: deleteDeck,
     allDecks: allDecks,
     deckById: deckById,
     stats: stats,
