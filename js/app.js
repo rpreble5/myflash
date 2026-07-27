@@ -106,6 +106,81 @@
     });
   }
 
+  /* ──────────────────── look feedback ───────────────────── */
+  /* What the current card looks like, in the terms a verdict is about. */
+  var currentLook = null;
+
+  function lookOf(theme) {
+    return {
+      palette: theme.palette.name,
+      backdrop: theme.backdrop.name,
+      tier: theme.backdrop.tier,
+      font: theme.font.face.split(',')[0].replace(/"/g, ''),
+      treatment: theme.treatment,
+      grain: theme.grain ? theme.grain.name : null
+    };
+  }
+
+  function paintNope() {
+    var btn = $('#btn-nope');
+    if (!btn) return;
+    var marked = !!currentLook && global.Store.looks().some(function (l) {
+      return l.palette === currentLook.palette && l.backdrop === currentLook.backdrop &&
+             l.font === currentLook.font && l.treatment === currentLook.treatment &&
+             (l.grain || null) === (currentLook.grain || null);
+    });
+    btn.classList.toggle('is-on', marked);
+    btn.setAttribute('aria-pressed', marked ? 'true' : 'false');
+  }
+
+  function renderLookFeedback() {
+    var wrap = $('#look-feedback');
+    if (!wrap) return;
+    wrap.textContent = '';
+
+    var all = global.Store.looks();
+    if (!all.length) {
+      wrap.appendChild(h('p', 'settings-empty',
+        'Tap 👎 while studying to mark a colour combination you dislike. They collect here.'));
+      return;
+    }
+
+    var tally = global.Store.lookTally();
+    wrap.appendChild(h('p', 'settings-empty',
+      all.length + ' marked, across ' + tally.length + ' palette' + (tally.length === 1 ? '' : 's') + '.'));
+
+    /* Count and spread together, because they answer different questions:
+       marked often across many backdrops is a bad palette, marked often
+       under one is a bad pairing. */
+    tally.slice(0, 8).forEach(function (t) {
+      var row = h('div', 'manage-row');
+      var text = h('div', 'manage-text');
+      text.appendChild(h('span', 'manage-name', t.name));
+      text.appendChild(h('span', 'manage-line',
+        t.n + '×, on ' + t.spread + ' backdrop' + (t.spread === 1 ? '' : 's')));
+      row.appendChild(text);
+      wrap.appendChild(row);
+    });
+
+    var copy = h('button', 'btn btn-ghost', 'Copy the list');
+    copy.addEventListener('click', function () {
+      var text = JSON.stringify(all, null, 1);
+      var done = function () { copy.textContent = 'Copied'; setTimeout(function () { copy.textContent = 'Copy the list'; }, 1600); };
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, done);
+      else done();
+    });
+    wrap.appendChild(copy);
+
+    var clear = h('button', 'btn btn-ghost', 'Clear them');
+    clear.addEventListener('click', function () {
+      if (!confirm('Clear all ' + all.length + ' marked looks?')) return;
+      global.Store.clearLooks();
+      renderLookFeedback();
+      paintNope();
+    });
+    wrap.appendChild(clear);
+  }
+
   /* ──────────────────── deck manager ───────────────────── */
   /* Only generated decks appear. The built-ins live in the source file,
      so offering a delete that cannot work would be worse than offering
@@ -228,6 +303,8 @@
   function renderCard(deck, cardIndex, ref) {
     var card = deck.cards[cardIndex];
     var theme = global.Theme.random();
+    currentLook = lookOf(theme);
+    paintNope();
     var mode = global.Modes.pickFor(card, deck);
     var stage = $('#stage');
 
@@ -762,7 +839,18 @@
 
     $('#btn-settings').addEventListener('click', function () {
       renderDeckManager();               // decks can arrive from the tool between visits
+      renderLookFeedback();
       show('screen-settings');
+    });
+
+    /* Marking a look must not disturb the card: no advance, no grade, no
+       reflow. It is a note taken while reading, not an action. */
+    $('#btn-nope').addEventListener('click', function (e) {
+      e.stopPropagation();
+      if (!currentLook) return;
+      global.Store.markLook(currentLook);
+      paintNope();
+      global.Sfx.arm();
     });
     $('#btn-settings-back').addEventListener('click', function () { show('screen-home'); renderHome(); });
     $('#btn-quit').addEventListener('click', function () { show('screen-home'); renderHome(); });

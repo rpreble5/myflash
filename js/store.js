@@ -7,6 +7,7 @@
   var KEY_DECKS = 'myflash.decks.v1';
   var KEY_STATS = 'myflash.stats.v1';
   var KEY_PREFS = 'myflash.prefs.v1';
+  var KEY_LOOKS = 'myflash.looks.v1';
 
   /* Anything not listed here is not a setting. Defaults are the current
      behaviour, so an empty store behaves exactly as before. */
@@ -67,6 +68,50 @@
 
   function deckById(id) {
     return allDecks().filter(function (d) { return d.id === id; })[0] || null;
+  }
+
+  /* Look feedback. Recorded in the moment, mid-session, because that is
+     the only time the reaction is honest — a look pulled up in a judging
+     tool is being assessed, not lived with.
+
+     The whole tuple goes in, not just the palette. A palette marked
+     across many different backdrops is a bad palette; one marked only
+     under grain is a bad pairing, and those want opposite fixes. */
+  function markLook(look) {
+    var all = read(KEY_LOOKS, []);
+    var key = lookKey(look);
+    var i = all.findIndex(function (l) { return lookKey(l) === key; });
+    if (i >= 0) { all.splice(i, 1); write(KEY_LOOKS, all); return false; }
+    all.push({
+      palette: look.palette, backdrop: look.backdrop, tier: look.tier,
+      font: look.font, treatment: look.treatment, grain: look.grain || null,
+      at: Date.now()
+    });
+    write(KEY_LOOKS, all);
+    return true;
+  }
+
+  function lookKey(l) {
+    return [l.palette, l.backdrop, l.font, l.treatment, l.grain || ''].join('|');
+  }
+
+  function looks() { return read(KEY_LOOKS, []); }
+  function clearLooks() { write(KEY_LOOKS, []); }
+
+  /* Counts per palette, worst first — the shape of the question being
+     asked, which is "which of these should go". */
+  function lookTally() {
+    var by = {};
+    looks().forEach(function (l) {
+      if (!by[l.palette]) by[l.palette] = { name: l.palette, n: 0, backdrops: {} };
+      by[l.palette].n++;
+      by[l.palette].backdrops[l.backdrop] = true;
+    });
+    return Object.keys(by).map(function (k) {
+      var e = by[k];
+      e.spread = Object.keys(e.backdrops).length;
+      return e;
+    }).sort(function (a, b) { return b.n - a.n; });
   }
 
   /* stats: { "deckId:cardIndex": { seen, right, wrong, streak, s, at } }
@@ -227,6 +272,10 @@
     deckById: deckById,
     stats: stats,
     recordAnswer: recordAnswer,
+    markLook: markLook,
+    looks: looks,
+    lookTally: lookTally,
+    clearLooks: clearLooks,
     cardStrength: cardStrength,
     deckStrength: deckStrength,
     topics: topics,

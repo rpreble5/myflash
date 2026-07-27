@@ -87,6 +87,9 @@
       <h3 class="settings-head">Your decks</h3>
       <div class="settings-group" id="deck-manager"></div>
 
+      <h3 class="settings-head">Looks you marked</h3>
+      <div class="settings-group" id="look-feedback"></div>
+
       <h3 class="settings-head">Data</h3>
       <div class="settings-group">
         <button class="btn btn-ghost" id="btn-reset-progress">Reset progress</button>
@@ -99,6 +102,10 @@
     <div class="hud">
       <button class="hud-btn" id="btn-quit" aria-label="End session">&#10005;</button>
       <div class="progress"><div class="progress-fill" id="progress-fill"></div></div>
+      <!-- Judge the look while you are looking at it. A verdict cast in a
+           tool is an assessment; one cast mid-session is a reaction. -->
+      <button class="hud-btn hud-nope" id="btn-nope"
+              aria-label="Mark this colour combination as bad" aria-pressed="false">&#128078;</button>
       <div class="streak" id="streak"><span id="streak-n">0</span>&#128293;</div>
     </div>
     <div id="stage" class="stage"></div>

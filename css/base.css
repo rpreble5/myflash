@@ -344,6 +344,19 @@ button { cursor: pointer; border: 0; background: none; }
 }
 .hud-btn:hover { opacity: 1; }
 
+/* Quiet until used. A verdict button that shouts competes with the card
+   it is meant to be judging. */
+.hud-nope {
+  opacity: .3;
+  font-size: .82rem;
+  transition: opacity .15s ease, transform .15s cubic-bezier(.22,1,.36,1);
+}
+.hud-nope:active { transform: scale(.88); }
+.hud-nope.is-on {
+  opacity: 1;
+  background: color-mix(in srgb, currentColor 22%, transparent);
+}
+
 .progress {
   flex: 1;
   height: 5px;
