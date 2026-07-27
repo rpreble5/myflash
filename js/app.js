@@ -116,22 +116,122 @@
       backdrop: theme.backdrop.name,
       tier: theme.backdrop.tier,
       font: theme.font.face.split(',')[0].replace(/"/g, ''),
+      face: theme.font.face,
       treatment: theme.treatment,
-      grain: theme.grain ? theme.grain.name : null
+      grain: theme.grain ? theme.grain.name : null,
+      colors: [theme.palette.bg, theme.palette.ink, theme.palette.acc]
     };
+  }
+
+  /* Only the parts a verdict can be about. `plain` is the absence of a
+     type effect, so there is nothing there to dislike, and a card with
+     no grain should not offer a row for one. */
+  function lookParts(look) {
+    var parts = [
+      { key: 'palette',   label: 'Colours',    value: look.palette },
+      { key: 'font',      label: 'Typeface',   value: look.font },
+      { key: 'backdrop',  label: 'Background', value: look.backdrop + ' · ' + look.tier }
+    ];
+    if (look.treatment && look.treatment !== 'plain') {
+      parts.push({ key: 'treatment', label: 'Type effect', value: look.treatment });
+    }
+    if (look.grain) parts.push({ key: 'grain', label: 'Grain', value: look.grain });
+    return parts;
   }
 
   function paintNope() {
     var btn = $('#btn-nope');
     if (!btn) return;
-    var marked = !!currentLook && global.Store.looks().some(function (l) {
-      return l.palette === currentLook.palette && l.backdrop === currentLook.backdrop &&
-             l.font === currentLook.font && l.treatment === currentLook.treatment &&
-             (l.grain || null) === (currentLook.grain || null);
-    });
-    btn.classList.toggle('is-on', marked);
-    btn.setAttribute('aria-pressed', marked ? 'true' : 'false');
+    var flags = currentLook ? global.Store.lookFlags(currentLook) : {};
+    var n = Object.keys(flags).filter(function (k) { return flags[k]; }).length;
+    btn.classList.toggle('is-on', n > 0);
+    btn.setAttribute('aria-pressed', n > 0 ? 'true' : 'false');
   }
+
+  /* The menu is deliberately not themed. It is being used to say the
+     theme is wrong, so inheriting the palette under judgement is the one
+     thing it must not do. */
+  function openLookMenu() {
+    if (!currentLook || $('.look-menu')) return;
+    var look = currentLook;
+    var flags = {};
+    var stored = global.Store.lookFlags(look);
+    Object.keys(stored).forEach(function (k) { flags[k] = stored[k]; });
+
+    var sheet = h('div', 'look-menu');
+    var panel = h('div', 'look-panel');
+    panel.appendChild(h('p', 'look-title', "What's wrong with this one?"));
+
+    lookParts(look).forEach(function (part) {
+      var row = h('button', 'look-row');
+      row.setAttribute('aria-pressed', flags[part.key] ? 'true' : 'false');
+      if (flags[part.key]) row.classList.add('is-on');
+
+      if (part.key === 'palette') {
+        var sw = h('span', 'look-swatch');
+        look.colors.forEach(function (c) {
+          var dot = h('span', 'look-dot');
+          dot.style.background = c;
+          sw.appendChild(dot);
+        });
+        row.appendChild(sw);
+      }
+
+      var text = h('span', 'look-text');
+      text.appendChild(h('span', 'look-label', part.label));
+      var val = h('span', 'look-value', part.value);
+      /* Show the typeface in itself — the name is not the complaint. */
+      if (part.key === 'font') val.style.fontFamily = look.face;
+      text.appendChild(val);
+      row.appendChild(text);
+      row.appendChild(h('span', 'look-check', '✕'));
+
+      row.addEventListener('click', function (e) {
+        e.stopPropagation();
+        flags[part.key] = !flags[part.key];
+        row.classList.toggle('is-on', !!flags[part.key]);
+        row.setAttribute('aria-pressed', flags[part.key] ? 'true' : 'false');
+        /* Saved on every tap, so dismissing any way at all keeps it. */
+        global.Store.saveLook(look, flags);
+        paintNope();
+        global.Sfx.arm();
+      });
+      panel.appendChild(row);
+    });
+
+    var done = h('button', 'btn btn-ghost look-done', 'Done');
+    done.addEventListener('click', function (e) { e.stopPropagation(); closeLookMenu(); });
+    panel.appendChild(done);
+
+    sheet.appendChild(panel);
+    sheet.addEventListener('click', closeLookMenu);
+    panel.addEventListener('click', function (e) { e.stopPropagation(); });
+    /* The card underneath is a gesture surface; nothing here should reach it. */
+    sheet.addEventListener('pointerdown', function (e) { e.stopPropagation(); });
+
+    $('#screen-session').appendChild(sheet);
+    requestAnimationFrame(function () { sheet.classList.add('is-in'); });
+    /* Escape closes the topmost thing. An open explanation may already
+       own that handler, so borrow it and hand it back rather than
+       stranding the sheet underneath with no way out. */
+    if (session) { prevCloseNote = session.closeNote || null; session.closeNote = closeLookMenu; }
+  }
+
+  var prevCloseNote = null;
+
+  function closeLookMenu() {
+    var sheet = $('.look-menu');
+    if (!sheet) return;
+    sheet.classList.remove('is-in');
+    if (session) { session.closeNote = prevCloseNote; prevCloseNote = null; }
+    var go = function () { if (sheet.parentNode) sheet.remove(); };
+    if (reduceMotion) go(); else setTimeout(go, 180);
+  }
+
+  var PART_LABEL = {
+    palette: 'Colours', font: 'Typefaces', backdrop: 'Backgrounds',
+    treatment: 'Type effects', grain: 'Grains'
+  };
 
   function renderLookFeedback() {
     var wrap = $('#look-feedback');
@@ -141,31 +241,37 @@
     var all = global.Store.looks();
     if (!all.length) {
       wrap.appendChild(h('p', 'settings-empty',
-        'Tap 👎 while studying to mark a colour combination you dislike. They collect here.'));
+        'Tap 👎 while studying and say what is wrong. It collects here.'));
       return;
     }
 
     var tally = global.Store.lookTally();
-    wrap.appendChild(h('p', 'settings-empty',
-      all.length + ' marked, across ' + tally.length + ' palette' + (tally.length === 1 ? '' : 's') + '.'));
+    wrap.appendChild(h('p', 'settings-empty', all.length + ' cards marked.'));
 
-    /* Count and spread together, because they answer different questions:
-       marked often across many backdrops is a bad palette, marked often
-       under one is a bad pairing. */
-    tally.slice(0, 8).forEach(function (t) {
-      var row = h('div', 'manage-row');
-      var text = h('div', 'manage-text');
-      text.appendChild(h('span', 'manage-name', t.name));
-      text.appendChild(h('span', 'manage-line',
-        t.n + '×, on ' + t.spread + ' backdrop' + (t.spread === 1 ? '' : 's')));
-      row.appendChild(text);
-      wrap.appendChild(row);
+    global.Store.LOOK_PARTS.forEach(function (part) {
+      var rows = tally[part];
+      if (!rows || !rows.length) return;
+      wrap.appendChild(h('h4', 'look-group', PART_LABEL[part] || part));
+      rows.slice(0, 6).forEach(function (t) {
+        var row = h('div', 'manage-row');
+        var text = h('div', 'manage-text');
+        text.appendChild(h('span', 'manage-name', t.name));
+        /* Blamed against merely present: a thing that keeps turning up in
+           bad cards without being the problem is not the problem. */
+        text.appendChild(h('span', 'manage-line',
+          'blamed ' + t.blamed + ' of ' + t.seen + ' time' + (t.seen === 1 ? '' : 's')));
+        row.appendChild(text);
+        wrap.appendChild(row);
+      });
     });
 
     var copy = h('button', 'btn btn-ghost', 'Copy the list');
     copy.addEventListener('click', function () {
       var text = JSON.stringify(all, null, 1);
-      var done = function () { copy.textContent = 'Copied'; setTimeout(function () { copy.textContent = 'Copy the list'; }, 1600); };
+      var done = function () {
+        copy.textContent = 'Copied';
+        setTimeout(function () { copy.textContent = 'Copy the list'; }, 1600);
+      };
       if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, done);
       else done();
     });
@@ -304,6 +410,7 @@
     var card = deck.cards[cardIndex];
     var theme = global.Theme.random();
     currentLook = lookOf(theme);
+    closeLookMenu();
     paintNope();
     var mode = global.Modes.pickFor(card, deck);
     var stage = $('#stage');
@@ -847,10 +954,7 @@
        reflow. It is a note taken while reading, not an action. */
     $('#btn-nope').addEventListener('click', function (e) {
       e.stopPropagation();
-      if (!currentLook) return;
-      global.Store.markLook(currentLook);
-      paintNope();
-      global.Sfx.arm();
+      openLookMenu();
     });
     $('#btn-settings-back').addEventListener('click', function () { show('screen-home'); renderHome(); });
     $('#btn-quit').addEventListener('click', function () { show('screen-home'); renderHome(); });

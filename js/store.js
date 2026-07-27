@@ -70,48 +70,83 @@
     return allDecks().filter(function (d) { return d.id === id; })[0] || null;
   }
 
-  /* Look feedback. Recorded in the moment, mid-session, because that is
-     the only time the reaction is honest — a look pulled up in a judging
-     tool is being assessed, not lived with.
+  /* Look feedback, attributed. A verdict on a whole card cannot say
+     whether the colours were wrong or the typeface was, and those want
+     opposite fixes — one culls a palette, the other culls a font, and a
+     third only stops two good things being drawn together.
 
-     The whole tuple goes in, not just the palette. A palette marked
-     across many different backdrops is a bad palette; one marked only
-     under grain is a bad pairing, and those want opposite fixes. */
-  function markLook(look) {
-    var all = read(KEY_LOOKS, []);
-    var key = lookKey(look);
-    var i = all.findIndex(function (l) { return lookKey(l) === key; });
-    if (i >= 0) { all.splice(i, 1); write(KEY_LOOKS, all); return false; }
-    all.push({
-      palette: look.palette, backdrop: look.backdrop, tier: look.tier,
-      font: look.font, treatment: look.treatment, grain: look.grain || null,
-      at: Date.now()
-    });
-    write(KEY_LOOKS, all);
-    return true;
-  }
+     So the record keeps the whole tuple AND which parts of it were
+     blamed. A component that appears in marked looks without ever being
+     blamed is evidence in its favour, which is the other half of the
+     signal and free to collect. */
+  var LOOK_PARTS = ['palette', 'font', 'backdrop', 'treatment', 'grain'];
 
   function lookKey(l) {
-    return [l.palette, l.backdrop, l.font, l.treatment, l.grain || ''].join('|');
+    return LOOK_PARTS.map(function (k) { return l[k] || ''; }).join('|');
   }
 
   function looks() { return read(KEY_LOOKS, []); }
   function clearLooks() { write(KEY_LOOKS, []); }
 
-  /* Counts per palette, worst first — the shape of the question being
-     asked, which is "which of these should go". */
+  /* Records written before the menu existed blamed the whole look; read
+     them as everything flagged rather than dropping them. */
+  function flagsOf(rec) {
+    if (rec.flags) return rec.flags;
+    var all = {};
+    LOOK_PARTS.forEach(function (k) { if (rec[k]) all[k] = true; });
+    return all;
+  }
+
+  function lookFlags(look) {
+    var key = lookKey(look);
+    var rec = looks().filter(function (l) { return lookKey(l) === key; })[0];
+    return rec ? flagsOf(rec) : {};
+  }
+
+  /* Nothing flagged means nothing wrong: the record is removed rather
+     than stored as an empty complaint. */
+  function saveLook(look, flags) {
+    var all = looks();
+    var key = lookKey(look);
+    var i = all.findIndex(function (l) { return lookKey(l) === key; });
+    var any = LOOK_PARTS.some(function (k) { return flags[k]; });
+
+    if (!any) {
+      if (i >= 0) { all.splice(i, 1); write(KEY_LOOKS, all); }
+      return false;
+    }
+
+    var rec = { tier: look.tier, flags: flags, at: Date.now() };
+    LOOK_PARTS.forEach(function (k) { rec[k] = look[k] || null; });
+    if (i >= 0) all[i] = rec; else all.push(rec);
+    write(KEY_LOOKS, all);
+    return true;
+  }
+
+  /* Per component: how often it was blamed, and how often it merely
+     turned up in a look someone disliked. */
   function lookTally() {
-    var by = {};
-    looks().forEach(function (l) {
-      if (!by[l.palette]) by[l.palette] = { name: l.palette, n: 0, backdrops: {} };
-      by[l.palette].n++;
-      by[l.palette].backdrops[l.backdrop] = true;
+    var bucket = {};
+    looks().forEach(function (rec) {
+      var f = flagsOf(rec);
+      LOOK_PARTS.forEach(function (k) {
+        var v = rec[k];
+        if (!v) return;
+        bucket[k] = bucket[k] || {};
+        bucket[k][v] = bucket[k][v] || { name: v, blamed: 0, seen: 0 };
+        bucket[k][v].seen++;
+        if (f[k]) bucket[k][v].blamed++;
+      });
     });
-    return Object.keys(by).map(function (k) {
-      var e = by[k];
-      e.spread = Object.keys(e.backdrops).length;
-      return e;
-    }).sort(function (a, b) { return b.n - a.n; });
+
+    var out = {};
+    Object.keys(bucket).forEach(function (k) {
+      out[k] = Object.keys(bucket[k])
+        .map(function (v) { return bucket[k][v]; })
+        .filter(function (e) { return e.blamed > 0; })
+        .sort(function (a, b) { return b.blamed - a.blamed; });
+    });
+    return out;
   }
 
   /* stats: { "deckId:cardIndex": { seen, right, wrong, streak, s, at } }
@@ -272,10 +307,12 @@
     deckById: deckById,
     stats: stats,
     recordAnswer: recordAnswer,
-    markLook: markLook,
+    saveLook: saveLook,
+    lookFlags: lookFlags,
     looks: looks,
     lookTally: lookTally,
     clearLooks: clearLooks,
+    LOOK_PARTS: LOOK_PARTS,
     cardStrength: cardStrength,
     deckStrength: deckStrength,
     topics: topics,
