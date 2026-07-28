@@ -324,7 +324,8 @@
         'Add "items": [{ "label": "...", "dir": "up" }]. Without it this card renders blank.');
     }
     if (c.items.length === 1) {
-      r.warn(w, 'One row is a coin flip.', 'Three to five rows is where this card earns its place.');
+      r.warn(w, 'One row is a coin flip.',
+        'Two to five rows. Two is fine when the pair is the whole pattern — TSH up with free T4 down — but one direction on its own is not a pattern.');
     }
     if (c.items.length > 5) {
       r.warn(w, c.items.length + ' rows will not fit without scrolling.', 'Split into two cards of three or four.');

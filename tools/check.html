@@ -145,10 +145,10 @@
 
 <!-- The real deck list, the real dial maths, the real store. A check
      against a copy of the rules is a check against nothing. -->
-<script src="../js/decks.js?v=28"></script>
-<script src="../js/modes.js?v=28"></script>
-<script src="../js/store.js?v=28"></script>
-<script src="validate.js?v=28"></script>
+<script src="../js/decks.js?v=29"></script>
+<script src="../js/modes.js?v=29"></script>
+<script src="../js/store.js?v=29"></script>
+<script src="validate.js?v=29"></script>
 
 <!-- The prompt lives here as inert text so there is exactly one copy of
      it: the page renders it and the clipboard button ships it. -->
@@ -290,8 +290,11 @@ Each type below has a condition. If the material does not meet it, skip it.
   number     Only when the answer IS a quantity: a threshold, a dose, a
              normal range. Never for a number buried in a longer answer.
 
-  trend      Only when the source states the direction of change of three or
-             more related values under one named condition.
+  trend      Only when the source states the direction of change of two or
+             more related values under one named condition. Two is enough
+             when the pair IS the pattern — TSH up with free T4 down is a
+             complete thought and padding it to three would invent a row.
+             One value alone is a coin flip, not a pattern.
 
   bucket     Only when the source contrasts two named categories and you have
              at least four features that tell them apart.
@@ -317,6 +320,33 @@ Each type below has a condition. If the material does not meet it, skip it.
 
 Use exactly these field names. Not "answer", not "options", not
 "explanation". Add no fields of your own.
+
+═══ HOW MUCH FITS ═══
+
+The card is a phone screen and the type is large, so these are hard limits
+rather than style advice. Over them, text drops to a smaller layout or
+wraps into a wall.
+
+  question          under 90 characters
+  answer ("a")      under 40
+  mcq/multi option  under 32
+  order step        under 32
+  bucket item       under 32, bin names under 16
+  trend row label   under 28
+  match left/right  under 24
+
+And how many:
+
+  mcq         3 distractors
+  multi       2 to 4 right, 1 to 3 wrong, 6 options in total at most
+  trend       2 to 5 rows
+  bucket      exactly 2 bins, 4 to 8 items
+  order       3 to 6 steps
+  match       3 to 5 pairs
+
+Write in US spelling and US units — edema not oedema, anemia not anaemia,
+mg/dL and mEq/L. Mixing conventions inside one deck reads as carelessness
+even when every fact is right.
 
 ═══ THE EIGHT THINGS THAT GO WRONG ═══
 
@@ -349,6 +379,35 @@ Use exactly these field names. Not "answer", not "options", not
 
 8. Only "multi" uses "answers". Every other type that has one right answer
    uses "a".
+
+═══ CHECK YOUR OWN WORK BEFORE YOU ANSWER ═══
+
+The tool that receives this can verify shape — field names, counts, valid
+values. It cannot tell whether a card is TRUE. That part is only ever
+checked by you, so do it deliberately rather than trusting the first pass.
+
+Before returning, go back over the cards and confirm each of these. They
+are listed separately because each one has actually gone wrong:
+
+1. Read every truefalse card as a plain claim and say whether it is true,
+   then check that matches the boolean you wrote. An answer inverted
+   against its own explanation is the single commonest error in this
+   format, and it survives every automatic check there is.
+
+2. Count the truefalse answers. If nearly all are false, rewrite some of
+   the claims the right way round.
+
+3. Take every mcq distractor in turn and ask whether it could be correct
+   under any reasonable reading. If it could, replace it.
+
+4. Check each number is a bare number in the unit you named, and that the
+   figure is the one you actually mean — not the neighbouring threshold
+   from the same guideline.
+
+5. Read the questions as a set and confirm no two ask the same thing in
+   different words, across facets as well as within one.
+
+6. Confirm every question has exactly one defensible answer.
 
 ═══ "why" ═══
 

@@ -49,12 +49,12 @@
         { type: 'multi', q: 'Diagnostic criteria for DKA',
           answers: ['Glucose > 250 mg/dL', 'Anion gap acidosis', 'Ketonemia'],
           distractors: ['Glucose > 600 mg/dL', 'Osmolality > 320 mOsm/kg'],
-          why: 'The two distractors are HHS. DKA is defined by the acidosis and the ketones, not by how high the glucose runs — euglycaemic DKA exists, notably on SGLT2 inhibitors.' },
+          why: 'The two distractors are HHS. DKA is defined by the acidosis and the ketones, not by how high the glucose runs — euglycemic DKA exists, notably on SGLT2 inhibitors.' },
 
         { type: 'truefalse', q: 'Total body potassium is depleted in DKA even when the serum level is high', a: true,
           why: 'Acidosis and insulin deficiency drive potassium out of cells, so serum potassium reads normal or high while total stores are badly down. Insulin reverses the shift within hours, which is why potassium is checked before the drip starts and replaced during it.' },
         { type: 'truefalse', q: 'Bicarbonate is given routinely in DKA', a: false,
-          why: 'Reserved for pH below about 6.9. Otherwise it risks hypokalaemia and paradoxical CNS acidosis without improving outcomes.' },
+          why: 'Reserved for pH below about 6.9. Otherwise it risks hypokalemia and paradoxical CNS acidosis without improving outcomes.' },
 
         { type: 'number', q: 'Hold insulin until serum potassium is at least', value: 3.3, unit: 'mEq/L',
           tolerance: 0, step: 0.1, min: 2.5, max: 5.5 },
@@ -115,14 +115,14 @@
         { type: 'truefalse', q: 'In a pure respiratory disorder, pH and PaCO₂ move in opposite directions', a: true,
           why: 'Rising CO₂ drives pH down; falling CO₂ drives pH up.' },
         { type: 'truefalse', q: 'A normal anion gap rules out a metabolic acidosis', a: false,
-          why: 'Hyperchloraemic acidoses — diarrhoea, RTA — run a normal gap.' },
+          why: 'Hyperchloremic acidoses — diarrhea, RTA — run a normal gap.' },
 
         /* Long note: folds behind a WHY? toggle, which must not count as
            the tap that continues. */
         { type: 'truefalse', q: 'Live attenuated vaccines are safe in pregnancy', a: false,
           why: 'Live vaccines — MMR, varicella, intranasal influenza — are contraindicated in pregnancy and in significant immunosuppression, on the theoretical risk of fetal infection. Inactivated vaccines, including Tdap and influenza by injection, are not only safe but actively recommended.' },
         { type: 'truefalse', q: 'Epinephrine is the first-line treatment for anaphylaxis', a: true,
-          why: 'Intramuscular epinephrine into the anterolateral thigh comes first and comes early. Antihistamines and steroids treat the rash and may blunt a biphasic reaction, but neither reverses airway oedema or shock, and reaching for them first is the classic fatal delay.' }
+          why: 'Intramuscular epinephrine into the anterolateral thigh comes first and comes early. Antihistamines and steroids treat the rash and may blunt a biphasic reaction, but neither reverses airway edema or shock, and reaching for them first is the classic fatal delay.' }
       ]
     },
     {
@@ -314,7 +314,7 @@
         { type: 'truefalse', q: 'In a pure respiratory disorder, pH and PaCO₂ move in opposite directions', a: true,
           why: 'Rising CO₂ drives pH down; falling CO₂ drives pH up. Same-direction movement suggests a metabolic process.' },
         { type: 'recall', q: 'Primary disturbance in a patient with pH 7.52 and PaCO₂ 28', a: 'Respiratory alkalosis',
-          why: 'Work it in order. The pH is alkalaemic, so the primary process raises pH. PaCO₂ is low, and a low PaCO₂ raises pH — so the respiratory system is the driver, not the compensator. Had this been a metabolic alkalosis with respiratory compensation, PaCO₂ would be high instead. Check the HCO₃ next to judge whether compensation has had time to develop.' }
+          why: 'Work it in order. The pH is alkalemic, so the primary process raises pH. PaCO₂ is low, and a low PaCO₂ raises pH — so the respiratory system is the driver, not the compensator. Had this been a metabolic alkalosis with respiratory compensation, PaCO₂ would be high instead. Check the HCO₃ next to judge whether compensation has had time to develop.' }
       ]
     },
 
@@ -587,7 +587,7 @@
         { type: 'number', q: 'eGFR below which a thiazide stops working well', value: 30, unit: 'mL/min' },
 
         { type: 'truefalse', q: 'An ACE inhibitor and an ARB may be combined for extra lowering', a: false,
-          why: 'No outcome benefit and clearly more harm — hyperkalaemia, acute kidney injury and syncope. The combination was abandoned after ONTARGET.',
+          why: 'No outcome benefit and clearly more harm — hyperkalemia, acute kidney injury and syncope. The combination was abandoned after ONTARGET.',
           ref: 'ONTARGET, 2008' },
 
         { type: 'trend', q: 'First weeks after starting an ACE inhibitor', items: [
@@ -623,7 +623,7 @@
           why: 'Abrupt withdrawal causes rebound hypertension that can overshoot the original pressure badly. It has to be tapered.' },
 
         { type: 'truefalse', q: 'Spironolactone added to an ACE inhibitor needs potassium monitoring', a: true,
-          why: 'Both raise potassium, and the combination is the classic route to dangerous hyperkalaemia in a patient who felt fine.' }
+          why: 'Both raise potassium, and the combination is the classic route to dangerous hyperkalemia in a patient who felt fine.' }
       ]
     },
 
@@ -633,7 +633,7 @@
       name: 'PRESENTATION',
       blurb: 'How it turns up, and telling it from type 1',
       cards: [
-        { type: 'multi', q: 'Classic symptoms of sustained hyperglycaemia',
+        { type: 'multi', q: 'Classic symptoms of sustained hyperglycemia',
           answers: ['Polyuria', 'Polydipsia', 'Weight loss', 'Blurred vision'],
           distractors: ['Bradycardia', 'Weight gain'] },
 
@@ -720,7 +720,7 @@
           answers: ['Urine albumin-to-creatinine', 'Dilated retinal exam', 'Foot examination', 'Lipid panel'],
           distractors: ['Echocardiogram', 'Carotid ultrasound'] },
 
-        { type: 'number', q: 'Weight loss that meaningfully improves glycaemic control', low: 5, high: 7, unit: '%' },
+        { type: 'number', q: 'Weight loss that meaningfully improves glycemic control', low: 5, high: 7, unit: '%' },
         { type: 'mcq', q: 'Statin intensity for a 55-year-old diabetic with no vascular disease', a: 'Moderate intensity',
           distractors: ['High intensity', 'Low intensity', 'No statin'] }
       ]
@@ -733,14 +733,14 @@
       blurb: 'The traps in the newer drugs and the old ones',
       cards: [
         { type: 'truefalse', q: 'Ketoacidosis on an SGLT2 inhibitor always comes with a high glucose', a: false,
-          why: 'Euglycaemic ketoacidosis is the signature complication of this class — the glucose can sit under 200 while the patient is frankly acidotic. Any unwell patient on one needs ketones checked, not just a glucose.' },
-        { type: 'recall', q: 'Drug class held before surgery to avoid euglycaemic ketoacidosis', a: 'SGLT2 inhibitor' },
+          why: 'Euglycemic ketoacidosis is the signature complication of this class — the glucose can sit under 200 while the patient is frankly acidotic. Any unwell patient on one needs ketones checked, not just a glucose.' },
+        { type: 'recall', q: 'Drug class held before surgery to avoid euglycemic ketoacidosis', a: 'SGLT2 inhibitor' },
         { type: 'recall', q: 'Common genitourinary side effect of SGLT2 inhibitors', a: 'Genital yeast infection' },
 
-        { type: 'mcq', q: 'Oral agent most likely to cause hypoglycaemia', a: 'Sulfonylurea',
+        { type: 'mcq', q: 'Oral agent most likely to cause hypoglycemia', a: 'Sulfonylurea',
           distractors: ['Metformin', 'SGLT2 inhibitor', 'DPP-4 inhibitor'] },
         { type: 'truefalse', q: 'A sulfonylurea is a safe first choice in an elderly patient with kidney disease', a: false,
-          why: 'Both the drug and its active metabolites accumulate, and the hypoglycaemia that follows can be prolonged and severe in exactly the patient least able to notice it.' },
+          why: 'Both the drug and its active metabolites accumulate, and the hypoglycemia that follows can be prolonged and severe in exactly the patient least able to notice it.' },
 
         { type: 'truefalse', q: 'Metformin causes contrast nephropathy', a: false,
           why: 'It does not. It is held around contrast because if the kidney is injured by anything, metformin then accumulates and the risk is lactic acidosis — a different problem in the opposite direction.' },
@@ -802,7 +802,7 @@
           tolerance: 0 },
         { type: 'number', q: 'Absolute FEV1 rise also needed to call it reversible', value: 200, unit: 'mL',
           tolerance: 0,
-          why: 'Both criteria have to be met. A twelve percent rise off a very low baseline can be a handful of millilitres, which is noise rather than reversibility.' },
+          why: 'Both criteria have to be met. A twelve percent rise off a very low baseline can be a handful of milliliters, which is noise rather than reversibility.' },
 
         { type: 'trend', q: 'Spirometry in obstructive disease', items: [
           { label: 'FEV1', dir: 'down' },
@@ -917,7 +917,7 @@
       blurb: 'How it feels, how it sounds, and what it costs the heart',
       cards: [
         { type: 'recall', q: 'Pulse finding that suggests atrial fibrillation', a: 'Irregularly irregular',
-          why: 'There is no organised atrial contraction, so the ventricle is fired by whatever crosses the AV node at random. Nothing sets a rhythm, so nothing repeats.' },
+          why: 'There is no organized atrial contraction, so the ventricle is fired by whatever crosses the AV node at random. Nothing sets a rhythm, so nothing repeats.' },
 
         { type: 'multi', q: 'Common presenting symptoms of new atrial fibrillation',
           answers: ['Palpitations', 'Breathlessness', 'Fatigue', 'Chest discomfort'],
@@ -941,7 +941,7 @@
 
         { type: 'recall', q: 'Rhythm mistaken for atrial fibrillation but with a saw-tooth baseline',
           a: 'Atrial flutter',
-          why: 'Flutter is organised and usually conducts in a fixed ratio, so the pulse can be regular. It carries the same stroke risk and is anticoagulated the same way.' }
+          why: 'Flutter is organized and usually conducts in a fixed ratio, so the pulse can be regular. It carries the same stroke risk and is anticoagulated the same way.' }
       ]
     },
 
@@ -1020,7 +1020,7 @@
 
         { type: 'number', q: 'Weeks of anticoagulation needed before elective cardioversion',
           value: 3, unit: 'weeks',
-          why: 'Any thrombus already in the appendage needs time to organise and adhere. Shocking sooner risks converting a sitting clot into a stroke at the moment the atrium starts contracting again.' },
+          why: 'Any thrombus already in the appendage needs time to organize and adhere. Shocking sooner risks converting a sitting clot into a stroke at the moment the atrium starts contracting again.' },
 
         { type: 'number', q: 'Weeks of anticoagulation required after successful cardioversion',
           value: 4, unit: 'weeks',
@@ -1059,7 +1059,7 @@
 
         { type: 'mcq', q: 'Antiarrhythmic that requires a structurally normal heart', a: 'Flecainide',
           distractors: ['Amiodarone', 'Digoxin', 'Metoprolol'],
-          why: 'Class Ic agents slow conduction through scarred or ischaemic tissue enough to set up reentry. In a structurally normal heart that does not happen; in a damaged one the drug is proarrhythmic.' },
+          why: 'Class Ic agents slow conduction through scarred or ischemic tissue enough to set up reentry. In a structurally normal heart that does not happen; in a damaged one the drug is proarrhythmic.' },
 
         { type: 'recall', q: 'Reason a direct oral anticoagulant dose must be revisited over time',
           a: 'Renal function falls with age',
@@ -1302,7 +1302,7 @@
 
         { type: 'number', q: 'TSH above which treating subclinical hypothyroidism is usually advised',
           value: 10, unit: 'mIU/L',
-          why: 'Above this the progression to overt disease is likely enough to act on. Below it the evidence for benefit is thin and a good proportion normalise on a repeat test, so treating early mostly commits people to lifelong therapy they did not need.' },
+          why: 'Above this the progression to overt disease is likely enough to act on. Below it the evidence for benefit is thin and a good proportion normalize on a repeat test, so treating early mostly commits people to lifelong therapy they did not need.' },
 
         { type: 'recall', q: 'Antibody that confirms autoimmune thyroid disease', a: 'Anti-TPO antibody',
           why: 'Its presence predicts progression, so it changes how closely a borderline TSH is followed even when nothing is treated today.' },
@@ -1381,7 +1381,7 @@
           why: 'Missed doses and newly started supplements explain most of these. Escalating the dose against poor adherence produces alternating over- and under-replacement rather than control.' },
 
         { type: 'truefalse', q: 'Adding T3 to T4 is standard when symptoms persist on a normal TSH', a: false,
-          why: 'Trials have not shown consistent benefit and it is not standard care. Persistent symptoms with a normal TSH are more often anaemia, sleep apnoea, depression or something else entirely, and that is the more useful place to look.' },
+          why: 'Trials have not shown consistent benefit and it is not standard care. Persistent symptoms with a normal TSH are more often anemia, sleep apnoea, depression or something else entirely, and that is the more useful place to look.' },
 
         { type: 'recall', q: 'Drug that can cause both hypothyroidism and hyperthyroidism',
           a: 'Amiodarone',
@@ -1399,7 +1399,7 @@
     /* ══════════════════════════════════════════════════════════════
        Two topics chosen for the family medicine boards rather than for
        the wards. Preventive care is the most distinctly family-medicine
-       material on that exam and nothing here covered it; behavioural
+       material on that exam and nothing here covered it; behavioral
        health is a comparable share of the blueprint and was equally
        absent.
 
@@ -1630,7 +1630,7 @@
 
         { type: 'recall', q: 'Term for depressive symptoms lasting two years or more',
           a: 'Persistent depressive disorder',
-          why: 'It is often milder day to day and does more cumulative damage, precisely because it gets accepted as a personality rather than recognised as an illness.' },
+          why: 'It is often milder day to day and does more cumulative damage, precisely because it gets accepted as a personality rather than recognized as an illness.' },
 
         { type: 'recall', q: 'Finding that most clearly warrants urgent psychiatric referral',
           a: 'Active suicidal intent with a plan',
@@ -1739,7 +1739,7 @@
           why: 'It covers the great majority, and naming it that way is not a failure to diagnose — it is the diagnosis. It changes management by calling off the search for a lesion.' },
 
         { type: 'truefalse', q: 'Most acute low back pain improves substantially within six weeks', a: true,
-          why: 'The natural history is genuinely favourable. It is the single most useful thing to tell a patient, and it is the reason early imaging changes nothing.' },
+          why: 'The natural history is genuinely favorable. It is the single most useful thing to tell a patient, and it is the reason early imaging changes nothing.' },
 
         { type: 'recall', q: 'Feature of leg pain that suggests a compressed nerve root',
           a: 'Pain radiating below the knee',
@@ -2060,7 +2060,7 @@
         { type: 'mcq', q: 'Contraception recommended as first-line for adolescents',
           a: 'A long-acting reversible method',
           distractors: ['Combined pill', 'Condoms alone', 'Fertility awareness'],
-          why: 'Daily adherence is hardest in this group and the consequences of failure are largest, so effectiveness that does not depend on behaviour matters most exactly here.' }
+          why: 'Daily adherence is hardest in this group and the consequences of failure are largest, so effectiveness that does not depend on behavior matters most exactly here.' }
       ]
     },
 
