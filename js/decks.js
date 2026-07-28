@@ -1713,6 +1713,465 @@
           distractors: ['Add a second antidepressant', 'Refer immediately', 'Stop treatment'],
           why: 'Partial adherence and a dose never titrated past the starting one explain most apparent non-response, and both are fixable before anything is added or blamed.' }
       ]
+    },
+
+    /* ══════════════════════════════════════════════════════════════
+       Three more chosen by blueprint weight rather than by interest.
+       Musculoskeletal is the largest single category on the family
+       medicine boards and nothing here touched it; lipids sit inside
+       cardiovascular prevention and were the gap left after hypertension
+       and heart failure; reproductive health was entirely absent.
+
+       Low back pain uses RED FLAGS in place of DIAGNOSIS, because on
+       this condition the diagnostic task is almost entirely about
+       deciding who is not ordinary — and lipids has no presentation at
+       all, so it does not get a deck pretending otherwise.
+       ══════════════════════════════════════════════════════════════ */
+
+    {
+      id: 'lbp-presentation',
+      topic: 'Low Back Pain',
+      name: 'PRESENTATION',
+      blurb: 'Ordinary backs, irritated roots, and narrow canals',
+      cards: [
+        { type: 'recall', q: 'Term for back pain with no specific identifiable cause',
+          a: 'Non-specific low back pain',
+          why: 'It covers the great majority, and naming it that way is not a failure to diagnose — it is the diagnosis. It changes management by calling off the search for a lesion.' },
+
+        { type: 'truefalse', q: 'Most acute low back pain improves substantially within six weeks', a: true,
+          why: 'The natural history is genuinely favourable. It is the single most useful thing to tell a patient, and it is the reason early imaging changes nothing.' },
+
+        { type: 'recall', q: 'Feature of leg pain that suggests a compressed nerve root',
+          a: 'Pain radiating below the knee',
+          why: 'Pain that stops at the buttock or thigh is usually referred from the joints or muscles. Below the knee, in a band that follows a dermatome, is what points at a root.' },
+
+        { type: 'mcq', q: 'Nerve roots most often compressed by a lumbar disc herniation',
+          a: 'L5 and S1',
+          distractors: ['L1 and L2', 'T11 and T12', 'S3 and S4'],
+          why: 'The two lowest discs carry the most load and degenerate first, so the roots crossing them are the ones that suffer.' },
+
+        { type: 'recall', q: 'Bedside test that stretches the sciatic nerve', a: 'Straight leg raise',
+          why: 'The useful positive is pain reproduced between about thirty and seventy degrees and radiating below the knee. Tightness in the hamstring is not the same thing.' },
+
+        { type: 'recall', q: 'Classic history of lumbar spinal stenosis',
+          a: 'Leg pain walking, eased by bending',
+          why: 'The canal opens in flexion, so leaning on a trolley or riding a bicycle is comfortable while walking upright is not. That posture dependence is what separates it from vascular claudication.' },
+
+        { type: 'bucket', q: 'Radicular or non-specific?',
+          bins: ['Radicular', 'Non-specific'],
+          items: [
+            { label: 'Pain below the knee', bin: 'Radicular' },
+            { label: 'Numbness in a dermatome', bin: 'Radicular' },
+            { label: 'Positive straight leg raise', bin: 'Radicular' },
+            { label: 'Diffuse lumbar ache', bin: 'Non-specific' },
+            { label: 'Worse after prolonged sitting', bin: 'Non-specific' },
+            { label: 'No neurological signs', bin: 'Non-specific' }
+          ] }
+      ]
+    },
+
+    {
+      id: 'lbp-redflags',
+      topic: 'Low Back Pain',
+      name: 'RED FLAGS',
+      blurb: 'The few backs that are not ordinary backs',
+      cards: [
+        { type: 'multi', q: 'Features of cauda equina syndrome',
+          answers: ['Saddle anesthesia', 'New bladder dysfunction', 'Progressive leg weakness', 'Bilateral sciatica'],
+          distractors: ['Pain worse on sitting', 'Paraspinal muscle spasm'],
+          why: 'Any one of them is enough to act on. Waiting for the full picture is how the diagnosis gets made too late to matter.' },
+
+        { type: 'recall', q: 'Emergency signalled by saddle anesthesia with urinary retention',
+          a: 'Cauda equina syndrome',
+          why: 'Compression of the lumbosacral roots below the cord. Decompression is time-critical: delay costs bladder, bowel and sexual function permanently, and none of it comes back.' },
+
+        { type: 'mcq', q: 'Imaging to obtain when cauda equina syndrome is suspected',
+          a: 'Urgent MRI',
+          distractors: ['Plain radiograph', 'CT without contrast', 'Bone scan'],
+          why: 'Only MRI shows the roots and the disc together. A normal radiograph here is worse than no test, because it reassures.' },
+
+        { type: 'multi', q: 'Features raising concern for malignancy as the cause',
+          answers: ['History of cancer', 'Unexplained weight loss', 'Pain at night or at rest', 'Age over 50 with new pain'],
+          distractors: ['Pain relieved by rest', 'Onset after heavy lifting'],
+          why: 'Pain that does not ease on lying down is the discriminator worth carrying. Mechanical pain almost always settles in some position.' },
+
+        { type: 'multi', q: 'Features raising concern for spinal infection',
+          answers: ['Fever', 'Injection drug use', 'Recent spinal procedure', 'Immunosuppression'],
+          distractors: ['Morning stiffness', 'Sedentary work'] },
+
+        { type: 'recall', q: 'Feature separating inflammatory back pain from mechanical',
+          a: 'It improves with exercise',
+          why: 'Mechanical pain worsens with activity and eases with rest; inflammatory pain does the reverse, with morning stiffness lasting over half an hour and onset before forty.' },
+
+        { type: 'number', q: 'Age above which new back pain raises the index of suspicion', value: 50, unit: 'years',
+          why: 'Fifty is not dangerous in itself. The pre-test probability of malignancy, fracture and infection all rise together, so the identical story means something different.' },
+
+        { type: 'mcq', q: 'Red flag most suggestive of vertebral compression fracture',
+          a: 'Prolonged corticosteroid use',
+          distractors: ['Pain on flexion', 'Paraspinal tenderness', 'Sedentary occupation'],
+          why: 'Steroids and osteoporosis together mean a fracture can follow trivial trauma or none at all, so the absence of an injury does not argue against it.' }
+      ]
+    },
+
+    {
+      id: 'lbp-management',
+      topic: 'Low Back Pain',
+      name: 'MANAGEMENT',
+      blurb: 'What helps, what does not, and how long to wait',
+      cards: [
+        { type: 'truefalse', q: 'Acute low back pain without red flags needs no imaging', a: true,
+          why: 'Imaging early does not improve outcomes and reliably finds degenerative change that is present in pain-free people too. It then gets treated, which is how a scan makes a patient worse.' },
+
+        { type: 'recall', q: 'Advice that most improves recovery from acute low back pain', a: 'Stay active',
+          why: 'Bed rest delays recovery and worsens outcomes. Continuing ordinary activity within the limits of pain is the most effective single instruction available, and it costs nothing.' },
+
+        { type: 'mcq', q: 'First-line drug for acute low back pain',
+          a: 'NSAID',
+          distractors: ['Opioid', 'Gabapentin', 'Systemic corticosteroid'],
+          why: 'Modest benefit, but the best evidence of the options. Opioids are no better for pain and clearly worse for function; gabapentinoids and steroids have little to show at all.' },
+
+        { type: 'multi', q: 'Non-drug treatments with evidence in chronic low back pain',
+          answers: ['Exercise therapy', 'Cognitive behavioral therapy', 'Spinal manipulation', 'Multidisciplinary rehab'],
+          distractors: ['Bed rest', 'Lumbar traction'],
+          why: 'The effects are modest and they are what there is. Exercise type matters far less than doing some, which makes patient preference the sensible way to choose.' },
+
+        { type: 'number', q: 'Weeks of conservative care before imaging, absent red flags', value: 6, unit: 'weeks',
+          why: 'Most people have recovered by then, so waiting removes the majority of scans that would have found nothing worth acting on.' },
+
+        { type: 'mcq', q: 'Indication for surgical referral in lumbar disc herniation',
+          a: 'Progressive neurological deficit',
+          distractors: ['Pain for two weeks', 'Positive straight leg raise', 'Disc bulge on MRI'],
+          why: 'Surgery speeds relief of leg pain but does not change where patients are at a year. That makes a worsening deficit the real indication, not the severity of the pain or the picture.' },
+
+        { type: 'truefalse', q: 'Most lumbar disc herniations settle without surgery', a: true,
+          why: 'The extruded material is resorbed over weeks to months, and the larger herniations often resorb fastest. Knowing this is what makes waiting a plan rather than a delay.' },
+
+        { type: 'recall', q: 'Muscle relaxant harm that limits its usefulness in older patients',
+          a: 'Sedation and falls',
+          why: 'A short course can help genuine spasm, but the sedation is not trivial in an older person, where a fall costs far more than the back pain it was prescribed for.' }
+      ]
+    },
+
+    {
+      id: 'lbp-pitfalls',
+      topic: 'Low Back Pain',
+      name: 'PITFALLS',
+      blurb: 'How a sore back becomes a disabled patient',
+      cards: [
+        { type: 'truefalse', q: 'Degenerative changes on MRI explain where the pain comes from', a: false,
+          why: 'Disc bulges, degeneration and even herniations are common in people with no pain at all, and get commoner with age. Reporting them as the cause creates a patient who believes their spine is crumbling.' },
+
+        { type: 'recall', q: 'Harm done by telling a patient their spine is degenerating',
+          a: 'Fear-avoidance and disability',
+          why: 'The belief that movement damages the back drives inactivity, deconditioning and chronicity. The words chosen in the consultation are part of the treatment, not a preamble to it.' },
+
+        { type: 'mcq', q: 'Strongest predictor of chronic disability after acute back pain',
+          a: 'Psychosocial factors',
+          distractors: ['Loss of disc height', 'Severity of initial pain', 'Age'],
+          why: 'Distress, fear of movement and dissatisfaction at work predict the one-year outcome far better than anything visible on a scan — which is why the scan is not where to look.' },
+
+        { type: 'recall', q: 'Reason plain radiographs are rarely useful in back pain',
+          a: 'They show bone and nothing else',
+          why: 'They miss the discs and nerves that cause radicular pain, while delivering gonadal radiation and a list of degenerative findings that will be read as an explanation.' },
+
+        { type: 'truefalse', q: 'A normal neurological examination excludes cauda equina syndrome', a: false,
+          why: 'Early cauda equina can present with retention or saddle sensory change before any weakness appears. The history carries more weight than the examination here, and the bladder question has to be asked out loud.' },
+
+        { type: 'recall', q: 'Question that must be asked in every significant episode of back pain',
+          a: 'About bladder and bowel function',
+          why: 'It is the only reliable way to catch cauda equina while it is still reversible, and patients almost never volunteer it — partly through embarrassment, partly because they do not connect it to their back.' }
+      ]
+    },
+
+    {
+      id: 'lipid-who',
+      topic: 'Lipids',
+      name: 'WHO TO TREAT',
+      blurb: 'The four groups, and the number that starts a conversation',
+      cards: [
+        { type: 'multi', q: 'Groups in which statin benefit is established',
+          answers: ['Clinical ASCVD', 'LDL 190 or above', 'Diabetes aged 40 to 75', '10-year risk 7.5% or more'],
+          distractors: ['Raised triglycerides alone', 'Family history alone'],
+          why: 'These four are where the trial evidence sits. Everything outside them is a risk discussion rather than an indication.' },
+
+        { type: 'number', q: 'LDL at or above which a statin is indicated whatever the risk score',
+          value: 190, unit: 'mg/dL',
+          why: 'At this level a genetic cause is likely and what matters is lifetime exposure, which a ten-year calculator systematically understates in a younger patient.' },
+
+        { type: 'recall', q: 'Condition to suspect with an LDL over 190 and a family history',
+          a: 'Familial hypercholesterolemia',
+          why: 'Roughly one in 250 people, and mostly undiagnosed. Finding it in one patient means the siblings, parents and children all need testing — the diagnosis travels.' },
+
+        { type: 'number', q: 'Ten-year ASCVD risk at or above which a statin is generally advised',
+          value: 7.5, unit: '%',
+          why: 'Between 5 and 7.5 it is a conversation and above 20 it is emphatic. The threshold is a prompt to discuss rather than a switch to flip.' },
+
+        { type: 'number', q: 'Age from which ten-year ASCVD risk is routinely calculated', value: 40, unit: 'years' },
+
+        { type: 'mcq', q: 'Statin intensity for someone with established cardiovascular disease',
+          a: 'High intensity',
+          distractors: ['Moderate intensity', 'Low intensity', 'Any statin at any dose'],
+          why: 'Absolute risk is highest here and benefit scales with the size of the LDL reduction, so secondary prevention takes the largest reduction that can be tolerated.' },
+
+        { type: 'truefalse', q: 'Most adults with diabetes aged 40 to 75 warrant a statin', a: true,
+          why: 'Diabetes carries risk comparable to established disease given enough years, which is why that group enters the benefit list directly rather than through the calculator.' },
+
+        { type: 'recall', q: 'Test used when the decision to start a statin is genuinely borderline',
+          a: 'Coronary artery calcium score',
+          why: 'A score of zero moves risk down far enough to defer in many people; a high score settles it the other way. It is a tie-breaker, not a screening test, and it only earns its radiation in the middle.' }
+      ]
+    },
+
+    {
+      id: 'lipid-treatment',
+      topic: 'Lipids',
+      name: 'TREATMENT',
+      blurb: 'Statins first, then what, and the one number that is not about arteries',
+      cards: [
+        { type: 'recall', q: 'First-line drug class for lowering LDL cholesterol', a: 'Statin',
+          why: 'The only class with consistent mortality benefit across the widest range of patients, which is why everything else is defined by what it adds to a statin.' },
+
+        { type: 'number', q: 'Minimum LDL reduction that defines high-intensity statin therapy',
+          value: 50, unit: '%',
+          why: 'The definition is a percentage rather than a dose, because different statins reach it at very different milligram strengths.' },
+
+        { type: 'number', q: 'LDL reduction expected from moderate-intensity statin therapy',
+          low: 30, high: 49, unit: '%' },
+
+        { type: 'mcq', q: 'Drug added when a maximally tolerated statin is not enough',
+          a: 'Ezetimibe',
+          distractors: ['Fenofibrate', 'Niacin', 'Omega-3 acid'],
+          why: 'It adds a further LDL reduction with outcome evidence behind it. The distractors move other lipid fractions without a matching effect on events, which is the distinction that matters.' },
+
+        { type: 'recall', q: 'Class used when statin and ezetimibe still leave LDL too high',
+          a: 'PCSK9 inhibitor' },
+
+        { type: 'mcq', q: 'Lipid abnormality treated mainly to prevent something other than heart attack',
+          a: 'Severe hypertriglyceridemia',
+          distractors: ['High LDL', 'Low HDL', 'High Lp(a)'],
+          why: 'Past a certain level the immediate danger stops being vascular and becomes acute pancreatitis, which changes both the urgency and the drug.' },
+
+        { type: 'number', q: 'Triglyceride level above which pancreatitis risk drives treatment',
+          value: 500, unit: 'mg/dL' },
+
+        { type: 'multi', q: 'Lifestyle measures with a real effect on lipids',
+          answers: ['Reduced saturated fat', 'Regular aerobic exercise', 'Weight loss', 'Reduced alcohol'],
+          distractors: ['Vitamin E', 'Garlic supplements'],
+          why: 'Alcohol acts mainly on triglycerides and is the one most often left unasked, particularly in the patient whose triglycerides refuse to come down.' }
+      ]
+    },
+
+    {
+      id: 'lipid-monitoring',
+      topic: 'Lipids',
+      name: 'MONITORING',
+      blurb: 'When to recheck, and what a muscle ache actually means',
+      cards: [
+        { type: 'number', q: 'Weeks after starting a statin before rechecking the lipid panel',
+          low: 4, high: 12, unit: 'weeks',
+          why: 'The effect is essentially complete by then. Checking earlier underestimates the response and invites an unnecessary dose increase.' },
+
+        { type: 'truefalse', q: 'A fasting sample is required for a lipid panel', a: false,
+          why: 'Non-fasting samples are fine for screening and risk estimation, and asking people to fast is a barrier that delays testing. Only a markedly raised triglyceride usually prompts a fasting repeat.' },
+
+        { type: 'mcq', q: 'Best response when a patient reports muscle aches on a statin',
+          a: 'Check CK and reassess',
+          distractors: ['Stop statins permanently', 'Ignore it', 'Switch to a fibrate'],
+          why: 'Most aches on a statin turn out not to be caused by it. Rechallenge, a different statin or alternate-day dosing keeps the majority on treatment, and abandoning the class forfeits the benefit for good.' },
+
+        { type: 'recall', q: 'Commonest reason a statin fails to lower LDL as much as expected',
+          a: 'It is not being taken',
+          why: 'Adherence at a year is poor and rarely volunteered. Asking before adding a second drug avoids treating a pharmacological problem that is not pharmacological.' },
+
+        { type: 'truefalse', q: 'A statin started for secondary prevention is continued indefinitely', a: true,
+          why: 'The risk it treats does not go away, and stopping returns it. This is one of the clearest cases in medicine for lifelong therapy rather than a course.' },
+
+        { type: 'recall', q: 'Blood test worth a baseline before a statin but not routine repeats',
+          a: 'Liver transaminases',
+          why: 'Scheduled monitoring was abandoned because it found transient rises that led to stopping an effective drug. Rechecking is driven by symptoms now, not by the calendar.' }
+      ]
+    },
+
+    {
+      id: 'lipid-pitfalls',
+      topic: 'Lipids',
+      name: 'PITFALLS',
+      blurb: 'Interactions, myths, and a number that is calculated rather than measured',
+      cards: [
+        { type: 'truefalse', q: 'Statins commonly cause clinically significant liver injury', a: false,
+          why: 'Transaminase rises are usually transient and serious injury is rare enough to be reportable. Fear of it has stopped far more statins than the event ever has.' },
+
+        { type: 'mcq', q: 'Antibiotic that raises statin levels and myopathy risk',
+          a: 'Clarithromycin',
+          distractors: ['Amoxicillin', 'Azithromycin', 'Doxycycline'],
+          why: 'It inhibits CYP3A4. The macrolide chosen matters — azithromycin does not do this, which is why it is the one to reach for in a patient on simvastatin.' },
+
+        { type: 'recall', q: 'Juice that raises levels of some statins', a: 'Grapefruit juice',
+          why: 'The same CYP3A4 route. It affects simvastatin and atorvastatin and leaves pravastatin and rosuvastatin alone, so the advice depends on which statin the patient is actually on.' },
+
+        { type: 'truefalse', q: 'Statins modestly raise the chance of developing diabetes', a: true,
+          why: 'Real, small, and outweighed by the cardiovascular benefit in anyone who meets the criteria for treatment. Worth knowing so it can be answered honestly when a patient has read about it.' },
+
+        { type: 'truefalse', q: 'Statins are generally stopped during pregnancy', a: true,
+          why: 'Cholesterol is needed for fetal development, and the benefit to the mother accrues over decades rather than months. Treatment is paused rather than abandoned.' },
+
+        { type: 'mcq', q: 'Value on a standard lipid panel that is calculated rather than measured',
+          a: 'LDL cholesterol',
+          distractors: ['Total cholesterol', 'HDL cholesterol', 'Triglycerides'],
+          why: 'It is derived from the other three, and the equation becomes unreliable when triglycerides are high — so the sample that most needs an accurate LDL is the one least able to give it.' },
+
+        { type: 'recall', q: 'Lipid measure that stays reliable when triglycerides are high',
+          a: 'Non-HDL cholesterol',
+          why: 'Total minus HDL. No calculation, no fasting, and it captures every atherogenic particle rather than one of them.' }
+      ]
+    },
+
+    {
+      id: 'contra-effectiveness',
+      topic: 'Contraception',
+      name: 'EFFECTIVENESS',
+      blurb: 'What actually works, and why typical use is the number that counts',
+      cards: [
+        { type: 'order', q: 'Methods from most to least effective in typical use', steps: [
+          'Implant and IUD',
+          'Injection',
+          'Pill, patch or ring',
+          'Male condom',
+          'Withdrawal'
+        ] },
+
+        { type: 'recall', q: 'Term for the methods with the lowest typical-use failure',
+          a: 'Long-acting reversible contraception',
+          why: 'Their advantage comes from removing the user from the equation. Nothing to remember daily means typical use and perfect use converge.' },
+
+        { type: 'truefalse', q: 'Typical use and perfect use are almost identical for long-acting methods', a: true,
+          why: 'That gap is the whole story of contraceptive effectiveness. It is widest for pills, patches and condoms, and nearly absent for an implant or an IUD.' },
+
+        { type: 'number', q: 'Approximate typical-use failure rate of the combined pill over a year',
+          value: 7, unit: '%',
+          why: 'Perfect use is well under one percent. The difference is missed pills, and it is the entire argument for a method that does not depend on memory.' },
+
+        { type: 'number', q: 'Approximate typical-use failure rate of male condoms over a year',
+          value: 13, unit: '%' },
+
+        { type: 'recall', q: 'Only contraceptive that also protects against infection', a: 'Condoms',
+          why: 'Which is why dual method use is advised even when a highly effective method is already in place — the two are solving different problems.' },
+
+        { type: 'mcq', q: 'Contraception recommended as first-line for adolescents',
+          a: 'A long-acting reversible method',
+          distractors: ['Combined pill', 'Condoms alone', 'Fertility awareness'],
+          why: 'Daily adherence is hardest in this group and the consequences of failure are largest, so effectiveness that does not depend on behaviour matters most exactly here.' }
+      ]
+    },
+
+    {
+      id: 'contra-eligibility',
+      topic: 'Contraception',
+      name: 'ELIGIBILITY',
+      blurb: 'Who cannot have estrogen, and who is refused it for no reason',
+      cards: [
+        { type: 'multi', q: 'Absolute contraindications to combined hormonal contraception',
+          answers: ['Migraine with aura', 'History of VTE', 'Uncontrolled hypertension', 'Smoker aged 35 or over'],
+          distractors: ['Migraine without aura', 'Family history of VTE'],
+          why: 'The estrogen is the problem in every one of them. The two distractors are among the commonest reasons women are wrongly denied a method that would have suited them.' },
+
+        { type: 'recall', q: 'Migraine feature that rules out estrogen-containing contraception', a: 'Aura',
+          why: 'Aura carries an increased ischemic stroke risk on its own, and estrogen multiplies it. Migraine without aura does not, so the question to ask is specifically about visual or sensory warning.' },
+
+        { type: 'number', q: 'Age from which smoking makes combined contraception unsafe', value: 35, unit: 'years',
+          why: 'Arterial risk from smoking and estrogen together climbs steeply from here, and the number of cigarettes matters too — this is a threshold with a gradient behind it.' },
+
+        { type: 'mcq', q: 'Suitable contraception for a woman with a history of thrombosis',
+          a: 'Progestin-only or copper IUD',
+          distractors: ['Combined pill', 'Contraceptive patch', 'Vaginal ring'],
+          why: 'All three distractors contain estrogen and differ only in how it is delivered. Progestin-only methods and the copper IUD do not raise thrombotic risk.' },
+
+        { type: 'truefalse', q: 'Progestin-only methods are suitable while breastfeeding', a: true,
+          why: 'They do not reduce milk supply and can start immediately after delivery, whereas estrogen is avoided in the early weeks for both thrombotic and lactation reasons.' },
+
+        { type: 'number', q: 'Weeks postpartum before combined contraception becomes acceptable',
+          value: 3, unit: 'weeks',
+          why: 'The thrombotic risk of pregnancy takes weeks to fall away. Adding estrogen before it does stacks two risks that are each highest at the same moment.' },
+
+        { type: 'mcq', q: 'Method with the fewest medical contraindications',
+          a: 'Copper IUD',
+          distractors: ['Combined pill', 'Contraceptive patch', 'Depot injection'],
+          why: 'No hormones at all, so the cardiovascular, thrombotic and migraine considerations that limit everything else simply do not apply.' },
+
+        { type: 'truefalse', q: 'A pelvic examination is required before prescribing the pill', a: false,
+          why: 'It is not, and requiring it delays contraception for no gain. Blood pressure and a history are what the decision actually rests on.' }
+      ]
+    },
+
+    {
+      id: 'contra-methods',
+      topic: 'Contraception',
+      name: 'METHODS',
+      blurb: 'What each one does besides prevent pregnancy',
+      cards: [
+        { type: 'recall', q: 'Main mechanism of the copper IUD', a: 'It is toxic to sperm',
+          why: 'It prevents fertilization rather than implantation. Worth being able to say plainly, because the belief that it works after conception is a common and answerable objection.' },
+
+        { type: 'recall', q: 'Non-contraceptive benefit of the levonorgestrel IUD',
+          a: 'Much lighter menstrual bleeding',
+          why: 'It is a first-line treatment for heavy menstrual bleeding in its own right, which makes it two solutions in one device for a common pair of problems.' },
+
+        { type: 'mcq', q: 'Method most likely to cause unpredictable bleeding in the first months',
+          a: 'Progestin implant',
+          distractors: ['Combined pill', 'Copper IUD', 'Vaginal ring'],
+          why: 'Irregular bleeding is the commonest reason for early removal. Warning about it beforehand markedly improves continuation, because an expected side effect is tolerated and a surprise one is not.' },
+
+        { type: 'mcq', q: 'Method associated with reversible loss of bone density',
+          a: 'Depot injection',
+          distractors: ['Implant', 'Copper IUD', 'Combined pill'],
+          why: 'It recovers after stopping and is not a reason to withhold the method, but it is worth weighing in adolescents who are still accruing peak bone mass.' },
+
+        { type: 'recall', q: 'Most effective form of emergency contraception', a: 'Copper IUD',
+          why: 'Far more effective than any pill, and it stays in as ongoing contraception — so the emergency visit solves the next problem as well as this one.' },
+
+        { type: 'number', q: 'Days after unprotected sex within which a copper IUD still works',
+          value: 5, unit: 'days' },
+
+        { type: 'mcq', q: 'Emergency contraceptive pill that stays effective the longest',
+          a: 'Ulipristal acetate',
+          distractors: ['Levonorgestrel', 'Combined pill', 'Progestin implant'],
+          why: 'It works up to five days and holds its effect closer to ovulation, which is exactly where levonorgestrel loses most of its.' },
+
+        { type: 'recall', q: 'Reason conception may be delayed for months after stopping the injection',
+          a: 'Slow return of fertility',
+          why: 'It can take up to a year for ovulation to resume, which matters a great deal to someone planning pregnancy soon and is a reason to choose something else.' }
+      ]
+    },
+
+    {
+      id: 'contra-pitfalls',
+      topic: 'Contraception',
+      name: 'PITFALLS',
+      blurb: 'The myths that cost people effective contraception',
+      cards: [
+        { type: 'truefalse', q: 'Antibiotics generally reduce the effectiveness of the combined pill', a: false,
+          why: 'Only rifampin and rifabutin do, by inducing hepatic enzymes. The blanket warning attached to every antibiotic is a myth that generates unnecessary backup and real anxiety.' },
+
+        { type: 'mcq', q: 'Drug class that genuinely reduces hormonal contraceptive effectiveness',
+          a: 'Enzyme-inducing anticonvulsants',
+          distractors: ['Penicillins', 'SSRIs', 'Statins'],
+          why: 'Carbamazepine, phenytoin and topiramate induce hepatic metabolism. The copper IUD and the depot injection are unaffected, which makes them the sensible choice in epilepsy.' },
+
+        { type: 'recall', q: 'What to do when a combined pill is more than 48 hours late',
+          a: 'Take one now and use backup',
+          why: 'Seven consecutive days of hormone are needed to re-suppress ovulation, and that is where the length of the backup interval comes from rather than from caution.' },
+
+        { type: 'truefalse', q: 'Emergency contraception can end an established pregnancy', a: false,
+          why: 'It prevents or delays ovulation and has no effect once implantation has occurred. Being able to state that plainly resolves most objections to prescribing it.' },
+
+        { type: 'truefalse', q: 'An IUD can be placed in a woman who has never been pregnant', a: true,
+          why: 'Nulliparity is not a contraindication, and the belief that it is still keeps the most effective methods away from the people with the most to lose from an unplanned pregnancy.' },
+
+        { type: 'mcq', q: 'Timing rule that allows an IUD to be placed at the same visit',
+          a: 'Any day if pregnancy is excluded',
+          distractors: ['Only during menstruation', 'Only after a negative scan', 'Only in the luteal phase'],
+          why: 'Restricting insertion to menstruation is a barrier with no basis. Reasonable certainty that a woman is not pregnant is what permits same-day placement, and most women meet it.' }
+      ]
     }
   ];
 
