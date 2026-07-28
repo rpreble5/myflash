@@ -254,6 +254,33 @@
     };
   }
 
+  /* The cards worth a short session, weakest first.
+
+     The strength model has ranked topics and decks since it was built and
+     has never chosen a single card. That left the common case — open the
+     weakest topic, get all twenty-nine cards including the six answered
+     right five times running — no better than shuffling.
+
+     Unseen cards score zero, so on an untouched topic everything is weak
+     and ties. That is correct rather than a special case: a card you have
+     never met is one you do not know, and the cap turns it into a short
+     first run instead of a wrong answer.
+
+     Returns positions, not cards, so the caller can keep them grouped. */
+  function weakCards(decks, limit) {
+    var all = stats(), now = Date.now(), picked = [];
+
+    decks.forEach(function (deck, di) {
+      for (var i = 0; i < deck.cards.length; i++) {
+        var v = cardStrength(all[deck.id + ':' + i], now);
+        if (v < WEAK) picked.push({ deck: di, card: i, strength: v });
+      }
+    });
+
+    picked.sort(function (a, b) { return a.strength - b.strength; });
+    return limit ? picked.slice(0, limit) : picked;
+  }
+
   /* Decks grouped by their topic, everything ranked weakest first.
 
      A topic's strength is the mean over all its cards, not the mean of its
@@ -348,6 +375,8 @@
     LOOK_PARTS: LOOK_PARTS,
     cardStrength: cardStrength,
     deckStrength: deckStrength,
+    weakCards: weakCards,
+    WEAK: WEAK,
     topics: topics,
     deckProgress: deckProgress,
     resetProgress: resetProgress

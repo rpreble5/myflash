@@ -184,6 +184,16 @@ button { cursor: pointer; border: 0; background: none; }
 .deck-line { font-size: .72rem; opacity: .6; }
 .deck-row .meter { margin-top: .4rem; height: 5px; }
 
+/* The short run sits under the full one and reads as the lighter option —
+   it is the same action at a smaller scale, not a different destination. */
+.btn-topic-weak {
+  width: 100%;
+  margin-bottom: .55rem;
+  opacity: .75;
+  font-size: .82rem;
+}
+.btn-topic-weak:hover { opacity: 1; }
+
 /* ── Settings ────────────────────────────────────────────── */
 .settings-wrap {
   min-height: 100%;

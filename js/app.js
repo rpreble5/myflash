@@ -38,6 +38,10 @@
 
   var HOME_PALETTES = global.Theme.live(global.Theme.PALETTES);
 
+  /* How many cards a short run holds. Long enough to be worth opening,
+     short enough to finish in a queue. */
+  var SHORT_RUN = 20;
+
   /* Topics weakest first, each opening onto its decks in the same order.
      The number itself stays out of it — a percentage invites you to farm
      the metric instead of the material, and on a ten-card deck it is
@@ -83,6 +87,26 @@
         startSession(topic.decks.slice());
       });
       body.appendChild(all);
+
+      /* The short run: only the cards the strength model calls weak, worst
+         first, capped so a topic where nothing has been studied yet gives
+         a session rather than the whole thing again.
+
+         Hidden when there is nothing weak — a topic that is entirely solid
+         has no drill to offer, and a button that would start a run of zero
+         cards is worse than no button. */
+      var weak = global.Store.weakCards(topic.decks, SHORT_RUN);
+      if (weak.length) {
+        var capped = weak.length === SHORT_RUN && topic.weak > SHORT_RUN;
+        var drill = h('button', 'btn btn-ghost btn-topic-weak',
+          capped ? 'Drill the ' + SHORT_RUN + ' weakest'
+                 : 'Drill ' + weak.length + ' weak card' + (weak.length === 1 ? '' : 's'));
+        drill.addEventListener('click', function (e) {
+          e.stopPropagation();
+          startSession(topic.decks.slice(), weak);
+        });
+        body.appendChild(drill);
+      }
 
       topic.decks.forEach(function (deck, di) {
         var d = deck._strength;
@@ -416,18 +440,37 @@
      all of its, already weakest first. Each is shuffled within itself and
      finished before the next begins — the cards stay together, which is
      the whole point of grouping them. */
-  function startSession(decks) {
+  function startSession(decks, only) {
     if (!Array.isArray(decks)) decks = [decks];
+
+    /* `only` restricts the run to a chosen set of positions — the weak
+       ones — without touching how a session is built. Selection decides
+       WHICH cards; the grouping below still decides the order, so a
+       shorter run is still one deck at a time rather than a pile. */
+    var allow = null;
+    if (only) {
+      allow = {};
+      only.forEach(function (x) { allow[x.deck + ':' + x.card] = true; });
+    }
+
     var order = [];
     decks.forEach(function (d, di) {
-      global.Txt.shuffle(d.cards.map(function (_, i) { return i; }))
-        .forEach(function (i) { order.push({ deck: di, card: i }); });
+      var idx = [];
+      for (var i = 0; i < d.cards.length; i++) {
+        if (!allow || allow[di + ':' + i]) idx.push(i);
+      }
+      global.Txt.shuffle(idx).forEach(function (i) { order.push({ deck: di, card: i }); });
     });
+
+    if (!order.length) return;
 
     session = {
       decks: decks,
       deck: decks[0],
       queue: order,
+      /* What the progress bar divides by. Counting every card in every
+         deck would leave a filtered run stuck short of full. */
+      total: order.length,
       resolved: {},        // card index -> true once answered correctly
       answers: 0,
       correct: 0,
@@ -444,7 +487,7 @@
   }
 
   function updateHud() {
-    var total = session.decks.reduce(function (n, d) { return n + d.cards.length; }, 0);
+    var total = session.total;
     var done = Object.keys(session.resolved).length;
     $('#progress-fill').style.width = (total ? (done / total) * 100 : 0) + '%';
     $('#streak-n').textContent = session.streak;
