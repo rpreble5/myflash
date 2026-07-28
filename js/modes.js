@@ -99,7 +99,16 @@
     cue.appendChild(h('span', 'why-cue-arrow', '↑'));
     cue.appendChild(h('span', 'why-cue-text', 'WHY'));
 
-    function open() { ctx.openNote(text); }
+    /* Nothing opens while the note is still held back. Most modes mount
+       their explanation at the start of the card so its box is reserved
+       before the answer lands, which means every way of opening it — the
+       cue, a swipe, the arrow key — is live before there is anything to
+       explain. On a number card that is not merely early: the dial IS an
+       upward drag, so setting the value would open the answer. */
+    function open() {
+      if (wrap.classList.contains('is-held')) return;
+      ctx.openNote(text);
+    }
 
     cue.addEventListener('click', function (e) { e.stopPropagation(); open(); });
 

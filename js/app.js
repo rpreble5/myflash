@@ -592,10 +592,16 @@
           if (y0 == null) return;
           var dy = e.clientY - y0;
           y0 = null;
-          /* Swipe down to dismiss, mirroring the swipe up that opened it.
-             A tap that never travelled closes it too — the note is read,
-             not interacted with. */
-          if (!moved || dy > 40) close();
+          if (moved) {
+            /* A downward swipe puts the note away and leaves the card
+               where it is — the deliberate "not yet". */
+            if (dy > 40) close();
+            return;
+          }
+          /* A tap means done. Closing and then making the reader tap a
+             second time to move on is a step that carries no decision. */
+          close();
+          if (session.advance) session.advance();
         });
         sheet.addEventListener('click', function (e) { e.stopPropagation(); });
 
@@ -644,8 +650,10 @@
 
         function go() {
           /* Never advance out from under an open explanation, whatever
-             asked — tap, space or Enter. */
+             asked — tap, space or Enter. The note dismisses itself first
+             and then calls this, so by then the flag is already down. */
           if (session.noteOpen) return;
+          session.advance = null;
           el.removeEventListener('click', onClick);
           cue.remove();
           global.Sfx.advance();
@@ -670,6 +678,9 @@
         }
 
         el.addEventListener('click', onClick);
+        /* Published so an open note can hand a tap straight through to it
+           rather than costing a second one. */
+        session.advance = go;
         /* The mode's own shortcuts are spent too. */
         session.keydown = { ' ': go, 'Enter': go };
         session.keyup = {};
