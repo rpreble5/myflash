@@ -1394,6 +1394,325 @@
         { type: 'recall', q: 'Electrolyte disturbance commonly found in myxedema coma', a: 'Hyponatremia',
           why: 'Reduced free water clearance, made worse by whatever precipitated the crisis. Correcting it too quickly carries its own risk, so the sodium is treated cautiously alongside the thyroid hormone.' }
       ]
+    },
+
+    /* ══════════════════════════════════════════════════════════════
+       Two topics chosen for the family medicine boards rather than for
+       the wards. Preventive care is the most distinctly family-medicine
+       material on that exam and nothing here covered it; behavioural
+       health is a comparable share of the blueprint and was equally
+       absent.
+
+       Preventive care also stretches the structure on purpose. Its
+       facets are not presentation-diagnosis-management-pitfalls, because
+       it is not a disease — the two layers are just a topic and its
+       decks, and nothing requires the second layer to be a clinical
+       course. Guideline bodies are named in `why` as prose where the
+       body is the fact worth knowing.
+       ══════════════════════════════════════════════════════════════ */
+
+    {
+      id: 'prev-cancer',
+      topic: 'Preventive Care',
+      name: 'CANCER SCREENING',
+      blurb: 'Who, when, how often, and when to stop',
+      cards: [
+        { type: 'number', q: 'Age at which average-risk colorectal screening now begins', value: 45, unit: 'years',
+          why: 'Lowered from fifty because incidence in younger adults has been climbing for two decades. It is one of the few screening ages to have moved down rather than up.' },
+
+        { type: 'number', q: 'Interval between colonoscopies in average-risk screening', value: 10, unit: 'years',
+          why: 'It reflects how long an adenoma takes to become cancer. Repeating sooner adds perforation and sedation risk without adding yield, which is why the interval is long rather than cautious.' },
+
+        { type: 'number', q: 'Age at which cervical cancer screening begins', value: 21, unit: 'years',
+          why: 'HPV infection is common in the late teens and usually clears on its own. Screening earlier finds transient abnormality and leads to procedures that can weaken the cervix in a later pregnancy — the harm here is the treatment, not a missed cancer.' },
+
+        { type: 'mcq', q: 'Preferred cervical screening strategy from age 30 to 65',
+          a: 'HPV testing every five years',
+          distractors: ['Cytology every year', 'HPV testing every year', 'Cytology every five years'],
+          why: 'Primary HPV testing looks for the cause rather than the consequence, and a negative result predicts low risk for years — which is what buys the longer interval.' },
+
+        { type: 'number', q: 'Age at which cervical screening can usually stop', value: 65, unit: 'years',
+          why: 'Provided prior screening was adequate and negative. Knowing when to stop matters as much as when to start: continuing finds almost nothing and generates procedures in women least able to benefit.' },
+
+        { type: 'multi', q: 'Criteria for annual low-dose CT lung cancer screening',
+          answers: ['Age 50 to 80', '20 pack-year history', 'Quit within 15 years'],
+          distractors: ['Any smoking history', 'Chronic cough', 'Family history of lung cancer'],
+          why: 'All three must hold. Outside that group the cancers found are too few against a high rate of nodules that lead to further scans and biopsies.' },
+
+        { type: 'number', q: 'Age at which USPSTF now advises breast cancer screening to begin',
+          value: 40, unit: 'years',
+          why: 'Moved down from fifty in 2024, biennially through seventy-four. Other bodies still differ, so the useful thing is the direction of travel and the reason — rising incidence in younger women and better modelling of the trade-off.' },
+
+        { type: 'recall', q: 'Mammography interval under current USPSTF advice', a: 'Every two years',
+          why: 'Annual screening finds slightly more and roughly doubles false positives and biopsies for a small difference in mortality. The interval is where that trade-off was struck.' },
+
+        { type: 'mcq', q: 'How prostate cancer screening should be handled in men 55 to 69',
+          a: 'Shared decision making',
+          distractors: ['Routine annual PSA', 'No discussion needed', 'PSA only if symptomatic'],
+          why: 'The mortality benefit is small and the harms are real — overdiagnosis, biopsy complications, and treatment of cancers that would never have surfaced. When benefit and harm are that close, the decision belongs to the patient.' }
+      ]
+    },
+
+    {
+      id: 'prev-immunisation',
+      topic: 'Preventive Care',
+      name: 'IMMUNIZATIONS',
+      blurb: 'The adult schedule and the ones with a reason behind them',
+      cards: [
+        { type: 'mcq', q: 'Vaccine repeated every year because its target changes',
+          a: 'Influenza vaccine',
+          distractors: ['Tdap', 'Zoster', 'Hepatitis B'],
+          why: 'The circulating strains drift each season, so last year antibody no longer matches. Nothing else on the adult schedule chases a moving target.' },
+
+        { type: 'number', q: 'Age at which recombinant zoster vaccination is recommended', value: 50, unit: 'years',
+          why: 'Two doses. Both zoster and postherpetic neuralgia climb steeply after fifty, and the recombinant vaccine can be used in immunocompromised patients where the older live one could not.' },
+
+        { type: 'recall', q: 'Vaccine given during every pregnancy', a: 'Tdap',
+          why: 'Maternal antibody crosses the placenta and protects the newborn from pertussis in the months before their own vaccinations begin. It is given every pregnancy regardless of when the last dose was.' },
+
+        { type: 'number', q: 'Weeks of pregnancy at which Tdap is given', low: 27, high: 36, unit: 'weeks',
+          why: 'Late enough to produce a good antibody response, early enough for it to cross before delivery. Either end of that window loses part of the point.' },
+
+        { type: 'recall', q: 'Adolescent vaccine given specifically to prevent cancer', a: 'HPV vaccine',
+          why: 'Routine at eleven to twelve, before exposure rather than after it. It prevents nearly all cervical cancer and a large share of oropharyngeal and anal cancers.' },
+
+        { type: 'mcq', q: 'Extra vaccine needed by an adult without a functioning spleen',
+          a: 'Meningococcal vaccine',
+          distractors: ['Hepatitis A', 'Rabies', 'Typhoid'],
+          why: 'The spleen clears encapsulated organisms, so asplenia leaves a specific gap against meningococcus, pneumococcus and Haemophilus. The vaccines fill exactly that gap.' },
+
+        { type: 'truefalse', q: 'Influenza vaccine can be given to someone with an egg allergy', a: true,
+          why: 'It stopped being treated as a contraindication some years ago, and no special observation period is required. Any age-appropriate vaccine can be used.' },
+
+        { type: 'recall', q: 'Vaccine type avoided during pregnancy', a: 'Live attenuated vaccines',
+          why: 'A theoretical risk of fetal infection rather than a demonstrated one, but enough to defer. Inactivated vaccines are not merely permitted in pregnancy, several are actively recommended.' }
+      ]
+    },
+
+    {
+      id: 'prev-other',
+      topic: 'Preventive Care',
+      name: 'OTHER SCREENING',
+      blurb: 'Aneurysms, bones, infections, and what not to order',
+      cards: [
+        { type: 'mcq', q: 'Who gets a one-time ultrasound to screen for abdominal aortic aneurysm',
+          a: 'Men 65 to 75 who ever smoked',
+          distractors: ['All adults over 65', 'Women 65 to 75', 'Anyone with hypertension'],
+          why: 'Prevalence outside this group is low enough that the scan mostly produces small aneurysms needing years of surveillance rather than lives saved.' },
+
+        { type: 'truefalse', q: 'A normal aneurysm screening ultrasound is repeated every five years', a: false,
+          why: 'It is a one-time test. An aorta of normal calibre at that age is very unlikely to become an aneurysm needing repair within the remaining life expectancy.' },
+
+        { type: 'number', q: 'Age at which bone density screening begins for women', value: 65, unit: 'years',
+          why: 'Earlier if risk factors bring the fracture risk up to that of a 65-year-old. The trigger is the calculated risk rather than the birthday, which is the part most often missed.' },
+
+        { type: 'number', q: 'Age range in which every adult should be screened once for hepatitis C',
+          low: 18, high: 79, unit: 'years',
+          why: 'Once curable, screening became worth doing broadly rather than only in the high-risk. It is a single test for most people, not a repeated one.' },
+
+        { type: 'multi', q: 'Screened for at least once in an average adult',
+          answers: ['HIV', 'Hepatitis C', 'Blood pressure', 'Depression'],
+          distractors: ['Thyroid function', 'Vitamin D level'],
+          why: 'The two distractors are among the highest-volume low-value tests in primary care. Neither is recommended for screening someone without symptoms.' },
+
+        { type: 'truefalse', q: 'Routine vitamin D screening is recommended for healthy adults', a: false,
+          why: 'There is no evidence that finding and correcting a low level in an asymptomatic adult changes any outcome. It mostly generates supplementation and repeat testing.' },
+
+        { type: 'recall', q: 'Blood pressure screening frequency in adults aged 40 and over',
+          a: 'At least once a year',
+          why: 'Younger adults with a normal reading can go three to five years. The interval shortens with age because that is when the incidence climbs.' },
+
+        { type: 'recall', q: 'Counselling with the largest mortality benefit available in a routine visit',
+          a: 'Smoking cessation',
+          why: 'Nothing else offered in ten minutes changes life expectancy as much. Brief advice alone raises quit rates measurably, and adding pharmacotherapy roughly doubles them.' }
+      ]
+    },
+
+    {
+      id: 'prev-pitfalls',
+      topic: 'Preventive Care',
+      name: 'PITFALLS',
+      blurb: 'Why screening looks better than it is',
+      cards: [
+        { type: 'recall', q: 'Bias that makes screened cancers appear to be survived longer',
+          a: 'Lead-time bias',
+          why: 'Finding a cancer earlier moves the diagnosis date backwards without moving the death date. Survival time lengthens and nothing about the outcome has changed, which is why screening is judged on mortality rather than on survival.' },
+
+        { type: 'recall', q: 'Bias by which screening preferentially catches slow-growing disease',
+          a: 'Length-time bias',
+          why: 'Aggressive cancers arise and kill between screening rounds; indolent ones sit there waiting to be found. The screened group is therefore enriched with the cancers that were least dangerous to begin with.' },
+
+        { type: 'recall', q: 'Term for finding disease that would never have caused harm', a: 'Overdiagnosis',
+          why: 'Different from a false positive: the disease is genuinely there, it simply would never have surfaced. It is the hardest harm to see, because the patient it happens to believes screening saved them.' },
+
+        { type: 'truefalse', q: 'Screening should stop when life expectancy is under about ten years', a: true,
+          why: 'The benefit of most cancer screening arrives a decade later while the harms are immediate. Below that horizon a patient is offered the harm and cannot live long enough to collect the benefit.' },
+
+        { type: 'truefalse', q: 'A positive screening test is a diagnosis', a: false,
+          why: 'Screening tests are tuned for sensitivity, so in a low-prevalence population most positives are false. A positive result starts a diagnostic pathway rather than ending one.' },
+
+        { type: 'mcq', q: 'Main reason whole-body CT screening is not recommended',
+          a: 'It mostly finds incidentalomas',
+          distractors: ['It is too slow', 'It misses most cancers', 'The radiation is negligible'],
+          why: 'The findings are real but almost never consequential, and each one generates follow-up imaging or a biopsy. The harm arrives reliably and the benefit does not.' },
+
+        { type: 'truefalse', q: 'Shared decision making belongs where benefit and harm are close', a: true,
+          why: 'When a test clearly helps, offering it is enough; when it clearly does not, it should not be offered. The discussion earns its time precisely in the middle, which is where PSA and several others sit.' }
+      ]
+    },
+
+    {
+      id: 'dep-presentation',
+      topic: 'Depression',
+      name: 'PRESENTATION',
+      blurb: 'What has to be there, and who does not look depressed',
+      cards: [
+        { type: 'multi', q: 'Core symptoms, one of which must be present to diagnose depression',
+          answers: ['Depressed mood', 'Loss of interest'],
+          distractors: ['Weight change', 'Fatigue', 'Poor concentration'],
+          why: 'The distractors all count toward the total but none can carry the diagnosis alone. Without one of the two core symptoms it is not major depression however many others are present.' },
+
+        { type: 'number', q: 'Minimum weeks of symptoms required for major depression', value: 2, unit: 'weeks',
+          why: 'It is what separates an episode from an understandable reaction to something. Duration is doing the work that severity alone cannot.' },
+
+        { type: 'recall', q: 'Screening and severity tool used for depression in primary care', a: 'PHQ-9',
+          why: 'Its nine items map onto the diagnostic criteria, so the same instrument screens, grades severity and tracks response to treatment.' },
+
+        { type: 'number', q: 'PHQ-9 score at or above which moderate depression begins', value: 10, unit: 'points',
+          why: 'The usual threshold for offering active treatment. Below it, follow-up and watchful waiting are often enough and treatment adds side effects for little gain.' },
+
+        { type: 'recall', q: 'Presentation of depression more typical of older adults',
+          a: 'Somatic and cognitive complaints',
+          why: 'Pain, sleep disturbance and memory trouble dominate while low mood is denied outright. It is missed, or mistaken for early dementia, which is why the screening question is asked rather than inferred.' },
+
+        { type: 'truefalse', q: 'Depression in adolescents often presents as irritability rather than sadness', a: true,
+          why: 'Irritability is written into the diagnostic criteria for young people for exactly this reason. Waiting for a teenager to describe low mood is how the diagnosis gets delayed for years.' },
+
+        { type: 'mcq', q: 'Question that must be asked of every depressed patient',
+          a: 'About thoughts of suicide',
+          distractors: ['About family history', 'About diet', 'About exercise'],
+          why: 'It is the one omission that can be fatal, and the only reliable way to find the risk. The others matter and can wait for the next visit.' }
+      ]
+    },
+
+    {
+      id: 'dep-diagnosis',
+      topic: 'Depression',
+      name: 'DIAGNOSIS',
+      blurb: 'What it is not, and the one question asked before treating',
+      cards: [
+        { type: 'multi', q: 'Conditions worth excluding before settling on major depression',
+          answers: ['Hypothyroidism', 'Anemia', 'Substance use', 'Bipolar disorder'],
+          distractors: ['Hyperlipidemia', 'Osteoarthritis'],
+          why: 'The first two are treatable mimics found by a blood test. Missing bipolar disorder is the one that changes treatment most dangerously.' },
+
+        { type: 'truefalse', q: 'Bipolar disorder should be asked about before starting an antidepressant', a: true,
+          why: 'An antidepressant given alone in bipolar depression can precipitate mania or rapid cycling. A history of elevated mood, reduced need for sleep or uncharacteristically impulsive episodes is what to ask for.' },
+
+        { type: 'recall', q: 'Blood test that most often reveals a treatable mimic of depression',
+          a: 'Thyroid function',
+          why: 'Hypothyroidism produces fatigue, low mood and cognitive slowing that are indistinguishable from depression at the bedside, and it resolves with replacement rather than an antidepressant.' },
+
+        { type: 'bucket', q: 'Depression or grief?',
+          bins: ['Depression', 'Grief'],
+          items: [
+            { label: 'Persistent anhedonia', bin: 'Depression' },
+            { label: 'Global guilt and worthlessness', bin: 'Depression' },
+            { label: 'Self-loathing', bin: 'Depression' },
+            { label: 'Waves of sadness on reminders', bin: 'Grief' },
+            { label: 'Preserved capacity for joy', bin: 'Grief' },
+            { label: 'Wish to join the deceased', bin: 'Grief' }
+          ],
+          why: 'The useful axis is self-worth. Grief leaves it intact and comes in waves; depression corrodes it and stays flat, and a wish to join the deceased is not the same as a wish to be dead.' },
+
+        { type: 'number', q: 'PHQ-9 score at or above which depression is called severe', value: 20, unit: 'points',
+          why: 'Severity guides intensity rather than choice of drug: it is what moves the conversation toward combined therapy and closer follow-up.' },
+
+        { type: 'recall', q: 'Term for depressive symptoms lasting two years or more',
+          a: 'Persistent depressive disorder',
+          why: 'It is often milder day to day and does more cumulative damage, precisely because it gets accepted as a personality rather than recognised as an illness.' },
+
+        { type: 'recall', q: 'Finding that most clearly warrants urgent psychiatric referral',
+          a: 'Active suicidal intent with a plan',
+          why: 'Intent and a plan are a different category from passive thoughts of not wanting to be here. The distinction is what the risk assessment is actually for.' }
+      ]
+    },
+
+    {
+      id: 'dep-management',
+      topic: 'Depression',
+      name: 'MANAGEMENT',
+      blurb: 'Which drug, how long to wait, and how long to continue',
+      cards: [
+        { type: 'recall', q: 'First-line drug class for major depression', a: 'SSRI',
+          why: 'Not more effective than the alternatives, but better tolerated and far safer in overdose — which is what decides first-line status in a population where overdose is one of the risks being treated.' },
+
+        { type: 'number', q: 'Weeks before judging whether an antidepressant has worked', low: 4, high: 6, unit: 'weeks',
+          why: 'Some lift often appears within two weeks, but a full response takes longer. Switching earlier is the commonest reason a patient ends up with a list of drugs that all supposedly failed.' },
+
+        { type: 'number', q: 'Months to continue an antidepressant after remission', low: 6, high: 12, unit: 'months',
+          why: 'The point of feeling well is when relapse risk is highest and when people stop. Treatment continues through the vulnerable period rather than until the mood lifts.' },
+
+        { type: 'truefalse', q: 'Psychotherapy alone is a reasonable choice in mild to moderate depression', a: true,
+          why: 'It performs comparably to medication in that range, and combining the two beats either for moderate to severe. Patient preference is a legitimate deciding factor here rather than a concession.' },
+
+        { type: 'mcq', q: 'Antidepressant to avoid in a patient with an eating disorder',
+          a: 'Bupropion',
+          distractors: ['Sertraline', 'Mirtazapine', 'Escitalopram'],
+          why: 'It lowers the seizure threshold, and the electrolyte disturbance that comes with purging lowers it further. The two risks compound rather than add.' },
+
+        { type: 'mcq', q: 'Antidepressant chosen when poor appetite and insomnia dominate',
+          a: 'Mirtazapine',
+          distractors: ['Fluoxetine', 'Bupropion', 'Venlafaxine'],
+          why: 'Sedation and appetite stimulation are side effects to be tolerated everywhere else and the whole reason to pick it here — the same property, valued differently.' },
+
+        { type: 'mcq', q: 'SSRI generally preferred in pregnancy and breastfeeding',
+          a: 'Sertraline',
+          distractors: ['Paroxetine', 'Fluoxetine', 'Citalopram'],
+          why: 'Low transfer into breast milk and the most reassuring data in pregnancy. Paroxetine is the one specifically avoided.' },
+
+        { type: 'recall', q: 'Reason an SSRI is tapered rather than simply stopped',
+          a: 'Discontinuation syndrome',
+          why: 'Dizziness, flu-like aching and electric-shock sensations, worst with short half-life drugs such as paroxetine and venlafaxine. Fluoxetine effectively tapers itself, which is why it is the exception.' },
+
+        { type: 'multi', q: 'Non-drug measures with real evidence in depression',
+          answers: ['Structured exercise', 'Behavioral activation', 'Cognitive behavioral therapy', 'Sleep regulation'],
+          distractors: ['Vitamin D supplements', 'Detox diets'],
+          why: 'Behavioral activation is the one most often left out and among the easiest to start: scheduling rewarding activity, deliberately, before the motivation to do it returns.' }
+      ]
+    },
+
+    {
+      id: 'dep-pitfalls',
+      topic: 'Depression',
+      name: 'PITFALLS',
+      blurb: 'Interactions, warnings, and the reasons people quietly stop',
+      cards: [
+        { type: 'truefalse', q: 'Asking about suicide increases the risk of it', a: false,
+          why: 'It does not, and the belief that it does is why the question gets skipped. Asking directly is the only reliable way to assess the risk, and patients generally answer.' },
+
+        { type: 'recall', q: 'Syndrome caused by combining serotonergic drugs', a: 'Serotonin syndrome',
+          why: 'Agitation, clonus, hyperreflexia and fever. The triggers worth remembering are the ones prescribed casually — tramadol, triptans, linezolid — rather than the psychiatric drugs everybody already watches.' },
+
+        { type: 'mcq', q: 'Common analgesic that can precipitate serotonin syndrome with an SSRI',
+          a: 'Tramadol',
+          distractors: ['Acetaminophen', 'Ibuprofen', 'Codeine'],
+          why: 'It inhibits serotonin reuptake as well as acting at opioid receptors, which is easy to forget when it is being prescribed for back pain by someone who did not start the antidepressant.' },
+
+        { type: 'truefalse', q: 'Antidepressants carry a warning about suicidality in young people', a: true,
+          why: 'An increase in suicidal thinking in under-25s during the first weeks. The response is closer follow-up early on, not withholding treatment — untreated depression carries the larger risk.' },
+
+        { type: 'recall', q: 'Electrolyte disturbance SSRIs can cause in older adults', a: 'Hyponatremia',
+          why: 'Through SIADH, typically a few weeks in. Worth checking when an older patient becomes confused or unsteady shortly after starting, before it gets attributed to age.' },
+
+        { type: 'truefalse', q: 'Sexual side effects on an SSRI usually settle within a few weeks', a: false,
+          why: 'They often persist, and they are among the commonest reasons people stop without saying so. Asking directly, rather than waiting to be told, is what keeps someone in treatment.' },
+
+        { type: 'mcq', q: 'First step when there has been no response after an adequate trial',
+          a: 'Check adherence and dose',
+          distractors: ['Add a second antidepressant', 'Refer immediately', 'Stop treatment'],
+          why: 'Partial adherence and a dose never titrated past the starting one explain most apparent non-response, and both are fixable before anything is added or blamed.' }
+      ]
     }
   ];
 
