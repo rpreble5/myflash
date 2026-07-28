@@ -8,6 +8,7 @@
   var KEY_STATS = 'myflash.stats.v1';
   var KEY_PREFS = 'myflash.prefs.v1';
   var KEY_LOOKS = 'myflash.looks.v1';
+  var KEY_SHOWN = 'myflash.shown.v1';
 
   /* Anything not listed here is not a setting. Defaults are the current
      behaviour, so an empty store behaves exactly as before. */
@@ -123,6 +124,25 @@
     return true;
   }
 
+  /* How often each component has been drawn at all. Without this the
+     feedback has no denominator: fifteen palettes blamed once each says
+     nothing until you know whether each was seen twice or twenty times.
+     One counter per card render, which is cheap and the only way the
+     next round can report rates instead of counts. */
+  function noteShown(look) {
+    var all = read(KEY_SHOWN, {});
+    LOOK_PARTS.forEach(function (k) {
+      var v = look[k];
+      if (!v) return;
+      all[k] = all[k] || {};
+      all[k][v] = (all[k][v] || 0) + 1;
+    });
+    write(KEY_SHOWN, all);
+  }
+
+  function shownCounts() { return read(KEY_SHOWN, {}); }
+  function clearShown() { write(KEY_SHOWN, {}); }
+
   /* Per component: how often it was blamed, and how often it merely
      turned up in a look someone disliked. */
   function lookTally() {
@@ -139,12 +159,22 @@
       });
     });
 
+    var shown = shownCounts();
     var out = {};
     Object.keys(bucket).forEach(function (k) {
       out[k] = Object.keys(bucket[k])
-        .map(function (v) { return bucket[k][v]; })
+        .map(function (v) {
+          var e = bucket[k][v];
+          e.shown = (shown[k] && shown[k][v]) || 0;
+          /* Rate only where there is a denominator to divide by. */
+          e.rate = e.shown ? e.blamed / e.shown : null;
+          return e;
+        })
         .filter(function (e) { return e.blamed > 0; })
-        .sort(function (a, b) { return b.blamed - a.blamed; });
+        .sort(function (a, b) {
+          if (a.rate != null && b.rate != null && a.rate !== b.rate) return b.rate - a.rate;
+          return b.blamed - a.blamed;
+        });
     });
     return out;
   }
@@ -308,6 +338,9 @@
     stats: stats,
     recordAnswer: recordAnswer,
     saveLook: saveLook,
+    noteShown: noteShown,
+    shownCounts: shownCounts,
+    clearShown: clearShown,
     lookFlags: lookFlags,
     looks: looks,
     lookTally: lookTally,

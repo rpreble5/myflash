@@ -258,8 +258,9 @@
         text.appendChild(h('span', 'manage-name', t.name));
         /* Blamed against merely present: a thing that keeps turning up in
            bad cards without being the problem is not the problem. */
-        text.appendChild(h('span', 'manage-line',
-          'blamed ' + t.blamed + ' of ' + t.seen + ' time' + (t.seen === 1 ? '' : 's')));
+        text.appendChild(h('span', 'manage-line', t.shown
+          ? 'blamed ' + t.blamed + ' of ' + t.shown + ' shown · ' + Math.round(t.rate * 100) + '%'
+          : 'blamed ' + t.blamed + ' of ' + t.seen + ' marked'));
         row.appendChild(text);
         wrap.appendChild(row);
       });
@@ -281,6 +282,7 @@
     clear.addEventListener('click', function () {
       if (!confirm('Clear all ' + all.length + ' marked looks?')) return;
       global.Store.clearLooks();
+      global.Store.clearShown();
       renderLookFeedback();
       paintNope();
     });
@@ -410,6 +412,7 @@
     var card = deck.cards[cardIndex];
     var theme = global.Theme.random();
     currentLook = lookOf(theme);
+    global.Store.noteShown(currentLook);
     closeLookMenu();
     paintNope();
     var mode = global.Modes.pickFor(card, deck);

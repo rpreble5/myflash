@@ -277,7 +277,11 @@
     { face: '"Yeon Sung", sans-serif', track: '0', caps: false, wght: 400, off: true },
     { face: '"Frijole", sans-serif', track: '0', caps: false, wght: 400, off: true },
     { face: '"Wallpoet", sans-serif', track: '0', caps: false, wght: 400, off: true },
-    { face: '"Bungee Outline", sans-serif', track: '0', caps: false, wght: 400 },
+    /* Hollow letterforms, which is the outline treatment's failure baked
+       into a typeface: the backdrop shows through the words. Blamed on
+       sight, and the mechanism is the same one that just cost `outline`
+       its place, so it goes on both counts rather than on a count of one. */
+    { face: '"Bungee Outline", sans-serif', track: '0', caps: false, wght: 400, off: true },
     { face: '"Sigmar One", sans-serif', track: '0', caps: false, wght: 400, off: true },
     { face: '"Rammetto One", sans-serif', track: '0', caps: false, wght: 400, off: true },
     { face: '"Erica One", sans-serif', track: '0', caps: false, wght: 400, off: true },
@@ -1053,7 +1057,25 @@
   ];
 
   /* ── Text treatments — `plain` is weighted heaviest ──────── */
-  var TREATMENTS = ['plain', 'plain', 'plain', 'outline', 'shadow-hard', 'accent-words', 'stretch'];
+  /* Twenty-five marked cards settled this one. `outline` and `shadow-hard`
+     were 2 of 7 draw slots — 28.6% — and turned up in 48% of every card
+     that got marked. shadow-hard appeared at 1.96x its expected rate and
+     was blamed 5 times in 7; outline at 1.40x and blamed 5 in 5, without
+     a single exception.
+
+     Both had a mechanism waiting for them. shadow-hard paints the accent
+     directly behind the ink, and twelve of forty palettes have ink and
+     accent within 1.5:1 of each other, where the offset reads as a smear.
+     outline makes the letterforms hollow, so whatever the backdrop is
+     doing shows through them — and a grain lands on 38% of cards.
+
+     accent-words and stretch stay: accent-words appeared at 0.28x its
+     expected rate, which is to say it showed up in disliked cards LESS
+     than chance, and neither was ever blamed more than once.
+
+     The CSS for both is still in themes.css, so putting either back is
+     this line and nothing else. */
+  var TREATMENTS = ['plain', 'plain', 'plain', 'plain', 'accent-words', 'stretch'];
 
   function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
 
