@@ -567,8 +567,8 @@
           answers: ['Thiazide diuretic', 'ACE inhibitor', 'ARB', 'Calcium channel blocker'],
           distractors: ['Beta blocker', 'Alpha blocker'] },
 
-        { type: 'truefalse', q: 'Beta blockers are first-line for uncomplicated hypertension', a: false,
-          why: 'They are reserved for a compelling indication — post-infarct, heart failure, rate control. As monotherapy for blood pressure alone they protect against stroke less well than the four first-line classes.' },
+        { type: 'truefalse', q: 'Beta blockers are reserved for a compelling indication in hypertension', a: true,
+          why: 'Post-infarct, heart failure, rate control. As monotherapy for blood pressure alone they protect against stroke less well than the four first-line classes, which is why they sit outside the first line.' },
 
         { type: 'order', q: 'Escalating drug therapy in hypertension',
           steps: ['One first-line agent', 'Add a second class', 'Add a third with a diuretic', 'Add spironolactone'] },
@@ -608,8 +608,8 @@
         { type: 'recall', q: 'Commonest reason hypertension looks resistant', a: 'Non-adherence' },
         { type: 'recall', q: 'Position often skipped when measuring pressure in the elderly', a: 'Standing' },
 
-        { type: 'truefalse', q: 'A 20% creatinine rise after starting an ACE inhibitor means stopping it', a: false,
-          why: 'A rise up to about 30% is expected and settles. Stopping there throws away the renoprotection. Above 30%, or a climbing potassium, is the point to stop and look for renovascular disease.' },
+        { type: 'truefalse', q: 'A creatinine rise up to about 30% after starting an ACE inhibitor is expected', a: true,
+          why: 'It settles, and stopping there throws away the renoprotection you were after. Above 30%, or a climbing potassium, is the point to stop and go looking for renovascular disease.' },
 
         { type: 'multi', q: 'Common causes of a rise in blood pressure on treatment',
           answers: ['NSAIDs', 'Decongestants', 'Excess alcohol', 'Oral contraceptives'],
@@ -637,8 +637,8 @@
           answers: ['Polyuria', 'Polydipsia', 'Weight loss', 'Blurred vision'],
           distractors: ['Bradycardia', 'Weight gain'] },
 
-        { type: 'truefalse', q: 'Most people with type 2 diabetes have symptoms at diagnosis', a: false,
-          why: 'Most are found on screening. Symptoms need sustained glucose high enough to spill into the urine, which is late in the disease.' },
+        { type: 'truefalse', q: 'Most type 2 diabetes is found by screening rather than by symptoms', a: true,
+          why: 'Symptoms need sustained glucose high enough to spill into the urine, which is late in the disease. Waiting for a symptomatic patient means diagnosing years after the damage started.' },
         { type: 'truefalse', q: 'Complications can already be present the day diabetes is diagnosed', a: true,
           why: 'Retinopathy and neuropathy are found at diagnosis often enough that both are screened for immediately — the disease has usually been running silently for years.' },
 
@@ -710,8 +710,8 @@
 
         { type: 'truefalse', q: 'An SGLT2 inhibitor is worth adding in diabetic kidney disease even at target HbA1c', a: true,
           why: 'The kidney and heart benefit is largely independent of glucose lowering, so it is added for organ protection rather than for the number.' },
-        { type: 'truefalse', q: 'Metformin is stopped once a second agent is started', a: false,
-          why: 'It is continued unless the kidney function or side effects force it out. Second agents are added to metformin, not swapped for it.' },
+        { type: 'truefalse', q: 'Metformin is continued when a second agent is added', a: true,
+          why: 'It stays unless kidney function or side effects force it out. Second agents are added to metformin rather than swapped for it, which is why the pill count grows.' },
 
         { type: 'truefalse', q: 'Long-term metformin can cause vitamin B12 deficiency', a: true,
           why: 'It reduces B12 absorption in the terminal ileum. The trap is that the resulting neuropathy gets written off as diabetic neuropathy and nobody checks the level.' },
@@ -810,8 +810,8 @@
           { label: 'FEV1/FVC ratio', dir: 'down' }
         ], why: 'The ratio falls because the numerator falls and the denominator largely does not. That is the whole definition of an obstructive pattern.' },
 
-        { type: 'truefalse', q: 'Normal spirometry rules out asthma', a: false,
-          why: 'Asthma is variable by definition, so between episodes the lungs can test completely normally. A normal result in someone who is well at that moment excludes nothing, which is exactly why challenge testing and serial peak flows exist.' },
+        { type: 'truefalse', q: 'Spirometry can be completely normal between asthma episodes', a: true,
+          why: 'Asthma is variable by definition, so a normal result in someone well at that moment excludes nothing. That is exactly why challenge testing and serial peak flows exist.' },
 
         { type: 'multi', q: 'Objective ways to confirm variable airflow obstruction',
           answers: ['Bronchodilator reversibility', 'Peak flow variability', 'Methacholine challenge'],
@@ -895,8 +895,504 @@
         { type: 'recall', q: 'Triad of asthma, nasal polyps and aspirin sensitivity', a: "Samter's triad" },
         { type: 'recall', q: 'Reflux condition that quietly worsens asthma control', a: 'GERD' },
 
-        { type: 'truefalse', q: 'Antibiotics are routinely indicated for an asthma exacerbation', a: false,
-          why: 'Most exacerbations are viral or trigger-driven. Without something pointing at a bacterial infection, antibiotics add side effects and nothing else.' }
+        { type: 'truefalse', q: 'Most asthma exacerbations need no antibiotic', a: true,
+          why: 'They are viral or trigger-driven. Without something actively pointing at a bacterial infection, an antibiotic adds side effects and nothing else.' }
+      ]
+    },
+
+    /* ══════════════════════════════════════════════════════════════
+       Three more clinic diseases, written for explanation rather than
+       recall alone: most cards carry a `why`, and many of the questions
+       ask why something is true instead of only what is true. These are
+       diseases where the mechanism is the useful part — knowing that
+       atrial stunning outlasts the rhythm, or that TSH lags six weeks
+       behind a dose change, is what stops a correct fact being applied
+       at the wrong moment.
+       ══════════════════════════════════════════════════════════════ */
+
+    {
+      id: 'af-presentation',
+      topic: 'Atrial Fibrillation',
+      name: 'PRESENTATION',
+      blurb: 'How it feels, how it sounds, and what it costs the heart',
+      cards: [
+        { type: 'recall', q: 'Pulse finding that suggests atrial fibrillation', a: 'Irregularly irregular',
+          why: 'There is no organised atrial contraction, so the ventricle is fired by whatever crosses the AV node at random. Nothing sets a rhythm, so nothing repeats.' },
+
+        { type: 'multi', q: 'Common presenting symptoms of new atrial fibrillation',
+          answers: ['Palpitations', 'Breathlessness', 'Fatigue', 'Chest discomfort'],
+          distractors: ['Hemoptysis', 'Productive cough'],
+          why: 'Fatigue alone is the one most often dismissed, particularly in older patients who have slowed down gradually and put it down to age.' },
+
+        { type: 'truefalse', q: 'Atrial fibrillation is often found in someone with no symptoms at all', a: true,
+          why: 'A large share is picked up incidentally, and the stroke risk is exactly the same as in someone who feels every beat. Symptoms guide how hard you chase rhythm; they say nothing about whether to anticoagulate.' },
+
+        { type: 'number', q: 'Share of ventricular filling contributed by atrial contraction', low: 20, high: 30, unit: '%',
+          why: 'Losing it goes unnoticed at rest by a healthy ventricle and is badly missed by a stiff, hypertrophied one — which is why the same rhythm is an inconvenience in one patient and decompensation in another.' },
+
+        { type: 'multi', q: 'Reversible precipitants worth hunting in new atrial fibrillation',
+          answers: ['Thyrotoxicosis', 'Sepsis', 'Alcohol binge', 'Electrolyte disturbance'],
+          distractors: ['Iron deficiency', 'Vitamin D deficiency'],
+          why: 'Treat the trigger and the rhythm often follows. Missing a thyrotoxic cause means chasing the arrhythmia with drugs that were never going to hold it.' },
+
+        { type: 'recall', q: 'Term for atrial fibrillation that stops on its own within seven days',
+          a: 'Paroxysmal',
+          why: 'The label describes the pattern, not the danger. Paroxysmal atrial fibrillation carries broadly the same stroke risk as persistent, which is the point most often got wrong.' },
+
+        { type: 'recall', q: 'Rhythm mistaken for atrial fibrillation but with a saw-tooth baseline',
+          a: 'Atrial flutter',
+          why: 'Flutter is organised and usually conducts in a fixed ratio, so the pulse can be regular. It carries the same stroke risk and is anticoagulated the same way.' }
+      ]
+    },
+
+    {
+      id: 'af-diagnosis',
+      topic: 'Atrial Fibrillation',
+      name: 'DIAGNOSIS',
+      blurb: 'The ECG, the workup, and scoring the risk',
+      cards: [
+        { type: 'recall', q: 'ECG finding that defines atrial fibrillation', a: 'Absent P waves',
+          why: 'The atria are depolarising chaotically at 400 to 600 a minute, so no single coordinated wavefront exists to write a P wave. What is left is an irregular baseline.' },
+
+        { type: 'multi', q: 'Baseline tests in newly diagnosed atrial fibrillation',
+          answers: ['ECG', 'Thyroid function', 'Echocardiogram', 'Basic metabolic panel'],
+          distractors: ['Coronary angiography', 'Chest CT'],
+          why: 'The echocardiogram is not for the rhythm. It is looking for the structural disease and valve lesions that change which anticoagulant is allowed.' },
+
+        { type: 'recall', q: 'Valve lesion that rules out a direct oral anticoagulant',
+          a: 'Moderate to severe mitral stenosis',
+          why: 'The DOAC trials excluded it, along with mechanical valves. Warfarin remains the only anticoagulant with evidence in those two settings, which is what "valvular" actually means here.' },
+
+        { type: 'multi', q: 'Components of CHA2DS2-VASc that score two points',
+          answers: ['Prior stroke or TIA', 'Age 75 or over'],
+          distractors: ['Hypertension', 'Diabetes', 'Heart failure'],
+          why: 'These two carry double weight because they predict recurrence hardest — a previous stroke is the single strongest signal that another one is coming.' },
+
+        { type: 'number', q: 'CHA2DS2-VASc score in men at or above which anticoagulation is advised',
+          value: 2, unit: 'points',
+          why: 'The threshold is one point higher in women, because female sex only modifies risk in the presence of other factors rather than creating it.' },
+
+        { type: 'recall', q: 'Test used when paroxysmal atrial fibrillation is suspected but the ECG is normal',
+          a: 'Ambulatory ECG monitoring',
+          why: 'A ten-second ECG taken between paroxysms is normal by definition. A normal trace excludes nothing, and treating it as reassurance is how paroxysmal disease goes unanticoagulated for years.' },
+
+        { type: 'recall', q: 'Score used to assess bleeding risk in atrial fibrillation', a: 'HAS-BLED',
+          why: 'It exists to find the modifiable risks worth correcting — blood pressure, alcohol, interacting drugs — not to give a reason for withholding anticoagulation. A high score usually means fix something, not stop.' }
+      ]
+    },
+
+    {
+      id: 'af-management',
+      topic: 'Atrial Fibrillation',
+      name: 'MANAGEMENT',
+      blurb: 'Rate, rhythm, and the anticoagulation that runs underneath both',
+      cards: [
+        { type: 'multi', q: 'First-line drug classes for rate control',
+          answers: ['Beta blocker', 'Diltiazem', 'Verapamil'],
+          distractors: ['Adenosine', 'Flecainide'],
+          why: 'Adenosine blocks the AV node for seconds — useful to unmask a rhythm, useless to control one. Flecainide is rhythm control and is dangerous in fibrillation without AV blockade on board.' },
+
+        { type: 'truefalse', q: 'Rate control matches rhythm control for survival in most patients', a: true,
+          why: 'Rate control is not the compromise it looks like. Restoring sinus rhythm did not improve mortality in the large trials, so rhythm control is chosen for symptoms, for young patients, or where the rhythm itself is causing a cardiomyopathy.' },
+
+        { type: 'bucket', q: 'Rate control or rhythm control?',
+          bins: ['Rate', 'Rhythm'],
+          items: [
+            { label: 'Young and very symptomatic', bin: 'Rhythm' },
+            { label: 'First detected episode', bin: 'Rhythm' },
+            { label: 'AF-induced cardiomyopathy', bin: 'Rhythm' },
+            { label: 'Elderly, barely symptomatic', bin: 'Rate' },
+            { label: 'Long-standing persistent', bin: 'Rate' },
+            { label: 'Several failed cardioversions', bin: 'Rate' }
+          ] },
+
+        { type: 'mcq', q: 'Anticoagulant of choice in non-valvular atrial fibrillation',
+          a: 'A direct oral anticoagulant',
+          distractors: ['Warfarin', 'Aspirin', 'Clopidogrel'],
+          why: 'DOACs match or beat warfarin for stroke prevention and cause markedly less intracranial bleeding, with no monitoring. Warfarin is now the exception rather than the default.' },
+
+        { type: 'truefalse', q: 'Aspirin is a reasonable substitute when a patient declines anticoagulation', a: false,
+          why: 'It gives very little stroke protection in atrial fibrillation while keeping most of the bleeding risk — the worst of both. Offering it as a compromise treats the conversation rather than the patient.' },
+
+        { type: 'mcq', q: 'Rate control agent to avoid in reduced ejection fraction', a: 'Verapamil',
+          distractors: ['Metoprolol', 'Digoxin', 'Bisoprolol'],
+          why: 'Non-dihydropyridine calcium channel blockers are negative inotropes. In a ventricle that is already failing, the rate improves and the output falls.' },
+
+        { type: 'number', q: 'Weeks of anticoagulation needed before elective cardioversion',
+          value: 3, unit: 'weeks',
+          why: 'Any thrombus already in the appendage needs time to organise and adhere. Shocking sooner risks converting a sitting clot into a stroke at the moment the atrium starts contracting again.' },
+
+        { type: 'number', q: 'Weeks of anticoagulation required after successful cardioversion',
+          value: 4, unit: 'weeks',
+          why: 'The atrium is electrically normal long before it is mechanically normal. Stunning leaves it contracting poorly for days to weeks, so the stasis — and the stroke risk — outlast the rhythm on the monitor.' },
+
+        { type: 'order', q: 'Elective cardioversion pathway', steps: [
+          'Three weeks anticoagulated',
+          'Synchronized cardioversion',
+          'Four more weeks anticoagulated',
+          'Decide on long-term therapy'
+        ] },
+
+        { type: 'recall', q: 'Procedure offered when drugs fail in symptomatic paroxysmal atrial fibrillation',
+          a: 'Catheter ablation',
+          why: 'Most paroxysmal atrial fibrillation is triggered by ectopic foci in the pulmonary veins, so isolating them electrically removes the trigger rather than suppressing the response.' },
+
+        { type: 'trend', q: 'Atrial fibrillation with a rapid ventricular response', items: [
+          { label: 'Heart rate', dir: 'up' },
+          { label: 'Diastolic filling time', dir: 'down' },
+          { label: 'Cardiac output', dir: 'down' }
+        ], why: 'Filling happens in diastole, and diastole is what a fast rate shortens first. Beyond a point every extra beat moves less blood, so output falls as the rate climbs.' }
+      ]
+    },
+
+    {
+      id: 'af-pitfalls',
+      topic: 'Atrial Fibrillation',
+      name: 'PITFALLS',
+      blurb: 'Where the rhythm looks handled and is not',
+      cards: [
+        { type: 'truefalse', q: 'Good rate control removes the need for anticoagulation', a: false,
+          why: 'Rate control changes how the patient feels, not how the appendage empties. The stasis is unchanged, so the stroke decision is made on CHA2DS2-VASc alone and is entirely independent of whether the rate or the rhythm has been sorted out.' },
+
+        { type: 'truefalse', q: 'Digoxin controls the ventricular rate well during exertion', a: false,
+          why: 'It works largely by increasing vagal tone, which sympathetic drive overrides the moment someone moves. The rate looks respectable sitting in clinic and runs away on the stairs.' },
+
+        { type: 'mcq', q: 'Antiarrhythmic that requires a structurally normal heart', a: 'Flecainide',
+          distractors: ['Amiodarone', 'Digoxin', 'Metoprolol'],
+          why: 'Class Ic agents slow conduction through scarred or ischaemic tissue enough to set up reentry. In a structurally normal heart that does not happen; in a damaged one the drug is proarrhythmic.' },
+
+        { type: 'recall', q: 'Reason a direct oral anticoagulant dose must be revisited over time',
+          a: 'Renal function falls with age',
+          why: 'These drugs are cleared renally to varying degrees, so a dose that was correct at diagnosis quietly becomes an overdose as eGFR drifts down. It is a prescription that expires without announcing it.' },
+
+        { type: 'recall', q: 'Three organs needing monitoring on long-term amiodarone',
+          a: 'Thyroid, liver and lung',
+          why: 'It is iodine-rich and highly lipophilic, so it accumulates for months and disturbs several systems at once. Effective drug, expensive surveillance.' },
+
+        { type: 'recall', q: 'Reason atrial flutter is anticoagulated like atrial fibrillation',
+          a: 'The same risk of atrial thrombus',
+          why: 'The atrium is still not contracting effectively, so stasis in the appendage is unchanged. A regular pulse makes flutter look safer than it is.' },
+
+        { type: 'mcq', q: 'Best first response to atrial fibrillation with hemodynamic collapse',
+          a: 'Synchronized cardioversion',
+          distractors: ['IV beta blocker', 'Oral diltiazem', 'Start a DOAC'],
+          why: 'When the rhythm is the reason the patient is shocked, drugs are too slow and most rate control agents lower the blood pressure further. The three-week anticoagulation rule yields to instability.' }
+      ]
+    },
+
+    {
+      id: 'hf-presentation',
+      topic: 'Heart Failure',
+      name: 'PRESENTATION',
+      blurb: 'Which side is failing, and what the body does about it',
+      cards: [
+        { type: 'multi', q: 'Symptoms of left-sided heart failure',
+          answers: ['Exertional breathlessness', 'Orthopnea', 'Nocturnal dyspnea', 'Fatigue'],
+          distractors: ['Ankle swelling', 'Abdominal distension'],
+          why: 'The distractors are right-sided. Congestion backs up behind whichever ventricle is failing — into the lungs on the left, into the legs and abdomen on the right.' },
+
+        { type: 'recall', q: 'Reason orthopnea appears within minutes of lying flat',
+          a: 'Fluid redistributes to the chest',
+          why: 'Lying down returns blood pooled in the legs and splanchnic bed to the thorax. A failing left ventricle cannot accept the extra preload, so pulmonary venous pressure rises almost immediately.' },
+
+        { type: 'recall', q: 'Heart sound that suggests volume overload in heart failure',
+          a: 'Third heart sound',
+          why: 'An S3 is rapid early filling striking a dilated, poorly compliant ventricle. It is one of the few bedside findings specific enough to change what you think.' },
+
+        { type: 'bucket', q: 'Left-sided or right-sided failure?',
+          bins: ['Left', 'Right'],
+          items: [
+            { label: 'Orthopnea', bin: 'Left' },
+            { label: 'Pulmonary crackles', bin: 'Left' },
+            { label: 'Nocturnal dyspnea', bin: 'Left' },
+            { label: 'Raised jugular pressure', bin: 'Right' },
+            { label: 'Peripheral edema', bin: 'Right' },
+            { label: 'Enlarged tender liver', bin: 'Right' }
+          ] },
+
+        { type: 'number', q: 'Ejection fraction at or below which heart failure is called reduced',
+          value: 40, unit: '%',
+          why: 'The number is a gateway rather than a severity grade. Below it, four drug classes have proven mortality benefit; above it almost nothing has, which is why the classification decides treatment.' },
+
+        { type: 'mcq', q: 'Heart failure type most associated with long-standing hypertension',
+          a: 'Preserved ejection fraction',
+          distractors: ['Reduced ejection fraction', 'High output failure', 'Right heart failure'],
+          why: 'Years of pressure overload produce a thick, stiff ventricle that empties normally and fills badly. The pump looks fine on the echo report and the patient is still breathless.' },
+
+        { type: 'truefalse', q: 'About half of all heart failure has a preserved ejection fraction', a: true,
+          why: 'The symptoms are indistinguishable at the bedside, so the echo is needed to tell the two apart rather than to make the diagnosis. A normal ejection fraction excludes nothing.' }
+      ]
+    },
+
+    {
+      id: 'hf-diagnosis',
+      topic: 'Heart Failure',
+      name: 'DIAGNOSIS',
+      blurb: 'What BNP can and cannot tell you',
+      cards: [
+        { type: 'recall', q: 'Blood test used to rule out heart failure when the picture is unclear',
+          a: 'BNP or NT-proBNP',
+          why: 'Its strength is the negative result. A normal level in an untreated breathless patient makes heart failure very unlikely, whereas a raised one has too many other causes to confirm anything on its own.' },
+
+        { type: 'multi', q: 'Conditions that raise BNP without heart failure',
+          answers: ['Atrial fibrillation', 'Renal impairment', 'Pulmonary embolism', 'Sepsis'],
+          distractors: ['Obesity', 'Diuretic overuse'],
+          why: 'Obesity is the trap, and it runs the other way: BNP is lower in obese patients, so a reassuringly normal value in a large breathless person may be falsely normal.' },
+
+        { type: 'number', q: 'NT-proBNP below which chronic heart failure is unlikely',
+          value: 125, unit: 'pg/mL',
+          why: 'The cut-off for an acute presentation is several times higher. Applying the chronic threshold in the emergency department, or the acute one in clinic, is the commonest way this test is misread.' },
+
+        { type: 'recall', q: 'Investigation that establishes which type of heart failure is present',
+          a: 'Echocardiogram',
+          why: 'It supplies the ejection fraction, and that single number splits management into two pathways with almost no overlap in evidence.' },
+
+        { type: 'multi', q: 'Chest radiograph findings in heart failure',
+          answers: ['Cardiomegaly', 'Kerley B lines', 'Pleural effusions', 'Upper lobe diversion'],
+          distractors: ['Hyperinflation', 'Focal cavitation'],
+          why: 'Upper lobe diversion comes first and is the easiest to miss: raised pulmonary venous pressure recruits the apical vessels that are normally the emptiest when upright.' },
+
+        { type: 'trend', q: 'Worsening decompensated heart failure', items: [
+          { label: 'NT-proBNP', dir: 'up' },
+          { label: 'Jugular venous pressure', dir: 'up' },
+          { label: 'Cardiac output', dir: 'down' }
+        ], why: 'Natriuretic peptide is released in response to wall stretch, so it tracks filling pressure rather than pump performance. Pressure up, flow down.' },
+
+        { type: 'recall', q: 'Reason weight is a better congestion monitor than symptoms',
+          a: 'Weight rises before breathlessness',
+          why: 'Two or three kilograms accumulate before the patient notices anything, so a daily weight and a written action plan buy several days of warning that symptoms alone would not.' }
+      ]
+    },
+
+    {
+      id: 'hf-management',
+      topic: 'Heart Failure',
+      name: 'MANAGEMENT',
+      blurb: 'What prolongs life, what only helps, and how to tell them apart',
+      cards: [
+        { type: 'multi', q: 'Drug classes that improve survival in reduced ejection fraction',
+          answers: ['Beta blocker', 'ARNI or ACE inhibitor', 'MRA', 'SGLT2 inhibitor'],
+          distractors: ['Loop diuretic', 'Digoxin'],
+          why: 'The two distractors both make people feel better and neither extends life. That distinction is the whole shape of heart failure care: the four are pushed to target dose regardless of symptoms, the diuretic is dosed to whatever keeps the patient dry.' },
+
+        { type: 'mcq', q: 'Heart failure drug titrated to symptoms rather than to a target dose',
+          a: 'Furosemide',
+          distractors: ['Bisoprolol', 'Sacubitril-valsartan', 'Dapagliflozin'],
+          why: 'The survival drugs are pushed toward the doses used in the trials, because that is where the benefit was demonstrated. The diuretic has no such target — it is titrated against congestion alone.' },
+
+        { type: 'truefalse', q: 'Beta blockers should be started during an acute decompensation', a: false,
+          why: 'They are negative inotropes, and a wet, low-output patient has no reserve to lend. Start low once euvolemic and go up slowly; the benefit comes from reverse remodelling over months, so there is nothing to gain by rushing.' },
+
+        { type: 'trend', q: 'Weeks to months after starting a beta blocker', items: [
+          { label: 'Resting heart rate', dir: 'down' },
+          { label: 'Ejection fraction', dir: 'up' },
+          { label: 'Exercise tolerance', dir: 'up' }
+        ], why: 'A transient dip in how the patient feels during the first days is expected and is not a reason to stop. The gain arrives later, once the ventricle has remodelled.' },
+
+        { type: 'recall', q: 'Reason an ARNI is never combined with an ACE inhibitor',
+          a: 'Unacceptable angioedema risk',
+          why: 'An ARNI already contains an angiotensin receptor blocker, and neprilysin inhibition raises bradykinin. Adding an ACE inhibitor raises it further, which is why a washout is required rather than a taper.' },
+
+        { type: 'number', q: 'Washout hours needed between an ACE inhibitor and starting an ARNI',
+          value: 36, unit: 'hours' },
+
+        { type: 'mcq', q: 'Electrolyte to watch when starting a mineralocorticoid antagonist',
+          a: 'Potassium',
+          distractors: ['Sodium', 'Calcium', 'Magnesium'],
+          why: 'Blocking aldosterone means retaining potassium, and almost every patient is already on an ACE inhibitor or ARB doing the same thing. The two risks compound rather than add.' },
+
+        { type: 'mcq', q: 'Class with the clearest benefit in preserved ejection fraction',
+          a: 'SGLT2 inhibitor',
+          distractors: ['Digoxin', 'Beta blocker', 'Nitrate'],
+          why: 'It is the first class to show consistent benefit in a group where trial after trial had shown none, which is why it now appears regardless of whether the patient has diabetes.' },
+
+        { type: 'multi', q: 'Advice worth repeating at every heart failure review',
+          answers: ['Daily weight monitoring', 'Medication adherence', 'Symptom action plan', 'Annual influenza vaccine'],
+          distractors: ['Strict bed rest', 'Routine antibiotics'],
+          why: 'Bed rest is not neutral, it is harmful — supervised exercise improves both symptoms and admissions, and deconditioning makes everything worse.' },
+
+        { type: 'recall', q: 'Device considered when ejection fraction stays low on optimal therapy',
+          a: 'Implantable defibrillator',
+          why: 'A large share of deaths in reduced ejection fraction are sudden and arrhythmic. No drug addresses that mode of death directly, which is the gap the device fills.' }
+      ]
+    },
+
+    {
+      id: 'hf-pitfalls',
+      topic: 'Heart Failure',
+      name: 'PITFALLS',
+      blurb: 'The avoidable decompensations',
+      cards: [
+        { type: 'multi', q: 'Common avoidable triggers for decompensation',
+          answers: ['Non-adherence', 'Dietary salt load', 'New atrial fibrillation', 'NSAID use'],
+          distractors: ['Influenza vaccination', 'Cardiac rehabilitation'],
+          why: 'NSAIDs cause sodium and water retention and blunt diuretics at the same time, which makes them one of the most reliable ways to put a stable patient back in hospital. The two distractors are protective and still get blamed.' },
+
+        { type: 'recall', q: 'Calcium channel blocker type contraindicated in reduced ejection fraction',
+          a: 'Non-dihydropyridine',
+          why: 'Verapamil and diltiazem depress contractility. If a calcium channel blocker is genuinely needed, amlodipine is the one that has been shown not to cause harm.' },
+
+        { type: 'truefalse', q: 'Digoxin improves survival in heart failure', a: false,
+          why: 'It reduces hospital admissions and leaves mortality unchanged, which is why it sits well down the list — useful for symptoms, or for rate control when atrial fibrillation coexists, and not a substitute for any of the four pillars.' },
+
+        { type: 'recall', q: 'Electrolyte disturbance that predisposes to digoxin toxicity',
+          a: 'Hypokalemia',
+          why: 'Digoxin and potassium compete for the same site on the sodium-potassium pump, so a low potassium leaves more of the pump available to bind the drug. Loop diuretics lower potassium, and the two are routinely prescribed together.' },
+
+        { type: 'mcq', q: 'Best first action when a heart failure patient gains three kilos in three days',
+          a: 'Increase the diuretic dose',
+          distractors: ['Stop the beta blocker', 'Restrict all fluids', 'Reassure and review later'],
+          why: 'That is exactly what a written action plan is for. Stopping a survival drug to treat congestion trades a long-term benefit for a problem the diuretic already handles.' },
+
+        { type: 'recall', q: 'Reason a heart failure patient can be congested with clear lungs',
+          a: 'Congestion is mainly right-sided',
+          why: 'Chronic heart failure gives the lymphatics time to adapt, so the lungs stay dry while the legs, abdomen and jugular venous pressure carry the volume. Listening to the chest alone will call this patient euvolemic.' }
+      ]
+    },
+
+    {
+      id: 'hypo-presentation',
+      topic: 'Hypothyroidism',
+      name: 'PRESENTATION',
+      blurb: 'A slow disease that imitates several others',
+      cards: [
+        { type: 'multi', q: 'Symptoms of hypothyroidism',
+          answers: ['Fatigue', 'Cold intolerance', 'Constipation', 'Weight gain'],
+          distractors: ['Heat intolerance', 'Diarrhea'],
+          why: 'The distractors are the hyperthyroid mirror image. Almost every symptom here is the metabolic rate falling, which is why the picture is so easy to attribute to age or low mood.' },
+
+        { type: 'recall', q: 'Commonest cause of hypothyroidism where iodine intake is adequate',
+          a: 'Hashimoto thyroiditis',
+          why: 'Autoimmune destruction of the gland, usually with anti-TPO antibodies present years before the TSH ever moves. It is why a positive antibody in a euthyroid patient is a reason to keep watching.' },
+
+        { type: 'mcq', q: 'Thyroid function pattern in primary hypothyroidism',
+          a: 'High TSH, low free T4',
+          distractors: ['Low TSH, low free T4', 'High TSH, high free T4', 'Low TSH, high free T4'],
+          why: 'The pituitary is working properly and shouting at a gland that cannot answer. The first distractor is the central pattern — rare, and missed precisely because everyone screens on TSH alone.' },
+
+        { type: 'recall', q: 'Type of hypothyroidism with a low TSH and a low free T4',
+          a: 'Central hypothyroidism',
+          why: 'The failure is in the pituitary or hypothalamus, so TSH cannot rise to signal it. Screening on TSH will read this patient as normal, and titrating on TSH will leave them under-replaced.' },
+
+        { type: 'truefalse', q: 'Hypothyroidism can present as low mood or cognitive slowing alone', a: true,
+          why: 'It is one of the few genuinely treatable mimics of depression and of cognitive decline, which is why thyroid function is checked in both. The reverse mistake — blaming everything on the thyroid — is also common.' },
+
+        { type: 'recall', q: 'Reflex sign classically described in hypothyroidism',
+          a: 'Delayed relaxation phase',
+          why: 'Contraction is roughly normal and relaxation is slow, because the energy-dependent step that pumps calcium back into the sarcoplasmic reticulum is the one that suffers.' },
+
+        { type: 'recall', q: 'Life-threatening extreme of untreated hypothyroidism', a: 'Myxedema coma',
+          why: 'Hypothermia, bradycardia, hyponatremia and depressed consciousness, usually in an older untreated patient tipped over by infection or cold. It is treated before the confirmatory tests return.' }
+      ]
+    },
+
+    {
+      id: 'hypo-diagnosis',
+      topic: 'Hypothyroidism',
+      name: 'DIAGNOSIS',
+      blurb: 'Why TSH moves first, and when not to believe it',
+      cards: [
+        { type: 'recall', q: 'First-line test for suspected hypothyroidism', a: 'Serum TSH',
+          why: 'TSH responds logarithmically to free T4, so a small fall in hormone produces a large rise in TSH. It moves well before free T4 leaves its reference range, which is what makes it the sensitive test.' },
+
+        { type: 'mcq', q: 'Pattern that defines subclinical hypothyroidism',
+          a: 'High TSH, normal free T4',
+          distractors: ['High TSH, low free T4', 'Normal TSH, low free T4', 'Low TSH, normal free T4'],
+          why: 'The gland is failing but keeping up under extra pituitary drive. Whether that needs treating depends on how high the TSH is, whether antibodies are present, and whether there are symptoms at all.' },
+
+        { type: 'number', q: 'TSH above which treating subclinical hypothyroidism is usually advised',
+          value: 10, unit: 'mIU/L',
+          why: 'Above this the progression to overt disease is likely enough to act on. Below it the evidence for benefit is thin and a good proportion normalise on a repeat test, so treating early mostly commits people to lifelong therapy they did not need.' },
+
+        { type: 'recall', q: 'Antibody that confirms autoimmune thyroid disease', a: 'Anti-TPO antibody',
+          why: 'Its presence predicts progression, so it changes how closely a borderline TSH is followed even when nothing is treated today.' },
+
+        { type: 'truefalse', q: 'TSH should be repeated before committing someone to lifelong treatment', a: true,
+          why: 'It varies with time of day, with acute illness and with recovery from it. Repeating it, with free T4 and antibodies, is what separates a real diagnosis from a snapshot.' },
+
+        { type: 'recall', q: 'Reason thyroid tests are unreliable during acute illness',
+          a: 'Non-thyroidal illness syndrome',
+          why: 'TSH and T3 fall during serious illness and TSH can overshoot upward during recovery, so a level taken on a sick inpatient may describe the illness rather than the thyroid. Repeat it once they are well.' },
+
+        { type: 'number', q: 'Approximate upper limit of the usual TSH reference range',
+          low: 4, high: 5, unit: 'mIU/L',
+          why: 'It varies between laboratories and drifts upward with age, which is why a mildly raised value in an older patient is often normal for them rather than early disease.' }
+      ]
+    },
+
+    {
+      id: 'hypo-management',
+      topic: 'Hypothyroidism',
+      name: 'MANAGEMENT',
+      blurb: 'One drug, and the several ways it stops working',
+      cards: [
+        { type: 'recall', q: 'Drug used to treat hypothyroidism', a: 'Levothyroxine' },
+
+        { type: 'recall', q: 'Reason levothyroxine is taken on an empty stomach',
+          a: 'Food and drink block absorption',
+          why: 'Absorption happens in the small bowel and is reduced by food, coffee and a long list of drugs. Thirty to sixty minutes before breakfast, or well after the last meal at night, is what makes the dose reproducible.' },
+
+        { type: 'number', q: 'Weeks to wait before rechecking TSH after a dose change',
+          value: 6, unit: 'weeks',
+          why: 'The pituitary takes about six weeks to re-equilibrate to a new thyroid hormone level. A TSH drawn earlier is still reporting on the old dose, and adjusting against it sets off an oscillation that can take months to settle.' },
+
+        { type: 'multi', q: 'Things that block levothyroxine absorption',
+          answers: ['Calcium carbonate', 'Ferrous sulfate', 'Proton pump inhibitors', 'Bile acid sequestrants'],
+          distractors: ['Acetaminophen', 'Atorvastatin'],
+          why: 'Separating them by four hours usually solves it. This is the first thing to ask about when a dose that worked for years suddenly stops — a new supplement is a far more likely explanation than the gland changing.' },
+
+        { type: 'mcq', q: 'How to start levothyroxine in an elderly patient with cardiac disease',
+          a: 'Low dose, increased slowly',
+          distractors: ['Full replacement immediately', 'Weekly dosing', 'Liothyronine instead'],
+          why: 'Raising the metabolic rate raises myocardial oxygen demand. In a heart with limited coronary reserve, a full replacement dose can precipitate angina or an arrhythmia before it does any good.' },
+
+        { type: 'number', q: 'Approximate full replacement dose of levothyroxine per kilogram',
+          value: 1.6, unit: 'mcg/kg',
+          why: 'A starting estimate rather than a prescription. It is a reasonable opening dose in a young healthy adult and the wrong opening dose in almost everyone else.' },
+
+        { type: 'truefalse', q: 'Levothyroxine requirements rise during pregnancy', a: true,
+          why: 'Demand climbs early, often by a quarter to a third, and maternal hypothyroidism affects fetal neurodevelopment. The dose is usually increased as soon as pregnancy is confirmed rather than waiting for the next test.' },
+
+        { type: 'recall', q: 'Measurement used to titrate levothyroxine in primary hypothyroidism',
+          a: 'Serum TSH' },
+
+        { type: 'recall', q: 'Reason TSH cannot be used to titrate central hypothyroidism',
+          a: 'The pituitary itself is failing',
+          why: 'TSH is already inappropriately low, so it cannot report whether replacement is adequate. Free T4 is used instead, aimed at the upper half of the range.' }
+      ]
+    },
+
+    {
+      id: 'hypo-pitfalls',
+      topic: 'Hypothyroidism',
+      name: 'PITFALLS',
+      blurb: 'Over-replacement, and the order things must be treated in',
+      cards: [
+        { type: 'recall', q: 'Hormone deficiency that must be corrected before starting levothyroxine',
+          a: 'Cortisol',
+          why: 'If adrenal insufficiency is present and untreated, raising the metabolic rate accelerates cortisol clearance and can precipitate an adrenal crisis. Steroid first, thyroid second — the order is the whole point.' },
+
+        { type: 'truefalse', q: 'A suppressed TSH on treatment is harmless if the patient feels well', a: false,
+          why: 'It is subclinical thyrotoxicosis, and it carries a real risk of atrial fibrillation and accelerated bone loss, particularly in older and postmenopausal patients. Over-replacement is the commonest iatrogenic harm in thyroid care and it feels good on the way there.' },
+
+        { type: 'mcq', q: 'First thing to check when TSH rises on a previously stable dose',
+          a: 'Adherence and dose timing',
+          distractors: ['Add liothyronine', 'Double the dose', 'Recheck antibodies'],
+          why: 'Missed doses and newly started supplements explain most of these. Escalating the dose against poor adherence produces alternating over- and under-replacement rather than control.' },
+
+        { type: 'truefalse', q: 'Adding T3 to T4 is standard when symptoms persist on a normal TSH', a: false,
+          why: 'Trials have not shown consistent benefit and it is not standard care. Persistent symptoms with a normal TSH are more often anaemia, sleep apnoea, depression or something else entirely, and that is the more useful place to look.' },
+
+        { type: 'recall', q: 'Drug that can cause both hypothyroidism and hyperthyroidism',
+          a: 'Amiodarone',
+          why: 'It is around forty percent iodine by weight. Depending on the gland it meets, that load either shuts hormone synthesis down or drives excess release, which is why thyroid function is checked before starting and periodically after.' },
+
+        { type: 'recall', q: 'Reason a mildly raised TSH in an older patient may need no treatment',
+          a: 'The range shifts up with age',
+          why: 'The distribution of normal TSH rises across the decades, so a value slightly above the printed range can be normal for that person. Treating it has not been shown to help and carries the over-replacement risk.' },
+
+        { type: 'recall', q: 'Electrolyte disturbance commonly found in myxedema coma', a: 'Hyponatremia',
+          why: 'Reduced free water clearance, made worse by whatever precipitated the crisis. Correcting it too quickly carries its own risk, so the sodium is treated cautiously alongside the thyroid hormone.' }
       ]
     }
   ];

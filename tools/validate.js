@@ -595,6 +595,25 @@
         'Aim for under a fifth. A trap usually works better as an mcq with the trap as the tempting wrong answer — a guess then pays 1 in 4 rather than 1 in 2.');
     }
 
+    /* A deck where nearly every true/false is false can be beaten by
+       always answering false, and the instruction that causes it is the
+       same one that makes the cards worth having: a misconception stated
+       plainly is false. Measured across ten written decks it reached 70%
+       before anyone noticed. State some of them the right way round. */
+    if (tf >= 6) {
+      var no = 0;
+      decks.forEach(function (d) {
+        if (!isArr(d.cards)) return;
+        d.cards.forEach(function (c) { if (c && c.type === 'truefalse' && c.a === false) no++; });
+      });
+      var lean = Math.max(no, tf - no) / tf;
+      if (lean > 0.7) {
+        r.warn('set', Math.round(100 * lean) + '% of the true/false cards have the same answer (' +
+          no + ' false, ' + (tf - no) + ' true).',
+          'Rephrase some so the correct statement is the true one. As it stands the type can be guessed.');
+      }
+    }
+
     var names = Object.keys(topics);
     if (many && names.length > 1) {
       r.err('set', 'These decks carry ' + names.length + ' different topics: ' + names.join(', ') + '.',
