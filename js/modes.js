@@ -101,7 +101,12 @@
 
     function open() { ctx.openNote(text); }
 
-    cue.addEventListener('click', open);
+    cue.addEventListener('click', function (e) { e.stopPropagation(); open(); });
+
+    /* Swipe up from anywhere on the card, not only from the cue — the cue
+       is a target the size of a word and the gesture should not require
+       finding it. */
+    if (ctx.onSwipeUp) ctx.onSwipeUp(open);
 
     /* Swipe up from the cue opens it too. The tap is the discoverable
        path and the swipe is the one that stays in the hand. */
@@ -173,7 +178,17 @@
         ctx.revealAnswer('swap');
         ctx.setKicker('KNEW IT?');
         hint.remove();
-        if (ctx.card.why) area.appendChild(explanation(ctx.card.why, ctx));
+        /* recall is the one mode that adds its note at reveal rather than
+           at mount, because the explanation has to arrive before grading
+           rather than after it. The central fallback in app.js checks at
+           mount time, finds nothing, and mounts a held one — so appending
+           here unconditionally produced two. Release that one if it is
+           already there. */
+        if (ctx.card.why) {
+          var held = area.querySelector('.why-wrap');
+          if (held) held.classList.remove('is-held');
+          else area.appendChild(explanation(ctx.card.why, ctx));
+        }
         area.appendChild(swipeBar(ctx));
       }
 

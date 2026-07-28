@@ -555,11 +555,16 @@
         sheet.appendChild(h('div', 'note-cue', 'TAP TO CLOSE'));
         el.appendChild(sheet);
         el.classList.add('has-note');
+        session.noteOpen = true;
         requestAnimationFrame(function () { sheet.classList.add('is-in'); });
 
         function close() {
           sheet.classList.remove('is-in');
           el.classList.remove('has-note');
+          session.noteOpen = false;
+          /* A dismissing tap produces a click a few milliseconds later.
+             Without this it lands on the card and advances it. */
+          session.noteGuard = Date.now() + 400;
           session.closeNote = null;
           var go = function () { sheet.remove(); };
           if (reduceMotion) go(); else setTimeout(go, 200);
@@ -568,25 +573,67 @@
         /* The sheet stops pointer events reaching the card: without this
            a drag to scroll a long note reads as a swipe on the question
            underneath it. */
-        var y0 = 0, moved = false;
+        var y0 = null, moved = false;
         sheet.addEventListener('pointerdown', function (e) {
           e.stopPropagation();
           y0 = e.clientY;
           moved = false;
         });
         sheet.addEventListener('pointermove', function (e) {
+          if (y0 == null) return;
           if (Math.abs(e.clientY - y0) > 10) moved = true;
         });
         sheet.addEventListener('pointerup', function (e) {
           e.stopPropagation();
+          /* A release with no matching press belongs to the swipe that
+             opened this sheet — the finger was already down before it
+             existed. Acting on it measured the whole gesture as a downward
+             flick and shut the note in the same motion that opened it. */
+          if (y0 == null) return;
+          var dy = e.clientY - y0;
+          y0 = null;
           /* Swipe down to dismiss, mirroring the swipe up that opened it.
              A tap that never travelled closes it too — the note is read,
              not interacted with. */
-          if (!moved || e.clientY - y0 > 40) close();
+          if (!moved || dy > 40) close();
         });
         sheet.addEventListener('click', function (e) { e.stopPropagation(); });
 
         session.closeNote = close;
+      },
+
+      /* An upward drag anywhere on the card opens the note.
+
+         Excluding buttons was the obvious way to stop a swipe that began
+         on GOT IT from grading on its way past, and it was wrong: on a
+         multiple-choice card the options cover most of the lower half, so
+         the gesture failed exactly where there was most room to make it.
+         Instead the drag is allowed to start anywhere and the click that
+         the release produces is swallowed once. */
+      onSwipeUp: function (fn) {
+        var y0 = null, x0 = 0;
+
+        function swallow(e) {
+          e.stopPropagation();
+          e.preventDefault();
+          el.removeEventListener('click', swallow, true);
+        }
+
+        el.addEventListener('pointerdown', function (e) {
+          y0 = e.clientY; x0 = e.clientX;
+        });
+        el.addEventListener('pointermove', function (e) {
+          if (y0 == null) return;
+          var dy = y0 - e.clientY;
+          if (dy > 48 && dy > Math.abs(e.clientX - x0)) {
+            y0 = null;
+            el.addEventListener('click', swallow, true);
+            setTimeout(function () { el.removeEventListener('click', swallow, true); }, 500);
+            fn();
+          }
+        });
+        el.addEventListener('pointerup', function () { y0 = null; });
+        el.addEventListener('pointercancel', function () { y0 = null; });
       },
 
       waitForTap: function (fn) {
@@ -596,6 +643,9 @@
         requestAnimationFrame(function () { cue.classList.add('is-in'); });
 
         function go() {
+          /* Never advance out from under an open explanation, whatever
+             asked — tap, space or Enter. */
+          if (session.noteOpen) return;
           el.removeEventListener('click', onClick);
           cue.remove();
           global.Sfx.advance();
@@ -603,9 +653,19 @@
         }
 
         function onClick(e) {
-          /* The explanation toggle is the one control still live once an
-             answer is on screen; everything else on the card is spent. */
-          if (e.target.closest('.why-toggle')) return;
+          /* The explanation is the one live control once an answer is on
+             screen; everything else on the card is spent. Opening it, or
+             anything inside it, must not also advance.
+
+             This guard named `.why-toggle` until the fold became a
+             full-card note and the class was renamed. It matched nothing
+             after that, so every tap on the cue opened the explanation
+             and advanced the card in the same gesture — the note appeared
+             and vanished, which looked like the note was broken rather
+             than the guard. */
+          if (e.target.closest('.why-cue, .note-sheet')) return;
+          /* The tap that dismissed a note is spent on the dismissal. */
+          if (session.noteGuard && Date.now() < session.noteGuard) return;
           go();
         }
 
