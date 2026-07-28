@@ -45,9 +45,9 @@
      Contrast of ink-on-bg and acc-on-bg is verified in tools/       */
   var PALETTES = [
     { name: 'voltage',    bg: '#0B0B0B', ink: '#F2F200', acc: '#FF2D95' },
-    { name: 'siren',      bg: '#C4241B', ink: '#FFF8E7', acc: '#FFE600' },
+    { name: 'siren', off: true,      bg: '#C4241B', ink: '#FFF8E7', acc: '#FFE600' },
     { name: 'blueprint',  bg: '#1B1BFF', ink: '#FFE600', acc: '#00E5A0', off: true },
-    { name: 'toxic',      bg: '#04150F', ink: '#00E5A0', acc: '#C6FF00' },
+    { name: 'toxic', off: true,      bg: '#04150F', ink: '#00E5A0', acc: '#C6FF00' },
     { name: 'hyper',      bg: '#14001F', ink: '#FF2D95', acc: '#00C2FF' },
     { name: 'orchid',     bg: '#5B18D9', ink: '#F2E9FF', acc: '#FFE600' },
     { name: 'ember',      bg: '#1A0A00', ink: '#FF6B00', acc: '#FFD400' },
@@ -56,24 +56,24 @@
     { name: 'limelight',  bg: '#101400', ink: '#C6FF00', acc: '#FF00A8' },
     { name: 'clay',       bg: '#E8E2D6', ink: '#8F002F', acc: '#1B1BFF' },
     { name: 'graphite',   bg: '#191919', ink: '#F5F5F5', acc: '#FF6B00' },
-    { name: 'bubblegum',  bg: '#FF69B4', ink: '#20003A', acc: '#0A2E00' },
+    { name: 'bubblegum', off: true,  bg: '#FF69B4', ink: '#20003A', acc: '#0A2E00' },
     { name: 'signal',     bg: '#FFE600', ink: '#0B0B0B', acc: '#1B1BFF' },
     { name: 'mint',       bg: '#00E5A0', ink: '#04150F', acc: '#4B0082', off: true },
     { name: 'cobalt',     bg: '#002A8F', ink: '#F5F5F5', acc: '#FFB300' },
-    { name: 'rust',       bg: '#8F2600', ink: '#FFE9D6', acc: '#00E5A0' },
+    { name: 'rust', off: true,       bg: '#8F2600', ink: '#FFE9D6', acc: '#00E5A0' },
     { name: 'forest',     bg: '#06231A', ink: '#7FFFB2', acc: '#FFD400' },
-    { name: 'plum',       bg: '#2B0A3D', ink: '#E6C8FF', acc: '#FF8A3D' },
-    { name: 'sand',       bg: '#EFE0BE', ink: '#2B1B00', acc: '#A50E1C' },
+    { name: 'plum', off: true,       bg: '#2B0A3D', ink: '#E6C8FF', acc: '#FF8A3D' },
+    { name: 'sand', off: true,       bg: '#EFE0BE', ink: '#2B1B00', acc: '#A50E1C' },
     { name: 'ocean',      bg: '#013A4A', ink: '#9BE9FF', acc: '#FFB703' },
-    { name: 'berry',      bg: '#4A0020', ink: '#FFC2DE', acc: '#7FFFB2' },
-    { name: 'slate',      bg: '#2E3440', ink: '#ECEFF4', acc: '#8FD3E8' },
+    { name: 'berry', off: true,      bg: '#4A0020', ink: '#FFC2DE', acc: '#7FFFB2' },
+    { name: 'slate', off: true,      bg: '#2E3440', ink: '#ECEFF4', acc: '#8FD3E8' },
     { name: 'lemon',      bg: '#F7F7F2', ink: '#1B1B1B', acc: '#5B18D9' },
     { name: 'inkblue',    bg: '#0A1A3F', ink: '#FFD400', acc: '#FF8A8A', off: true },
-    { name: 'moss',       bg: '#C8D96F', ink: '#17210A', acc: '#8F002F' },
+    { name: 'moss', off: true,       bg: '#C8D96F', ink: '#17210A', acc: '#8F002F' },
     { name: 'coral',      bg: '#FF6B5B', ink: '#21060A', acc: '#00325E' },
-    { name: 'steel',      bg: '#C9D1D9', ink: '#10161D', acc: '#8F002F' },
+    { name: 'steel', off: true,      bg: '#C9D1D9', ink: '#10161D', acc: '#8F002F' },
     { name: 'nocturne',   bg: '#05010F', ink: '#B14DFF', acc: '#00FFC8' },
-    { name: 'paperblue',  bg: '#DCE9F5', ink: '#0B2545', acc: '#A50E1C' },
+    { name: 'paperblue', off: true,  bg: '#DCE9F5', ink: '#0B2545', acc: '#A50E1C' },
     { name: 'oxide',      bg: '#F0EDE6', ink: '#003B36', acc: '#D65108' },
     { name: 'midnight',   bg: '#0D1B2A', ink: '#E0E1DD', acc: '#F4A259' },
 
@@ -85,15 +85,15 @@
     { name: 'sage',       bg: '#E9EDE6', ink: '#2C3A31', acc: '#4C7358' },
     { name: 'dusk',       bg: '#2B3440', ink: '#E7EBE8', acc: '#A8C4B6' },
     { name: 'oat',        bg: '#F3EEE4', ink: '#3A3630', acc: '#8A5A2B' },
-    { name: 'cream',      bg: '#FBF7F0', ink: '#141110', acc: '#A8442A' },
+    { name: 'cream', off: true,      bg: '#FBF7F0', ink: '#141110', acc: '#A8442A' },
     { name: 'goldleaf',   bg: '#101D2B', ink: '#F1ECE2', acc: '#D4A72C' },
     { name: 'blush',      bg: '#EEE5E1', ink: '#2A2321', acc: '#7D5A50' },
     { name: 'lemonade',   bg: '#FFF1AE', ink: '#2B2118', acc: '#B03A16', off: true },
-    { name: 'gumball',    bg: '#FFD8E7', ink: '#2E2440', acc: '#5B45D6' },
+    { name: 'gumball', off: true,    bg: '#FFD8E7', ink: '#2E2440', acc: '#5B45D6' },
     { name: 'cucumber',   bg: '#D8F2E4', ink: '#213A2D', acc: '#A8430E' },
-    { name: 'grape',      bg: '#EDE3FF', ink: '#31215C', acc: '#00705E' },
-    { name: 'abyss',      bg: '#001A1A', ink: '#5EEAD4', acc: '#FF8A5B' },
-    { name: 'terracotta', bg: '#2A1410', ink: '#F5D8C0', acc: '#E07A3F' }
+    { name: 'grape', off: true,      bg: '#EDE3FF', ink: '#31215C', acc: '#00705E' },
+    { name: 'abyss', off: true,      bg: '#001A1A', ink: '#5EEAD4', acc: '#FF8A5B' },
+    { name: 'terracotta', off: true, bg: '#2A1410', ink: '#F5D8C0', acc: '#E07A3F' }
   ];
 
   /* Per-palette derived tones, cached — flat shapes need opaque colours,
@@ -145,7 +145,7 @@
     { face: '"Righteous", sans-serif',       track: '0',      caps: false, wght: 400 },
     { face: '"Titan One", sans-serif',       track: '-.01em', caps: false, wght: 400 },
     { face: '"Shrikhand", serif',            track: '0',      caps: false, wght: 400 , favor: 2 },
-    { face: '"Syne", sans-serif',            track: '-.04em', caps: true,  wght: 800 },
+    { face: '"Syne", sans-serif',            track: '-.04em', caps: true,  wght: 800 , off: true },
     { face: '"Unbounded", sans-serif',       track: '-.03em', caps: false, wght: 900 },
     { face: '"Outfit", sans-serif',          track: '-.045em',caps: false, wght: 900 },
     { face: '"Rubik Mono One", sans-serif',  track: '-.02em', caps: false, wght: 400 },
@@ -190,7 +190,7 @@
     { face: '"Bungee Inline", sans-serif',   track: '0',      caps: true,  wght: 400 },
     { face: '"Bungee Shade", sans-serif',    track: '0',      caps: true,  wght: 400 },
     { face: '"Yatra One", serif',            track: '0',      caps: false, wght: 400, off: true },
-    { face: '"Monoton", sans-serif',         track: '.02em',  caps: true,  wght: 400 },
+    { face: '"Monoton", sans-serif',         track: '.02em',  caps: true,  wght: 400 , off: true },
     { face: '"Zen Dots", sans-serif',        track: '-.01em', caps: false, wght: 400, off: true },
     { face: '"Bricolage Grotesque", sans-serif', track: '-.03em', caps: false, wght: 800, off: true },
     /* ── Round five: sans, interesting but readable ────────────
@@ -524,7 +524,7 @@
                         'radial-gradient(circle at 84% 74%, ' + c.a1 + ' 0 28%, transparent 28%)', size: 'auto' };
       } },
 
-    { name: 'ring-flat', tier: 'flat', weight: 1.4, drift: 'drift-breathe',
+    { name: 'ring-flat', off: true, tier: 'flat', weight: 1.4, drift: 'drift-breathe',
       make: function (c) {
         return { image: 'radial-gradient(circle at 50% 34%, transparent 0 32%, ' + c.s2 + ' 32% 34.5%, transparent 34.5%)', size: 'auto' };
       } },
@@ -659,7 +659,7 @@
         return { image: 'repeating-linear-gradient(45deg, ' + c.s1 + ' 0 2px, transparent 2px 22px)', size: 'auto' };
       } },
 
-    { name: 'grain', tier: 'quiet', weight: 3, drift: null,
+    { name: 'grain', off: true, tier: 'quiet', weight: 3, drift: null,
       make: function (c) {
         return svgTile(scatter(7717, 130, 64, 64, function (x, y, v) {
           var s = 0.9 + v * 0.9;
@@ -681,7 +681,7 @@
       } },
 
     /* ---- mid: the same families, tighter and a shade stronger ---- */
-    { name: 'wavy-dense', tier: 'mid', weight: 2.0, drift: 'drift-horiz',
+    { name: 'wavy-dense', off: true, tier: 'mid', weight: 2.0, drift: 'drift-horiz',
       make: function (c) {
         return svgTile('<path d="M0 10 Q10 2 20 10 T40 10" fill="none" stroke="' + c.s2 +
                        '" stroke-width="2"/>', 40, 20, '62px 31px');
@@ -711,7 +711,7 @@
                        '" stroke-width="2"/>', 40, 22, '78px 43px');
       } },
 
-    { name: 'terrazzo', tier: 'mid', weight: 2.0, drift: null,
+    { name: 'terrazzo', off: true, tier: 'mid', weight: 2.0, drift: null,
       make: function (c) {
         return svgTile(scatter(4242, 16, 90, 90, function (x, y, v, i) {
           if (i % 3 === 0) {
@@ -740,7 +740,7 @@
     { name: 'dots-quiet', tier: 'quiet', weight: 3, drift: 'drift-slow',
       make: function (c) { return { image: 'radial-gradient(' + c.tQuiet + ' 3px, transparent 3.5px)', size: '74px 74px' }; } },
 
-    { name: 'grid-quiet', tier: 'quiet', weight: 3, drift: 'drift-slow',
+    { name: 'grid-quiet', off: true, tier: 'quiet', weight: 3, drift: 'drift-slow',
       make: function (c) {
         return { image: 'linear-gradient(' + c.tQuiet + ' 2px, transparent 2px),' +
                         'linear-gradient(90deg, ' + c.tQuiet + ' 2px, transparent 2px)', size: '132px 132px' };
@@ -753,7 +753,7 @@
       make: function (c) { return { image: 'repeating-linear-gradient(45deg, ' + c.tQuiet + ' 0 26px, transparent 26px 78px)', size: 'auto' }; } },
 
     /* ---- mid ---- */
-    { name: 'dots', tier: 'mid', weight: 2.0, drift: 'drift-slow',
+    { name: 'dots', off: true, tier: 'mid', weight: 2.0, drift: 'drift-slow',
       make: function (c) { return { image: 'radial-gradient(' + c.tMid + ' 3px, transparent 3.5px)', size: '38px 38px' }; } },
 
     { name: 'grid', off: true, tier: 'mid', weight: 2.0, drift: 'drift-slow',
@@ -775,12 +775,12 @@
       make: function (c) { return { image: 'repeating-linear-gradient(90deg, ' + c.tMid + ' 0 5px, transparent 5px 46px)', size: 'auto' }; } },
 
     /* ---- loud: rare punctuation ---- */
-    { name: 'stripes-tight', tier: 'loud', weight: 2.1, drift: 'drift-diag',
+    { name: 'stripes-tight', off: true, tier: 'loud', weight: 2.1, drift: 'drift-diag',
       make: function (c) { return { image: 'repeating-linear-gradient(45deg, ' + c.tLoud + ' 0 20px, transparent 20px 40px)', size: 'auto' }; } },
 
     /* `repeating-` matters: a plain conic-gradient holds its last stop for
        the remaining 340deg, leaving one lonely wedge. */
-    { name: 'rays', tier: 'loud', weight: 2.1, drift: 'drift-spin',
+    { name: 'rays', off: true, tier: 'loud', weight: 2.1, drift: 'drift-spin',
       make: function (c) { return { image: 'repeating-conic-gradient(from 0deg, ' + c.tLoud + ' 0 9deg, transparent 9deg 18deg)', size: 'auto' }; } },
 
     { name: 'rings', off: true, tier: 'loud', weight: 2.1, drift: 'drift-breathe',

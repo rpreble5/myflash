@@ -36,6 +36,8 @@
     return m;
   }
 
+  var HOME_PALETTES = global.Theme.live(global.Theme.PALETTES);
+
   /* Topics weakest first, each opening onto its decks in the same order.
      The number itself stays out of it — a percentage invites you to farm
      the metric instead of the material, and on a ten-card deck it is
@@ -45,7 +47,10 @@
     list.textContent = '';
 
     global.Store.topics().forEach(function (topic, ti) {
-      var pal = global.Theme.PALETTES[ti % global.Theme.PALETTES.length];
+      /* Live only. The full list still carries everything that has been
+         retired, and the home screen is the last place a rejected palette
+         should reappear. */
+      var pal = HOME_PALETTES[ti % HOME_PALETTES.length];
 
       var group = h('div', 'topic');
       group.style.setProperty('--bg', pal.bg);
