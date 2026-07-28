@@ -111,6 +111,61 @@
     });
   }
 
+  /* ──────────────────── app update ───────────────────── */
+  /* The build is read off the script tag that loaded this file rather than
+     written down somewhere. A constant can be forgotten on a release and
+     then confidently reports the wrong number; this one cannot disagree
+     with what is actually running, which is the only thing the readout is
+     for — without it the button is unfalsifiable. */
+  function buildId() {
+    var tag = document.querySelector('script[src*="js/app.js"]');
+    var m = tag && String(tag.getAttribute('src')).match(/[?&]v=([^&]+)/);
+    return m ? m[1] : 'dev';
+  }
+
+  /* There is no service worker, so there is no update lifecycle to ask
+     politely. What goes stale is the HTTP cache holding index.html, and
+     with it the ?v= stamps that would otherwise pull fresh CSS and JS —
+     so the document itself has to be refetched under a URL the cache has
+     never seen.
+
+     The service worker and cache-storage steps are guarded rather than
+     assumed: they do nothing today and mean this button stays correct if
+     one is ever added. */
+  function forceUpdate(btn) {
+    var label = btn.textContent;
+    btn.textContent = 'Updating…';
+    btn.disabled = true;
+
+    var jobs = [];
+    if (navigator.serviceWorker && navigator.serviceWorker.getRegistrations) {
+      jobs.push(navigator.serviceWorker.getRegistrations().then(function (regs) {
+        return Promise.all(regs.map(function (r) { return r.update(); }));
+      }));
+    }
+    if (global.caches && caches.keys) {
+      jobs.push(caches.keys().then(function (keys) {
+        return Promise.all(keys.map(function (k) { return caches.delete(k); }));
+      }));
+    }
+
+    /* A failed sub-step must not strand the button — the reload is the
+       part that matters and works on its own. */
+    var settled = jobs.map(function (j) { return j.catch(function () {}); });
+    var went = false;
+    var go = function () {
+      if (went) return;
+      went = true;
+      btn.textContent = label;
+      location.replace(location.pathname + '?u=' + Date.now());
+    };
+
+    Promise.all(settled).then(go, go);
+    /* A browser that resolves neither should not leave the button sitting
+       on "Updating…" forever. */
+    setTimeout(go, 2500);
+  }
+
   /* ──────────────────── look feedback ───────────────────── */
   /* What the current card looks like, in the terms a verdict is about. */
   var currentLook = null;
@@ -1042,6 +1097,10 @@
     $('#btn-new-deck').addEventListener('click', function () { show('screen-editor'); });
     $('#btn-cancel-deck').addEventListener('click', function () { show('screen-home'); });
     $('#btn-save-deck').addEventListener('click', saveDeckFromForm);
+    var build = $('#app-build');
+    if (build) build.textContent = 'Version ' + buildId();
+    $('#btn-update').addEventListener('click', function () { forceUpdate(this); });
+
     $('#btn-reset-progress').addEventListener('click', function () {
       if (confirm('Wipe all progress?')) { global.Store.resetProgress(); renderHome(); }
     });
