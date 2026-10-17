@@ -204,11 +204,11 @@
             { label: 'Reduced TLC', bin: 'Restrictive' },
             { label: 'Normal or increased FEV1/FVC', bin: 'Restrictive' }
           ] },
-        { type: 'number', q: 'Normal serum sodium', low: 135, high: 145, unit: 'mEq/L' },
-        { type: 'number', q: 'Normal serum potassium', low: 3.5, high: 5.0, unit: 'mEq/L' },
-        { type: 'number', q: 'Normal serum calcium', low: 8.5, high: 10.5, unit: 'mg/dL' },
-        { type: 'number', q: 'Normal platelet count', low: 150000, high: 450000, unit: '/µL', step: 10000 },
-        { type: 'number', q: 'Normal serum osmolality', low: 275, high: 295, unit: 'mOsm/kg', step: 5 },
+        { type: 'number', q: 'Normal serum sodium', values: [135, 145], join: '–', unit: 'mEq/L' },
+        { type: 'number', q: 'Normal serum potassium', values: [3.5, 5.0], join: '–', unit: 'mEq/L' },
+        { type: 'number', q: 'Normal serum calcium', values: [8.5, 10.5], join: '–', unit: 'mg/dL' },
+        { type: 'number', q: 'Normal platelet count', values: [150, 450], join: '–', unit: '× 10³/µL' },
+        { type: 'number', q: 'Normal serum osmolality', values: [275, 295], join: '–', unit: 'mOsm/kg' },
         { type: 'mcq', q: 'Best single test to distinguish iron deficiency from anemia of chronic disease',
           a: 'Serum ferritin', distractors: ['Hemoglobin', 'Mean corpuscular volume', 'Reticulocyte count'] }
       ]
@@ -303,7 +303,7 @@
           ] },
         { type: 'number', q: 'Lowest possible Glasgow Coma Scale score', value: 3, unit: '', tolerance: 0 },
         { type: 'number', q: 'GCS at or below which intubation is generally considered', value: 8, unit: '', tolerance: 0 },
-        { type: 'number', q: 'Normal intracranial pressure in adults', low: 5, high: 15, unit: 'mmHg' },
+        { type: 'number', q: 'Normal intracranial pressure in adults', values: [5, 15], join: '–', unit: 'mmHg' },
         { type: 'number', q: 'Approximate adult blood volume', value: 5000, unit: 'mL', tolerance: 500, step: 100, min: 2000, max: 8000 },
         { type: 'truefalse', q: 'Epinephrine is given every 3–5 minutes during adult cardiac arrest', a: true,
           why: 'Standard ACLS dosing is 1 mg IV/IO every 3–5 minutes for as long as the arrest continues.' },
@@ -482,7 +482,7 @@
           tolerance: 0, ref: 'ADA Standards of Care' },
         { type: 'number', q: 'Two-hour glucose on an OGTT that diagnoses diabetes', value: 200, unit: 'mg/dL',
           tolerance: 0, ref: 'ADA Standards of Care' },
-        { type: 'number', q: 'HbA1c range that defines prediabetes', low: 5.7, high: 6.4, unit: '%',
+        { type: 'number', q: 'HbA1c range that defines prediabetes', values: [5.7, 6.4], join: '–', unit: '%',
           ref: 'ADA Standards of Care' },
 
         { type: 'multi', q: 'Results that can establish a diagnosis of diabetes',
@@ -630,7 +630,7 @@
         { type: 'recall', q: 'Agent most often used in a bronchoprovocation challenge', a: 'Methacholine' },
         { type: 'recall', q: 'Test to consider when spirometry is normal but asthma is still likely',
           a: 'Bronchoprovocation testing' },
-        { type: 'number', q: 'Peak flow green zone, as a share of personal best', low: 80, high: 100, unit: '%' }
+        { type: 'number', q: 'Peak flow green zone, as a share of personal best', values: [80, 100], join: '–', unit: '%' }
       ]
     },
 
@@ -1269,7 +1269,7 @@
         { type: 'recall', q: 'Vaccine given during every pregnancy', a: 'Tdap',
           why: 'Maternal antibody crosses the placenta and protects the newborn from pertussis in the months before their own vaccinations begin. It is given every pregnancy regardless of when the last dose was.' },
 
-        { type: 'number', q: 'Weeks of pregnancy at which Tdap is given', low: 27, high: 36, unit: 'weeks',
+        { type: 'number', q: 'Weeks of pregnancy at which Tdap is given', values: [27, 36], join: '–', unit: 'weeks',
           why: 'Late enough to produce a good antibody response, early enough for it to cross before delivery. Either end of that window loses part of the point.' },
 
         { type: 'recall', q: 'Adolescent vaccine given specifically to prevent cancer', a: 'HPV vaccine',
@@ -1306,7 +1306,7 @@
           why: 'Earlier if risk factors bring the fracture risk up to that of a 65-year-old. The trigger is the calculated risk rather than the birthday, which is the part most often missed.' },
 
         { type: 'number', q: 'Age range in which every adult should be screened once for hepatitis C',
-          low: 18, high: 79, unit: 'years',
+          values: [18, 79], join: '–', unit: 'years',
           why: 'Once curable, screening became worth doing broadly rather than only in the high-risk. It is a single test for most people, not a repeated one.' },
 
         { type: 'multi', q: 'Screened for at least once in an average adult',
@@ -1735,7 +1735,7 @@
           why: 'The definition is a percentage rather than a dose, because different statins reach it at very different milligram strengths.' },
 
         { type: 'number', q: 'LDL reduction expected from moderate-intensity statin therapy',
-          low: 30, high: 49, unit: '%' },
+          values: [30, 49], join: '–', unit: '%' },
 
         { type: 'mcq', q: 'Drug added when a maximally tolerated statin is not enough',
           a: 'Ezetimibe',

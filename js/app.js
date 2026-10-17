@@ -388,7 +388,9 @@
     function layoutStack() {
       var R = flipper.clientHeight, GAP = STACK_GAP;
       /* Under a typed number the correct one matches it in size. */
-      stack.answer.style.fontSize = (stack.entry ? 40 : answerSize(stack.answer.textContent)) + 'px';
+      stack.answer.style.fontSize = (stack.entry
+        ? parseFloat(global.getComputedStyle(stack.entry).fontSize) || 40
+        : answerSize(stack.answer.textContent)) + 'px';
       var aH = stack.answer.getBoundingClientRect().height;
       /* A live entry line (the keypad's number) sits between the question
          and the answer, which then only appears on a miss. */

@@ -34,7 +34,7 @@
     mcq:       ['a', 'distractors'],
     multi:     ['answers', 'distractors'],
     truefalse: ['a'],
-    number:    ['value', 'low', 'high', 'unit', 'tolerance', 'step', 'min', 'max'],
+    number:    ['value', 'low', 'high', 'values', 'join', 'unit', 'tolerance', 'step', 'min', 'max'],
     trend:     ['items'],
     bucket:    ['bins', 'items'],
     match:     ['pairs']
@@ -256,6 +256,25 @@
 
   CHECK.number = function (r, w, c) {
     var hasVal = c.value != null, hasRange = c.low != null || c.high != null;
+
+    /* Several numbers typed in turn: both ends of a range, or a pair like
+       130/80. Typed only, so the dial checks below do not apply. */
+    if (c.values != null) {
+      if (hasVal || hasRange) {
+        return r.err(w, 'Has "values" and also "value" or a range.', 'Use one of them.');
+      }
+      if (!isArr(c.values) || c.values.length < 2 || c.values.length > 4) {
+        return r.err(w, '"values" needs 2 to 4 numbers.', 'Write "values": [135, 145].');
+      }
+      var notNum = c.values.filter(function (v) { return typeof v !== 'number' || !isFinite(v); });
+      if (notNum.length) {
+        return r.err(w, '"values" holds ' + JSON.stringify(notNum[0]) + ', not a number.',
+          'Write bare numbers: [3.5, 5.0], not ["3.5", "5.0 mEq/L"].');
+      }
+      if (c.join != null && !isStr(c.join)) r.err(w, '"join" is not text.', 'Use "–" for a range or "/" for a pair.');
+      if (!isStr(c.unit)) r.warn(w, 'No unit.', 'Add "unit": "mEq/L" — it shows beside the numbers.');
+      return;
+    }
 
     if (!hasVal && !hasRange) {
       return r.err(w, 'No number.',

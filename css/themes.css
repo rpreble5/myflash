@@ -713,11 +713,27 @@
 .kp-num { font-variant-numeric: tabular-nums; }
 .kp-num.is-empty { color: var(--line); }
 .kp-unit { margin-left: .3em; font-size: .5em; font-weight: 700; color: var(--muted); }
-.kp-entry.is-right { color: var(--ok-dark); }
-.kp-entry.is-wrong { color: var(--bad); }
+.kp-num.is-right { color: var(--ok-dark); }
+.kp-num.is-wrong { color: var(--bad); }
+/* Several numbers: a little smaller so a range fits on one line, with
+   the one being typed underlined. */
+.kp-entry.is-multi { font-size: 34px; }
+.kp-join { margin: 0 .25em; color: var(--muted); }
+.kp-num.is-active {
+  text-decoration: underline;
+  text-decoration-color: var(--brand);
+  text-decoration-thickness: 4px;
+  text-underline-offset: 6px;
+}
+/* Clear of the hidden navigation bar, which still eats into the bottom
+   of the screen on some phones. */
+.card.is-keypad .card-body { padding-bottom: calc(2.75rem + env(safe-area-inset-bottom)); }
 
 .keypad {
-  --key: clamp(46px, 7.4vh, 66px);
+  /* Sized from the visible height (dvh) where the browser knows it; vh
+     can include space behind a hidden navigation bar. */
+  --key: clamp(44px, 6.4vh, 62px);
+  --key: clamp(44px, 6.4dvh, 62px);
   display: grid;
   grid-template-columns: repeat(3, var(--key));
   justify-content: center;
@@ -742,6 +758,9 @@
 .key:active { transform: translateY(3px); border-bottom-width: 3px; background: var(--soft); }
 .key-del { color: var(--muted); font-size: calc(var(--key) * .36); }
 .key-blank { visibility: hidden; }
+.key-join { color: var(--brand); }
+.key-join:disabled { opacity: .35; }
+.keypad.has-join .key-check { grid-column: 2 / -1; align-self: center; }
 
 .key-check {
   grid-column: 1 / -1;

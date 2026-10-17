@@ -1098,43 +1098,60 @@
 
      Type the number. No scale to guess at and nothing on screen that
      hints at the answer, so every card works and it tests real recall.
-     Range cards take any value inside the band, as with the slider.    */
+     Range cards take any value inside the band, as with the slider.
+
+     A card with `values` asks for several numbers at once — both ends of
+     a range, or a pair like 130/80. Each is typed in turn: the separator
+     key moves to the next, a tap on one goes back to it, and each is
+     graded on its own.                                                  */
 
   var keypad = {
     id: 'keypad', label: '', types: ['number'], weight: 1,
     eligible: function (card) {
+      /* The slider cannot set two numbers, so those always type. */
+      if (card.values && card.values.length >= 2) return true;
       return (card.value != null || card.low != null) && !global.Store.setting('numberSlider');
     },
     mount: function (area, ctx) {
       var card = ctx.card;
+      var cardEl = area.closest('.card');
+      if (cardEl) cardEl.classList.add('is-keypad');
+
+      var multi = !!(card.values && card.values.length >= 2);
+      var count = multi ? card.values.length : 1;
+      var nums = multi ? card.values : [card.value, card.low, card.high].filter(function (v) { return v != null; });
       /* Decimals come from the answer itself: a decimal key only appears
          when the answer has one, and only that many places can be typed. */
-      var dp = Math.max(decimals(card.value == null ? 0 : card.value),
-                        decimals(card.low == null ? 0 : card.low),
-                        decimals(card.high == null ? 0 : card.high));
+      var dp = Math.max.apply(null, nums.map(function (n) { return decimals(n); }).concat(0));
       /* One more whole digit than the answer has, so a wrong answer an
          order of magnitude out can still be typed. */
-      var top = Math.max(card.value || 0, card.high || 0);
-      var maxDigits = String(Math.round(top)).length + 1;
+      var maxDigits = String(Math.round(Math.max.apply(null, nums.concat(0)))).length + 1;
+      var join = card.join || '–';
       var unit = card.unit ? ' ' + card.unit : '';
-      var typed = '', locked = false;
+      var typed = [], at = 0, locked = false;
+      for (var t = 0; t < count; t++) typed.push('');
 
-      var entry = h('div', 'q kp-entry');
-      var num = h('span', 'kp-num is-empty', '?');
-      entry.appendChild(num);
+      var entry = h('div', 'q kp-entry' + (multi ? ' is-multi' : ''));
+      var slots = typed.map(function (_, i) {
+        if (i > 0) entry.appendChild(h('span', 'kp-join', join));
+        var n = h('span', 'kp-num is-empty', '?');
+        n.addEventListener('click', function (e) {
+          if (locked || !multi) return;
+          e.stopPropagation();
+          at = i;
+          show();
+        });
+        entry.appendChild(n);
+        return n;
+      });
       if (card.unit) entry.appendChild(h('span', 'kp-unit', card.unit));
 
-      var truth = card.low != null
-        ? fmt(card.low, dp) + ' – ' + fmt(card.high, dp)
-        : fmt(card.value, dp);
-      var why = card.why;
-      ctx.stack(truth + unit, why ? function (fits) {
-        var w = explanation(why, ctx, fits ? STACK_WHY_INLINE : 0);
-        w.classList.add('is-held');
-        return w;
-      } : null, entry);
+      var truth = multi
+        ? card.values.map(function (v) { return fmt(v, dp); }).join(' ' + join + ' ')
+        : card.low != null ? fmt(card.low, dp) + ' – ' + fmt(card.high, dp) : fmt(card.value, dp);
+      ctx.stack(truth + unit, stackWhy(ctx), entry);
 
-      var pad = h('div', 'keypad');
+      var pad = h('div', 'keypad' + (multi ? ' has-join' : ''));
       function key(label, cls, fn) {
         var b = h('button', 'key' + (cls ? ' ' + cls : ''), label);
         b.addEventListener('click', function (e) { e.stopPropagation(); fn(); });
@@ -1148,41 +1165,61 @@
       else pad.appendChild(h('span', 'key key-blank'));
       key('0', null, function () { press('0'); });
       key('⌫', 'key-del', del).setAttribute('aria-label', 'Delete');
+      var joinKey = multi ? key(join, 'key-join', next) : null;
+      if (joinKey) joinKey.setAttribute('aria-label', 'Next number');
       var check = h('button', 'key-check', 'CHECK');
-      check.disabled = true;
       check.addEventListener('click', function (e) { e.stopPropagation(); submit(); });
       pad.appendChild(check);
       area.appendChild(pad);
 
-      function show() {
-        var parts = typed.split('.');
+      function pretty(t) {
+        var parts = t.split('.');
         parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-        num.textContent = typed ? parts.join('.') : '?';
-        num.classList.toggle('is-empty', !typed);
-        check.disabled = !typed || typed === '.' || /\.$/.test(typed);
+        return parts.join('.');
+      }
+
+      function show() {
+        slots.forEach(function (n, i) {
+          n.textContent = typed[i] ? pretty(typed[i]) : '?';
+          n.classList.toggle('is-empty', !typed[i]);
+          n.classList.toggle('is-active', multi && !locked && i === at);
+        });
+        check.disabled = typed.some(function (v) { return !v || /\.$/.test(v); });
+        if (joinKey) joinKey.disabled = at >= count - 1 || !typed[at];
       }
 
       function press(d) {
         if (locked) return;
-        var parts = typed.split('.');
+        var cur = typed[at], parts = cur.split('.');
         if (d === '.') {
           if (!dp || parts.length > 1) return;
-          typed = (typed || '0') + '.';
+          cur = (cur || '0') + '.';
         } else if (parts.length > 1) {
           if (parts[1].length >= dp) return;
-          typed += d;
+          cur += d;
         } else {
-          if (typed === '0') typed = '';
-          if (typed.length >= maxDigits) return;
-          typed += d;
+          if (cur === '0') cur = '';
+          if (cur.length >= maxDigits) return;
+          cur += d;
         }
+        typed[at] = cur;
         global.Sfx.tick();
         show();
       }
 
       function del() {
-        if (locked || !typed) return;
-        typed = typed.slice(0, -1);
+        if (locked) return;
+        /* An empty number steps back to the one before it. */
+        if (!typed[at] && at > 0) at--;
+        else if (typed[at]) typed[at] = typed[at].slice(0, -1);
+        else return;
+        global.Sfx.tick();
+        show();
+      }
+
+      function next() {
+        if (locked || at >= count - 1 || !typed[at]) return;
+        at++;
         global.Sfx.tick();
         show();
       }
@@ -1190,18 +1227,28 @@
       function submit() {
         if (locked || check.disabled) return;
         locked = true;
-        var ok = isCorrect(card, Number(typed));
-        entry.classList.add(ok ? 'is-right' : 'is-wrong');
+        var tol = card.tolerance || 0;
+        var right = 0;
+        typed.forEach(function (v, i) {
+          var x = Number(v);
+          var ok = multi ? Math.abs(x - card.values[i]) <= tol + 1e-9 : isCorrect(card, x);
+          if (ok) right++;
+          slots[i].classList.add(ok ? 'is-right' : 'is-wrong');
+        });
+        var all = right === count;
+        show();
         pad.classList.add('is-done');
-        /* Right: your number is the answer and is already on screen. Wrong:
-           it stays, in red, and the correct one rises in under it. */
-        ctx.stackReveal(!ok);
-        settle(ctx, ok ? 1 : 0);
+        /* All right: the numbers on screen are the answer. Otherwise they
+           stay, marked, and the correct answer rises in under them. */
+        ctx.stackReveal(!all);
+        settle(ctx, right / count);
       }
 
       var keyMap = { 'Backspace': del, 'Enter': submit, '.': function () { press('.'); } };
+      if (multi) ['-', '/', 'Tab', ' ', join].forEach(function (k) { keyMap[k] = next; });
       '0123456789'.split('').forEach(function (d) { keyMap[d] = function () { press(d); }; });
       ctx.keys(keyMap);
+      show();
     }
   };
 
