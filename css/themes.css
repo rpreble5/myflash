@@ -501,17 +501,13 @@
   width: min(560px, 100%);
   display: flex;
   flex-direction: column;
-  gap: .5rem;
-  /* The rows follow the finger and spring back; off mid-drag or the
-     travel trails the thumb. */
-  transition: transform .2s cubic-bezier(.25,.8,.4,1);
+  gap: .6rem;
 }
-.card.is-dragging .trend-rows { transition: none; }
 .trend-row {
   display: flex;
   align-items: center;
   gap: .7rem;
-  padding: .45rem .5rem .45rem .9rem;
+  padding: .5rem .55rem .5rem 1rem;
   border-radius: 16px;
   border: 3px solid var(--line);
   animation: choice-in .24s cubic-bezier(.22,1,.36,1) backwards;
@@ -523,12 +519,12 @@
   min-width: 0;
   font-family: var(--body-face);
   font-weight: 700;
-  font-size: clamp(.95rem, 4vw, 1.2rem);
+  font-size: clamp(1.05rem, 4.5vw, 1.3rem);
   text-align: left;
 }
 .dir-group { display: flex; gap: .3rem; flex: 0 0 auto; }
 .dir-btn {
-  width: 46px; height: 46px;
+  width: 52px; height: 52px;
   /* The glyph was a bare text node in a block box: left-aligned, and
      sitting high because line-height 1 crops the arrow's own leading. */
   display: grid;
@@ -542,8 +538,8 @@
 /* Round caps and joins, to match the corner radius the arrows sit in.
    currentColor means the filled states flip the mark with the text. */
 .dir-art {
-  width: 28px;
-  height: 28px;
+  width: 30px;
+  height: 30px;
   fill: none;
   stroke: currentColor;
   stroke-width: 3;
@@ -727,13 +723,19 @@
 }
 /* Clear of the hidden navigation bar, which still eats into the bottom
    of the screen on some phones. */
-.card.is-keypad .card-body { padding-bottom: calc(2.75rem + env(safe-area-inset-bottom)); }
+.card.is-keypad .card-body { padding-bottom: calc(3.75rem + env(safe-area-inset-bottom)); }
+/* The pad sets its own height; the mode area must not clip it. */
+.card.is-keypad .mode-area { max-height: none; }
+/* A custom property is not checked against the browser, so the dvh
+   version has to be gated or an older browser loses the key size. */
+@supports (height: 1dvh) {
+  .keypad { --key: clamp(42px, 5.8dvh, 58px); }
+}
 
 .keypad {
   /* Sized from the visible height (dvh) where the browser knows it; vh
      can include space behind a hidden navigation bar. */
-  --key: clamp(44px, 6.4vh, 62px);
-  --key: clamp(44px, 6.4dvh, 62px);
+  --key: clamp(42px, 5.8vh, 58px);
   display: grid;
   grid-template-columns: repeat(3, var(--key));
   justify-content: center;

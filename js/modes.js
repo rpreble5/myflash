@@ -519,7 +519,9 @@
     eligible: function (card) { return card.items && card.items.length; },
     mount: function (area, ctx) {
       var items = ctx.card.items;
-      var rows = h('div', 'trend-rows');
+      /* The rows ride in the stacked layout's entry slot, right under the
+         question, rather than down at the bottom of the card. */
+      var rows = h('div', 'q trend-rows');
       var picks = new Array(items.length).fill(null);
       var locked = false;
       var btnAt = [];
@@ -593,15 +595,8 @@
         settle(ctx, right / items.length);
       }
 
-      area.appendChild(rows);
       area.appendChild(hint);
-
-      var why = ctx.card.why;
-      ctx.stack('', why ? function (fits) {
-        var w = explanation(why, ctx, fits ? STACK_WHY_INLINE : 0);
-        w.classList.add('is-held');
-        return w;
-      } : null);
+      ctx.stack('', stackWhy(ctx), rows);
 
       /* Same shape as select-all: several sub-answers, then one submit.
          The rows hold still; only the hint lights up as the swipe heads
