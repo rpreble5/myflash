@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/base.css?v=32">
+<link rel="stylesheet" href="../css/base.css?v=33">
 <style>
   .pv {
     position: fixed;
@@ -134,7 +134,7 @@
   </div>
 </div>
 
-<script src="../js/decks.js?v=32"></script>
+<script src="../js/decks.js?v=33"></script>
 <script>
 (function () {
   'use strict';
@@ -214,7 +214,12 @@
     }
 
     plan = { qStart: top, qEnd: top, aEnd: top + qH + GAP,
-             whyTop: Math.max(top + block + GAP, R - whyH - GAP) };
+             whyTop: (function () {
+               /* Near the bottom, lifted part of the way toward the answer
+                  when there is room. */
+               var lowest = top + block + 2 * GAP, bottom = R - whyH - GAP;
+               return bottom > lowest ? bottom - (bottom - lowest) * 0.4 : lowest;
+             })() };
     place(qEl, plan.qStart);
     place(aEl, plan.aEnd + 24);
     place(whyEl, plan.whyTop);

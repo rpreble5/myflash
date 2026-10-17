@@ -8,7 +8,7 @@
      id, label, types[], weight
      eligible(card, deck) -> bool
      mount(area, ctx)
-   ctx = { card, deck, finish(score 0..1), revealAnswer(style),
+   ctx = { card, deck, finish(score 0..1), revealAnswer(style), stack(), stackReveal(),
            setKicker(text), setQuestion(text), tapSurface(fn),
            enableSwipe({onLeft,onRight}), keys(map), waitForTap(fn),
            judge(score) }                                                 */
@@ -82,10 +82,11 @@
      competing with it, which is where the threshold comes from. */
   var WHY_INLINE_MAX = 140;
 
-  function explanation(text, ctx) {
+  function explanation(text, ctx, inlineMax) {
     var wrap = h('div', 'why-wrap');
+    var limit = inlineMax == null ? WHY_INLINE_MAX : inlineMax;
 
-    if (text.length <= WHY_INLINE_MAX || !ctx || !ctx.openNote) {
+    if (text.length <= limit || !ctx || !ctx.openNote) {
       var inline = h('div', 'why', text);
       wrap.appendChild(inline);
       requestAnimationFrame(function () { inline.classList.add('is-in'); });
@@ -139,15 +140,27 @@
   }
 
   /* Swipe-to-grade. The labels are real buttons so the gesture stays
-     discoverable and the card is still usable by tap and keyboard. */
+     discoverable and the card is still usable by tap and keyboard.
+
+     Built before the answer is shown so it holds its place from the
+     start, and only armed on reveal: `arm` turns on the swipe and keys. */
   function swipeBar(ctx) {
-    var bar = h('div', 'swipe-bar');
+    var bar = h('div', 'swipe-bar is-waiting');
     var miss = h('button', 'swipe-side swipe-miss', 'MISSED');
     var got  = h('button', 'swipe-side swipe-got', 'GOT IT');
+    var cueText = h('span', 'swipe-cue', 'tap anywhere');
     bar.appendChild(miss);
-    bar.appendChild(h('span', 'swipe-cue', 'swipe'));
+    bar.appendChild(cueText);
     bar.appendChild(got);
+    bar.arm = function () {
+      bar.classList.remove('is-waiting');
+      cueText.textContent = 'swipe';
+      armSwipe(ctx, miss, got);
+    };
+    return bar;
+  }
 
+  function armSwipe(ctx, miss, got) {
     var swipe = ctx.enableSwipe({
       onLeft:  function () { ctx.judge(0); ctx.finish(0); },
       onRight: function () { ctx.judge(1); ctx.finish(1); }
@@ -162,44 +175,44 @@
       '1': function () { swipe.commit(false); },
       '2': function () { swipe.commit(true); }
     });
-
-    return bar;
   }
 
   /* ═══════════════ recall: one card, one behaviour ═══════════════
 
-     Tap anywhere to reveal. The question is replaced by the answer —
-     a flat swap, not a 3D flip. An optional explanation appears before
-     grading, then you swipe (or tap, or use the arrow keys) to say
-     whether you knew it.                                              */
+     Tap anywhere to reveal. The question stays where it is and the
+     answer slides up underneath it; the explanation fades in lower
+     down. Then you swipe (or tap, or use the arrow keys) to say whether
+     you knew it. The layout itself lives in app.js (ctx.stack), which
+     holds the question.                                               */
+
+  /* Recall has the room for a longer note than the modes with controls. */
+  var RECALL_WHY_INLINE = 220;
 
   var recall = {
     id: 'recall', label: 'TAP TO REVEAL', types: ['recall'], weight: 1,
     eligible: function () { return true; },
     mount: function (area, ctx) {
-      var hint = h('div', 'hint', 'tap anywhere');
-      area.appendChild(hint);
+      var bar = swipeBar(ctx);
+      area.appendChild(bar);
       var revealed = false;
+
+      /* Built now so the layout can measure it; held until the reveal so
+         it cannot be opened early. If an inline note turns out not to fit,
+         the layout asks for the WHY button version instead. */
+      var why = ctx.card.why;
+      ctx.stack(String(ctx.card.a), why ? function (fits) {
+        var w = explanation(why, ctx, fits ? RECALL_WHY_INLINE : 0);
+        w.classList.add('is-held');
+        return w;
+      } : null);
 
       function doReveal() {
         if (revealed) return;
         revealed = true;
         global.Sfx.flip();
-        ctx.revealAnswer('swap');
+        ctx.stackReveal();
         ctx.setKicker('KNEW IT?');
-        hint.remove();
-        /* recall is the one mode that adds its note at reveal rather than
-           at mount, because the explanation has to arrive before grading
-           rather than after it. The central fallback in app.js checks at
-           mount time, finds nothing, and mounts a held one — so appending
-           here unconditionally produced two. Release that one if it is
-           already there. */
-        if (ctx.card.why) {
-          var held = area.querySelector('.why-wrap');
-          if (held) held.classList.remove('is-held');
-          else area.appendChild(explanation(ctx.card.why, ctx));
-        }
-        area.appendChild(swipeBar(ctx));
+        bar.arm();
       }
 
       ctx.tapSurface(doReveal);

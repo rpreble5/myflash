@@ -281,6 +281,32 @@
    on reveal — the note appears without shoving the answer around. */
 .why-wrap.is-held { animation: none; opacity: 0; pointer-events: none; }
 
+/* ── Stacked layout (recall) ─────────────────────────────────
+   Positions arrive inline from app.js; this only takes the pieces out
+   of flow. The question never moves, the answer rises in under it, and
+   the explanation fades in slowly and lighter, lower down. */
+.card.is-stack .face-front { display: block; }
+.card.is-stack .face-front > .q,
+.card.is-stack .face-front > .why-wrap { position: absolute; left: 0; right: 0; top: 0; }
+.stack-answer {
+  font-weight: 900;
+  line-height: 1.2;
+  opacity: 0;
+  transition: transform .36s cubic-bezier(.22, 1, .36, 1) .12s, opacity .3s ease .12s;
+}
+.stack-answer.is-in { opacity: 1; }
+.card.is-stack .why-wrap {
+  width: 100%;
+  animation: none;
+  transition: opacity .7s ease .45s;
+}
+.card.is-stack .why-wrap.is-held { opacity: 0; }
+.card.is-stack .why { color: var(--muted); }
+
+/* The grade buttons hold their place until the answer is shown. */
+.swipe-bar.is-waiting .swipe-side { opacity: 0; pointer-events: none; }
+.swipe-bar .swipe-cue { white-space: nowrap; }
+
 /* A long note is not folded into a strip under the answer — it takes the
    whole card. What sits here is only the invitation. */
 .why-cue {

@@ -362,7 +362,74 @@
 
     function paintQuestion(text) {
       qEl.textContent = String(text);
+      if (stack) { layoutStack(); return; }
       fitLater(qEl, front);
+    }
+
+    /* ── Stacked layout (recall) ──────────────────────────────
+       The question is placed once and never moves; the answer slides up
+       into the space under it and the explanation fades in lower down.
+       Sizes come from the text length, not from fitting, so nothing
+       rewraps while the card is on screen. */
+    var stack = null;
+    var STACK_GAP = 16;
+    /* Where the question and answer sit, as a share of the space. */
+    var STACK_SETTLE = 0.32;
+    /* How far the explanation is lifted toward the answer, as a share of
+       the empty space between them. */
+    var STACK_LIFT = 0.4;
+    var STACK_RISE = 24;
+
+    function questionSize(t) { return t.length <= 50 ? 30 : t.length <= 80 ? 26 : 22; }
+    function answerSize(t)   { return t.length <= 24 ? 34 : 28; }
+
+    function place(node, y) { node.style.transform = 'translateY(' + Math.round(y) + 'px)'; }
+
+    function layoutStack() {
+      qEl.style.fontSize = questionSize(qEl.textContent) + 'px';
+      stack.answer.style.fontSize = answerSize(stack.answer.textContent) + 'px';
+
+      var R = flipper.clientHeight, GAP = STACK_GAP;
+      var qH = qEl.getBoundingClientRect().height;
+      var aH = stack.answer.getBoundingClientRect().height;
+      var block = qH + GAP + aH;
+      var top = Math.max(0, R * STACK_SETTLE - block / 2);
+
+      /* The explanation: inline if it fits under the answer, lifting the
+         block if need be; otherwise the WHY button. */
+      var whyH = 0;
+      if (stack.makeWhy) {
+        if (!stack.why) setWhy(stack.makeWhy(true));
+        whyH = stack.why.getBoundingClientRect().height;
+        var need = block + 2 * GAP + whyH;
+        if (top + need > R) top = Math.max(0, R - need);
+        if (top + need > R && !stack.cue) {
+          setWhy(stack.makeWhy(false));
+          stack.cue = true;
+          whyH = stack.why.getBoundingClientRect().height;
+        }
+      }
+
+      var aEnd = top + qH + GAP;
+      place(qEl, top);
+      place(stack.answer, stack.shown ? aEnd : aEnd + STACK_RISE);
+      stack.aEnd = aEnd;
+      if (stack.why) {
+        var lowest = top + block + 2 * GAP;
+        var bottom = R - whyH - GAP;
+        place(stack.why, bottom > lowest ? bottom - (bottom - lowest) * STACK_LIFT : lowest);
+      }
+    }
+
+    function setWhy(node) {
+      if (stack.why) stack.why.remove();
+      stack.why = node;
+      front.appendChild(node);
+    }
+
+    function layoutStackLater() {
+      requestAnimationFrame(layoutStack);
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(layoutStack);
     }
 
     session.keydown = {};
@@ -512,6 +579,23 @@
         session.closeNote = close;
       },
 
+      /* Switch this card to the stacked layout. `makeWhy(fits)` builds the
+         explanation: inline when `fits`, the WHY button otherwise. */
+      stack: function (answerText, makeWhy) {
+        el.classList.add('is-stack');
+        var node = h('div', 'q a-face stack-answer', answerText);
+        front.appendChild(node);
+        stack = { answer: node, makeWhy: makeWhy, why: null, cue: false, shown: false };
+        layoutStackLater();
+      },
+
+      stackReveal: function () {
+        stack.shown = true;
+        place(stack.answer, stack.aEnd);
+        stack.answer.classList.add('is-in');
+        if (stack.why) stack.why.classList.remove('is-held');
+      },
+
       /* A mode that grades by swiping hands that over here, so the same
          swipe works on the note screen. */
       onNoteSwipe: function (fn) { noteSwipe = fn; },
@@ -597,7 +681,7 @@
       tapSurface: function (fn) {
         el.classList.add('is-tappable');
         el.addEventListener('click', function (e) {
-          if (e.target.closest('button, input, .grade-bar, .swipe-bar')) return;
+          if (e.target.closest('button, input, .grade-bar, .swipe-bar:not(.is-waiting)')) return;
           fn();
         });
       },
@@ -831,7 +915,7 @@
        mount it. Any that didn't gets one here, held until the answer
        lands — a written explanation that never reaches the screen is the
        worst kind of defect, because the file looks right. */
-    if (card.why && !area.querySelector('.why-wrap')) {
+    if (card.why && !el.querySelector('.why-wrap')) {
       var note = global.Modes.explanation(card.why, ctx);
       note.classList.add('is-held');
       area.appendChild(note);
