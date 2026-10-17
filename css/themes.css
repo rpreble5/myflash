@@ -1,5 +1,5 @@
-/* themes.css — the card surface, typography treatments, and mode UI.
-   Everything here reads from custom properties set by js/theme.js. */
+/* themes.css — the card surface and the UI for each card type.
+   Colors come from the custom properties in base.css. */
 
 .card {
   position: absolute;
@@ -10,37 +10,6 @@
   animation: card-in .26s cubic-bezier(.22,1,.36,1) both;
 }
 .card.is-tappable { cursor: pointer; }
-
-/* Oversized so drifting never exposes an edge. Image and size are set
-   inline by Theme.backdropNode. */
-.backdrop {
-  position: absolute;
-  inset: -20%;
-  background-repeat: repeat;
-  pointer-events: none;
-}
-/* Flat backdrops are compositions, not tiles — their shapes are placed in
-   percentages, so they need the real card box, not the oversized one. */
-.card[data-tier="flat"] .backdrop {
-  inset: 0;
-  background-repeat: no-repeat;
-  overflow: hidden;
-}
-
-/* Composed flat shapes — clip-path and collage layers. All positioning
-   arrives inline; this only guarantees they stay flat and inert. */
-.bd-layer {
-  position: absolute;
-  pointer-events: none;
-  box-shadow: none;
-  filter: none;
-}
-.card[data-drift="drift-slow"]    .backdrop { animation: drift-slow    110s linear infinite; }
-.card[data-drift="drift-diag"]    .backdrop { animation: drift-diag    120s linear infinite; }
-.card[data-drift="drift-vert"]    .backdrop { animation: drift-vert    115s linear infinite; }
-.card[data-drift="drift-horiz"]   .backdrop { animation: drift-horiz   105s linear infinite; }
-.card[data-drift="drift-spin"]    .backdrop { animation: drift-spin    300s linear infinite; }
-.card[data-drift="drift-breathe"] .backdrop { animation: drift-breathe  46s ease-in-out infinite; }
 
 .card-body {
   position: relative;
@@ -119,19 +88,6 @@
   text-wrap: pretty;
 }
 .a-face { color: var(--acc); }
-
-.word { display: inline-block; white-space: nowrap; }
-.letter { display: inline-block; will-change: transform, opacity; }
-.letter.is-accent { color: var(--acc); }
-
-/* Treatments — sparing on purpose; `plain` is weighted heaviest. */
-.card[data-treatment="outline"] .q {
-  color: transparent;
-  -webkit-text-stroke: clamp(2px, .6vw, 5px) var(--ink);
-}
-.card[data-treatment="outline"] .a-face { -webkit-text-stroke-color: var(--acc); }
-.card[data-treatment="shadow-hard"] .q { text-shadow: .06em .06em 0 var(--acc); }
-.card[data-treatment="stretch"] .q { transform: scaleY(1.22); transform-origin: left center; }
 
 /* Interaction-led cards: the question is a label, so it stops competing
    with the control for height. */

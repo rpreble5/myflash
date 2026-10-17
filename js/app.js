@@ -6,7 +6,6 @@
   var h = global.Modes.h;
   var $ = function (sel) { return document.querySelector(sel); };
 
-  var EXITS = ['exit-shrink'];
   var reduceMotion = global.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   /* ───────────────────────── screens ───────────────────────── */
@@ -180,189 +179,6 @@
     setTimeout(go, 2500);
   }
 
-  /* ──────────────────── look feedback ───────────────────── */
-  /* What the current card looks like, in the terms a verdict is about. */
-  var currentLook = null;
-
-  function lookOf(theme) {
-    return {
-      palette: theme.palette.name,
-      backdrop: theme.backdrop.name,
-      tier: theme.backdrop.tier,
-      font: theme.font.face.split(',')[0].replace(/"/g, ''),
-      face: theme.font.face,
-      treatment: theme.treatment,
-      grain: theme.grain ? theme.grain.name : null,
-      colors: [theme.palette.bg, theme.palette.ink, theme.palette.acc]
-    };
-  }
-
-  /* Only the parts a verdict can be about. `plain` is the absence of a
-     type effect, so there is nothing there to dislike, and a card with
-     no grain should not offer a row for one. */
-  function lookParts(look) {
-    var parts = [
-      { key: 'palette',   label: 'Colours',    value: look.palette },
-      { key: 'font',      label: 'Typeface',   value: look.font },
-      { key: 'backdrop',  label: 'Background', value: look.backdrop + ' · ' + look.tier }
-    ];
-    if (look.treatment && look.treatment !== 'plain') {
-      parts.push({ key: 'treatment', label: 'Type effect', value: look.treatment });
-    }
-    if (look.grain) parts.push({ key: 'grain', label: 'Grain', value: look.grain });
-    return parts;
-  }
-
-  function paintNope() {
-    var btn = $('#btn-nope');
-    if (!btn) return;
-    var flags = currentLook ? global.Store.lookFlags(currentLook) : {};
-    var n = Object.keys(flags).filter(function (k) { return flags[k]; }).length;
-    btn.classList.toggle('is-on', n > 0);
-    btn.setAttribute('aria-pressed', n > 0 ? 'true' : 'false');
-  }
-
-  /* The menu is deliberately not themed. It is being used to say the
-     theme is wrong, so inheriting the palette under judgement is the one
-     thing it must not do. */
-  function openLookMenu() {
-    if (!currentLook || $('.look-menu')) return;
-    var look = currentLook;
-    var flags = {};
-    var stored = global.Store.lookFlags(look);
-    Object.keys(stored).forEach(function (k) { flags[k] = stored[k]; });
-
-    var sheet = h('div', 'look-menu');
-    var panel = h('div', 'look-panel');
-    panel.appendChild(h('p', 'look-title', "What's wrong with this one?"));
-
-    lookParts(look).forEach(function (part) {
-      var row = h('button', 'look-row');
-      row.setAttribute('aria-pressed', flags[part.key] ? 'true' : 'false');
-      if (flags[part.key]) row.classList.add('is-on');
-
-      if (part.key === 'palette') {
-        var sw = h('span', 'look-swatch');
-        look.colors.forEach(function (c) {
-          var dot = h('span', 'look-dot');
-          dot.style.background = c;
-          sw.appendChild(dot);
-        });
-        row.appendChild(sw);
-      }
-
-      var text = h('span', 'look-text');
-      text.appendChild(h('span', 'look-label', part.label));
-      var val = h('span', 'look-value', part.value);
-      /* Show the typeface in itself — the name is not the complaint. */
-      if (part.key === 'font') val.style.fontFamily = look.face;
-      text.appendChild(val);
-      row.appendChild(text);
-      row.appendChild(h('span', 'look-check', '✕'));
-
-      row.addEventListener('click', function (e) {
-        e.stopPropagation();
-        flags[part.key] = !flags[part.key];
-        row.classList.toggle('is-on', !!flags[part.key]);
-        row.setAttribute('aria-pressed', flags[part.key] ? 'true' : 'false');
-        /* Saved on every tap, so dismissing any way at all keeps it. */
-        global.Store.saveLook(look, flags);
-        paintNope();
-        global.Sfx.arm();
-      });
-      panel.appendChild(row);
-    });
-
-    var done = h('button', 'btn btn-ghost look-done', 'Done');
-    done.addEventListener('click', function (e) { e.stopPropagation(); closeLookMenu(); });
-    panel.appendChild(done);
-
-    sheet.appendChild(panel);
-    sheet.addEventListener('click', closeLookMenu);
-    panel.addEventListener('click', function (e) { e.stopPropagation(); });
-    /* The card underneath is a gesture surface; nothing here should reach it. */
-    sheet.addEventListener('pointerdown', function (e) { e.stopPropagation(); });
-
-    $('#screen-session').appendChild(sheet);
-    requestAnimationFrame(function () { sheet.classList.add('is-in'); });
-    /* Escape closes the topmost thing. An open explanation may already
-       own that handler, so borrow it and hand it back rather than
-       stranding the sheet underneath with no way out. */
-    if (session) { prevCloseNote = session.closeNote || null; session.closeNote = closeLookMenu; }
-  }
-
-  var prevCloseNote = null;
-
-  function closeLookMenu() {
-    var sheet = $('.look-menu');
-    if (!sheet) return;
-    sheet.classList.remove('is-in');
-    if (session) { session.closeNote = prevCloseNote; prevCloseNote = null; }
-    var go = function () { if (sheet.parentNode) sheet.remove(); };
-    if (reduceMotion) go(); else setTimeout(go, 180);
-  }
-
-  var PART_LABEL = {
-    palette: 'Colours', font: 'Typefaces', backdrop: 'Backgrounds',
-    treatment: 'Type effects', grain: 'Grains'
-  };
-
-  function renderLookFeedback() {
-    var wrap = $('#look-feedback');
-    if (!wrap) return;
-    wrap.textContent = '';
-
-    var all = global.Store.looks();
-    if (!all.length) {
-      wrap.appendChild(h('p', 'settings-empty',
-        'Tap 👎 while studying and say what is wrong. It collects here.'));
-      return;
-    }
-
-    var tally = global.Store.lookTally();
-    wrap.appendChild(h('p', 'settings-empty', all.length + ' cards marked.'));
-
-    global.Store.LOOK_PARTS.forEach(function (part) {
-      var rows = tally[part];
-      if (!rows || !rows.length) return;
-      wrap.appendChild(h('h4', 'look-group', PART_LABEL[part] || part));
-      rows.slice(0, 6).forEach(function (t) {
-        var row = h('div', 'manage-row');
-        var text = h('div', 'manage-text');
-        text.appendChild(h('span', 'manage-name', t.name));
-        /* Blamed against merely present: a thing that keeps turning up in
-           bad cards without being the problem is not the problem. */
-        text.appendChild(h('span', 'manage-line', t.shown
-          ? 'blamed ' + t.blamed + ' of ' + t.shown + ' shown · ' + Math.round(t.rate * 100) + '%'
-          : 'blamed ' + t.blamed + ' of ' + t.seen + ' marked'));
-        row.appendChild(text);
-        wrap.appendChild(row);
-      });
-    });
-
-    var copy = h('button', 'btn btn-ghost', 'Copy the list');
-    copy.addEventListener('click', function () {
-      var text = JSON.stringify(all, null, 1);
-      var done = function () {
-        copy.textContent = 'Copied';
-        setTimeout(function () { copy.textContent = 'Copy the list'; }, 1600);
-      };
-      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, done);
-      else done();
-    });
-    wrap.appendChild(copy);
-
-    var clear = h('button', 'btn btn-ghost', 'Clear them');
-    clear.addEventListener('click', function () {
-      if (!confirm('Clear all ' + all.length + ' marked looks?')) return;
-      global.Store.clearLooks();
-      global.Store.clearShown();
-      renderLookFeedback();
-      paintNope();
-    });
-    wrap.appendChild(clear);
-  }
-
   /* ──────────────────── deck manager ───────────────────── */
   /* Only generated decks appear. The built-ins live in the source file,
      so offering a delete that cannot work would be worse than offering
@@ -503,36 +319,24 @@
 
   function renderCard(deck, cardIndex, ref) {
     var card = deck.cards[cardIndex];
-    var theme = global.Theme.random();
-    currentLook = lookOf(theme);
-    global.Store.noteShown(currentLook);
-    closeLookMenu();
-    paintNope();
     var mode = global.Modes.pickFor(card, deck);
     var stage = $('#stage');
 
-    /* Retire the outgoing card with a random exit. */
+    /* Retire the outgoing card. */
     var old = stage.querySelector('.card');
     if (old) {
       /* A swiped card is already flying off under its own transform;
          adding an exit animation would snap it back to centre first. */
       if (!old.classList.contains('is-swiped')) {
-        old.classList.add(EXITS[Math.floor(Math.random() * EXITS.length)]);
+        old.classList.add('exit-shrink');
         old.addEventListener('animationend', function () { old.remove(); }, { once: true });
       }
       setTimeout(function () { if (old.parentNode) old.remove(); }, 900);
     }
 
     var el = h('div', 'card');
-    global.Theme.apply(el, theme);
-    el.dataset.entrance = theme.entrance.name;
     /* Interaction-led modes cap the question so the control gets the room. */
     if (mode.compact) el.dataset.qsize = 'compact';
-    /* Provisional; paintQuestion recomputes it once the letter count
-       is known. */
-    el.style.setProperty('--stagger', theme.entrance.stagger + 'ms');
-
-    el.appendChild(global.Theme.backdropNode(theme));
 
     var body = h('div', 'card-body');
     var kicker = h('div', 'kicker', mode.label);
@@ -556,16 +360,8 @@
     el.appendChild(body);
     stage.appendChild(el);
 
-    /* Cap the whole stagger sweep rather than the per-letter step. At a
-       fixed 34ms, a 45-letter question took 2.5s to finish arriving —
-       almost all of it accumulated delay, not animation. */
-    var STAGGER_SPAN = 240;
-
     function paintQuestion(text) {
-      var t = theme.font.caps ? String(text).toUpperCase() : String(text);
-      var n = global.Txt.splitLetters(qEl, t, { accentWords: theme.treatment === 'accent-words' });
-      var step = Math.min(theme.entrance.stagger, STAGGER_SPAN / Math.max(n, 1));
-      el.style.setProperty('--stagger', step.toFixed(1) + 'ms');
+      qEl.textContent = String(text);
       fitLater(qEl, front);
     }
 
@@ -575,7 +371,6 @@
     var ctx = {
       card: card,
       deck: deck,
-      theme: theme,
 
       keys: function (map) {
         Object.keys(map).forEach(function (k) {
@@ -961,13 +756,13 @@
       revealAnswer: function (style) {
         var aText = card.a;
         if (style === 'swap' || style === 'flip') {
-          global.Txt.splitLetters(backAnswer, aText, {});
+          backAnswer.textContent = String(aText);
           fitLater(backAnswer, back);
           el.classList.add('is-swapped');
           return backAnswer;
         }
         var node = h('div', 'answer answer-' + style);
-        global.Txt.splitLetters(node, aText, {});
+        node.textContent = String(aText);
         inline.appendChild(node);
         requestAnimationFrame(function () { node.classList.add('is-in'); });
         return node;
@@ -1067,38 +862,8 @@
     renderHome();
   }
 
-  /* ───────────────────────── editor ────────────────────────── */
-  function saveDeckFromForm() {
-    var name = $('#deck-name').value.trim();
-    var body = $('#deck-body').value;
-    var cards = body.split('\n').map(function (line) {
-      var parts = line.split('|');
-      if (parts.length < 2) return null;
-      var q = parts[0].trim(), a = parts.slice(1).join('|').trim();
-      return (q && a) ? { q: q, a: a } : null;
-    }).filter(Boolean);
-
-    if (!name || !cards.length) {
-      alert('Needs a name and at least one "front | back" line.');
-      return;
-    }
-
-    global.Store.saveDeck({
-      id: 'user-' + name.toLowerCase().replace(/[^a-z0-9]+/g, '-') + '-' + cards.length,
-      name: name.toUpperCase(),
-      blurb: cards.length + ' cards',
-      cards: cards
-    });
-    $('#deck-name').value = '';
-    $('#deck-body').value = '';
-    renderHome();
-    show('screen-home');
-  }
-
   /* ───────────────────────── wiring ────────────────────────── */
   function init() {
-    if (reduceMotion) document.body.classList.add('reduce-motion');
-
     renderHome();
 
     bindToggle('#tg-submit', 'submitOnRelease');
@@ -1113,23 +878,13 @@
 
     $('#btn-settings').addEventListener('click', function () {
       renderDeckManager();               // decks can arrive from the tool between visits
-      renderLookFeedback();
       show('screen-settings');
     });
 
-    /* Marking a look must not disturb the card: no advance, no grade, no
-       reflow. It is a note taken while reading, not an action. */
-    $('#btn-nope').addEventListener('click', function (e) {
-      e.stopPropagation();
-      openLookMenu();
-    });
     $('#btn-settings-back').addEventListener('click', function () { show('screen-home'); renderHome(); });
     $('#btn-quit').addEventListener('click', function () { show('screen-home'); renderHome(); });
     $('#btn-home').addEventListener('click', function () { show('screen-home'); });
     $('#btn-again').addEventListener('click', function () { startSession(session.decks); });
-    $('#btn-new-deck').addEventListener('click', function () { show('screen-editor'); });
-    $('#btn-cancel-deck').addEventListener('click', function () { show('screen-home'); });
-    $('#btn-save-deck').addEventListener('click', saveDeckFromForm);
     var build = $('#app-build');
     if (build) build.textContent = 'Version ' + buildId();
     $('#btn-update').addEventListener('click', function () { forceUpdate(this); });

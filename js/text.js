@@ -1,54 +1,15 @@
-/* text.js — typography helpers: splitting text into animatable letters,
-   and shrinking it until it actually fits the screen. */
+/* text.js — text helpers: shrinking a question until it fits the screen,
+   loose answer matching, and shuffling. */
 
 (function (global) {
   'use strict';
-
-  /* Split into per-word/per-letter spans so entrances can stagger.
-     Words stay whole so wrapping never breaks mid-word. */
-  function splitLetters(el, str, opts) {
-    opts = opts || {};
-    el.textContent = '';
-    var words = String(str).split(/\s+/).filter(Boolean);
-    var index = 0;
-
-    words.forEach(function (word, w) {
-      var wordEl = document.createElement('span');
-      wordEl.className = 'word';
-
-      for (var i = 0; i < word.length; i++) {
-        var ch = document.createElement('span');
-        ch.className = 'letter';
-        ch.textContent = word[i];
-        ch.style.setProperty('--i', index++);
-        if (opts.accentWords && w % 2 === 1) ch.classList.add('is-accent');
-        wordEl.appendChild(ch);
-      }
-
-      el.appendChild(wordEl);
-      if (w < words.length - 1) {
-        var sp = document.createElement('span');
-        sp.className = 'space';
-        sp.textContent = ' ';
-        el.appendChild(sp);
-      }
-    });
-
-    el.style.setProperty('--n', index);
-    return index;
-  }
 
   /* Binary-search the largest font size that fits the container.
      Cheap enough at ~8 iterations and far better than length buckets,
      which guess wrong the moment a font is unusually wide.
 
-     Height comes from getBoundingClientRect, not scrollHeight, for two
-     reasons. It includes the element's OWN transform, so the `stretch`
-     treatment's scaleY(1.22) is accounted for — the flipper clips now, and
-     a stretched block sized by its untransformed height would lose its top
-     and bottom. And it excludes the scrollable overflow that `line-height:
-     .92` produces when descenders spill past their line boxes, which is a
-     constant ~8px that isn't clipping and shouldn't shrink the type.
+     Height comes from getBoundingClientRect rather than scrollHeight so
+     descender spill below the last line box doesn't shrink the type.
      `pad` covers that spill against the clip edge. */
   function fit(el, box, opts) {
     opts = opts || {};
@@ -107,7 +68,6 @@
   }
 
   global.Txt = {
-    splitLetters: splitLetters,
     fit: fit,
     normalize: normalize,
     matches: matches,

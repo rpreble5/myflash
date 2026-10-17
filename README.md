@@ -1,11 +1,11 @@
 # MYFLASH
 
-Fullscreen flashcards with bold type, randomized themes, and varied inputs.
+Fullscreen flashcards for family medicine board prep, with varied inputs.
 
-Every card is a full-screen poster: one huge word set in a random display
-face, on a random palette, over a generated backdrop, arriving with a random
-animation. What it asks of you depends on the card: reveal, multiple choice,
-true/false, a slider, a trend panel, a sort, a sequence, or a match.
+Every card uses one plain look: Nunito on white, with green for right
+answers, red for wrong ones and blue for the current pick. What a card asks
+of you depends on its type: reveal, multiple choice, true/false, a number
+dial, a trend panel, a sort, a sequence, or a match.
 
 No build step, no dependencies, no framework. Open `index.html` and it runs.
 
@@ -26,8 +26,7 @@ fullscreen portrait, so it launches with no browser chrome.
 ## Card types
 
 A card's **type** decides what it asks, and each type has exactly one
-behaviour — content drives the format. The variety comes from the theme
-layer, which reshuffles palette, face, backdrop and entrance every render.
+behaviour — content drives the format.
 
 | Type | Shape | Interaction |
 |---|---|---|
@@ -157,28 +156,6 @@ value is the interaction and the question only the prompt — but capped too
 hard the question becomes unreadable, so this is a balance rather than a
 demotion.
 
-### DIAL LAB
-
-Eight `number` cards and nothing else, for testing the dial. Covers steps
-from `0.1` to `10000`, both card shapes (a band you can land anywhere
-inside, and an exact value with a tolerance), and both derived and authored
-scale bounds.
-
-Worth re-running the scale check after editing any number card: every answer
-must be reachable on the step grid, the dial must not *open* on a correct
-value, and the step count wants to stay in roughly the 8–150 band. A card
-can satisfy the first two and still be unusable if its scale is absurdly
-long — that is how the 925-step temperature card slipped through.
-
-### REVEAL LAB
-
-A built-in deck of nothing but `recall` cards, for judging the reveal motion
-without other formats interrupting. Fifteen cards covering the cases that
-stress it: short-to-short, a long answer under a short question, a long
-question over a short answer, three explanations (one long enough to fold).
-
-Delete the deck from `js/decks.js` when it has served its purpose.
-
 ## Settings
 
 Stored in `localStorage` under `myflash.prefs.v1`, with defaults in
@@ -204,141 +181,26 @@ Multi-row types award **partial credit** — three of four trend rows scores
 card resolved, and anything short of one requeues it later in the session.
 Match scores `1 − misses/pairs`, since with four pairs the last one is free.
 
-## The look engine
+## Text sizing
 
-`js/theme.js` composes each card from four axes:
-
-- **32 palettes** — hand-paired `bg` / `ink` / `acc`, not random hues, and
-  contrast-verified rather than eyeballed (see below).
-- **14 display faces** — each carries its own tracking and caps preference,
-  because a face that needs `-.045em` at 200px looks broken at `0`.
-- **54 backdrops** across four tiers — see below.
-- **8 entrances** — four stagger per letter (cascade, drop, skew, pop), four
-  animate the whole line (slam, blur, wipe, roll).
-
-### Motion
-
-Short, eased, no overshoot, no oscillation. Nothing animates longer than
-~340ms except ambient backdrop drift.
-Easing is a plain ease-out; the springy `cubic-bezier(.34,1.56,.64,1)`
-overshoots its target and is what made the old motion read as bouncy.
-
-**Stagger is capped as a span, not a step.** Per-letter entrances delay each
-letter by `index × stagger`, so a fixed 34ms step meant a 45-letter question
-took 2.5s to finish arriving — almost all of it accumulated delay rather than
-animation. `app.js` recomputes `--stagger` per card as
-`min(base, 240ms / letterCount)`, which holds the worst case at ~640ms while
-short questions keep their original ripple.
-
-**Wrong answers dim and settle** — opacity plus a `scale(.98)`, no shake.
-Colour already says "wrong"; oscillation just adds noise on top of
-information you have already received.
-
-**Text fitting measures `getBoundingClientRect().height`, not
-`scrollHeight`.** Two reasons, both load-bearing now that the flipper clips.
-The rect includes the element's *own* transform, so the `stretch`
-treatment's `scaleY(1.22)` is accounted for — sizing a stretched block by
-its untransformed height would lose its top and bottom to the clip. And the
-rect *excludes* scrollable overflow, which matters because `line-height:
-.92` lets descenders spill past their line boxes by a constant ~8px. That
-spill is not clipping, and measuring it would shrink type that fits fine —
-it also produced a long run of phantom overflow reports before the metric
-was corrected. An 8px `pad` guards the real clip edge.
-
-### Backdrops
-
-Flat by design: every colour stop is hard, so there are no soft gradients,
-no glow, and nothing that fakes depth. Variety comes from colour and
-composition rather than texture density.
-
-Everything is flat and two-tone; the tiers describe **loudness**, not style.
-
-| Tier | Share | What it is |
-|---|---|---|
-| **flat** | ~40% | Compositions, not patterns — splits, wedges, discs, bands, SVG shapes, clip-path forms, camo, collage |
-| **quiet** | ~26% | Sparse repeats — wavy lines, thin diagonals, grain, half-drop dots, dashes, wide stripes |
-| **mid** | ~25% | The same families tighter — dense waves, cross-hatch, checkerboard, scallops, zigzag, terrazzo, bricks, triangles |
-| **loud** | ~10% | Tight stripes, rays, concentric rings, crosses, halftone |
-
-Tier also decides layout: `flat` backdrops render against the true card box
-with `no-repeat`, everything else gets a 20% oversize and tiles.
-
-The flat tier is built three ways:
-
-**CSS gradients** with hard stops — splits, corner wedges, discs, bands,
-stacked rules. Cheapest, no DOM.
-
-**Inline SVG as a data-URI** — in two forms. `svgUrl` stretches a full-bleed
-composition to the card (ridges, waves, arcs, torn edges, shards, staircases,
-crescents, camo); `svgTile` keeps its own viewBox and does *not* stretch, so
-`background-size` scales a seamless repeat (wavy lines, scallops, zigzag,
-bricks, triangles, dashes, half-drop dots, grain, terrazzo). Grain and
-terrazzo scatter via a seeded LCG rather than `Math.random`, so a tile looks
-random but stays identical across renders.
-
-`encodeURIComponent` is mandatory in both: an unescaped `#` in a colour
-terminates the URL and the background silently disappears.
-
-**Positioned layers** — `clip-path` forms (ribbon, arrow block, notched and
-angled slabs) and **collage**, a generator rather than a fixed look. Collage
-places 2–4 primitives (disc, ring, triangle, wedge, bar) into top/bottom/left
-/right zones by rule: each bleeds off an edge, and none lands in the vertical
-middle where the question sits. It carries the heaviest single weight because
-it is a family, not one design.
-
-One trap worth knowing if you extend it: a square layer's width is a share of
-card *width* while its `top`/`bottom` offset is a share of card *height*.
-Bleeding by a fraction of the width pushes shapes almost entirely off a
-portrait card, so `shapeIn` converts between the two.
-
-Motion is slow enough to be felt rather than watched: drifts run 105–120s
-over ~100px of travel, the ray spin takes 300s, and the "breathe" scale tops
-out at 1.035. Roughly half of all cards have no motion at all.
-
-Flat backdrops render against the true card box; tiled ones get a 20%
-oversize so drift never exposes an edge.
-
-### Verifying contrast
-
-```bash
-node tools/check-contrast.js   # exits non-zero if any palette fails
-open tools/backdrops.html      # contact sheet of every backdrop
-open tools/judge.html          # rate palettes, fonts and backdrops by eye
-open tools/moods.html          # calm / editorial / quirky alternatives to bold
-```
-
-`ink` targets 4.5:1 against its background since it's used for small UI as
-well as display type; `acc` targets 3:1 because it only ever appears large.
-All 32 palettes currently pass, 24 of them at AAA.
-
-Randomness is bounded on purpose. Palette, font, backdrop, and entrance each
-refuse to repeat back-to-back — consecutive repeats are what make shuffled
-design read as broken rather than varied. Text treatments (outline, hard
-shadow, accent words, vertical stretch) are weighted so plain wins most of
-the time; every card shouting is the same as no card shouting.
-
-Question text is binary-searched to the largest size that fits its box
-(`js/text.js`), re-run once webfonts land. Length buckets guess wrong the
-moment a face is unusually wide.
+Question text is binary-searched to the largest size that fits its box, up
+to a reading-size cap (`js/text.js`), and re-run once the webfont lands.
 
 ## Structure
 
 ```
-index.html                 four screens: home, session, summary, editor
-css/base.css               reset, chrome around the cards
-css/themes.css             card surface, treatments, per-mode UI
-css/animations.css         every keyframe + entrance dispatch
-js/theme.js                palettes, faces, backdrops, entrances
-js/text.js                 letter splitting, fit-to-box, fuzzy matching
-js/modes.js                the five input modes
+index.html                 screens: home, settings, session, summary
+css/base.css               color scheme, reset, chrome around the cards
+css/themes.css             card surface and per-mode UI
+css/animations.css         keyframes
+js/text.js                 fit-to-box, fuzzy matching, shuffle
+js/modes.js                the card types
 js/decks.js                built-in decks
 js/store.js                localStorage decks + per-card stats
 js/audio.js                WebAudio blips, no asset files
 js/app.js                  screens and the session engine
-tools/check-contrast.js    palette contrast gate
-tools/backdrops.html       backdrop contact sheet
-tools/judge.html           taste pass — rate one ingredient at a time
-tools/moods.html           four style directions as complete looks
+tools/check.html           card-writing prompt and deck checker
+tools/validate.js          the checker's rules
 ```
 
 ## Session logic
@@ -351,19 +213,16 @@ learned, which is what the deck meters on the home screen show.
 
 ## Custom decks
 
-**+ New deck** takes one card per line as `front | back`, which produces
-`recall` cards (without explanations). Richer types are authored in `js/decks.js` for now; a
-paste-JSON importer with validation is the next step, aimed at decks
-generated from source material.
+Decks are generated by another AI using the prompt in `tools/check.html`,
+checked there, and installed into this browser's `localStorage`. They show
+up under Settings → Your decks, where they can be deleted.
 
 Sample decks are standard teaching material for testing the formats. Treat
 them as a study aid, not a clinical reference.
 
 ## Accessibility notes
 
-`prefers-reduced-motion` collapses every animation and stops backdrop drift.
-The HUD takes its colour from the current card's ink, so it stays legible on
-light and dark palettes alike. Sound and vibration are separate switches in
+`prefers-reduced-motion` collapses every animation. Sound and vibration are separate switches in
 Settings, since they are different senses; where the browser exposes no
 vibration API the switch says so rather than sitting there inert.
 
@@ -375,7 +234,6 @@ stepping the dial.
 
 ## Not built yet
 
-Swipe-to-grade (should replace the MISSED/GOT IT buttons everywhere),
-paste-JSON import with validation, rapid-fire true/false as a timed session
-mode, spaced repetition across sessions, and a service worker for offline
+Backup and restore of progress, rapid-fire true/false as a timed session
+mode, a cross-topic review session, and a service worker for offline
 use. Timeline placement and next-step chains are deliberately parked.

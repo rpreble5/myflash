@@ -11,9 +11,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/base.css?v=30">
-<link rel="stylesheet" href="css/themes.css?v=30">
-<link rel="stylesheet" href="css/animations.css?v=30">
+<link rel="stylesheet" href="css/base.css?v=31">
+<link rel="stylesheet" href="css/themes.css?v=31">
+<link rel="stylesheet" href="css/animations.css?v=31">
 </head>
 <body>
 
@@ -29,10 +29,6 @@
       <p class="tagline">Family medicine board prep</p>
 
       <div class="deck-list" id="deck-list"></div>
-
-      <div class="home-actions">
-        <button class="btn btn-ghost" id="btn-new-deck">+ New deck</button>
-      </div>
     </div>
   </section>
 
@@ -78,9 +74,6 @@
       <h3 class="settings-head">Your decks</h3>
       <div class="settings-group" id="deck-manager"></div>
 
-      <h3 class="settings-head" hidden>Looks you marked</h3>
-      <div class="settings-group" id="look-feedback" hidden></div>
-
       <h3 class="settings-head">App</h3>
       <div class="settings-group">
         <p class="settings-empty" id="app-build">Version —</p>
@@ -101,10 +94,6 @@
     <div class="hud">
       <button class="hud-btn" id="btn-quit" aria-label="End session">&#10005;</button>
       <div class="progress"><div class="progress-fill" id="progress-fill"></div></div>
-      <!-- Judge the look while you are looking at it. A verdict cast in a
-           tool is an assessment; one cast mid-session is a reaction. -->
-      <button class="hud-btn hud-nope" id="btn-nope" hidden
-              aria-label="Mark this colour combination as bad" aria-pressed="false">&#128078;</button>
       <div class="streak" id="streak"><span id="streak-n">0</span>&#128293;</div>
     </div>
     <div id="stage" class="stage"></div>
@@ -122,33 +111,13 @@
     </div>
   </section>
 
-  <!-- ──────────────────────── EDITOR ──────────────────────── -->
-  <section class="screen" id="screen-editor">
-    <div class="editor-wrap">
-      <h2 class="editor-title">NEW DECK</h2>
-      <label class="field">
-        <span>Deck name</span>
-        <input type="text" id="deck-name" placeholder="Guitar chords">
-      </label>
-      <label class="field">
-        <span>Cards &mdash; one per line, <code>front | back</code></span>
-        <textarea id="deck-body" rows="12" placeholder="C major | C E G&#10;A minor | A C E"></textarea>
-      </label>
-      <div class="home-actions">
-        <button class="btn btn-solid" id="btn-save-deck">Save deck</button>
-        <button class="btn btn-ghost" id="btn-cancel-deck">Cancel</button>
-      </div>
-    </div>
-  </section>
-
 </div>
 
-<script src="js/theme.js?v=30"></script>
-<script src="js/audio.js?v=30"></script>
-<script src="js/decks.js?v=30"></script>
-<script src="js/store.js?v=30"></script>
-<script src="js/text.js?v=30"></script>
-<script src="js/modes.js?v=30"></script>
-<script src="js/app.js?v=30"></script>
+<script src="js/audio.js?v=31"></script>
+<script src="js/decks.js?v=31"></script>
+<script src="js/store.js?v=31"></script>
+<script src="js/text.js?v=31"></script>
+<script src="js/modes.js?v=31"></script>
+<script src="js/app.js?v=31"></script>
 </body>
 </html>

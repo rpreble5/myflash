@@ -1,83 +1,7 @@
-/* animations.css — every keyframe in the app, plus the entrance
-   dispatch that maps data-entrance onto letters or the whole line.
+/* animations.css — every keyframe in the app.
 
    House style: short, eased, no overshoot, no oscillation. Nothing
-   here runs longer than ~340ms except the deliberate card flip and
-   the ambient backdrop drift. Easing is a plain ease-out curve —
-   the springy cubic-bezier(.34,1.56,.64,1) overshoots its target
-   and is what made the old motion read as bouncy.                 */
-
-/* ── Card entrances: per-letter ──────────────────────────────
-   Scoped to .face-front. The question's entrance is ambient, so
-   randomising it is fine; the reveal is a response to a tap and
-   must be the same motion every time, so the answer never replays
-   whichever entrance this card happened to draw.
-
-   `--stagger` is computed per card in app.js, capped so the whole
-   sweep lands within ~240ms however long the question is. Left
-   uncapped, a 45-letter question took 2.5s to finish arriving.   */
-.card[data-entrance="cascade"] .face-front .letter,
-.card[data-entrance="drop"]    .face-front .letter,
-.card[data-entrance="skewin"]  .face-front .letter,
-.card[data-entrance="popin"]   .face-front .letter {
-  animation-duration: .34s;
-  animation-fill-mode: both;
-  animation-timing-function: cubic-bezier(.22, 1, .36, 1);
-  animation-delay: calc(var(--i) * var(--stagger, 24ms) + 60ms);
-}
-.card[data-entrance="cascade"] .face-front .letter { animation-name: letter-cascade; }
-.card[data-entrance="drop"]    .face-front .letter { animation-name: letter-drop; }
-.card[data-entrance="skewin"]  .face-front .letter { animation-name: letter-skew; }
-.card[data-entrance="popin"]   .face-front .letter { animation-name: letter-pop; }
-
-@keyframes letter-cascade {
-  from { opacity: 0; transform: translateY(55%); }
-  to   { opacity: 1; transform: none; }
-}
-@keyframes letter-drop {
-  from { opacity: 0; transform: translateY(-45%) scale(1.06); }
-  to   { opacity: 1; transform: none; }
-}
-@keyframes letter-skew {
-  from { opacity: 0; transform: translateX(-22%) skewX(-10deg); }
-  to   { opacity: 1; transform: none; }
-}
-@keyframes letter-pop {
-  from { opacity: 0; transform: scale(.72); }
-  to   { opacity: 1; transform: none; }
-}
-
-/* ── Card entrances: whole line ──────────────────────────── */
-.card[data-entrance="slam"]   .face-front .q,
-.card[data-entrance="blurin"] .face-front .q,
-.card[data-entrance="wipe"]   .face-front .q,
-.card[data-entrance="rollin"] .face-front .q {
-  animation-duration: .34s;
-  animation-fill-mode: both;
-  animation-delay: 60ms;
-  animation-timing-function: cubic-bezier(.22, 1, .36, 1);
-}
-.card[data-entrance="slam"]   .face-front .q { animation-name: slam-in; animation-duration: .26s; }
-.card[data-entrance="blurin"] .face-front .q { animation-name: blur-in; }
-.card[data-entrance="wipe"]   .face-front .q { animation-name: wipe-in; }
-.card[data-entrance="rollin"] .face-front .q { animation-name: roll-in; }
-
-@keyframes slam-in {
-  from { opacity: 0; transform: scale(1.18); }
-  to   { opacity: 1; transform: scale(1); }
-}
-@keyframes blur-in {
-  from { opacity: 0; filter: blur(14px); transform: scale(1.04); }
-  to   { opacity: 1; filter: blur(0); transform: scale(1); }
-}
-@keyframes wipe-in {
-  from { clip-path: inset(0 100% 0 0); }
-  to   { clip-path: inset(0 0 0 0); }
-}
-@keyframes roll-in {
-  from { opacity: 0; transform: translateX(-14%); }
-  to   { opacity: 1; transform: translateX(0); }
-}
+   here runs longer than ~340ms.                                     */
 
 /* ── Card in / out ───────────────────────────────────────── */
 @keyframes card-in {
@@ -85,45 +9,16 @@
   to   { opacity: 1; transform: none; }
 }
 
-.card.exit-fly    { animation: exit-fly    .26s cubic-bezier(.5, 0, .84, .3) both; }
 .card.exit-shrink { animation: exit-shrink .26s cubic-bezier(.5, 0, .84, .3) both; }
-.card.exit-wipe   { animation: exit-wipe   .26s cubic-bezier(.65, 0, .35, 1) both; }
-.card.exit-spin   { animation: exit-spin   .26s cubic-bezier(.5, 0, .84, .3) both; }
-.card.exit-drop   { animation: exit-drop   .26s cubic-bezier(.5, 0, .84, .3) both; }
-
-/* No rotation on the way out — resting text isn't tilted, so
-   neither is anything leaving. */
-@keyframes exit-fly    { to { opacity: 0; transform: translateX(-16%); } }
 @keyframes exit-shrink { to { opacity: 0; transform: scale(.86); } }
-@keyframes exit-wipe   { to { clip-path: inset(0 0 0 100%); } }
-@keyframes exit-spin   { to { opacity: 0; transform: scale(.78); } }
-@keyframes exit-drop   { to { opacity: 0; transform: translateY(18%) scale(.96); } }
-
-/* ── Backdrop drift ──────────────────────────────────────────
-   Slow enough to be felt rather than watched. Small travel over
-   long durations; nothing here should pull focus from the type. */
-@keyframes drift-slow    { to { background-position: 76px 76px; } }
-@keyframes drift-diag    { to { background-position: 104px 104px; } }
-@keyframes drift-vert    { to { background-position: 0 98px; } }
-@keyframes drift-horiz   { to { background-position: 92px 0; } }
-@keyframes drift-spin    { to { transform: rotate(360deg); } }
-@keyframes drift-breathe {
-  0%, 100% { transform: scale(1); }
-  50%      { transform: scale(1.035); }
-}
 
 /* ── Feedback ────────────────────────────────────────────────
-   Wrong answers dim and settle. There is deliberately no shake:
-   colour already says "wrong", and oscillation only adds noise
-   on top of information you have already received.              */
+   Wrong answers settle. There is deliberately no shake: colour
+   already says "wrong", and oscillation only adds noise on top of
+   information you have already received.                         */
 @keyframes answer-in {
   from { opacity: 0; transform: scale(.9); }
   to   { opacity: 1; transform: scale(1); }
-}
-@keyframes hint-pulse { 0%, 100% { opacity: .45; } 50% { opacity: .18; } }
-@keyframes hold-ripple {
-  0%   { transform: scale(.94); opacity: .34; }
-  100% { transform: scale(1.24); opacity: 0; }
 }
 @keyframes choice-in {
   from { opacity: 0; transform: translateY(12px); }
@@ -140,18 +35,10 @@
 }
 
 /* ── Chrome ──────────────────────────────────────────────── */
-@keyframes deck-in {
-  from { opacity: 0; transform: translateY(14px); }
-  to   { opacity: 1; transform: none; }
-}
 @keyframes streak-pop {
   0%   { transform: scale(1); }
   40%  { transform: scale(1.15); }
   100% { transform: scale(1); }
-}
-@keyframes wordmark-throb {
-  0%, 100% { transform: translateY(0); }
-  50%      { transform: translateY(-4px); }
 }
 
 /* ── Reduced motion ──────────────────────────────────────── */
@@ -162,4 +49,3 @@
     transition-duration: .01ms !important;
   }
 }
-.reduce-motion .backdrop { animation: none !important; }

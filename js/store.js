@@ -7,8 +7,12 @@
   var KEY_DECKS = 'myflash.decks.v1';
   var KEY_STATS = 'myflash.stats.v1';
   var KEY_PREFS = 'myflash.prefs.v1';
-  var KEY_LOOKS = 'myflash.looks.v1';
-  var KEY_SHOWN = 'myflash.shown.v1';
+
+  /* Left behind by the retired look feedback. Nothing reads them now. */
+  try {
+    localStorage.removeItem('myflash.looks.v1');
+    localStorage.removeItem('myflash.shown.v1');
+  } catch (e) { /* storage blocked */ }
 
   /* Anything not listed here is not a setting. Defaults are the current
      behaviour, so an empty store behaves exactly as before. */
@@ -58,125 +62,12 @@
     return true;
   }
 
-  /* Decks the app studies. The design-lab fixtures carry `lab: true` and
-     are excluded here rather than deleted: they exist to exercise every
-     card type against the theme engine, which is still worth having, but
-     a home screen that ranks what to study next should not be offering
-     REVEAL LAB alongside a real topic. Flip the flag to get them back. */
   function allDecks() {
-    return global.Decks.BUILTIN.filter(function (d) { return !d.lab; }).concat(customDecks());
+    return global.Decks.BUILTIN.concat(customDecks());
   }
 
   function deckById(id) {
     return allDecks().filter(function (d) { return d.id === id; })[0] || null;
-  }
-
-  /* Look feedback, attributed. A verdict on a whole card cannot say
-     whether the colours were wrong or the typeface was, and those want
-     opposite fixes — one culls a palette, the other culls a font, and a
-     third only stops two good things being drawn together.
-
-     So the record keeps the whole tuple AND which parts of it were
-     blamed. A component that appears in marked looks without ever being
-     blamed is evidence in its favour, which is the other half of the
-     signal and free to collect. */
-  var LOOK_PARTS = ['palette', 'font', 'backdrop', 'treatment', 'grain'];
-
-  function lookKey(l) {
-    return LOOK_PARTS.map(function (k) { return l[k] || ''; }).join('|');
-  }
-
-  function looks() { return read(KEY_LOOKS, []); }
-  function clearLooks() { write(KEY_LOOKS, []); }
-
-  /* Records written before the menu existed blamed the whole look; read
-     them as everything flagged rather than dropping them. */
-  function flagsOf(rec) {
-    if (rec.flags) return rec.flags;
-    var all = {};
-    LOOK_PARTS.forEach(function (k) { if (rec[k]) all[k] = true; });
-    return all;
-  }
-
-  function lookFlags(look) {
-    var key = lookKey(look);
-    var rec = looks().filter(function (l) { return lookKey(l) === key; })[0];
-    return rec ? flagsOf(rec) : {};
-  }
-
-  /* Nothing flagged means nothing wrong: the record is removed rather
-     than stored as an empty complaint. */
-  function saveLook(look, flags) {
-    var all = looks();
-    var key = lookKey(look);
-    var i = all.findIndex(function (l) { return lookKey(l) === key; });
-    var any = LOOK_PARTS.some(function (k) { return flags[k]; });
-
-    if (!any) {
-      if (i >= 0) { all.splice(i, 1); write(KEY_LOOKS, all); }
-      return false;
-    }
-
-    var rec = { tier: look.tier, flags: flags, at: Date.now() };
-    LOOK_PARTS.forEach(function (k) { rec[k] = look[k] || null; });
-    if (i >= 0) all[i] = rec; else all.push(rec);
-    write(KEY_LOOKS, all);
-    return true;
-  }
-
-  /* How often each component has been drawn at all. Without this the
-     feedback has no denominator: fifteen palettes blamed once each says
-     nothing until you know whether each was seen twice or twenty times.
-     One counter per card render, which is cheap and the only way the
-     next round can report rates instead of counts. */
-  function noteShown(look) {
-    var all = read(KEY_SHOWN, {});
-    LOOK_PARTS.forEach(function (k) {
-      var v = look[k];
-      if (!v) return;
-      all[k] = all[k] || {};
-      all[k][v] = (all[k][v] || 0) + 1;
-    });
-    write(KEY_SHOWN, all);
-  }
-
-  function shownCounts() { return read(KEY_SHOWN, {}); }
-  function clearShown() { write(KEY_SHOWN, {}); }
-
-  /* Per component: how often it was blamed, and how often it merely
-     turned up in a look someone disliked. */
-  function lookTally() {
-    var bucket = {};
-    looks().forEach(function (rec) {
-      var f = flagsOf(rec);
-      LOOK_PARTS.forEach(function (k) {
-        var v = rec[k];
-        if (!v) return;
-        bucket[k] = bucket[k] || {};
-        bucket[k][v] = bucket[k][v] || { name: v, blamed: 0, seen: 0 };
-        bucket[k][v].seen++;
-        if (f[k]) bucket[k][v].blamed++;
-      });
-    });
-
-    var shown = shownCounts();
-    var out = {};
-    Object.keys(bucket).forEach(function (k) {
-      out[k] = Object.keys(bucket[k])
-        .map(function (v) {
-          var e = bucket[k][v];
-          e.shown = (shown[k] && shown[k][v]) || 0;
-          /* Rate only where there is a denominator to divide by. */
-          e.rate = e.shown ? e.blamed / e.shown : null;
-          return e;
-        })
-        .filter(function (e) { return e.blamed > 0; })
-        .sort(function (a, b) {
-          if (a.rate != null && b.rate != null && a.rate !== b.rate) return b.rate - a.rate;
-          return b.blamed - a.blamed;
-        });
-    });
-    return out;
   }
 
   /* stats: { "deckId:cardIndex": { seen, right, wrong, streak, s, at } }
@@ -364,15 +255,6 @@
     deckById: deckById,
     stats: stats,
     recordAnswer: recordAnswer,
-    saveLook: saveLook,
-    noteShown: noteShown,
-    shownCounts: shownCounts,
-    clearShown: clearShown,
-    lookFlags: lookFlags,
-    looks: looks,
-    lookTally: lookTally,
-    clearLooks: clearLooks,
-    LOOK_PARTS: LOOK_PARTS,
     cardStrength: cardStrength,
     deckStrength: deckStrength,
     weakCards: weakCards,
