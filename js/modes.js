@@ -346,7 +346,7 @@
         if (locked) return;
         /* Selecting produces no verdict of its own, so without this the
            only tap in the app that changes state silently is this one. */
-        global.Sfx.tick();
+        global.Sfx.select();
         picked[i] = !picked[i];
         btns[i].classList.toggle('is-picked', !!picked[i]);
         btns[i].firstChild.textContent = picked[i] ? '✓' : '';
@@ -558,7 +558,7 @@
 
       function pick(i, dir) {
         if (locked) return;
-        global.Sfx.tick();
+        global.Sfx.select();
         picks[i] = dir;
         DIRS.forEach(function (d) {
           var on = d.key === dir;
@@ -694,7 +694,7 @@
         bar.classList.add('is-locked');
         ctx.stackReveal(false);
         settle(ctx, right / items.length);
-      } else (ok ? global.Sfx.right : global.Sfx.wrong)();
+      } else global.Sfx.select();
     }
 
     var swipe = ctx.enableSwipe({
@@ -829,7 +829,7 @@
         if (selected) selected.classList.remove('is-sel');
         selected = btn;
         btn.classList.add('is-sel');
-        global.Sfx.tick();
+        global.Sfx.select();
       }
 
       function pickRight(btn) {
@@ -1203,7 +1203,7 @@
           cur += d;
         }
         typed[at] = cur;
-        global.Sfx.tick();
+        global.Sfx.select();
         show();
       }
 
@@ -1213,14 +1213,14 @@
         if (!typed[at] && at > 0) at--;
         else if (typed[at]) typed[at] = typed[at].slice(0, -1);
         else return;
-        global.Sfx.tick();
+        global.Sfx.select();
         show();
       }
 
       function next() {
         if (locked || at >= count - 1 || !typed[at]) return;
         at++;
-        global.Sfx.tick();
+        global.Sfx.select();
         show();
       }
 
