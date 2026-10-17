@@ -357,6 +357,8 @@
 
 /* While a note is open the card underneath must not also respond. */
 .card.has-note .tap-cue { opacity: 0; }
+.note-cue span { display: block; }
+.note-cue-grade { margin-bottom: .35rem; color: var(--ink); }
 
 /* ── Swipe to grade ──────────────────────────────────────────
    Labels are real buttons, so the card still works by tap and by

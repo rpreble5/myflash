@@ -153,6 +153,7 @@
       onRight: function () { ctx.judge(1); ctx.finish(1); }
     });
 
+    if (ctx.onNoteSwipe) ctx.onNoteSwipe(function (right) { swipe.commit(right); });
     miss.addEventListener('click', function (e) { e.stopPropagation(); swipe.commit(false); });
     got.addEventListener('click',  function (e) { e.stopPropagation(); swipe.commit(true); });
     ctx.keys({

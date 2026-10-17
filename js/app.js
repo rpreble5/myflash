@@ -367,6 +367,7 @@
 
     session.keydown = {};
     session.keyup = {};
+    var noteSwipe = null;
 
     var ctx = {
       card: card,
@@ -435,7 +436,10 @@
         var body = h('div', 'note-body');
         body.appendChild(h('p', 'note-text', text));
         sheet.appendChild(body);
-        sheet.appendChild(h('div', 'note-cue', 'TAP TO CLOSE'));
+        var cue = h('div', 'note-cue');
+        if (noteSwipe) cue.appendChild(h('span', 'note-cue-grade', '← MISSED · GOT IT →'));
+        cue.appendChild(h('span', null, 'TAP TO CLOSE'));
+        sheet.appendChild(cue);
         el.appendChild(sheet);
         el.classList.add('has-note');
         session.noteOpen = true;
@@ -456,15 +460,23 @@
         /* The sheet stops pointer events reaching the card: without this
            a drag to scroll a long note reads as a swipe on the question
            underneath it. */
-        var y0 = null, moved = false;
+        var y0 = null, x0 = 0, moved = false, armed = false;
+        var GRADE_PX = 80;
         sheet.addEventListener('pointerdown', function (e) {
           e.stopPropagation();
           y0 = e.clientY;
+          x0 = e.clientX;
           moved = false;
+          armed = false;
         });
         sheet.addEventListener('pointermove', function (e) {
           if (y0 == null) return;
-          if (Math.abs(e.clientY - y0) > 10) moved = true;
+          var dx = e.clientX - x0;
+          if (Math.abs(e.clientY - y0) > 10 || Math.abs(dx) > 10) moved = true;
+          /* Tick once when a sideways drag has gone far enough to grade. */
+          var far = !!noteSwipe && Math.abs(dx) >= GRADE_PX && Math.abs(dx) > Math.abs(e.clientY - y0);
+          if (far && !armed) global.Sfx.arm();
+          armed = far;
         });
         sheet.addEventListener('pointerup', function (e) {
           e.stopPropagation();
@@ -474,7 +486,16 @@
              flick and shut the note in the same motion that opened it. */
           if (y0 == null) return;
           var dy = e.clientY - y0;
+          var dx = e.clientX - x0;
           y0 = null;
+          /* Sideways grades straight from the note, the same as swiping
+             the card behind it, so reading the explanation never costs a
+             trip back to grade. */
+          if (noteSwipe && Math.abs(dx) >= GRADE_PX && Math.abs(dx) > Math.abs(dy)) {
+            close();
+            noteSwipe(dx > 0);
+            return;
+          }
           if (moved) {
             /* A downward swipe puts the note away and leaves the card
                where it is — the deliberate "not yet". */
@@ -490,6 +511,10 @@
 
         session.closeNote = close;
       },
+
+      /* A mode that grades by swiping hands that over here, so the same
+         swipe works on the note screen. */
+      onNoteSwipe: function (fn) { noteSwipe = fn; },
 
       /* An upward drag anywhere on the card opens the note.
 
