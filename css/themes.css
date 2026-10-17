@@ -306,6 +306,9 @@
 /* The grade buttons hold their place until the answer is shown. */
 .swipe-bar.is-waiting .swipe-side { opacity: 0; pointer-events: none; }
 .swipe-bar .swipe-cue { white-space: nowrap; }
+/* Grading is mostly a swipe, so the bar is small and sits low, and the
+   question and answer get the room. */
+.card.is-stack .card-body { padding-bottom: calc(.75rem + env(safe-area-inset-bottom)); }
 
 /* A long note is not folded into a strip under the answer — it takes the
    whole card. What sits here is only the invitation. */
@@ -400,13 +403,13 @@
 }
 .swipe-side {
   font-weight: 800;
-  font-size: .95rem;
+  font-size: .78rem;
   letter-spacing: .04em;
   text-transform: uppercase;
-  padding: .8rem 1.3rem;
-  border-radius: 16px;
+  padding: .45rem .9rem;
+  border-radius: 12px;
   border: 2px solid var(--line);
-  border-bottom-width: 4px;
+  border-bottom-width: 3px;
   color: var(--ink);
   transition: opacity .16s ease, background-color .16s ease, color .16s ease;
 }
