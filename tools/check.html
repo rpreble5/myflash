@@ -145,10 +145,10 @@
 
 <!-- The real deck list, the real dial maths, the real store. A check
      against a copy of the rules is a check against nothing. -->
-<script src="../js/decks.js?v=58"></script>
-<script src="../js/modes.js?v=58"></script>
-<script src="../js/store.js?v=58"></script>
-<script src="validate.js?v=58"></script>
+<script src="../js/decks.js?v=59"></script>
+<script src="../js/modes.js?v=59"></script>
+<script src="../js/store.js?v=59"></script>
+<script src="validate.js?v=59"></script>
 
 <!-- The prompt lives here as inert text so there is exactly one copy of
      it: the page renders it and the clipboard button ships it. -->
@@ -324,12 +324,17 @@ The card is a phone screen and the type is large, so these are hard limits
 rather than style advice. Over them, text drops to a smaller layout or
 wraps into a wall.
 
-  question          under 90 characters
-  answer ("a")      under 40
+  question          under 120 characters
+  answer ("a")      under 56
   mcq/multi option  under 32
   bucket item       under 32, bin names under 16
   trend row label   under 28
   match left/right  under 24
+
+Write each question as a plain, complete question that reads clearly the
+first time: "What is the first test to order when you suspect thyroid
+disease?", not "First test, suspected thyroid disease". Short is good;
+clipped is not. Answers are a short phrase or one plain clause.
 
 And how many:
 

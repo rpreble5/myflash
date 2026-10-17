@@ -17,8 +17,8 @@
   /* Observed ceilings from the built-in decks, which have been read and
      approved on a phone. Thresholds sit a little above the real maxima so
      genuine content passes and only outliers are flagged. */
-  var Q_MAX = 90;          // longest built-in question is 80
-  var ANSWER_MAX = 48;     // longest built-in recall answer is 30
+  var Q_MAX = 120;         // a full question, not a headline
+  var ANSWER_MAX = 56;     // a short phrase or one plain clause
   var OPTION_MAX = 32;     // longest built-in option is 30
   var LABEL_MAX = 28;      // trend rows are narrower than option buttons
   var PAIR_MAX = 24;       // match runs two columns, so half the width
