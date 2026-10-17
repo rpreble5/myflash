@@ -185,8 +185,9 @@
      you knew it. The layout itself lives in app.js (ctx.stack), which
      holds the question.                                               */
 
-  /* Recall has the room for a longer note than the modes with controls. */
-  var RECALL_WHY_INLINE = 220;
+  /* The stacked layout has room for a longer note than the modes with
+     controls under the question. */
+  var STACK_WHY_INLINE = 220;
 
   var recall = {
     id: 'recall', label: 'TAP TO REVEAL', types: ['recall'], weight: 1,
@@ -201,7 +202,7 @@
          the layout asks for the WHY button version instead. */
       var why = ctx.card.why;
       ctx.stack(String(ctx.card.a), why ? function (fits) {
-        var w = explanation(why, ctx, fits ? RECALL_WHY_INLINE : 0);
+        var w = explanation(why, ctx, fits ? STACK_WHY_INLINE : 0);
         w.classList.add('is-held');
         return w;
       } : null);
@@ -406,57 +407,51 @@
   /* ═══════════════ true / false ═══════════════ */
 
   var truefalse = {
-    id: 'truefalse', label: 'TRUE OR FALSE', types: ['truefalse'], weight: 1,
+    /* No label: the faint FALSE / TRUE bar at the bottom says what kind of
+       card this is and how to answer it. */
+    id: 'truefalse', label: '', types: ['truefalse'], weight: 1,
     eligible: function () { return true; },
     mount: function (area, ctx) {
       var locked = false;
-      var bar = h('div', 'tf-bar');
+      var truth = !!ctx.card.a;
+
       /* False left, true right: the same axis as everywhere else in the
          app, where left is the negative answer and right the positive
          one. The buttons stay real, so the card still works by tap and
-         by keyboard — and unlike a select-all list, a two-button bar
-         leaves most of the card free for the swipe to start on. */
-      /* The label rides above the fill layer, so it needs to be an
-         element rather than a bare text node. */
-      var fBtn = h('button', 'tf-btn tf-false');
-      var tBtn = h('button', 'tf-btn tf-true');
-      fBtn.appendChild(h('span', 'tf-label', 'FALSE'));
-      tBtn.appendChild(h('span', 'tf-label', 'TRUE'));
+         by keyboard. */
+      var bar = h('div', 'swipe-bar tf-bar');
+      var fBtn = h('button', 'swipe-side tf-side tf-false', 'FALSE');
+      var tBtn = h('button', 'swipe-side tf-side tf-true', 'TRUE');
+      var cueText = h('span', 'swipe-cue', 'swipe');
       bar.appendChild(fBtn);
-      bar.appendChild(h('span', 'swipe-cue', 'swipe'));
+      bar.appendChild(cueText);
       bar.appendChild(tBtn);
       area.appendChild(bar);
 
-      /* Mounted held, released on the answer. Appended at reveal time it
-         pushed the buttons down the card exactly as the result landed. */
-      var why = ctx.card.why ? explanation(ctx.card.why, ctx) : null;
-      if (why) {
-        why.classList.add('is-held');
-        area.appendChild(why);
-      }
+      /* Same layout as recall: the question stays put and the correct
+         answer rises in underneath it once you have picked. */
+      var why = ctx.card.why;
+      ctx.stack(truth ? 'True' : 'False', why ? function (fits) {
+        var w = explanation(why, ctx, fits ? STACK_WHY_INLINE : 0);
+        w.classList.add('is-held');
+        return w;
+      } : null);
 
       function answer(value) {
         if (locked) return;
         locked = true;
-        var ok = value === !!ctx.card.a;
+        var ok = value === truth;
         bar.classList.add('is-locked');
         (value ? tBtn : fBtn).classList.add(ok ? 'is-right' : 'is-wrong');
-        /* Wrong: light the true answer as well, so the card ends showing
-           what is so rather than only what you said. */
-        if (!ok) (ctx.card.a ? tBtn : fBtn).classList.add('is-right');
-        if (why) why.classList.remove('is-held');
+        cueText.textContent = 'tap to continue';
+        ctx.stackReveal();
         settle(ctx, ok ? 1 : 0);
       }
 
-      /* The bar holds still. Nothing is going anywhere — the answer
-         resolves in place — so the distance is spent on the colour of the
-         side you are heading for instead of on travel. */
+      /* Nothing moves under the finger; the side you are heading for
+         lights up in the bar instead. */
       var swipe = ctx.enableSwipe({
         motion: 'none',
-        onProgress: function (t, dir) {
-          bar.dataset.lean = dir;
-          bar.style.setProperty('--lean', t.toFixed(3));
-        },
         onLeft:  function () { answer(false); },
         onRight: function () { answer(true); }
       });

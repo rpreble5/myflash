@@ -586,6 +586,9 @@
         var node = h('div', 'q a-face stack-answer', answerText);
         front.appendChild(node);
         stack = { answer: node, makeWhy: makeWhy, why: null, cue: false, shown: false };
+        /* Built now rather than at layout, so the fallback below that adds
+           a missing explanation sees this one and does not add a second. */
+        if (makeWhy) setWhy(makeWhy(true));
         layoutStackLater();
       },
 
