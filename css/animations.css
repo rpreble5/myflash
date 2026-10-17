@@ -31,6 +31,13 @@
   to   { opacity: 1; transform: none; }
 }
 
+/* A select-all box being checked: small, so it can overshoot. */
+@keyframes box-pop {
+  0%   { transform: scale(.7); }
+  60%  { transform: scale(1.18); }
+  100% { transform: scale(1); }
+}
+
 /* ── Chrome ──────────────────────────────────────────────── */
 @keyframes streak-pop {
   0%   { transform: scale(1); }

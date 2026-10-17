@@ -299,7 +299,9 @@
   /* ═══════════════ multi: select all that apply ═══════════════ */
 
   var multi = {
-    id: 'multi', label: 'SELECT ALL THAT APPLY', types: ['multi'], weight: 1,
+    /* No label: the hint at the bottom says "select all that apply" until
+       something is picked, then how to submit. */
+    id: 'multi', label: '', types: ['multi'], weight: 1,
     eligible: function (card) {
       return card.answers && card.answers.length && card.distractors && card.distractors.length;
     },
@@ -313,7 +315,7 @@
          make the question hard — they shouldn't also force a tall list. */
       grid.dataset.lay = layoutFor(options, 6, GRID_MAX_CHARS_BOXED);
 
-      var hint = h('div', 'hint is-static submit-cue', 'SWIPE RIGHT TO SUBMIT →');
+      var hint = h('div', 'hint is-static submit-cue', 'select all that apply');
       var keyMap = { 'Enter': submit };
       var btns = [];
 
@@ -326,9 +328,8 @@
         b.setAttribute('role', 'button');
         b.setAttribute('aria-pressed', 'false');
         /* The box carries selection state, so unlike single choice it earns
-           its width in either layout. It shows the number only in list
-           mode, where the column of them lines up down the edge. */
-        var box = h('span', 'choice-key choice-box', grid.dataset.lay === 'list' ? String(i + 1) : '');
+           its width in either layout. Picking fills only the box. */
+        var box = h('span', 'choice-key choice-box');
         b.appendChild(box);
         b.appendChild(h('span', 'choice-text', opt));
         b.style.setProperty('--i', i);
@@ -348,8 +349,11 @@
         global.Sfx.tick();
         picked[i] = !picked[i];
         btns[i].classList.toggle('is-picked', !!picked[i]);
+        btns[i].firstChild.textContent = picked[i] ? '✓' : '';
         btns[i].setAttribute('aria-pressed', picked[i] ? 'true' : 'false');
-        hint.classList.toggle('is-live', anyPicked());
+        var live = anyPicked();
+        hint.classList.toggle('is-live', live);
+        hint.textContent = live ? 'swipe right to check →' : 'select all that apply';
       }
 
       function isAnswer(opt) {
@@ -386,29 +390,26 @@
         /* Partial credit, with a wrong pick cancelling a hit — selecting
            the whole board should not score better than knowing two. */
         var score = Math.max(0, hits - wrong) / answers.length;
-        if (why) why.classList.remove('is-held');
+        ctx.stackReveal(false);
         settle(ctx, score);
       }
 
       area.appendChild(grid);
       area.appendChild(hint);
 
-      /* Built now, shown on submit. Appending it at reveal time pushed the
-         options up by the height of the note — moving the one thing the
-         user is reading at exactly the moment they start reading it. The
-         card settles its layout before the answer, not during it. */
-      var why = ctx.card.why ? explanation(ctx.card.why, ctx) : null;
-      if (why) {
-        why.classList.add('is-held');
-        area.appendChild(why);
-      }
+      /* Same layout as the other cards; the explanation fades in between
+         the question and the options once you have checked. */
+      var why = ctx.card.why;
+      ctx.stack('', why ? function (fits) {
+        var w = explanation(why, ctx, fits ? STACK_WHY_INLINE : 0);
+        w.classList.add('is-held');
+        return w;
+      } : null);
 
-      /* Nothing flies away — the options slide under the finger and spring
-         back as the answer resolves in place. A swipe with nothing picked
-         has nothing to submit, so it just springs back too. */
+      /* The options hold still under the swipe; only the hint lights up
+         as it heads right. A swipe with nothing picked does nothing. */
       var swipe = ctx.enableSwipe({
-        visual: grid,
-        motion: 'nudge',
+        motion: 'none',
         onRight: function () {
           if (anyPicked()) submit(); else swipe.reset();
         },

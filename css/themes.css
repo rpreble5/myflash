@@ -244,8 +244,10 @@
 .submit-cue { opacity: .7; transition: opacity .18s ease; }
 .submit-cue.is-live { opacity: 1; color: var(--brand-dark); }
 .submit-cue.is-hidden { visibility: hidden; }
-/* Once the drag is heading somewhere, the cue confirms rather than asks. */
-.card[data-armed="right"] .submit-cue { opacity: 1; }
+/* Heading right lights the cue; far enough to commit makes it the
+   app's blue. */
+.card[data-swipe="right"] .submit-cue.is-live { opacity: 1; }
+.card[data-armed="right"] .submit-cue.is-live { color: var(--brand); }
 
 /* The box is a checkbox rather than a keyboard hint: it has to show
    what is already selected, so it stays in both layouts. */
@@ -257,14 +259,23 @@
 }
 /* The tint means "selected right now", so it stops meaning anything once
    the answer is in — and must not outrank the reveal states below. */
-.choice-grid:not(.is-locked) .choice-btn.is-picked { background: var(--sel-bg); border-color: var(--sel); color: var(--brand-dark); }
-.choice-grid:not(.is-locked) .choice-btn.is-picked .choice-box { background: var(--sel); border-color: var(--sel); color: #fff; }
+/* Picking fills only the box, with a quick pop. The option itself does
+   not change, so the list stays calm while you choose. */
+.choice-box { width: 30px; height: 30px; border-width: 3px; border-radius: 9px; font-size: 1rem; font-weight: 900; }
+.choice-grid:not(.is-locked) .choice-btn.is-picked .choice-box {
+  background: var(--brand);
+  border-color: var(--brand-dark);
+  color: #fff;
+  animation: box-pop .24s cubic-bezier(.3, 1.6, .5, 1);
+}
 
 /* After CHECK. Every answer fills, so the set reads as the answer; the
    two failure states are told apart by fill, not by hue alone —
    a missed answer is loud and solid, a wrong pick is quiet and hollow. */
-.choice-btn.is-missed { border-color: var(--ok); border-style: dashed; }
-.is-multi .choice-btn.is-wrong .choice-box { border-color: var(--bad); background: transparent; color: var(--bad); }
+/* After checking: solid green you got, coral you shouldn't have
+   picked, and a green outline for a right answer you missed. */
+.is-multi .choice-btn.is-missed { background: var(--bg); border-color: var(--ok); color: var(--ok-dark); }
+.is-multi .choice-btn.is-missed .choice-key { border-color: var(--ok); color: var(--ok-dark); }
 .is-multi .choice-btn.is-idle { opacity: .3; }
 
 /* ── Explanation ─────────────────────────────────────────────
