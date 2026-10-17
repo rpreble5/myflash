@@ -224,7 +224,8 @@
   /* ═══════════════ mcq ═══════════════ */
 
   var choice = {
-    id: 'choice', label: 'PICK ONE', types: ['mcq'], weight: 1,
+    /* No label, like the other cards: four options say what to do. */
+    id: 'choice', label: '', types: ['mcq'], weight: 1,
     eligible: function (card) { return card.distractors && card.distractors.length >= 2; },
     mount: function (area, ctx) {
       var options = global.Txt.shuffle([ctx.card.a].concat(ctx.card.distractors));
@@ -251,7 +252,9 @@
             });
           }
           grid.classList.add('is-locked');
-          if (why) why.classList.remove('is-held');
+          /* The options already show the answer; only the explanation
+             comes in. */
+          ctx.stackReveal(false);
           settle(ctx, ok ? 1 : 0);
         }
 
@@ -262,14 +265,16 @@
 
       area.appendChild(grid);
 
-      /* Held rather than appended on reveal, the same way select-all and
-         true/false do it: an mcq explanation usually says why the other
-         three are wrong, which is worth more here than anywhere. */
-      var why = ctx.card.why ? explanation(ctx.card.why, ctx) : null;
-      if (why) {
-        why.classList.add('is-held');
-        area.appendChild(why);
-      }
+      /* Same layout as recall: the question in its usual place and size,
+         the options below, and the explanation fading in between them
+         once you have picked. An mcq explanation usually says why the
+         other three are wrong, which is worth more here than anywhere. */
+      var why = ctx.card.why;
+      ctx.stack('', why ? function (fits) {
+        var w = explanation(why, ctx, fits ? STACK_WHY_INLINE : 0);
+        w.classList.add('is-held');
+        return w;
+      } : null);
 
       ctx.keys(keyMap);
     }
