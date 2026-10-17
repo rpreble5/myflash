@@ -622,11 +622,12 @@
 
   /* ═══════════════ bucket: sort a list into two sides ═══════════════
 
-     Every item is on screen at once, centered. Swipe one, or tap its
-     left or right half, and it slides toward that side; it can be sent
-     back the other way until CHECK. Three or more bins have no sides to
-     slide to, so those cards go through the items one at a time with a
-     button per bin.                                                     */
+     Every item is listed under the question, and they are sorted in
+     order: swipe anywhere, or tap a side of the screen, and the current
+     item slides toward that side. A wrong one turns orange and crosses
+     to where it belongs, so the finished list is the true grouping.
+     Three or more bins have no sides to slide to, so those cards go
+     through the items one at a time with a button per bin.             */
 
   var bucket = {
     id: 'bucket', label: '', types: ['bucket'], weight: 1,
@@ -634,102 +635,93 @@
     mount: function (area, ctx) {
       var items = global.Txt.shuffle(ctx.card.items.slice());
       var bins = ctx.card.bins;
-
-      var why = ctx.card.why;
-      ctx.stack('', why ? function (fits) {
-        var w = explanation(why, ctx, fits ? STACK_WHY_INLINE : 0);
-        w.classList.add('is-held');
-        return w;
-      } : null);
-
       if (bins.length === 2) sortTwo(area, ctx, items, bins);
       else sortMany(area, ctx, items, bins);
     }
   };
 
+  function stackWhy(ctx) {
+    var why = ctx.card.why;
+    return why ? function (fits) {
+      var w = explanation(why, ctx, fits ? STACK_WHY_INLINE : 0);
+      w.classList.add('is-held');
+      return w;
+    } : null;
+  }
+
   function sortTwo(area, ctx, items, bins) {
-    var side = new Array(items.length).fill(null);
-    var locked = false;
+    var idx = 0, right = 0;
 
-    var heads = h('div', 'sort-heads');
-    heads.appendChild(h('div', 'sort-head', '← ' + bins[0]));
-    heads.appendChild(h('div', 'sort-head', bins[1] + ' →'));
-    var list = h('div', 'sort-list');
-    var check = h('button', 'btn btn-solid sort-check', 'CHECK');
-    check.disabled = true;
-    area.appendChild(heads);
-    area.appendChild(list);
-    area.appendChild(check);
+    /* The list rides in the stacked layout's entry slot, right under the
+       question, since nothing in it needs to be touched. */
+    var list = h('div', 'q sort-list');
+    var rows = items.map(function (item) {
+      var row = h('div', 'sort-row', item.label);
+      list.appendChild(row);
+      return row;
+    });
+    ctx.stack('', stackWhy(ctx), list);
 
-    var chips = items.map(function (item, i) {
-      var chip = h('div', 'sort-item', item.label);
-      chip.setAttribute('role', 'button');
-      chip.style.setProperty('--i', i);
-      list.appendChild(chip);
+    var bar = h('div', 'swipe-bar tf-bar');
+    var lBtn = h('button', 'swipe-side tf-side tf-false', '← ' + bins[0]);
+    var rBtn = h('button', 'swipe-side tf-side tf-true', bins[1] + ' →');
+    bar.appendChild(lBtn);
+    bar.appendChild(rBtn);
+    area.appendChild(bar);
 
-      /* Swipe or tap, on the item itself. A drag of a few pixels decides
-         the side by direction; anything shorter is a tap, decided by which
-         half of the item it landed on. */
-      var x0 = null;
-      chip.addEventListener('pointerdown', function (e) {
-        if (locked) return;
-        e.stopPropagation();
-        x0 = e.clientX;
-        if (chip.setPointerCapture) { try { chip.setPointerCapture(e.pointerId); } catch (err) { /* stale */ } }
-      });
-      chip.addEventListener('pointerup', function (e) {
-        if (x0 == null || locked) return;
-        var dx = e.clientX - x0;
-        x0 = null;
-        var r = chip.getBoundingClientRect();
-        var left = Math.abs(dx) > 18 ? dx < 0 : e.clientX < r.left + r.width / 2;
-        place(i, left ? 'left' : 'right');
-      });
-      chip.addEventListener('pointercancel', function () { x0 = null; });
-      chip.addEventListener('click', function (e) { e.stopPropagation(); });
-      return chip;
+    function paint() {
+      rows.forEach(function (r, i) { r.classList.toggle('is-current', i === idx); });
+    }
+
+    /* Most of the way toward its side, never off the list. */
+    function slide(row, where) {
+      var room = Math.max(0, (list.clientWidth - row.offsetWidth) / 2) * 0.9;
+      row.style.transform = 'translateX(' + Math.round(where === 'left' ? -room : room) + 'px)';
+    }
+
+    function sort(where) {
+      if (idx >= items.length) return;
+      var item = items[idx], row = rows[idx];
+      var truth = item.bin === bins[0] ? 'left' : 'right';
+      var ok = where === truth;
+      if (ok) right++;
+      row.classList.add(ok ? 'is-right' : 'is-wrong');
+      slide(row, where);
+      if (!ok) setTimeout(function () { slide(row, truth); }, 320);
+      idx++;
+      paint();
+      if (idx >= items.length) {
+        bar.classList.add('is-locked');
+        ctx.stackReveal(false);
+        settle(ctx, right / items.length);
+      } else (ok ? global.Sfx.right : global.Sfx.wrong)();
+    }
+
+    var swipe = ctx.enableSwipe({
+      motion: 'none',
+      onLeft:  function () { sort('left');  swipe.reset(); },
+      onRight: function () { sort('right'); swipe.reset(); },
+      /* A tap sorts by which half of the screen it landed on. */
+      onTap: function (target, x) {
+        if (idx >= items.length || x == null) return;
+        sort(x < global.innerWidth / 2 ? 'left' : 'right');
+      }
+    });
+    lBtn.addEventListener('click', function (e) { e.stopPropagation(); sort('left'); });
+    rBtn.addEventListener('click', function (e) { e.stopPropagation(); sort('right'); });
+    ctx.keys({
+      'ArrowLeft':  function () { sort('left'); },
+      'ArrowRight': function () { sort('right'); },
+      '1': function () { sort('left'); },
+      '2': function () { sort('right'); }
     });
 
-    /* Slides most of the way toward its side, never off the list. */
-    function slide(i, where) {
-      var chip = chips[i];
-      var room = Math.max(0, (list.clientWidth - chip.offsetWidth) / 2) * 0.85;
-      chip.style.transform = 'translateX(' + Math.round(where === 'left' ? -room : room) + 'px)';
-    }
-
-    function place(i, where) {
-      if (locked || side[i] === where) return;
-      side[i] = where;
-      chips[i].dataset.side = where;
-      slide(i, where);
-      global.Sfx.tick();
-      check.disabled = side.indexOf(null) !== -1;
-    }
-
-    function submit() {
-      if (locked || check.disabled) return;
-      locked = true;
-      check.classList.add('is-hidden');
-      var right = 0;
-      items.forEach(function (item, i) {
-        var truth = item.bin === bins[0] ? 'left' : 'right';
-        var ok = side[i] === truth;
-        if (ok) right++;
-        chips[i].classList.add(ok ? 'is-right' : 'is-wrong');
-        /* The finished list is the true grouping: a misplaced item moves
-           across to where it belongs, still marked. */
-        if (!ok) setTimeout(function () { slide(i, truth); }, 260);
-      });
-      ctx.stackReveal(false);
-      settle(ctx, right / items.length);
-    }
-
-    check.addEventListener('click', function (e) { e.stopPropagation(); submit(); });
-    ctx.keys({ 'Enter': submit });
+    paint();
   }
 
   function sortMany(area, ctx, items, bins) {
     var idx = 0, right = 0, locked = false;
+    ctx.stack('', stackWhy(ctx));
     ctx.setKicker(ctx.card.q);
     var hint = h('div', 'hint is-static');
     var group = h('div', 'bin-group');

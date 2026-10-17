@@ -832,7 +832,7 @@
             /* A pointer that never locked an axis never moved: that's a
                tap. Pointer capture sends this event to the card, so the
                thing under the finger is the *down* target, not e.target. */
-            if (!axis && opts.onTap) opts.onTap(startTarget);
+            if (!axis && opts.onTap) opts.onTap(startTarget, startX);
           }
         }
 

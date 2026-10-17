@@ -563,55 +563,20 @@
 .trend-row.is-wrong { border-color: var(--bad); }
 
 /* ── Bucket ──────────────────────────────────────────────────
-   Every item listed and centered; each slides toward the side it is
-   sent to. Placed items take a blue outline; after CHECK, right ones
-   fill blue and wrong ones turn orange and cross to their true side. */
-.sort-heads {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  width: min(560px, 100%);
+   Plain lines of text under the question. The one being sorted is dark,
+   the rest wait in light gray; each slides toward the side it was sent
+   to, blue when right and orange when wrong. */
+.sort-list { text-align: center; font-size: 20px; font-weight: 800; }
+.sort-row {
+  width: fit-content;
+  margin: 0 auto;
+  padding: 5px 0;
+  color: #C8C8C8;
+  transition: transform .28s cubic-bezier(.22, 1, .36, 1), color .2s ease;
 }
-.sort-head {
-  font-weight: 800;
-  font-size: .85rem;
-  letter-spacing: .04em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-.sort-list {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  width: min(560px, 100%);
-}
-.sort-item {
-  max-width: 78%;
-  padding: .55rem 1rem;
-  border-radius: 14px;
-  border: 3px solid var(--line);
-  border-bottom-width: 5px;
-  background: var(--bg);
-  color: var(--ink);
-  font-size: 1rem;
-  font-weight: 700;
-  line-height: 1.25;
-  text-align: center;
-  cursor: pointer;
-  /* The item reads its own swipe; the browser must not scroll with it. */
-  touch-action: none;
-  animation: choice-in .24s cubic-bezier(.22,1,.36,1) backwards;
-  animation-delay: calc(var(--i) * 40ms);
-  transition: transform .24s cubic-bezier(.22, 1, .36, 1),
-              background-color .2s ease, border-color .2s ease, color .2s ease;
-}
-.sort-item[data-side] { border-color: var(--brand); color: var(--brand-dark); }
-.sort-item.is-right { background: var(--ok); border-color: var(--ok-dark); color: #fff; }
-.sort-item.is-wrong { background: var(--bad); border-color: var(--bad-dark); color: #fff; }
-.sort-check { min-width: 160px; }
-.sort-check:disabled { background: var(--line); color: #AFAFAF; box-shadow: 0 5px 0 #D0D0D0; cursor: default; }
-.sort-check.is-hidden { visibility: hidden; }
+.sort-row.is-current { color: var(--ink); }
+.sort-row.is-right { color: var(--ok); }
+.sort-row.is-wrong { color: var(--bad); }
 
 /* Three or more bins have nowhere to swipe to, so they keep buttons. */
 .bin-group { display: flex; gap: .6rem; flex-wrap: wrap; justify-content: center; width: min(620px, 100%); }
