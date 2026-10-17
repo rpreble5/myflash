@@ -301,6 +301,8 @@ button { cursor: pointer; border: 0; background: none; }
 .deck-questions .deck-name::before { content: '★ '; color: var(--brand); }
 .deck-row.is-locked { cursor: default; opacity: .6; }
 .deck-row.is-locked .deck-name::before { content: '🔒 '; }
+/* A deck's own questions sit tucked under it. */
+.deck-row.deck-sub { margin-left: 1.1rem; width: calc(100% - 1.1rem); }
 .deck-name { font-size: 1.05rem; font-weight: 800; line-height: 1.2; }
 .deck-line { font-size: .85rem; color: var(--muted); }
 .deck-row .meter { margin-top: .45rem; height: 8px; }

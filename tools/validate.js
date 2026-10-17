@@ -31,7 +31,7 @@
   var FIELDS = {
     common:    ['type', 'q', 'why', 'ref'],
     recall:    ['a'],
-    mcq:       ['a', 'distractors', 'stem'],
+    mcq:       ['a', 'distractors', 'stem', 'whyNot'],
     multi:     ['answers', 'distractors'],
     truefalse: ['a'],
     number:    ['value', 'low', 'high', 'values', 'join', 'unit', 'tolerance', 'step', 'min', 'max'],
@@ -211,6 +211,19 @@
 
     if (c.distractors.length > 4) r.warn(w, c.distractors.length +
       ' distractors is a lot to read on a phone.', 'Three is the sweet spot.');
+
+    /* Why-not notes are keyed by the exact text of a distractor. */
+    if (c.whyNot != null) {
+      if (typeof c.whyNot !== 'object' || isArr(c.whyNot)) {
+        r.err(w, '"whyNot" is not an object.', 'Write "whyNot": { "a distractor": "why it is wrong" }.');
+      } else {
+        Object.keys(c.whyNot).forEach(function (k) {
+          if (c.distractors.indexOf(k) === -1) {
+            r.err(w, 'whyNot names "' + k + '", which is not a distractor.', 'Copy the distractor text exactly.');
+          }
+        });
+      }
+    }
 
     /* A vignette (a card with a scenario) reads as a page, so its
        options may run as long as a sentence. */

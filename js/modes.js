@@ -252,6 +252,14 @@
             });
           }
           grid.classList.add('is-locked');
+          /* A wrong pick gets its own reason first, above the explanation
+             of the right answer. */
+          if (!ok && whyNot && whyNot[opt] && whyWrap) {
+            var note = h('div', 'why why-not is-in');
+            note.appendChild(h('strong', null, 'Why not: '));
+            note.appendChild(document.createTextNode(whyNot[opt]));
+            whyWrap.insertBefore(note, whyWrap.firstChild);
+          }
           /* The options already show the answer; only the explanation
              comes in. */
           ctx.stackReveal(false);
@@ -273,9 +281,12 @@
       /* A vignette scrolls, so its explanation is always shown in full
          under the question rather than behind the WHY button. */
       var whyMax = ctx.card.stem ? Infinity : STACK_WHY_INLINE;
-      ctx.stack('', why ? function (fits) {
-        var w = explanation(why, ctx, fits ? whyMax : 0);
+      var whyNot = ctx.card.whyNot || null;
+      var whyWrap = null;
+      ctx.stack('', (why || whyNot) ? function (fits) {
+        var w = explanation(why || '', ctx, fits ? whyMax : 0);
         w.classList.add('is-held');
+        whyWrap = w;
         return w;
       } : null);
 

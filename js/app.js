@@ -50,6 +50,35 @@
     el.addEventListener('pointerleave', up);
   }
 
+  /* A deck of longer questions: locked and dimmed until the flashcards
+     it follows have each been answered right once. `sub` tucks it under
+     the deck it belongs to. */
+  function questionRow(deck, i, sub) {
+    var row = h('button', 'deck-row deck-questions' + (sub ? ' deck-sub' : ''));
+    row.style.setProperty('--i', i);
+    row.appendChild(h('span', 'deck-name', deck.name));
+    var gate = deck._gate;
+    if (gate.unlocked) {
+      var d = deck._strength;
+      row.appendChild(h('span', 'deck-line', d.started
+        ? d.weak + ' of ' + d.total + ' weak'
+        : d.total + ' questions · not started'));
+      row.appendChild(meter(d.strength));
+      pressable(row);
+      row.addEventListener('click', function (e) {
+        e.stopPropagation();
+        startSession([deck]);
+      });
+    } else {
+      row.classList.add('is-locked');
+      row.disabled = true;
+      row.appendChild(h('span', 'deck-line',
+        'Unlocks when each card above is answered right once · ' + gate.learned + ' of ' + gate.total));
+      row.appendChild(meter(gate.total ? gate.learned / gate.total : 0));
+    }
+    return row;
+  }
+
   /* The topics slide in on the first visit only; coming back from a
      session should not replay it. */
   var homeShown = false;
@@ -127,6 +156,9 @@
         inner.appendChild(drill);
       }
 
+      var questionsFor = {};
+      topic.questions.forEach(function (q) { if (q.for) (questionsFor[q.for] = questionsFor[q.for] || []).push(q); });
+
       topic.decks.forEach(function (deck, di) {
         var d = deck._strength;
         var row = h('button', 'deck-row');
@@ -142,34 +174,14 @@
           startSession([deck]);
         });
         inner.appendChild(row);
+        (questionsFor[deck.id] || []).forEach(function (q) {
+          inner.appendChild(questionRow(q, di + 2, true));
+        });
       });
 
-      /* An article's longer questions, held back until its flashcards
-         have each been answered right once. */
-      topic.questions.forEach(function (deck, qi) {
-        var row = h('button', 'deck-row deck-questions');
-        row.style.setProperty('--i', topic.decks.length + qi + 2);
-        row.appendChild(h('span', 'deck-name', deck.name));
-        if (topic.unlocked) {
-          var d = deck._strength;
-          row.appendChild(h('span', 'deck-line', d.started
-            ? d.weak + ' of ' + d.total + ' weak'
-            : d.total + ' questions · not started'));
-          row.appendChild(meter(d.strength));
-          pressable(row);
-          row.addEventListener('click', function (e) {
-            e.stopPropagation();
-            startSession([deck]);
-          });
-        } else {
-          row.classList.add('is-locked');
-          row.disabled = true;
-          row.appendChild(h('span', 'deck-line',
-            'Unlocks when every flashcard is answered right once · ' +
-            topic.learned + ' of ' + topic.flashcards));
-          row.appendChild(meter(topic.flashcards ? topic.learned / topic.flashcards : 0));
-        }
-        inner.appendChild(row);
+      /* Topic-wide questions, if any, come last; a deck's own follow it. */
+      topic.questions.filter(function (q) { return !q.for; }).forEach(function (deck, qi) {
+        inner.appendChild(questionRow(deck, topic.decks.length + qi + 2));
       });
 
       pressable(head, group);

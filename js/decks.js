@@ -1974,6 +1974,7 @@
 
     {
       id: 'ite-qi',
+      src: [1],   // ITE 2025 items it draws on
       subject: 'FM ITE',
       topic: 'Practice & QI',
       name: 'QUALITY IMPROVEMENT',
@@ -2000,6 +2001,7 @@
 
     {
       id: 'ite-prediabetes',
+      src: [2],   // ITE 2025 items it draws on
       subject: 'FM ITE',
       topic: 'Endocrine',
       name: 'PREDIABETES',
@@ -2026,6 +2028,7 @@
 
     {
       id: 'ite-septic-shock',
+      src: [4],   // ITE 2025 items it draws on
       subject: 'FM ITE',
       topic: 'Critical Care',
       name: 'SEPTIC SHOCK',
@@ -2052,6 +2055,7 @@
 
     {
       id: 'ite-thyroid-recognize',
+      src: [194],   // ITE 2025 items it draws on
       subject: 'FM ITE',
       topic: 'Thyroid',
       name: 'RECOGNIZE',
@@ -2104,6 +2108,7 @@
 
     {
       id: 'ite-thyroid-workup',
+      src: [24],   // ITE 2025 items it draws on
       subject: 'FM ITE',
       topic: 'Thyroid',
       name: 'WORKUP',
@@ -2133,6 +2138,7 @@
 
     {
       id: 'ite-thyroid-treat-hyper',
+      src: [194],   // ITE 2025 items it draws on
       subject: 'FM ITE',
       topic: 'Thyroid',
       name: 'TREAT: HYPER',
@@ -2167,6 +2173,7 @@
 
     {
       id: 'ite-thyroid-storm',
+      src: [5],   // ITE 2025 items it draws on
       subject: 'FM ITE',
       topic: 'Thyroid',
       name: 'THYROID STORM',
@@ -2197,6 +2204,7 @@
 
     {
       id: 'ite-thyroid-treat-hypo',
+      src: [24],   // ITE 2025 items it draws on
       subject: 'FM ITE',
       topic: 'Thyroid',
       name: 'TREAT: HYPO',
@@ -2228,6 +2236,7 @@
 
     {
       id: 'ite-thyroid-special',
+      src: [170],   // ITE 2025 items it draws on
       subject: 'FM ITE',
       topic: 'Thyroid',
       name: 'SPECIAL CASES',
@@ -2253,6 +2262,7 @@
 
     {
       id: 'ite-thyroid-traps',
+      src: [5, 24],   // ITE 2025 items it draws on
       subject: 'FM ITE',
       topic: 'Thyroid',
       name: 'TRAPS',
@@ -2275,12 +2285,225 @@
       ]
     },
 
+    /* ── Thyroid vignettes: original cases, two per deck, each opening
+       once its deck's flashcards have been answered right. ── */
+
+    {
+      id: 'ite-thyroid-recognize-q', kind: 'questions', for: 'ite-thyroid-recognize',
+      subject: 'FM ITE', topic: 'Thyroid', name: 'QUESTIONS', blurb: 'Recognize',
+      cards: [
+        { type: 'mcq',
+          stem: 'A 34-year-old woman has had palpitations, heat intolerance and a 3-kg weight loss over 3 weeks. Five weeks ago she had an upper respiratory infection. Her thyroid is diffusely tender to touch, and there is no proptosis. TSH is undetectable, free T4 is elevated, and the ESR is 68 mm/hr.',
+          q: 'Which finding on a radioactive iodine uptake scan is most likely?',
+          a: 'Low uptake throughout the gland',
+          distractors: ['High, diffuse uptake', 'A single area of high uptake with the rest suppressed', 'Several patchy areas of high uptake'],
+          why: 'This is subacute (de Quervain) thyroiditis: a painful gland after a viral illness, with a high ESR. Inflammation releases hormone that was already stored, so the gland is not taking up iodine to make more.',
+          whyNot: {
+            'High, diffuse uptake': 'That is Graves disease, which is painless and often comes with eye findings.',
+            'A single area of high uptake with the rest suppressed': 'That is a toxic adenoma, a nodule making hormone on its own.',
+            'Several patchy areas of high uptake': 'That is a toxic multinodular goiter, usually in an older patient with a lumpy gland.'
+          } },
+        { type: 'mcq',
+          stem: 'A 29-year-old woman reports anxiety, tremor and loose stools for 2 months. Her thyroid is smooth, nontender and diffusely enlarged. She has lid lag and proptosis of both eyes. TSH is undetectable and free T4 is high.',
+          q: 'Which is the most likely diagnosis?',
+          a: 'Graves disease',
+          distractors: ['Subacute thyroiditis', 'Toxic multinodular goiter', 'Painless (silent) thyroiditis', 'Taking excess thyroid hormone'],
+          why: 'A diffuse goiter with orbitopathy is Graves disease. The eye findings come from TSH receptor antibodies acting on orbital tissue, and no other cause of hyperthyroidism produces them.',
+          whyNot: {
+            'Subacute thyroiditis': 'The gland would be tender, usually after a viral illness, and there would be no eye disease.',
+            'Toxic multinodular goiter': 'The gland would be nodular, the patient usually older, and the eyes normal.',
+            'Painless (silent) thyroiditis': 'It causes a small, painless goiter at most, and never orbitopathy.',
+            'Taking excess thyroid hormone': 'The gland would be small, not enlarged, and the eyes normal.'
+          } }
+      ]
+    },
+
+    {
+      id: 'ite-thyroid-workup-q', kind: 'questions', for: 'ite-thyroid-workup',
+      subject: 'FM ITE', topic: 'Thyroid', name: 'QUESTIONS', blurb: 'Workup',
+      cards: [
+        { type: 'mcq',
+          stem: 'A 52-year-old man had transsphenoidal surgery for a pituitary macroadenoma 6 months ago. He now reports fatigue, cold intolerance and constipation. His TSH is 1.2 mIU/L (N 0.4–4.0).',
+          q: 'Which is the most appropriate next step?',
+          a: 'Measure free T4',
+          distractors: ['Reassure him that his thyroid is normal', 'Measure total T3', 'Repeat the TSH in 6 weeks', 'Order a thyroid ultrasound'],
+          why: 'After pituitary surgery the TSH cannot be trusted, because a damaged pituitary may not raise it. In central hypothyroidism the TSH is low or normal while free T4 is low, so free T4 is the test that decides.',
+          whyNot: {
+            'Reassure him that his thyroid is normal': 'A normal TSH only rules out hypothyroidism when the pituitary works.',
+            'Measure total T3': 'T3 is the last level to fall and adds little to the diagnosis.',
+            'Repeat the TSH in 6 weeks': 'The TSH will mislead just as much next time.',
+            'Order a thyroid ultrasound': 'The problem is the pituitary, not the structure of the gland.'
+          } },
+        { type: 'mcq',
+          stem: 'A 26-year-old nurse has palpitations and weight loss. Her thyroid is small and nontender. TSH is suppressed, free T4 is high, and the radioactive iodine uptake is near zero.',
+          q: 'Which result would best distinguish taking thyroid hormone from painless thyroiditis?',
+          a: 'A low serum thyroglobulin',
+          distractors: ['A high serum thyroglobulin', 'Positive anti-TPO antibodies', 'An elevated ESR'],
+          why: 'Both cause thyrotoxicosis with low uptake. Thyroiditis breaks down the gland and releases thyroglobulin, so it is high; hormone taken by mouth suppresses the gland, so thyroglobulin is low.',
+          whyNot: {
+            'A high serum thyroglobulin': 'That points to thyroiditis, the other possibility.',
+            'Positive anti-TPO antibodies': 'Common in painless thyroiditis, but their absence does not prove hormone ingestion.',
+            'An elevated ESR': 'Raised in painful subacute thyroiditis; it does not separate these two.'
+          } }
+      ]
+    },
+
+    {
+      id: 'ite-thyroid-treat-hyper-q', kind: 'questions', for: 'ite-thyroid-treat-hyper',
+      subject: 'FM ITE', topic: 'Thyroid', name: 'QUESTIONS', blurb: 'Treat: hyper',
+      cards: [
+        { type: 'mcq',
+          stem: 'A 27-year-old woman with Graves disease, well controlled on methimazole, has a positive home pregnancy test. By her dates she is about 6 weeks pregnant.',
+          q: 'Which is the most appropriate change to her treatment?',
+          a: 'Switch to propylthiouracil',
+          distractors: ['Continue methimazole', 'Stop antithyroid drugs and start a beta blocker', 'Refer for radioactive iodine ablation'],
+          why: 'Methimazole is linked to birth defects in the first trimester, so propylthiouracil is used for those weeks. Many patients go back to methimazole afterward because of the liver risk of propylthiouracil.',
+          whyNot: {
+            'Continue methimazole': 'The first trimester is exactly when its birth-defect risk applies.',
+            'Stop antithyroid drugs and start a beta blocker': 'Uncontrolled hyperthyroidism raises the risk of miscarriage and preterm birth.',
+            'Refer for radioactive iodine ablation': 'Contraindicated in pregnancy: it would destroy the fetal thyroid too.'
+          } },
+        { type: 'mcq',
+          stem: 'A 41-year-old woman started methimazole for Graves disease 5 weeks ago. She calls the office with a temperature of 39.1 °C (102.4 °F) and a sore throat that began this morning.',
+          q: 'Which is the most appropriate next step?',
+          a: 'Stop methimazole and check a CBC with differential today',
+          distractors: ['Do a rapid strep test and continue methimazole', 'Prescribe amoxicillin and recheck in 1 week', 'Switch to propylthiouracil', 'Halve the methimazole dose'],
+          why: 'Fever or sore throat on a thionamide is agranulocytosis until proven otherwise. It usually appears in the first months of treatment, and a same-day CBC decides what happens next.',
+          whyNot: {
+            'Do a rapid strep test and continue methimazole': 'Strep testing can wait; the drug must stop until the neutrophil count is known.',
+            'Prescribe amoxicillin and recheck in 1 week': 'A week is far too long if she is agranulocytic.',
+            'Switch to propylthiouracil': 'It can cause agranulocytosis too, and the two cross-react.',
+            'Halve the methimazole dose': 'Agranulocytosis is not dose-related enough for this to be safe.'
+          } }
+      ]
+    },
+
+    {
+      id: 'ite-thyroid-storm-q', kind: 'questions', for: 'ite-thyroid-storm',
+      subject: 'FM ITE', topic: 'Thyroid', name: 'QUESTIONS', blurb: 'Thyroid storm',
+      cards: [
+        { type: 'mcq',
+          stem: 'A 45-year-old woman is brought to the emergency department with a temperature of 40.2 °C (104.4 °F), a heart rate of 154 beats/min, agitation and diarrhea. She stopped her methimazole a month ago. Free T4 is markedly elevated and TSH is undetectable. Intravenous propranolol has been started.',
+          q: 'Which should be given next?',
+          a: 'Propylthiouracil',
+          distractors: ['Potassium iodide', 'Aspirin for the fever', 'Levothyroxine', 'Plasmapheresis'],
+          why: 'Block new hormone synthesis first. Iodine follows at least an hour later to stop release of stored hormone, alongside a glucocorticoid and cooling.',
+          whyNot: {
+            'Potassium iodide': 'Before a thionamide, iodine can become raw material for more hormone.',
+            'Aspirin for the fever': 'It frees thyroid hormone from its binding proteins and raises the free level. Use acetaminophen.',
+            'Levothyroxine': 'That is thyroid hormone itself.',
+            'Plasmapheresis': 'Kept for storm that fails full drug therapy.'
+          } },
+        { type: 'mcq',
+          stem: 'A 38-year-old man with thyroid storm has received propranolol, propylthiouracil, potassium iodide starting an hour after the propylthiouracil, and hydrocortisone. After 48 hours he remains febrile and delirious, with a heart rate of 140 beats/min.',
+          q: 'Which is the most appropriate next step?',
+          a: 'Plasmapheresis',
+          distractors: ['Switch propylthiouracil to methimazole', 'Add aspirin', 'Radioactive iodine ablation', 'Double the potassium iodide'],
+          why: 'Plasmapheresis is the rescue for thyroid storm that fails full medical therapy: it removes circulating hormone directly. Urgent thyroidectomy is the other option.',
+          whyNot: {
+            'Switch propylthiouracil to methimazole': 'No gain: propylthiouracil is the better choice in storm because it also blocks T4-to-T3 conversion.',
+            'Add aspirin': 'It raises free thyroid hormone.',
+            'Radioactive iodine ablation': 'Too slow for an emergency, and the iodine already given blocks its uptake.',
+            'Double the potassium iodide': 'More iodine does not add further benefit.'
+          } }
+      ]
+    },
+
+    {
+      id: 'ite-thyroid-treat-hypo-q', kind: 'questions', for: 'ite-thyroid-treat-hypo',
+      subject: 'FM ITE', topic: 'Thyroid', name: 'QUESTIONS', blurb: 'Treat: hypo',
+      cards: [
+        { type: 'mcq',
+          stem: 'A 44-year-old woman has a TSH of 7.8 mIU/L on two tests 3 months apart, with a normal free T4 both times. Anti-TPO antibodies are negative. She has major depression that has not responded to two antidepressants, and long-standing constipation.',
+          q: 'Which is the most appropriate management of her thyroid results?',
+          a: 'Start levothyroxine',
+          distractors: ['Recheck TSH in 6–12 months without treatment', 'Measure total T3', 'Treat the constipation and observe'],
+          why: 'Outside pregnancy, subclinical hypothyroidism is treated when TSH is over 10, anti-TPO antibodies are positive, or there is treatment-resistant depression. She has the last one.',
+          whyNot: {
+            'Recheck TSH in 6–12 months without treatment': 'Right for most people with a TSH under 10, but her resistant depression changes that.',
+            'Measure total T3': 'It adds nothing to TSH and free T4.',
+            'Treat the constipation and observe': 'Constipation is not a reason to treat, but her depression is.'
+          } },
+        { type: 'mcq',
+          stem: 'A 58-year-old man has a TSH of 6.9 mIU/L with a normal free T4 on repeat testing. Anti-TPO antibodies are negative. He feels well apart from mild tiredness and takes no medications.',
+          q: 'Which is the most appropriate management?',
+          a: 'Monitor TSH without treatment',
+          distractors: ['Start levothyroxine at 1.6 mcg/kg daily', 'Start levothyroxine at 25 mcg daily', 'Measure total T3'],
+          why: 'A TSH under 10 with negative antibodies, no pregnancy and no resistant depression does not need treatment. Recheck periodically.',
+          whyNot: {
+            'Start levothyroxine at 1.6 mcg/kg daily': 'Treatment is not indicated, and a full dose would be wrong to start with anyway.',
+            'Start levothyroxine at 25 mcg daily': 'A low dose is still treatment he does not need.',
+            'Measure total T3': 'It does not change the decision.'
+          } }
+      ]
+    },
+
+    {
+      id: 'ite-thyroid-special-q', kind: 'questions', for: 'ite-thyroid-special',
+      subject: 'FM ITE', topic: 'Thyroid', name: 'QUESTIONS', blurb: 'Special cases',
+      cards: [
+        { type: 'mcq',
+          stem: 'A 31-year-old woman with Hashimoto thyroiditis takes levothyroxine 100 mcg daily, and her TSH has been normal for years. She has just had a positive pregnancy test at about 5 weeks.',
+          q: 'Which is the most appropriate next step?',
+          a: 'Increase levothyroxine by about 25–30% now',
+          distractors: ['Keep the dose and recheck TSH at 20 weeks', 'Hold levothyroxine until the second trimester', 'Switch to liothyronine (T3)'],
+          why: 'Her need rises early in pregnancy, and the fetal brain depends on maternal T4 in the first trimester. A common approach is two extra doses a week, then a TSH every 4 weeks in the first half of pregnancy.',
+          whyNot: {
+            'Keep the dose and recheck TSH at 20 weeks': 'By then the first trimester, when maternal T4 matters most, has passed.',
+            'Hold levothyroxine until the second trimester': 'That deprives the fetus exactly when it depends on maternal hormone.',
+            'Switch to liothyronine (T3)': 'The fetal brain needs T4, and T3 replacement is not used in pregnancy.'
+          } },
+        { type: 'mcq',
+          stem: 'Four months after delivery, a 30-year-old woman reports fatigue, low mood and weight gain. About 2 months ago she had a few weeks of palpitations and anxiety that went away on their own. Her thyroid is not tender. TSH is 9.5 mIU/L and free T4 is low.',
+          q: 'Which is the most likely diagnosis?',
+          a: 'Postpartum thyroiditis',
+          distractors: ['Graves disease', 'Postpartum depression alone', 'Sheehan syndrome', 'Subacute thyroiditis'],
+          why: 'A hyperthyroid phase, then a hypothyroid phase, within a year of delivery. Most women return to normal, though some stay hypothyroid. It is worth checking a TSH when postpartum mood symptoms appear.',
+          whyNot: {
+            'Graves disease': 'Graves does not swing to hypothyroidism on its own.',
+            'Postpartum depression alone': 'Her thyroid labs are abnormal and explain the symptoms.',
+            'Sheehan syndrome': 'Pituitary failure after hemorrhage gives a low or normal TSH, not a high one.',
+            'Subacute thyroiditis': 'The gland would be painful and tender.'
+          } }
+      ]
+    },
+
+    {
+      id: 'ite-thyroid-traps-q', kind: 'questions', for: 'ite-thyroid-traps',
+      subject: 'FM ITE', topic: 'Thyroid', name: 'QUESTIONS', blurb: 'Traps',
+      cards: [
+        { type: 'mcq',
+          stem: 'A 36-year-old woman who takes high-dose biotin for hair and nails has a suppressed TSH and a high free T4 on routine labs. She feels well, her pulse is 72 beats/min, and she has no goiter, tremor or eye findings.',
+          q: 'Which is the most appropriate next step?',
+          a: 'Stop biotin and repeat the tests in a few days',
+          distractors: ['Start methimazole', 'Order a radioactive iodine uptake scan', 'Start propranolol'],
+          why: 'Biotin interferes with many immunoassays and can produce a Graves-like pattern on paper. A well patient with abnormal labs and a normal exam should be retested off biotin before anything else.',
+          whyNot: {
+            'Start methimazole': 'Treating a lab artifact exposes her to agranulocytosis and liver risk for nothing.',
+            'Order a radioactive iodine uptake scan': 'Premature: confirm the result is real first.',
+            'Start propranolol': 'She has no symptoms to treat.'
+          } },
+        { type: 'mcq',
+          stem: 'A 47-year-old woman on levothyroxine for Hashimoto thyroiditis has a TSH of 1.8 mIU/L but still feels tired. She asks about adding T3, which a friend says helped her.',
+          q: 'Which is the most appropriate response?',
+          a: 'Continue levothyroxine alone and look for other causes of fatigue',
+          distractors: ['Add liothyronine (T3)', 'Switch to desiccated thyroid', 'Raise levothyroxine to suppress the TSH'],
+          why: 'Combination and desiccated products have not shown consistent benefit, and over-replacement raises the risk of atrial fibrillation and bone loss. With a normal TSH, the fatigue usually has another cause, such as sleep, mood or anemia.',
+          whyNot: {
+            'Add liothyronine (T3)': 'Trials show no consistent benefit, and T3 makes levels swing through the day.',
+            'Switch to desiccated thyroid': 'No better than levothyroxine, with less predictable dosing.',
+            'Raise levothyroxine to suppress the TSH': 'Over-replacement risks atrial fibrillation and bone loss.'
+          } }
+      ]
+    },
+
     /* ── Screening: USPSTF and related guidance, from ITE questions 16,
        27, 29, 59, 80, 84, 104, 116, 133, 136, 150, 153, 168, 175, 181,
        189, 191 and 198, their wrong answers, and the neighbours. ── */
 
     {
       id: 'ite-screen-cervical',
+      src: [27, 136, 150],   // ITE 2025 items it draws on
       subject: 'FM ITE',
       topic: 'Screening',
       name: 'CERVICAL',
@@ -2310,6 +2533,7 @@
 
     {
       id: 'ite-screen-colorectal',
+      src: [29, 189],   // ITE 2025 items it draws on
       subject: 'FM ITE',
       topic: 'Screening',
       name: 'COLORECTAL',
@@ -2350,6 +2574,7 @@
 
     {
       id: 'ite-screen-breast',
+      src: [59, 84],   // ITE 2025 items it draws on
       subject: 'FM ITE',
       topic: 'Screening',
       name: 'BREAST & BRCA',
@@ -2376,6 +2601,7 @@
 
     {
       id: 'ite-screen-lung-prostate',
+      src: [104, 198],   // ITE 2025 items it draws on
       subject: 'FM ITE',
       topic: 'Screening',
       name: 'LUNG, PROSTATE, AAA',
@@ -2403,6 +2629,7 @@
 
     {
       id: 'ite-screen-infections',
+      src: [136, 150, 181],   // ITE 2025 items it draws on
       subject: 'FM ITE',
       topic: 'Screening',
       name: 'INFECTIONS',
@@ -2430,6 +2657,7 @@
 
     {
       id: 'ite-screen-adult-chronic',
+      src: [80, 133, 136, 191],   // ITE 2025 items it draws on
       subject: 'FM ITE',
       topic: 'Screening',
       name: 'ADULT CHRONIC',
@@ -2456,6 +2684,7 @@
 
     {
       id: 'ite-screen-mood-substance',
+      src: [153, 168, 175],   // ITE 2025 items it draws on
       subject: 'FM ITE',
       topic: 'Screening',
       name: 'MOOD & SUBSTANCES',
@@ -2481,6 +2710,7 @@
 
     {
       id: 'ite-screen-kids',
+      src: [16, 116, 153],   // ITE 2025 items it draws on
       subject: 'FM ITE',
       topic: 'Screening',
       name: 'KIDS & TEENS',
@@ -2510,6 +2740,7 @@
 
     {
       id: 'ite-screen-not-recommended',
+      src: [136, 150, 153, 181],   // ITE 2025 items it draws on
       subject: 'FM ITE',
       topic: 'Screening',
       name: 'NOT RECOMMENDED',
@@ -2541,6 +2772,7 @@
 
     {
       id: 'ite-hyperkalemia',
+      src: [192],   // ITE 2025 items it draws on
       subject: 'FM ITE',
       topic: 'Electrolytes',
       name: 'HYPERKALEMIA',
@@ -2581,6 +2813,7 @@
 
     {
       id: 'ite-foot-fractures',
+      src: [3, 127],   // ITE 2025 items it draws on
       subject: 'FM ITE',
       topic: 'Sports & MSK',
       name: 'FOOT FRACTURES',

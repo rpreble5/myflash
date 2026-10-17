@@ -338,6 +338,10 @@
 .q-stem { margin: 0 0 1rem; font-size: 1.05rem; font-weight: 600; line-height: 1.55; color: var(--ink); }
 .card.is-flow .q { font-size: 1.15rem; line-height: 1.35; }
 .card.is-flow .why-wrap { margin-top: 1rem; }
+/* Why the option you picked was wrong, ahead of the right answer's
+   explanation. */
+.why-not { color: var(--ink); margin-bottom: .6rem; }
+.why-not strong { color: var(--bad-dark); }
 
 /* The grade buttons hold their place until the answer is shown. */
 .swipe-bar.is-waiting .swipe-side { opacity: 0; pointer-events: none; }

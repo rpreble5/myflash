@@ -250,8 +250,10 @@
 
   /* ── Question decks ───────────────────────────────────────
      A deck with kind "questions" holds the longer, vignette-style
-     questions for its topic. It opens once every flashcard in the
-     topic's other decks has been answered right at least once. */
+     questions. One that names a flashcard deck in `for` belongs to that
+     deck and opens once each of its cards has been answered right at
+     least once; one that names none belongs to the whole topic and
+     waits for every flashcard in it. */
   function isQuestions(deck) { return deck.kind === 'questions'; }
 
   function learnedCount(decks) {
@@ -281,8 +283,13 @@
       var g = groups[name];
       var cards = 0, sum = 0, weak = 0, started = 0;
 
-      g.questions.forEach(function (deck) { deck._strength = deckStrength(deck); });
       var gate = learnedCount(g.decks);
+      g.questions.forEach(function (deck) {
+        deck._strength = deckStrength(deck);
+        var parent = deck.for && g.decks.filter(function (d) { return d.id === deck.for; })[0];
+        var own = parent ? learnedCount([parent]) : gate;
+        deck._gate = { learned: own.learned, total: own.total, unlocked: own.learned >= own.total };
+      });
 
       g.decks.forEach(function (deck) {
         var d = deckStrength(deck);
