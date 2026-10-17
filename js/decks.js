@@ -1972,83 +1972,6 @@
        One deck per concept the In-Training Exam tests, written in our
        own words from the concept rather than from the exam's text. */
 
-    {
-      id: 'ite-qi',
-      src: [1],   // ITE 2025 items it draws on
-      subject: 'FM ITE',
-      topic: 'Practice & QI',
-      name: 'QUALITY IMPROVEMENT',
-      blurb: 'Where a QI project starts, and what actually moves rates',
-      cards: [
-        { type: 'mcq', q: 'First step in a quality improvement project',
-          a: 'Find out why the gap exists',
-          distractors: ['Send patients reminders', 'Remind clinicians of guidelines', 'Start chart review and outreach'],
-          why: 'An intervention chosen before the cause is known often targets the wrong barrier. QI starts by measuring the gap and finding out why it exists.' },
-        { type: 'recall', q: 'The four steps of the PDSA cycle', a: 'Plan, Do, Study, Act',
-          why: 'Small, quick tests of change, each one shaping the next plan, rather than one large rollout.' },
-        { type: 'recall', q: 'Diagram that sorts the causes of a quality problem into categories',
-          a: 'Fishbone (Ishikawa) diagram' },
-        { type: 'truefalse', q: 'Posters and general reminders are among the most effective ways to raise screening rates', a: false,
-          why: 'Passive education has the weakest effect. System changes such as registries, outreach to overdue patients, and standing orders do better.' },
-        { type: 'bucket', q: 'Process or outcome measure?', bins: ['Process', 'Outcome'], items: [
-          { label: 'Screening rate among eligible', bin: 'Process' },
-          { label: 'Cervical cancer deaths', bin: 'Outcome' },
-          { label: 'Time to colposcopy', bin: 'Process' },
-          { label: 'Cancer stage at diagnosis', bin: 'Outcome' }
-        ] }
-      ]
-    },
-
-    {
-      id: 'ite-prediabetes',
-      src: [2],   // ITE 2025 items it draws on
-      subject: 'FM ITE',
-      topic: 'Endocrine',
-      name: 'PREDIABETES',
-      blurb: 'What prevents diabetes, and by how much',
-      cards: [
-        { type: 'mcq', q: 'Most effective way to prevent prediabetes progressing to diabetes',
-          a: 'Intensive lifestyle program',
-          distractors: ['Metformin', 'Low-carbohydrate diet alone', 'Strength training alone'],
-          why: 'In the Diabetes Prevention Program, intensive lifestyle change cut progression by 58%, nearly twice the 31% seen with metformin.' },
-        { type: 'number', q: 'Relative reduction in new diabetes over about 3 years with the DPP lifestyle program', value: 58, unit: '%', tolerance: 3,
-          why: 'The benefit shrinks but lasts: about a 27% reduction was still there at 15 years.' },
-        { type: 'number', q: 'Weight loss goal in the DPP lifestyle program', value: 7, unit: '%' },
-        { type: 'number', q: 'Weekly moderate activity goal in the DPP lifestyle program', value: 150, unit: 'min' },
-        { type: 'number', q: 'Daily calorie cut used to reach the DPP weight goal', values: [500, 1000], join: '–', unit: 'kcal' },
-        { type: 'number', q: 'Most of the weekly activity goal that can be strength training', value: 75, unit: 'min' },
-        { type: 'truefalse', q: 'A low-carbohydrate diet has evidence as strong as an intensive lifestyle program', a: false,
-          why: 'Several eating patterns help, but none on its own has the evidence of a structured program combining diet, activity and behavior change.' },
-        { type: 'multi', q: 'Prediabetes patients most likely to benefit from metformin',
-          answers: ['BMI 35 or higher', 'Age under 60', 'Prior gestational diabetes'],
-          distractors: ['Age over 70', 'BMI under 25'],
-          why: 'These were the groups in which metformin worked about as well as lifestyle change in the DPP.' }
-      ]
-    },
-
-    {
-      id: 'ite-septic-shock',
-      src: [4],   // ITE 2025 items it draws on
-      subject: 'FM ITE',
-      topic: 'Critical Care',
-      name: 'SEPTIC SHOCK',
-      blurb: 'Fluids, the pressure target, and the first pressor',
-      cards: [
-        { type: 'mcq', q: 'First-line vasopressor in septic shock',
-          a: 'Norepinephrine', distractors: ['Dopamine', 'Vasopressin', 'Phenylephrine'],
-          why: 'Dopamine causes more arrhythmias. Vasopressin is added to norepinephrine rather than started first.' },
-        { type: 'number', q: 'Initial crystalloid for sepsis with hypotension', value: 30, unit: 'mL/kg',
-          why: 'Given within the first 3 hours. After that, more fluid is a patient-by-patient decision, often in 500-mL boluses while watching the response.' },
-        { type: 'number', q: 'Window for the first antibiotic dose in septic shock', value: 1, unit: 'hour' },
-        { type: 'number', q: 'Mean arterial pressure target in septic shock', value: 65, unit: 'mmHg' },
-        { type: 'truefalse', q: 'Norepinephrine should wait until a central line is placed', a: false,
-          why: 'It can start through a good peripheral IV. Waiting for central access only delays the pressure the patient needs now.' },
-        { type: 'recall', q: 'Vasopressor added when norepinephrine alone is not enough', a: 'Vasopressin' },
-        { type: 'number', q: 'Lactate above which, with pressors needed for a MAP of 65, sepsis is septic shock',
-          value: 2, unit: 'mmol/L' }
-      ]
-    },
-
     /* ── Thyroid: the pilot of a whole topic built from several ITE
        questions (5, 24, 170, 194), their wrong answers, and the
        neighbouring facts the exam tends to ask. ── */
@@ -2586,72 +2509,82 @@
     },
 
     {
-      id: 'ite-hyperkalemia',
-      src: [192],   // ITE 2025 items it draws on
+      id: 'ite-screen-cervical',
+      src: [27, 136, 150],   // ITE 2025 items it draws on
       subject: 'FM ITE',
-      topic: 'Electrolytes',
-      name: 'HYPERKALEMIA',
-      blurb: 'Reading the ECG and what to give first',
+      topic: 'Screening',
+      name: 'CERVICAL',
+      blurb: 'When to start, which test, and what it takes to stop',
       cards: [
-        { type: 'mcq', q: 'Earliest ECG sign of hyperkalemia',
-          a: 'Peaked T waves', distractors: ['U waves', 'Delta waves', 'Prolonged QT interval'] },
-        { type: 'recall', q: 'ECG change beyond peaked T waves that signals worsening hyperkalemia',
-          a: 'A widened QRS',
-          why: 'As potassium rises the P wave flattens and the QRS widens, heading toward a sine wave and arrest.' },
-        { type: 'mcq', q: 'First drug for hyperkalemia with ECG changes',
-          a: 'IV calcium', distractors: ['Insulin with glucose', 'Albuterol', 'Patiromer'],
-          why: 'Calcium steadies the heart within minutes but does not lower potassium. Shifting and removal come next.' },
-        { type: 'bucket', q: 'Shifts potassium into cells, or removes it?', bins: ['Shifts in', 'Removes'], items: [
-          { label: 'Insulin with glucose', bin: 'Shifts in' },
-          { label: 'Albuterol', bin: 'Shifts in' },
-          { label: 'Loop diuretic', bin: 'Removes' },
-          { label: 'Patiromer', bin: 'Removes' },
-          { label: 'Hemodialysis', bin: 'Removes' }
-        ] },
-        { type: 'truefalse', q: 'U waves are a sign of hyperkalemia', a: false,
-          why: 'U waves point to hypokalemia.' },
-        { type: 'bucket', q: 'High or low potassium on the ECG?', bins: ['High K', 'Low K'], items: [
-          { label: 'Peaked T waves', bin: 'High K' },
-          { label: 'Lost P waves', bin: 'High K' },
-          { label: 'Wide QRS', bin: 'High K' },
-          { label: 'U waves', bin: 'Low K' },
-          { label: 'Flat T waves', bin: 'Low K' },
-          { label: 'Long QT interval', bin: 'Low K' }
-        ] },
-        { type: 'recall', q: 'ECG findings in hyperkalemia that predict arrest within hours',
-          a: 'Wide QRS, bradycardia, junctional rhythm' },
-        { type: 'recall', q: 'Short PR with a delta wave points to', a: 'Wolff-Parkinson-White syndrome',
-          why: 'Delta waves have nothing to do with potassium.' }
+        { type: 'number', q: 'Routine cervical cancer screening runs from what age to what age?', values: [21, 65], join: '–', unit: 'years',
+          why: 'Starting is by age alone, regardless of when sexual activity began. Stopping at 65 depends on having enough recent negative results; the age by itself is not permission to stop.' },
+        { type: 'recall', q: 'How is cervical screening done between ages 21 and 29?', a: 'Cytology alone every 3 years',
+          why: 'HPV testing is not used in this group because infection is so common under 30 that it mostly finds transient infections that will clear on their own. HPV-based testing starts at 30.' },
+        { type: 'multi', q: 'Which are acceptable cervical screening options at ages 30–65?',
+          answers: ['Cytology every 3 years', 'HPV test alone every 5 years', 'Cotesting every 5 years'],
+          distractors: ['Cytology every year', 'HPV test every 10 years'],
+          why: 'All three are A-grade options. Primary HPV testing is now preferred where it is available, and a self-collected vaginal sample is acceptable for it.' },
+        { type: 'recall', q: 'Why can HPV-based screening be spaced 5 years apart when cytology is every 3?', a: 'HPV precedes cell changes by years',
+          why: 'Cervical cancer needs persistent high-risk HPV, and the virus is detectable long before cytology turns abnormal. A negative HPV test therefore rules out trouble for longer than a normal smear does, and the two intervals carry similar risk.' },
+        { type: 'recall', q: 'Why doesn\'t cervical screening start before 21, even in sexually active teens?', a: 'HPV usually clears and cancer is very rare',
+          why: 'Most infections in the late teens resolve within two years, so screening finds abnormalities that would have gone away. Treating them with excision raises the risk of preterm birth later, so the harm is the treatment, not a missed cancer. Screening before 21 is a D.' },
+        { type: 'mcq', q: 'A 66-year-old has had normal Paps at 56, 59 and 62. What do you recommend?',
+          a: 'Stop screening', distractors: ['One more Pap, then stop', 'Cotest now', 'HPV test every 5 years'],
+          why: 'Stopping after 65 requires adequate negative screening: three consecutive negative cytology results, or two negative HPV or cotests, within the past 10 years, with the most recent inside the last 5. She has exactly that.' },
+        { type: 'truefalse', q: 'A 68-year-old who has never been screened can skip cervical screening because of her age', a: false,
+          why: 'Age alone does not end screening. Without a documented adequate negative history she is screened until she has one, and older unscreened women account for a disproportionate share of cervical cancer deaths.' },
+        { type: 'truefalse', q: 'After a total hysterectomy for fibroids, cervical screening stops', a: true,
+          why: 'No cervix and a benign indication means there is nothing to screen. It continues only if the hysterectomy was for high-grade dysplasia or cancer, or if a supracervical procedure left the cervix in place.' },
+        { type: 'recall', q: 'After treatment for CIN 2 or worse, how long does screening continue?', a: '25 years, even past age 65',
+          why: 'Treated high-grade disease carries a persistent risk, so surveillance runs for 25 years from treatment regardless of age. This is one of the few situations where screening goes beyond 65.' },
+        { type: 'recall', q: 'Does HPV vaccination change the cervical screening schedule?', a: 'No, vaccinated patients screen the same way',
+          why: 'The vaccine does not cover every oncogenic type, and many people were vaccinated after exposure. Guidelines may eventually relax intervals for fully vaccinated cohorts, but for now the schedule is identical.' },
+        { type: 'mcq', q: 'Which group needs more frequent cervical screening than the standard schedule?',
+          a: 'Women living with HIV', distractors: ['Women over 30, 3 negative Paps', 'Women who smoke', 'Women with multiple partners'],
+          why: 'Immunosuppression lets HPV persist, so screening starts within a year of diagnosis, continues yearly until three normal results, then every 3 years, and does not stop at 65. The same applies after solid-organ transplant and to DES exposure in utero.' }
       ]
-    }
-,
+    },
 
     {
-      id: 'ite-foot-fractures',
-      src: [3, 127],   // ITE 2025 items it draws on
+      id: 'ite-screen-heart-metabolic',
+      src: [80, 133, 191],   // ITE 2025 items it draws on
       subject: 'FM ITE',
-      topic: 'Sports & MSK',
-      name: 'FOOT FRACTURES',
-      blurb: 'Who needs a film, and how a metatarsal shaft heals',
+      topic: 'Screening',
+      name: 'HEART & METABOLIC',
+      blurb: 'Blood pressure, glucose, statins, AAA, and the tests not to order',
       cards: [
-        { type: 'mcq', q: 'Treatment for a fifth metatarsal shaft fracture',
-          a: 'Weight-bearing boot, 3–6 weeks',
-          distractors: ['Non-weight-bearing boot', 'Short leg cast, 6 weeks', 'Orthopedic referral'],
-          why: 'A walking boot or hard-soled shoe, bearing weight as tolerated. Physical therapy is not first line.' },
-        { type: 'truefalse', q: 'A short leg cast is standard for a fifth metatarsal shaft fracture', a: false,
-          why: 'Casts are for proximal fifth metatarsal and tarsal fractures. The shaft does well weight-bearing in a boot.' },
-        { type: 'recall', q: 'When a metatarsal shaft fracture goes to orthopedics',
-          a: 'Needs reduction, or no union by 6 months' },
-        { type: 'multi', q: 'Findings that call for a foot x-ray under the Ottawa foot rules',
-          answers: ['Tender base of fifth metatarsal', 'Tender navicular', 'Cannot take 4 steps'],
-          distractors: ['Bruising over the forefoot', 'Swelling at the ankle'],
-          why: 'Bone tenderness at those two points, or being unable to bear weight for 4 steps both right after the injury and in the office.' },
-        { type: 'truefalse', q: 'Ankle films are indicated for tenderness at the posterior edge or tip of either malleolus', a: true,
-          why: 'That is the ankle half of the Ottawa rules; the foot half is the fifth metatarsal base and the navicular.' },
-        { type: 'recall', q: 'X-ray to order when a foot or ankle fracture is suspected', a: 'Weight-bearing views' },
-        { type: 'number', q: 'Share of adult lower extremity fractures that are in the foot', value: 33, unit: '%', tolerance: 5 }
+        { type: 'recall', q: 'Hypertension screening is recommended for whom?', a: 'All adults 18 and older',
+          why: 'An A grade. Adults 18–39 with normal pressure and no risk factors can be rechecked every 3 to 5 years; everyone 40 and older, and anyone with elevated readings or obesity, is checked yearly.' },
+        { type: 'mcq', q: 'An office BP is 146/92. What does the USPSTF say to do before diagnosing hypertension?',
+          a: 'Confirm outside the office', distractors: ['Repeat in the office in 4 weeks', 'Start a thiazide', 'Check for end-organ damage'],
+          why: 'Ambulatory monitoring is the reference standard and home readings are the practical alternative. White-coat hypertension is common enough that office readings alone overdiagnose, and treating it brings harm without benefit.' },
+        { type: 'number', q: 'Diabetes screening in adults with overweight or obesity runs from what age to what age?', values: [35, 70], join: '–', unit: 'years',
+          why: 'A B grade, repeated every 3 years if normal. The point is as much prediabetes as diabetes: a positive result opens the door to intensive lifestyle programs, which are the one intervention with solid evidence.' },
+        { type: 'recall', q: 'A 45-year-old with overweight has a fasting glucose of 95. When is it rechecked?', a: 'In 3 years',
+          why: 'Normal screening results are repeated every 3 years. Prediabetes (fasting 100–125 or A1c 5.7–6.4) is rechecked yearly, and that is when lifestyle referral starts.' },
+        { type: 'mcq', q: 'Which patient meets USPSTF criteria for a statin for primary prevention?',
+          a: '55, smoker, 10-year risk 12%', distractors: ['45, no risk factors, risk 6%', '50, hypertension, risk 8%', '78, diabetes, risk 15%'],
+          why: 'The B recommendation is adults 40–75 with at least one risk factor (dyslipidemia, diabetes, hypertension or smoking) and a 10-year ASCVD risk of 10% or more. At 7.5 to 10% it is a C, offered selectively. At 76 and older the evidence is insufficient.' },
+        { type: 'recall', q: 'Why does the USPSTF require a 10% ten-year risk before recommending a statin?', a: 'Absolute benefit tracks baseline risk',
+          why: 'Statins cut relative risk by about a quarter whoever takes them, so the number needed to treat is small only when the starting risk is high. Below 10% most people take a daily pill for years without an event prevented.' },
+        { type: 'recall', q: 'Who gets a one-time ultrasound for abdominal aortic aneurysm?', a: 'Men 65–75 who have ever smoked',
+          why: 'A B grade; "ever smoked" means 100 cigarettes in a lifetime. Men in that age range who never smoked are a C, offered selectively. For women who have smoked the evidence is insufficient, and women who never smoked are a D.' },
+        { type: 'truefalse', q: 'The USPSTF recommends AAA screening for a 70-year-old woman with a 30 pack-year history', a: false,
+          why: 'Even with a smoking history, screening women is an I: aneurysms are rarer, rupture later, and the trials enrolled almost no women. A family history of AAA may tip the decision, but it is not a routine recommendation.' },
+        { type: 'recall', q: 'Obesity screening in adults: what does a BMI of 30 or more trigger?', a: 'Referral to intensive behavioral counseling',
+          why: 'Intensive means multiple sessions over 1 to 2 years covering diet, exercise and self-monitoring; a single conversation does not count. It is a B. Medications and surgery are options for individual patients but are not the screening response.' },
+        { type: 'mcq', q: 'A 50-year-old at low cardiovascular risk asks for a screening ECG. What do you tell him?',
+          a: 'Not recommended (D)', distractors: ['A resting ECG once', 'An exercise stress test', 'An ECG every 5 years'],
+          why: 'In low-risk adults an abnormal screening ECG mostly leads to more testing, including angiography, without changing management or outcomes. For intermediate and high risk the evidence is insufficient. The same logic applies to carotid ultrasound in people without symptoms.' },
+        { type: 'truefalse', q: 'Spirometry is recommended to screen adults without symptoms for COPD', a: false,
+          why: 'A D. Finding airflow limitation in someone with no symptoms does not change treatment, and inhalers do not slow progression in that group. Spirometry is for people with cough, sputum or breathlessness.' },
+        { type: 'recall', q: 'Who should start daily low-dose aspirin for primary prevention under the 2022 USPSTF statement?', a: 'Nobody routinely; 40–59 at ≥10% risk is a C',
+          why: 'At 60 and older starting aspirin is a D, because the bleeding risk cancels out the cardiovascular benefit. At 40–59 with a 10-year risk of 10% or more the net benefit is small, so it is an individual decision. This is prevention rather than screening, but the exam files it with the same questions.' },
+        { type: 'truefalse', q: 'Vitamin D levels should be checked in adults without symptoms', a: false,
+          why: 'An I. There is no agreed threshold for deficiency, assays disagree, and supplementing people found to be low has not improved outcomes in trials, so there is nothing for a screening test to lead to.' }
       ]
-    }
+    },
+
   ];
 
   global.Decks = { BUILTIN: BUILTIN };
