@@ -147,8 +147,9 @@
   /* Up to this many characters the explanation shows by itself after the
      answer. Longer ones get the WHY button and the swipe-up screen. */
   var WHY_INLINE = 220;
-  /* Where the question and answer settle, as a share of the space:
-     well above the middle. The explanation sits apart from them, near
+  /* Where the question and answer sit, as a share of the space: well
+     above the middle. The question is placed there from the start and
+     never moves; the answer rises in underneath it. The explanation sits apart from them, near
      the bottom, so it reads as an aside rather than part of the answer. */
   var SETTLE = 0.32;
   var GAP = 16;
@@ -212,10 +213,10 @@
       whyH = whyEl.getBoundingClientRect().height;
     }
 
-    plan = { qStart: (R - qH) / 2, qEnd: top, aEnd: top + qH + GAP,
+    plan = { qStart: top, qEnd: top, aEnd: top + qH + GAP,
              whyTop: Math.max(top + block + GAP, R - whyH - GAP) };
     place(qEl, plan.qStart);
-    place(aEl, plan.aEnd + 18);
+    place(aEl, plan.aEnd + 24);
     place(whyEl, plan.whyTop);
 
     rules.textContent =
@@ -230,7 +231,6 @@
   function reveal() {
     revealed = true;
     setKicker('Knew it?');
-    qEl.classList.add('is-moving');
     aEl.classList.add('is-moving');
     requestAnimationFrame(function () {
       place(qEl, plan.qEnd);
