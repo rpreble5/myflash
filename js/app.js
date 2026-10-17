@@ -27,13 +27,32 @@
     return 'weakest';
   }
 
+  /* Starts empty and fills to its value once on screen. */
   function meter(value) {
     var m = h('span', 'meter');
     var fill = h('span', 'meter-fill');
-    fill.style.width = Math.round(value * 100) + '%';
+    fill.style.width = '0%';
     m.appendChild(fill);
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () { fill.style.width = Math.round(value * 100) + '%'; });
+    });
     return m;
   }
+
+  /* The chunky press for things that are not answer buttons: the target
+     sinks into its bottom edge while a finger is on `el`. */
+  function pressable(el, target) {
+    target = target || el;
+    function up() { target.classList.remove('is-pressed'); }
+    el.addEventListener('pointerdown', function () { target.classList.add('is-pressed'); });
+    el.addEventListener('pointerup', up);
+    el.addEventListener('pointercancel', up);
+    el.addEventListener('pointerleave', up);
+  }
+
+  /* The topics slide in on the first visit only; coming back from a
+     session should not replay it. */
+  var homeShown = false;
 
   /* How many cards a short run holds. Long enough to be worth opening,
      short enough to finish in a queue. */
@@ -46,6 +65,8 @@
   function renderHome() {
     var list = $('#deck-list');
     list.textContent = '';
+    list.classList.toggle('is-entering', !homeShown);
+    homeShown = true;
 
     global.Store.topics().forEach(function (topic, ti) {
       var group = h('div', 'topic');
@@ -65,7 +86,13 @@
       head.appendChild(meter(topic.strength));
       head.appendChild(h('span', 'topic-tag', topic.started ? strengthLabel(topic.strength) : 'new'));
 
+      /* Two wrappers so the open/close can animate its height: the outer
+         is a one-row grid going 0fr to 1fr, the inner clips. */
       var body = h('div', 'topic-decks');
+      var clip = h('div', 'topic-decks-clip');
+      var inner = h('div', 'topic-decks-inner');
+      clip.appendChild(inner);
+      body.appendChild(clip);
 
       /* Runs the topic's decks one after another, weakest first — a longer
          session without mixing the cards, which is the thing to preserve. */
@@ -75,7 +102,8 @@
         e.stopPropagation();
         startSession(topic.decks.slice());
       });
-      body.appendChild(all);
+      all.style.setProperty('--i', 0);
+      inner.appendChild(all);
 
       /* The short run: only the cards the strength model calls weak, worst
          first, capped so a topic where nothing has been studied yet gives
@@ -94,13 +122,15 @@
           e.stopPropagation();
           startSession(topic.decks.slice(), weak);
         });
-        body.appendChild(drill);
+        drill.style.setProperty('--i', 1);
+        inner.appendChild(drill);
       }
 
       topic.decks.forEach(function (deck, di) {
         var d = deck._strength;
         var row = h('button', 'deck-row');
-        row.style.setProperty('--i', di);
+        row.style.setProperty('--i', di + 2);
+        pressable(row);
         row.appendChild(h('span', 'deck-name', deck.name));
         row.appendChild(h('span', 'deck-line', d.started
           ? d.weak + ' of ' + d.total + ' weak'
@@ -110,9 +140,10 @@
           e.stopPropagation();
           startSession([deck]);
         });
-        body.appendChild(row);
+        inner.appendChild(row);
       });
 
+      pressable(head, group);
       head.addEventListener('click', function () {
         var open = group.classList.toggle('is-open');
         head.setAttribute('aria-expanded', open ? 'true' : 'false');
@@ -122,6 +153,33 @@
       group.appendChild(body);
       list.appendChild(group);
     });
+  }
+
+  /* What the phone says about its screen, to diagnose layouts that get
+     cut off at the bottom: the reported heights, the bottom inset, and
+     whether it runs fullscreen. */
+  function renderScreenInfo() {
+    var out = $('#screen-info');
+    if (!out) return;
+    function probe(css) {
+      var d = document.createElement('div');
+      d.style.cssText = 'position:fixed;left:0;top:0;width:1px;visibility:hidden;' + css;
+      document.body.appendChild(d);
+      var v = Math.round(d.getBoundingClientRect().height);
+      d.remove();
+      return v;
+    }
+    var vv = global.visualViewport;
+    var mode = ['fullscreen', 'standalone', 'browser'].filter(function (m) {
+      return global.matchMedia && matchMedia('(display-mode: ' + m + ')').matches;
+    })[0] || 'unknown';
+    out.textContent = 'Screen ' + innerWidth + '×' + innerHeight +
+      ' · vh ' + probe('height:100vh') +
+      ' · dvh ' + (probe('height:100dvh') || 'n/a') +
+      ' · visual ' + (vv ? Math.round(vv.height) : 'n/a') +
+      ' · device ' + screen.width + '×' + screen.height +
+      ' · inset ' + probe('height:env(safe-area-inset-bottom)') +
+      ' · ' + mode;
   }
 
   /* ──────────────────── app update ───────────────────── */
@@ -1013,6 +1071,7 @@
 
     $('#btn-settings').addEventListener('click', function () {
       renderDeckManager();               // decks can arrive from the tool between visits
+      renderScreenInfo();
       show('screen-settings');
     });
 
