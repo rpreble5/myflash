@@ -551,9 +551,9 @@
   stroke-linejoin: round;
 }
 .dir-btn[role="button"] { cursor: pointer; }
-.dir-btn:active { transform: scale(.9); }
+.dir-btn:active { transform: translateY(2px); }
 /* Your pick, before the answer is in. */
-.dir-btn.is-on { background: var(--sel-bg); color: var(--sel); border-color: var(--sel); }
+.dir-btn.is-on { background: var(--brand); color: #fff; border-color: var(--brand-dark); animation: box-pop .24s cubic-bezier(.3, 1.6, .5, 1); }
 
 /* After submitting. The true direction fills on every row so the card
    reads as the pattern; a wrong pick is marked but stays secondary. */
@@ -583,7 +583,7 @@
 .card[data-swipe="left"]  .sort-head[data-side="left"],
 .card[data-swipe="right"] .sort-head[data-side="right"] { opacity: .8; }
 .card[data-armed="left"]  .sort-head[data-side="left"],
-.card[data-armed="right"] .sort-head[data-side="right"] { opacity: 1; }
+.card[data-armed="right"] .sort-head[data-side="right"] { opacity: 1; color: var(--brand); }
 
 .sort-list { display: flex; flex-direction: column; gap: .25rem; }
 .sort-item {
@@ -634,70 +634,6 @@
 .bin-btn.is-right { background: var(--ok); border-color: var(--ok-dark); color: #fff; }
 .bin-btn.is-wrong { background: var(--bad); border-color: var(--bad-dark); color: #fff; }
 .bin-btn.is-answer { border-color: var(--ok); color: var(--ok-dark); }
-
-/* ── Order ───────────────────────────────────────────────── */
-.order-slots { width: min(560px, 100%); display: flex; flex-direction: column; gap: .35rem; }
-.order-slot {
-  display: flex;
-  align-items: center;
-  gap: .7rem;
-  min-height: 46px;
-  padding: .4rem .7rem;
-  border-radius: 13px;
-  border: 2px dashed var(--line);
-  animation: choice-in .24s cubic-bezier(.22,1,.36,1) backwards;
-  animation-delay: calc(var(--i) * 50ms);
-}
-.order-num {
-  flex: 0 0 auto;
-  width: 26px; height: 26px;
-  border-radius: 8px;
-  background: var(--line);
-  color: var(--muted);
-  display: grid; place-items: center;
-  font-weight: 800;
-  font-size: .85rem;
-}
-.order-text {
-  flex: 1;
-  min-width: 0;
-  font-family: var(--body-face);
-  font-weight: 700;
-  font-size: .95rem;
-  text-align: left;
-}
-.order-slot.is-filled { border-style: solid; border-color: var(--line); }
-.order-slot.is-right { border-color: var(--ok-dark); background: var(--ok); color: #fff; }
-.order-slot.is-right .order-text { color: #fff; }
-/* The slot holds the true step either way, so the text stays ink and only
-   the frame says you had this one in the wrong place. Colouring the text
-   accent made the correct answer look like the mistake. */
-.order-slot.is-wrong { border-color: var(--bad); }
-.order-slot.is-wrong .order-num { background: var(--bad); color: #fff; }
-
-.order-chips { display: flex; gap: .4rem; flex-wrap: wrap; justify-content: center; width: min(620px, 100%); }
-.order-chip {
-  padding: .6rem .9rem;
-  border-radius: 13px;
-  border: 3px solid var(--line);
-  border-bottom-width: 6px;
-  background: var(--bg);
-  color: var(--ink);
-  font-family: var(--body-face);
-  font-weight: 700;
-  font-size: 1rem;
-  animation: tile-in .24s cubic-bezier(.22,1,.36,1) backwards;
-  animation-delay: calc(var(--i) * 45ms);
-  transition: transform .14s cubic-bezier(.22,1,.36,1), opacity .14s;
-}
-.order-chip[role="button"] { cursor: pointer; }
-.order-chip:active { transform: scale(.94); }
-/* Holds its box, like every other control that retires on an answer. */
-.btn-undo.is-hidden { visibility: hidden; }
-/* Only the slots move under the finger; the chips stay where they are. */
-.order-slots { transition: transform .2s cubic-bezier(.25,.8,.4,1); }
-.card.is-dragging .order-slots { transition: none; }
-.order-chip.is-used { opacity: .16; transform: scale(.9); pointer-events: none; }
 
 /* ── Match ───────────────────────────────────────────────── */
 .match-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; width: min(620px, 100%); }

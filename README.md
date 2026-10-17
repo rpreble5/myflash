@@ -5,7 +5,7 @@ Fullscreen flashcards for family medicine board prep, with varied inputs.
 Every card uses one plain look: Nunito on white, with green for right
 answers, red for wrong ones and blue for the current pick. What a card asks
 of you depends on its type: reveal, multiple choice, true/false, a number
-dial, a trend panel, a sort, a sequence, or a match.
+keypad, a trend panel, a sort, or a match.
 
 No build step, no dependencies, no framework. Open `index.html` and it runs.
 
@@ -34,11 +34,10 @@ behaviour — content drives the format.
 | `mcq` | `{ q, a, distractors[] }` | tap one; grid or list, decided by option length |
 | `multi` | `{ q, answers[], distractors[], why? }` | select all that apply, swipe right to submit |
 | `truefalse` | `{ q, a:bool, why? }` | swipe left for false, right for true |
-| `number` | `{ q, value, unit, tolerance, step? }` | drag anywhere to dial a value |
-| `number` | `{ q, low, high, unit, step? }` | dial to any value inside the band |
+| `number` | `{ q, value, unit, tolerance, step? }` | type it on the keypad (or dial it, with the slider setting) |
+| `number` | `{ q, low, high, unit, step? }` | any value inside the band counts |
 | `trend` | `{ q, items:[{label, dir}] }` | mark each row ↑ / — / ↓, swipe right to submit |
 | `bucket` | `{ q, bins[], items:[{label, bin}] }` | swipe each item left or right into a running list |
-| `order` | `{ q, steps[] }` | tap phrases into sequence, swipe right to submit |
 | `match` | `{ q, pairs:[{left, right}] }` | link two columns; fumbled pairs stay marked |
 
 ### The recall card
@@ -77,8 +76,8 @@ keyboard while the gesture stays discoverable; whichever side you're dragging
 toward lights up on the way. Drags lock to an axis on first movement, so
 scrolling a long explanation never grades the card by accident.
 
-`dir` is `'up' | 'down' | 'same'`. Steps and pairs are stored in the correct
-order and shuffled at render. Any card may carry an optional `ref` for its
+`dir` is `'up' | 'down' | 'same'`. Pairs are stored matched and shuffled at
+render. Any card may carry an optional `ref` for its
 source citation.
 
 Keyboard: `Space` / `Enter` reveal · `1`–`4` pick an option or bin ·

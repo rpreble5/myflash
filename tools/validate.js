@@ -3,7 +3,7 @@
    The app degrades rather than crashes: pickFor falls back to the recall
    presentation when nothing else is eligible. That is kind for `mcq`,
    which still has an `a` to reveal, and silent murder for `multi`,
-   `trend`, `bucket`, `order`, `match` and `number`, none of which have
+   `trend`, `bucket`, `match` and `number`, none of which have
    one. Those render an empty answer face — a card that looks perfect in
    the file and fails in your hand a week later.
 
@@ -26,7 +26,7 @@
   var DECK_MAX = 40;
 
   var TYPES = ['recall', 'mcq', 'multi', 'truefalse', 'number',
-               'trend', 'bucket', 'order', 'match'];
+               'trend', 'bucket', 'match'];
 
   var FIELDS = {
     common:    ['type', 'q', 'why', 'ref'],
@@ -37,7 +37,6 @@
     number:    ['value', 'low', 'high', 'unit', 'tolerance', 'step', 'min', 'max'],
     trend:     ['items'],
     bucket:    ['bins', 'items'],
-    order:     ['steps'],
     match:     ['pairs']
   };
 
@@ -53,7 +52,7 @@
     prompt: 'q', options: 'distractors', choices: 'distractors',
     wrong: 'distractors', explanation: 'why', rationale: 'why',
     note: 'why', source: 'ref', citation: 'ref', units: 'unit',
-    steps_in_order: 'steps', order: 'steps', buckets: 'bins',
+    buckets: 'bins',
     categories: 'bins', rows: 'items', tolerence: 'tolerance'
   };
 
@@ -398,22 +397,6 @@
     dupes(labels).forEach(function (l) { r.err(w, 'Duplicate item: "' + l + '".', 'Each item must be distinct.'); });
     longText(r, w, labels, OPTION_MAX, 'Item');
     longText(r, w, c.bins, 16, 'Bin name');
-  };
-
-  CHECK.order = function (r, w, c) {
-    if (!isArr(c.steps) || c.steps.length < 2) {
-      return r.err(w, 'Needs at least 2 steps, has ' + (isArr(c.steps) ? c.steps.length : 0) + '.',
-        'Add "steps": ["first", "second", "third"] in the correct order. Without them this card renders blank.');
-    }
-    if (!checkStrings(r, w, c.steps, 'steps')) return;
-    if (c.steps.length === 2) r.warn(w, 'Two steps is a coin flip.', 'Three to six is the useful range.');
-    if (c.steps.length > 6) r.warn(w, c.steps.length + ' steps will not fit.', 'Split into two cards.');
-
-    dupes(c.steps).forEach(function (s) {
-      r.err(w, 'Duplicate step: "' + s + '".',
-        'Steps are graded by their text, so two identical steps cannot be told apart. Reword one.');
-    });
-    longText(r, w, c.steps, OPTION_MAX, 'Step');
   };
 
   CHECK.match = function (r, w, c) {

@@ -85,14 +85,6 @@
             { label: 'Osmolality over 320', bin: 'HHS' }
           ] },
 
-        { type: 'order', q: 'DKA management sequence', steps: [
-          'Isotonic fluid resuscitation',
-          'Check serum potassium',
-          'Start IV insulin infusion',
-          'Add dextrose at glucose 200',
-          'Overlap subcutaneous insulin'
-        ] },
-
         { type: 'match', q: 'Complication → cause', pairs: [
           { left: 'Cerebral edema', right: 'Fast osmolar shift' },
           { left: 'Hypokalemia', right: 'Insulin infusion' },
@@ -279,23 +271,13 @@
       name: 'PROTOCOLS',
       blurb: 'Sequences, shock states, and thresholds',
       cards: [
-        { type: 'order', q: 'ATLS primary survey', steps: [
-          'Airway', 'Breathing', 'Circulation', 'Disability', 'Exposure'
-        ] },
-        { type: 'order', q: 'Post-op fever by day: the five Ws', steps: [
-          'Wind — atelectasis, POD 1–2',
-          'Water — UTI, POD 3–5',
-          'Walking — DVT, POD 4–6',
-          'Wound — infection, POD 5–7',
-          'Wonder drugs — POD 7+'
-        ] },
-        { type: 'order', q: 'Adult BLS sequence', steps: [
-          'Check responsiveness',
-          'Activate emergency response',
-          'Check pulse and breathing',
-          'Begin chest compressions',
-          'Attach defibrillator'
-        ] },
+        { type: 'mcq', q: 'In the ATLS primary survey, the step right after Circulation',
+          a: 'Disability', distractors: ['Airway', 'Breathing', 'Exposure'] },
+        { type: 'mcq', q: 'Classic cause of fever on post-op day 1–2 (the five Ws)',
+          a: 'Wind — atelectasis', distractors: ['Water — UTI', 'Walking — DVT', 'Wound — infection'] },
+        { type: 'mcq', q: 'In adult BLS, the step right after checking pulse and breathing',
+          a: 'Begin chest compressions',
+          distractors: ['Activate emergency response', 'Attach defibrillator', 'Check responsiveness'] },
         { type: 'trend', q: 'Cardiogenic shock', items: [
           { label: 'CVP / preload', dir: 'up' },
           { label: 'SVR', dir: 'up' },
@@ -400,9 +382,6 @@
 
         { type: 'truefalse', q: 'Beta blockers are reserved for a compelling indication in hypertension', a: true,
           why: 'Post-infarct, heart failure, rate control. As monotherapy for blood pressure alone they protect against stroke less well than the four first-line classes, which is why they sit outside the first line.' },
-
-        { type: 'order', q: 'Escalating drug therapy in hypertension',
-          steps: ['One first-line agent', 'Add a second class', 'Add a third with a diuretic', 'Add spironolactone'] },
 
         { type: 'mcq', q: 'Preferred fourth agent in resistant hypertension', a: 'Spironolactone',
           distractors: ['Doxazosin', 'Bisoprolol', 'Clonidine'],
@@ -676,13 +655,9 @@
           { left: 'Tiotropium', right: 'LAMA' }
         ] },
 
-        { type: 'order', q: 'Using a metered-dose inhaler', steps: [
-          'Breathe out fully',
-          'Seal lips on the mouthpiece',
-          'Press and breathe in slowly',
-          'Hold the breath ten seconds',
-          'Rinse the mouth'
-        ] },
+        { type: 'mcq', q: 'Metered-dose inhaler technique: the step right after pressing and breathing in slowly',
+          a: 'Hold the breath ten seconds',
+          distractors: ['Breathe out fully', 'Seal lips on the mouthpiece', 'Rinse the mouth'] },
 
         { type: 'recall', q: 'Reason the mouth is rinsed after an inhaled steroid', a: 'To prevent oral thrush' },
 
@@ -856,13 +831,6 @@
         { type: 'number', q: 'Weeks of anticoagulation required after successful cardioversion',
           value: 4, unit: 'weeks',
           why: 'The atrium is electrically normal long before it is mechanically normal. Stunning leaves it contracting poorly for days to weeks, so the stasis — and the stroke risk — outlast the rhythm on the monitor.' },
-
-        { type: 'order', q: 'Elective cardioversion pathway', steps: [
-          'Three weeks anticoagulated',
-          'Synchronized cardioversion',
-          'Four more weeks anticoagulated',
-          'Decide on long-term therapy'
-        ] },
 
         { type: 'recall', q: 'Procedure offered when drugs fail in symptomatic paroxysmal atrial fibrillation',
           a: 'Catheter ablation',
@@ -1863,13 +1831,8 @@
       name: 'EFFECTIVENESS',
       blurb: 'What actually works, and why typical use is the number that counts',
       cards: [
-        { type: 'order', q: 'Methods from most to least effective in typical use', steps: [
-          'Implant and IUD',
-          'Injection',
-          'Pill, patch or ring',
-          'Male condom',
-          'Withdrawal'
-        ] },
+        { type: 'mcq', q: 'Ranks just below the implant and IUD for typical-use effectiveness',
+          a: 'Injection', distractors: ['Pill, patch or ring', 'Male condom', 'Withdrawal'] },
 
         { type: 'recall', q: 'Term for the methods with the lowest typical-use failure',
           a: 'Long-acting reversible contraception',

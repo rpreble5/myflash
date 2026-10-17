@@ -145,10 +145,10 @@
 
 <!-- The real deck list, the real dial maths, the real store. A check
      against a copy of the rules is a check against nothing. -->
-<script src="../js/decks.js?v=44"></script>
-<script src="../js/modes.js?v=44"></script>
-<script src="../js/store.js?v=44"></script>
-<script src="validate.js?v=44"></script>
+<script src="../js/decks.js?v=45"></script>
+<script src="../js/modes.js?v=45"></script>
+<script src="../js/store.js?v=45"></script>
+<script src="validate.js?v=45"></script>
 
 <!-- The prompt lives here as inert text so there is exactly one copy of
      it: the page renders it and the clipboard button ships it. -->
@@ -184,7 +184,7 @@ silent, so it has no honest PRESENTATION deck, and an invented one is worse
 than none. Seven to twelve cards per deck.
 
 Each facet leans naturally toward certain card types — MANAGEMENT toward
-order and number, DIAGNOSIS toward bucket and multi, PRESENTATION toward
+number and mcq, DIAGNOSIS toward bucket and multi, PRESENTATION toward
 recall. Follow that where it fits and ignore it where it does not.
 
 ═══ DIFFICULTY ═══
@@ -299,9 +299,6 @@ Each type below has a condition. If the material does not meet it, skip it.
   bucket     Only when the source contrasts two named categories and you have
              at least four features that tell them apart.
 
-  order      Only when a sequence is itself the fact: a protocol, a pathway.
-             Three to six steps.
-
   match      Only for three to five pairs where each left has exactly one
              correct right. Drug to class, antidote to poison.
 
@@ -315,7 +312,6 @@ Each type below has a condition. If the material does not meet it, skip it.
 { "type": "number",    "q": "...", "low": 0.3, "high": 0.5, "unit": "mg" }
 { "type": "trend",     "q": "...", "items": [{ "label": "...", "dir": "up" }] }
 { "type": "bucket",    "q": "...", "bins": ["A", "B"], "items": [{ "label": "...", "bin": "A" }] }
-{ "type": "order",     "q": "...", "steps": ["first", "second", "third"] }
 { "type": "match",     "q": "...", "pairs": [{ "left": "...", "right": "..." }] }
 
 Use exactly these field names. Not "answer", not "options", not
@@ -330,7 +326,6 @@ wraps into a wall.
   question          under 90 characters
   answer ("a")      under 40
   mcq/multi option  under 32
-  order step        under 32
   bucket item       under 32, bin names under 16
   trend row label   under 28
   match left/right  under 24
@@ -341,14 +336,13 @@ And how many:
   multi       2 to 4 right, 1 to 3 wrong, 6 options in total at most
   trend       2 to 5 rows
   bucket      exactly 2 bins, 4 to 8 items
-  order       3 to 6 steps
   match       3 to 5 pairs
 
 Write in US spelling and US units — edema not oedema, anemia not anaemia,
 mg/dL and mEq/L. Mixing conventions inside one deck reads as carelessness
 even when every fact is right.
 
-═══ THE EIGHT THINGS THAT GO WRONG ═══
+═══ THE SEVEN THINGS THAT GO WRONG ═══
 
 1. "dir" is exactly "up", "down" or "same". Lowercase. Not "increased",
    not "Up", not an arrow.
@@ -356,28 +350,25 @@ even when every fact is right.
 2. Every bucket "bin" must be one of the strings in "bins", copied character
    for character. Use two bins; a third costs the card its best interaction.
 
-3. "steps" are written in the CORRECT order. The app shuffles them for the
-   player. No two steps may share the same text.
-
-4. No two "right" values in a match card may be the same, and no two options
+3. No two "right" values in a match card may be the same, and no two options
    in an mcq or multi card may be the same. Identical options cannot be told
    apart, so the card cannot be graded.
 
-5. A distractor is never the answer, and never merely a less-good answer.
+4. A distractor is never the answer, and never merely a less-good answer.
    If a distractor would also be correct in some circumstance, replace it.
    Keep them in the same category as the answer — all electrolytes, all drug
    classes — so the card tests knowledge rather than which option looks
    out of place.
 
-6. truefalse "a" is a JSON boolean: true or false, no quotes.
+5. truefalse "a" is a JSON boolean: true or false, no quotes.
 
-7. number: "value" for a target, "low" plus "high" for a genuine range.
+6. number: "value" for a target, "low" plus "high" for a genuine range.
    Never both in one card. Write bare numbers, so 3.3 and not "3.3 mEq/L";
    the unit goes in "unit". Set "tolerance" to 0 unless a near miss should
    count as right. Do not set "step", "min" or "max" — the app works those
    out from the answer, and a wrong one makes the card unanswerable.
 
-8. Only "multi" uses "answers". Every other type that has one right answer
+7. Only "multi" uses "answers". Every other type that has one right answer
    uses "a".
 
 ═══ CHECK YOUR OWN WORK BEFORE YOU ANSWER ═══

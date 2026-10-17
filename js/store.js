@@ -14,6 +14,30 @@
     localStorage.removeItem('myflash.shown.v1');
   } catch (e) { /* storage blocked */ }
 
+  /* Put-in-order cards were retired. Three built-in ones were deleted
+     outright, which moved every later card in those decks up one place,
+     and progress is keyed by position — so it moves with them. Once. */
+  (function () {
+    var FLAG = 'myflash.migrated.order-retired';
+    try {
+      if (localStorage.getItem(FLAG)) return;
+      var raw = localStorage.getItem(KEY_STATS);
+      var all = raw ? JSON.parse(raw) : {};
+      [['dka', 14], ['htn-management', 3], ['af-management', 8]].forEach(function (r) {
+        var prefix = r[0] + ':', gone = r[1], moved = {};
+        Object.keys(all).forEach(function (k) {
+          if (k.indexOf(prefix) !== 0) return;
+          var i = Number(k.slice(prefix.length));
+          if (i === gone) delete all[k];
+          else if (i > gone) { moved[prefix + (i - 1)] = all[k]; delete all[k]; }
+        });
+        Object.keys(moved).forEach(function (k) { all[k] = moved[k]; });
+      });
+      if (raw) localStorage.setItem(KEY_STATS, JSON.stringify(all));
+      localStorage.setItem(FLAG, '1');
+    } catch (e) { /* storage blocked */ }
+  })();
+
   /* Anything not listed here is not a setting. Defaults are the current
      behaviour, so an empty store behaves exactly as before. */
   var DEFAULTS = {
@@ -63,8 +87,23 @@
     return true;
   }
 
+  /* A generated deck from before put-in-order was retired may still carry
+     one. It becomes a pick-one card asking for the first step, rather than
+     rendering blank. */
+  function retireOrder(deck) {
+    if (!deck.cards.some(function (c) { return c.type === 'order'; })) return deck;
+    var copy = {};
+    Object.keys(deck).forEach(function (k) { copy[k] = deck[k]; });
+    copy.cards = deck.cards.map(function (c) {
+      if (c.type !== 'order' || !c.steps || c.steps.length < 2) return c;
+      return { type: 'mcq', q: c.q + ': the first step', a: c.steps[0],
+               distractors: c.steps.slice(1, 4), why: c.why };
+    });
+    return copy;
+  }
+
   function allDecks() {
-    return global.Decks.BUILTIN.concat(customDecks());
+    return global.Decks.BUILTIN.concat(customDecks().map(retireOrder));
   }
 
   function deckById(id) {
