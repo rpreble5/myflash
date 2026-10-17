@@ -620,23 +620,21 @@
     }
   };
 
-  /* ═══════════════ bucket: one big item at a time ═══════════════ */
+  /* ═══════════════ bucket: sort a list into two sides ═══════════════
+
+     Every item is on screen at once, centered. Swipe one, or tap its
+     left or right half, and it slides toward that side; it can be sent
+     back the other way until CHECK. Three or more bins have no sides to
+     slide to, so those cards go through the items one at a time with a
+     button per bin.                                                     */
 
   var bucket = {
-    /* The card's own question is the label; each item is the question. */
     id: 'bucket', label: '', types: ['bucket'], weight: 1,
     eligible: function (card) { return card.bins && card.bins.length >= 2 && card.items && card.items.length; },
     mount: function (area, ctx) {
       var items = global.Txt.shuffle(ctx.card.items.slice());
-      var idx = 0, right = 0, locked = false;
-      /* Two bins map onto left and right; more than that has nowhere to
-         go, so those cards keep the buttons. */
-      var two = ctx.card.bins.length === 2;
-      var swipe = null, list = null, bins = null;
+      var bins = ctx.card.bins;
 
-      ctx.setKicker(ctx.card.q);
-      var hint = h('div', 'hint');
-      area.appendChild(hint);
       var why = ctx.card.why;
       ctx.stack('', why ? function (fits) {
         var w = explanation(why, ctx, fits ? STACK_WHY_INLINE : 0);
@@ -644,117 +642,150 @@
         return w;
       } : null);
 
-      if (two) buildSorter(); else buildButtons();
-
-      var keyMap = {};
-      ctx.card.bins.forEach(function (bin, i) {
-        keyMap[String(i + 1)] = function () { answer(bin, bins && bins.children[i]); };
-      });
-      ctx.keys(keyMap);
-
-      function buildSorter() {
-        var sorter = h('div', 'sorter');
-        var heads = h('div', 'sort-heads');
-        ctx.card.bins.forEach(function (bin, i) {
-          var head = h('div', 'sort-head', bin);
-          head.dataset.bin = bin;
-          head.dataset.side = i === 0 ? 'left' : 'right';
-          heads.appendChild(head);
-        });
-        list = h('div', 'sort-list');
-        sorter.appendChild(heads);
-        sorter.appendChild(list);
-        area.appendChild(sorter);
-
-        /* Nothing moves under the finger: the side you are heading for
-           lights up, and the item lands in the list on its true side. */
-        swipe = ctx.enableSwipe({
-          motion: 'none',
-          onLeft: function () { answer(ctx.card.bins[0]); },
-          onRight: function () { answer(ctx.card.bins[1]); },
-          /* Mouse and cautious-finger fallback: the headings are targets. */
-          onTap: function (target) {
-            var head = target && target.closest && target.closest('.sort-head');
-            if (head) answer(head.dataset.bin);
-          }
-        });
-      }
-
-      function buildButtons() {
-        bins = h('div', 'bin-group');
-        area.appendChild(bins);
-        ctx.card.bins.forEach(function (bin, i) {
-          var b = h('button', 'bin-btn', bin);
-          b.style.setProperty('--i', i);
-          b.addEventListener('click', function () { answer(bin, b); });
-          bins.appendChild(b);
-        });
-      }
-
-      function show() {
-        var prompt = two && idx === 0;
-        /* The prompt pulses to ask for the gesture; the running count is
-           just a readout and has no business breathing. */
-        hint.className = prompt ? 'hint sort-hint' : 'hint sort-hint is-static';
-        hint.textContent = prompt ? 'SWIPE TO SORT' : (items.length - idx) + ' LEFT';
-        ctx.setQuestion(items[idx].label);
-      }
-
-      function answer(bin, btn) {
-        /* idx can already be past the end while the card waits to be
-           replaced; a click landing in that window read items[idx].bin
-           off the end of the array. */
-        if (locked || idx >= items.length) return;
-        locked = true;
-        var item = items[idx];
-        var ok = bin === item.bin;
-        if (ok) right++;
-        /* The last item's verdict is the card's verdict, which settle
-           plays a moment later; two sounds for one action is noise. */
-        if (idx < items.length - 1) (ok ? global.Sfx.right : global.Sfx.wrong)();
-
-        if (two) {
-          /* The item settles on the side it *belongs* on, marked when that
-             wasn't where the user put it. The finished list then reads as
-             the true grouping — the thing worth remembering — rather than
-             as a record of the mistakes. */
-          var side = item.bin === ctx.card.bins[0] ? 'left' : 'right';
-          var chip = h('div', 'sort-item', item.label);
-          chip.dataset.side = side;
-          if (!ok) chip.classList.add('is-wrong');
-          list.appendChild(chip);
-        } else if (btn) {
-          btn.classList.add(ok ? 'is-right' : 'is-wrong');
-          if (!ok) {
-            Array.prototype.forEach.call(bins.children, function (b) {
-              if (b.textContent === item.bin) b.classList.add('is-answer');
-            });
-          }
-        }
-
-        setTimeout(function () {
-          if (bins) {
-            Array.prototype.forEach.call(bins.children, function (b) {
-              b.classList.remove('is-right', 'is-wrong', 'is-answer');
-            });
-          }
-          idx++;
-          if (idx >= items.length) {
-            ctx.stackReveal(false);
-            settle(ctx, right / items.length);   // stay locked; card is done
-            return;
-          }
-          locked = false;
-          show();
-          /* Repaint first, then put the hero back: the new item is already
-             in place when the transform clears, so nothing flashes. */
-          if (swipe) swipe.reset();
-        }, ok ? 260 : 900);
-      }
-
-      show();
+      if (bins.length === 2) sortTwo(area, ctx, items, bins);
+      else sortMany(area, ctx, items, bins);
     }
   };
+
+  function sortTwo(area, ctx, items, bins) {
+    var side = new Array(items.length).fill(null);
+    var locked = false;
+
+    var heads = h('div', 'sort-heads');
+    heads.appendChild(h('div', 'sort-head', '← ' + bins[0]));
+    heads.appendChild(h('div', 'sort-head', bins[1] + ' →'));
+    var list = h('div', 'sort-list');
+    var check = h('button', 'btn btn-solid sort-check', 'CHECK');
+    check.disabled = true;
+    area.appendChild(heads);
+    area.appendChild(list);
+    area.appendChild(check);
+
+    var chips = items.map(function (item, i) {
+      var chip = h('div', 'sort-item', item.label);
+      chip.setAttribute('role', 'button');
+      chip.style.setProperty('--i', i);
+      list.appendChild(chip);
+
+      /* Swipe or tap, on the item itself. A drag of a few pixels decides
+         the side by direction; anything shorter is a tap, decided by which
+         half of the item it landed on. */
+      var x0 = null;
+      chip.addEventListener('pointerdown', function (e) {
+        if (locked) return;
+        e.stopPropagation();
+        x0 = e.clientX;
+        if (chip.setPointerCapture) { try { chip.setPointerCapture(e.pointerId); } catch (err) { /* stale */ } }
+      });
+      chip.addEventListener('pointerup', function (e) {
+        if (x0 == null || locked) return;
+        var dx = e.clientX - x0;
+        x0 = null;
+        var r = chip.getBoundingClientRect();
+        var left = Math.abs(dx) > 18 ? dx < 0 : e.clientX < r.left + r.width / 2;
+        place(i, left ? 'left' : 'right');
+      });
+      chip.addEventListener('pointercancel', function () { x0 = null; });
+      chip.addEventListener('click', function (e) { e.stopPropagation(); });
+      return chip;
+    });
+
+    /* Slides most of the way toward its side, never off the list. */
+    function slide(i, where) {
+      var chip = chips[i];
+      var room = Math.max(0, (list.clientWidth - chip.offsetWidth) / 2) * 0.85;
+      chip.style.transform = 'translateX(' + Math.round(where === 'left' ? -room : room) + 'px)';
+    }
+
+    function place(i, where) {
+      if (locked || side[i] === where) return;
+      side[i] = where;
+      chips[i].dataset.side = where;
+      slide(i, where);
+      global.Sfx.tick();
+      check.disabled = side.indexOf(null) !== -1;
+    }
+
+    function submit() {
+      if (locked || check.disabled) return;
+      locked = true;
+      check.classList.add('is-hidden');
+      var right = 0;
+      items.forEach(function (item, i) {
+        var truth = item.bin === bins[0] ? 'left' : 'right';
+        var ok = side[i] === truth;
+        if (ok) right++;
+        chips[i].classList.add(ok ? 'is-right' : 'is-wrong');
+        /* The finished list is the true grouping: a misplaced item moves
+           across to where it belongs, still marked. */
+        if (!ok) setTimeout(function () { slide(i, truth); }, 260);
+      });
+      ctx.stackReveal(false);
+      settle(ctx, right / items.length);
+    }
+
+    check.addEventListener('click', function (e) { e.stopPropagation(); submit(); });
+    ctx.keys({ 'Enter': submit });
+  }
+
+  function sortMany(area, ctx, items, bins) {
+    var idx = 0, right = 0, locked = false;
+    ctx.setKicker(ctx.card.q);
+    var hint = h('div', 'hint is-static');
+    var group = h('div', 'bin-group');
+    area.appendChild(hint);
+    area.appendChild(group);
+
+    var keyMap = {};
+    bins.forEach(function (bin, i) {
+      var b = h('button', 'bin-btn', bin);
+      b.style.setProperty('--i', i);
+      b.addEventListener('click', function (e) { e.stopPropagation(); answer(bin, b); });
+      group.appendChild(b);
+      keyMap[String(i + 1)] = function () { answer(bin, b); };
+    });
+    ctx.keys(keyMap);
+
+    function show() {
+      hint.textContent = (items.length - idx) + ' LEFT';
+      ctx.setQuestion(items[idx].label);
+    }
+
+    function answer(bin, btn) {
+      /* idx can already be past the end while the card waits to be
+         replaced; a click landing in that window read items[idx].bin
+         off the end of the array. */
+      if (locked || idx >= items.length) return;
+      locked = true;
+      var item = items[idx];
+      var ok = bin === item.bin;
+      if (ok) right++;
+      /* The last item's verdict is the card's verdict, which settle
+         plays a moment later; two sounds for one action is noise. */
+      if (idx < items.length - 1) (ok ? global.Sfx.right : global.Sfx.wrong)();
+      btn.classList.add(ok ? 'is-right' : 'is-wrong');
+      if (!ok) {
+        Array.prototype.forEach.call(group.children, function (b) {
+          if (b.textContent === item.bin) b.classList.add('is-answer');
+        });
+      }
+      setTimeout(function () {
+        Array.prototype.forEach.call(group.children, function (b) {
+          b.classList.remove('is-right', 'is-wrong', 'is-answer');
+        });
+        idx++;
+        if (idx >= items.length) {
+          ctx.stackReveal(false);
+          settle(ctx, right / items.length);   // stay locked; card is done
+          return;
+        }
+        locked = false;
+        show();
+      }, ok ? 260 : 900);
+    }
+
+    show();
+  }
 
   /* ═══════════════ match: link two columns ═══════════════ */
 
