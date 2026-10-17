@@ -73,7 +73,7 @@
     line-height: 1.45;
     color: var(--muted);
     opacity: 0;
-    transition: opacity .35s ease .34s;
+    transition: opacity .7s ease .45s;
   }
   .pv-why.is-in { opacity: 1; }
   .pv-cue {
@@ -147,9 +147,10 @@
   /* Up to this many characters the explanation shows by itself after the
      answer. Longer ones get the WHY button and the swipe-up screen. */
   var WHY_INLINE = 220;
-  /* Where the question and answer settle, as a share of the space: a
-     little above the middle, to leave the explanation room below. */
-  var SETTLE = 0.4;
+  /* Where the question and answer settle, as a share of the space:
+     well above the middle. The explanation sits apart from them, near
+     the bottom, so it reads as an aside rather than part of the answer. */
+  var SETTLE = 0.32;
   var GAP = 16;
 
   /* Every recall card, the hardest layouts first. */
@@ -199,18 +200,20 @@
 
     var block = qH + GAP + aH;
     var top = Math.max(0, R * SETTLE - block / 2);
-    /* If the explanation would run into the buttons, lift the block. If it
+    /* If the explanation would run into the answer, lift the block. If it
        still does not fit, fall back to the WHY button. */
-    if (inline && top + block + GAP + whyH > R) top = Math.max(0, R - (block + GAP + whyH));
-    if (inline && top + block + GAP + whyH > R) { inline = false; whyEl.textContent = ''; }
+    if (inline && top + block + 2 * GAP + whyH > R) top = Math.max(0, R - (block + 2 * GAP + whyH));
+    if (inline && top + block + 2 * GAP + whyH > R) { inline = false; whyEl.textContent = ''; }
     if (why && !inline) {
       var cue = document.createElement('span');
       cue.className = 'pv-cue';
       cue.textContent = '↑ WHY';
       whyEl.appendChild(cue);
+      whyH = whyEl.getBoundingClientRect().height;
     }
 
-    plan = { qStart: (R - qH) / 2, qEnd: top, aEnd: top + qH + GAP, whyTop: top + block + GAP };
+    plan = { qStart: (R - qH) / 2, qEnd: top, aEnd: top + qH + GAP,
+             whyTop: Math.max(top + block + GAP, R - whyH - GAP) };
     place(qEl, plan.qStart);
     place(aEl, plan.aEnd + 18);
     place(whyEl, plan.whyTop);
