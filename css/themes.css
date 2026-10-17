@@ -730,9 +730,11 @@
   text-decoration-thickness: 4px;
   text-underline-offset: 6px;
 }
-/* Clear of the hidden navigation bar, which still eats into the bottom
-   of the screen on some phones. */
-.card.is-keypad .card-body { padding-bottom: calc(3.75rem + env(safe-area-inset-bottom)); }
+/* Clear of the hidden navigation bar. On at least one phone running
+   fullscreen it covers about the bottom 60px while reporting the full
+   height and no inset (952px tall, inset 0), so the space is fixed
+   rather than read from the browser. */
+.card.is-keypad .card-body { padding-bottom: calc(5.25rem + env(safe-area-inset-bottom)); }
 /* The pad sets its own height; the mode area must not clip it. */
 .card.is-keypad .mode-area { max-height: none; }
 /* A custom property is not checked against the browser, so the dvh
