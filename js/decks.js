@@ -2009,9 +2009,14 @@
           a: 'Intensive lifestyle program',
           distractors: ['Metformin', 'Low-carbohydrate diet alone', 'Strength training alone'],
           why: 'In the Diabetes Prevention Program, intensive lifestyle change cut progression by 58%, nearly twice the 31% seen with metformin.' },
-        { type: 'number', q: 'Relative reduction in new diabetes with the DPP lifestyle program', value: 58, unit: '%', tolerance: 3 },
+        { type: 'number', q: 'Relative reduction in new diabetes over about 3 years with the DPP lifestyle program', value: 58, unit: '%', tolerance: 3,
+          why: 'The benefit shrinks but lasts: about a 27% reduction was still there at 15 years.' },
         { type: 'number', q: 'Weight loss goal in the DPP lifestyle program', value: 7, unit: '%' },
         { type: 'number', q: 'Weekly moderate activity goal in the DPP lifestyle program', value: 150, unit: 'min' },
+        { type: 'number', q: 'Daily calorie cut used to reach the DPP weight goal', values: [500, 1000], join: '–', unit: 'kcal' },
+        { type: 'number', q: 'Most of the weekly activity goal that can be strength training', value: 75, unit: 'min' },
+        { type: 'truefalse', q: 'A low-carbohydrate diet has evidence as strong as an intensive lifestyle program', a: false,
+          why: 'Several eating patterns help, but none on its own has the evidence of a structured program combining diet, activity and behavior change.' },
         { type: 'multi', q: 'Prediabetes patients most likely to benefit from metformin',
           answers: ['BMI 35 or higher', 'Age under 60', 'Prior gestational diabetes'],
           distractors: ['Age over 70', 'BMI under 25'],
@@ -2029,7 +2034,9 @@
         { type: 'mcq', q: 'First-line vasopressor in septic shock',
           a: 'Norepinephrine', distractors: ['Dopamine', 'Vasopressin', 'Phenylephrine'],
           why: 'Dopamine causes more arrhythmias. Vasopressin is added to norepinephrine rather than started first.' },
-        { type: 'number', q: 'Initial crystalloid for sepsis with hypotension', value: 30, unit: 'mL/kg' },
+        { type: 'number', q: 'Initial crystalloid for sepsis with hypotension', value: 30, unit: 'mL/kg',
+          why: 'Given within the first 3 hours. After that, more fluid is a patient-by-patient decision, often in 500-mL boluses while watching the response.' },
+        { type: 'number', q: 'Window for the first antibiotic dose in septic shock', value: 1, unit: 'hour' },
         { type: 'number', q: 'Mean arterial pressure target in septic shock', value: 65, unit: 'mmHg' },
         { type: 'truefalse', q: 'Norepinephrine should wait until a central line is placed', a: false,
           why: 'It can start through a good peripheral IV. Waiting for central access only delays the pressure the patient needs now.' },
@@ -2059,7 +2066,11 @@
           answers: ['Beta blocker', 'Thionamide', 'Iodine after the thionamide', 'Glucocorticoids'],
           distractors: ['Aspirin for the fever', 'Radioactive iodine'],
           why: 'Aspirin displaces thyroid hormone from its binding protein and raises the free level, so acetaminophen is used for fever.' },
-        { type: 'recall', q: 'Score used to judge whether thyrotoxicosis is thyroid storm', a: 'Burch-Wartofsky score' }
+        { type: 'recall', q: 'Score used to judge whether thyrotoxicosis is thyroid storm', a: 'Burch-Wartofsky score' },
+        { type: 'mcq', q: 'Preferred glucocorticoid in thyroid storm',
+          a: 'Hydrocortisone', distractors: ['Prednisone', 'Methylprednisolone', 'Budesonide'],
+          why: 'Hydrocortisone or dexamethasone. Besides covering relative adrenal insufficiency, they slow T4-to-T3 conversion.' },
+        { type: 'recall', q: 'Treatment kept for thyroid storm that fails drug therapy', a: 'Plasmapheresis' }
       ]
     },
 
@@ -2088,7 +2099,15 @@
         { type: 'recall', q: 'Antithyroid drug preferred in the first trimester', a: 'Propylthiouracil',
           why: 'Methimazole is linked to birth defects early in pregnancy, so the liver risk of propylthiouracil is accepted for those weeks only.' },
         { type: 'truefalse', q: 'Fever or sore throat on methimazole calls for stopping it and checking a CBC', a: true,
-          why: 'Agranulocytosis is rare but sudden, and those are its first signs.' }
+          why: 'Agranulocytosis is rare but sudden, and those are its first signs.' },
+        { type: 'match', q: 'Radioiodine uptake → cause', pairs: [
+          { left: 'Diffuse, high', right: 'Graves disease' },
+          { left: 'One hot spot', right: 'Toxic adenoma' },
+          { left: 'Several hot spots', right: 'Multinodular goiter' },
+          { left: 'Low', right: 'Thyroiditis' }
+        ] },
+        { type: 'recall', q: 'Rate control for hyperthyroidism when a beta blocker cannot be used',
+          a: 'A calcium channel blocker such as verapamil' }
       ]
     },
 
@@ -2115,7 +2134,46 @@
           { label: 'Hemodialysis', bin: 'Removes' }
         ] },
         { type: 'truefalse', q: 'U waves are a sign of hyperkalemia', a: false,
-          why: 'U waves point to hypokalemia.' }
+          why: 'U waves point to hypokalemia.' },
+        { type: 'bucket', q: 'High or low potassium on the ECG?', bins: ['High K', 'Low K'], items: [
+          { label: 'Peaked T waves', bin: 'High K' },
+          { label: 'Lost P waves', bin: 'High K' },
+          { label: 'Wide QRS', bin: 'High K' },
+          { label: 'U waves', bin: 'Low K' },
+          { label: 'Flat T waves', bin: 'Low K' },
+          { label: 'Long QT interval', bin: 'Low K' }
+        ] },
+        { type: 'recall', q: 'ECG findings in hyperkalemia that predict arrest within hours',
+          a: 'Wide QRS, bradycardia, junctional rhythm' },
+        { type: 'recall', q: 'Short PR with a delta wave points to', a: 'Wolff-Parkinson-White syndrome',
+          why: 'Delta waves have nothing to do with potassium.' }
+      ]
+    }
+,
+
+    {
+      id: 'ite-foot-fractures',
+      subject: 'FM ITE',
+      topic: 'Sports & MSK',
+      name: 'FOOT FRACTURES',
+      blurb: 'Who needs a film, and how a metatarsal shaft heals',
+      cards: [
+        { type: 'mcq', q: 'Treatment for a fifth metatarsal shaft fracture',
+          a: 'Weight-bearing boot, 3–6 weeks',
+          distractors: ['Non-weight-bearing boot', 'Short leg cast, 6 weeks', 'Orthopedic referral'],
+          why: 'A walking boot or hard-soled shoe, bearing weight as tolerated. Physical therapy is not first line.' },
+        { type: 'truefalse', q: 'A short leg cast is standard for a fifth metatarsal shaft fracture', a: false,
+          why: 'Casts are for proximal fifth metatarsal and tarsal fractures. The shaft does well weight-bearing in a boot.' },
+        { type: 'recall', q: 'When a metatarsal shaft fracture goes to orthopedics',
+          a: 'Needs reduction, or no union by 6 months' },
+        { type: 'multi', q: 'Findings that call for a foot x-ray under the Ottawa foot rules',
+          answers: ['Tender base of fifth metatarsal', 'Tender navicular', 'Cannot take 4 steps'],
+          distractors: ['Bruising over the forefoot', 'Swelling at the ankle'],
+          why: 'Bone tenderness at those two points, or being unable to bear weight for 4 steps both right after the injury and in the office.' },
+        { type: 'truefalse', q: 'Ankle films are indicated for tenderness at the posterior edge or tip of either malleolus', a: true,
+          why: 'That is the ankle half of the Ottawa rules; the foot half is the fifth metatarsal base and the navicular.' },
+        { type: 'recall', q: 'X-ray to order when a foot or ankle fracture is suspected', a: 'Weight-bearing views' },
+        { type: 'number', q: 'Share of adult lower extremity fractures that are in the foot', value: 33, unit: '%', tolerance: 5 }
       ]
     }
   ];
