@@ -31,19 +31,6 @@
   to   { opacity: 1; transform: none; }
 }
 
-@keyframes choice-pop {
-  0%   { transform: scale(1); }
-  45%  { transform: scale(1.04); }
-  100% { transform: scale(1); }
-}
-/* Small and quick: two short swings that settle, not a wobble. */
-@keyframes choice-shake {
-  0%, 100% { transform: translateX(0); }
-  25%      { transform: translateX(-5px); }
-  55%      { transform: translateX(4px); }
-  80%      { transform: translateX(-2px); }
-}
-
 /* ── Chrome ──────────────────────────────────────────────── */
 @keyframes streak-pop {
   0%   { transform: scale(1); }

@@ -184,7 +184,8 @@
   display: flex;
   align-items: center;
   gap: .65rem;
-  padding: 1rem .9rem;
+  padding: 1.1rem 1.1rem;
+  min-height: 64px;
   border-radius: 16px;
   border: 2px solid var(--line);
   border-bottom-width: 4px;
@@ -192,7 +193,7 @@
   color: var(--ink);
   font-family: var(--body-face);
   font-weight: 700;
-  font-size: 1.1rem;
+  font-size: 1.15rem;
   text-align: left;
   animation: choice-in .24s cubic-bezier(.22,1,.36,1) backwards;
   animation-delay: calc(var(--i) * 65ms);
@@ -217,16 +218,18 @@
 .choice-grid.is-locked .choice-btn { pointer-events: none; }
 /* No scale-up: the fill already carries it, and on a full-width option the
    growth is invisible everywhere except the container it overflows. */
-.choice-btn.is-right { background: #D7FFB8; border-color: var(--ok); color: var(--ok-dark); }
-.choice-btn.is-right .choice-key { border-color: var(--ok); color: var(--ok-dark); }
-.choice-btn.is-wrong { background: #FFDFE0; border-color: var(--bad); color: var(--bad-dark); }
-.choice-btn.is-wrong .choice-key { border-color: var(--bad); color: var(--bad-dark); }
+.choice-btn.is-right { background: var(--ok); border-color: var(--ok-dark); color: #fff; }
+.choice-btn.is-right .choice-key { border-color: #fff; color: #fff; }
+.choice-btn.is-wrong { background: var(--bad); border-color: var(--bad-dark); color: #fff; }
+.choice-btn.is-wrong .choice-key { border-color: #fff; color: #fff; }
 
-/* Pick one: a small pop when right; a short shake when wrong, then the
-   right answer pops a beat later. The rest step back. */
-.is-single .choice-btn.is-right { animation: choice-pop .3s cubic-bezier(.3, 1.5, .5, 1) both; }
-.is-single .choice-btn.is-truth { animation-delay: .2s; }
-.is-single .choice-btn.is-wrong { animation: choice-shake .3s ease both; }
+/* Pick one. Nothing moves except the press: the button sinks, comes
+   back up, and its color settles in place. On a miss your pick turns
+   red at once and the right answer fills a beat later. The rest step
+   back. Motion stays inside each button's own outline, since the
+   option list is clipped at its edges. */
+.is-single .choice-btn { transition: transform .07s ease, background-color .28s ease, border-color .28s ease, color .28s ease, opacity .3s ease; }
+.is-single .choice-btn.is-truth { transition-delay: 0s, .35s, .35s, .35s, 0s; }
 .is-single.is-locked .choice-btn:not(.is-right):not(.is-wrong) { opacity: .45; }
 
 /* ── Select all that apply ───────────────────────────────────
@@ -475,8 +478,8 @@
 .card[data-swipe="right"] .tf-true { border-color: var(--sel); color: var(--sel); }
 .card[data-armed="left"]  .tf-false,
 .card[data-armed="right"] .tf-true { background: var(--sel); border-color: #1899D6; color: #fff; }
-.tf-side.is-right { background: #D7FFB8; border-color: var(--ok); color: var(--ok-dark); }
-.tf-side.is-wrong { background: #FFDFE0; border-color: var(--bad); color: var(--bad-dark); }
+.tf-side.is-right { background: var(--ok); border-color: var(--ok-dark); color: #fff; }
+.tf-side.is-wrong { background: var(--bad); border-color: var(--bad-dark); color: #fff; }
 
 /* `.why` itself is defined once, in the Explanation section above. */
 
@@ -542,7 +545,7 @@
 /* After submitting. The true direction fills on every row so the card
    reads as the pattern; a wrong pick is marked but stays secondary. */
 .dir-btn.is-truth { background: var(--ok); color: #fff; border-color: var(--ok-dark); }
-.dir-btn.is-miss { background: #FFDFE0; border-color: var(--bad); color: var(--bad); }
+.dir-btn.is-miss { background: var(--bad); border-color: var(--bad-dark); color: #fff; }
 .trend-row.is-right { border-color: var(--ok); }
 .trend-row.is-wrong { border-color: var(--bad); }
 
@@ -586,9 +589,9 @@
 .sort-item[data-side="right"] { align-self: flex-end; text-align: right; }
 /* Landed on its true side, but that isn't where the user sent it. */
 .sort-item.is-wrong {
-  background: #FFDFE0;
-  border-color: var(--bad);
-  color: var(--bad-dark);
+  background: var(--bad);
+  border-color: var(--bad-dark);
+  color: #fff;
 }
 
 /* Only the item moves during a sort; the card underneath holds still. */
@@ -615,8 +618,8 @@
   transition: transform .12s ease, background-color .18s, color .18s, opacity .18s;
 }
 .bin-btn:active { transform: scale(.96); }
-.bin-btn.is-right { background: #D7FFB8; border-color: var(--ok); color: var(--ok-dark); }
-.bin-btn.is-wrong { background: #FFDFE0; border-color: var(--bad); color: var(--bad-dark); }
+.bin-btn.is-right { background: var(--ok); border-color: var(--ok-dark); color: #fff; }
+.bin-btn.is-wrong { background: var(--bad); border-color: var(--bad-dark); color: #fff; }
 .bin-btn.is-answer { border-color: var(--ok); color: var(--ok-dark); }
 
 /* ── Order ───────────────────────────────────────────────── */
@@ -651,7 +654,8 @@
   text-align: left;
 }
 .order-slot.is-filled { border-style: solid; border-color: var(--line); }
-.order-slot.is-right { border-color: var(--ok); background: #D7FFB8; }
+.order-slot.is-right { border-color: var(--ok-dark); background: var(--ok); color: #fff; }
+.order-slot.is-right .order-text { color: #fff; }
 /* The slot holds the true step either way, so the text stays ink and only
    the frame says you had this one in the wrong place. Colouring the text
    accent made the correct answer look like the mistake. */
@@ -701,12 +705,12 @@
 }
 .match-btn.is-sel { background: var(--sel-bg); border-color: var(--sel); color: #1899D6; }
 .match-btn.is-solved {
-  background: #D7FFB8;
-  color: var(--ok-dark);
-  border-color: var(--ok);
+  background: var(--ok);
+  color: #fff;
+  border-color: var(--ok-dark);
   pointer-events: none;
 }
-.match-btn.is-miss { background: #FFDFE0; border-color: var(--bad); color: var(--bad-dark); }
+.match-btn.is-miss { background: var(--bad); border-color: var(--bad-dark); color: #fff; }
 /* Solved, but not first time. An inset ring in the card's own ground cuts
    into the accent fill, which an accent outline could not. */
 .match-btn.is-fumbled { border-style: dashed; }
