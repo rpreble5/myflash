@@ -31,7 +31,7 @@
   var FIELDS = {
     common:    ['type', 'q', 'why', 'ref'],
     recall:    ['a'],
-    mcq:       ['a', 'distractors'],
+    mcq:       ['a', 'distractors', 'stem'],
     multi:     ['answers', 'distractors'],
     truefalse: ['a'],
     number:    ['value', 'low', 'high', 'values', 'join', 'unit', 'tolerance', 'step', 'min', 'max'],
@@ -212,7 +212,15 @@
     if (c.distractors.length > 4) r.warn(w, c.distractors.length +
       ' distractors is a lot to read on a phone.', 'Three is the sweet spot.');
 
-    longText(r, w, [c.a].concat(c.distractors), OPTION_MAX, 'Option');
+    /* A vignette (a card with a scenario) reads as a page, so its
+       options may run as long as a sentence. */
+    if (c.stem != null) {
+      if (!isStr(c.stem)) r.err(w, '"stem" is not text.', 'The scenario goes in "stem" as one string.');
+      else if (c.stem.length > 1200) r.warn(w, 'Scenario is ' + c.stem.length + ' characters.', 'Under about 900 reads well on a phone.');
+      longText(r, w, [c.a].concat(c.distractors), 90, 'Option');
+    } else {
+      longText(r, w, [c.a].concat(c.distractors), OPTION_MAX, 'Option');
+    }
   };
 
   CHECK.multi = function (r, w, c) {

@@ -32,6 +32,7 @@ behaviour — content drives the format.
 |---|---|---|
 | `recall` | `{ q, a, why? }` | tap anywhere to reveal, then swipe to grade |
 | `mcq` | `{ q, a, distractors[] }` | tap one; grid or list, decided by option length |
+| `mcq` + `stem` | `{ stem, q, a, distractors[], why? }` | a vignette: the scenario reads as a scrolling page above the options |
 | `multi` | `{ q, answers[], distractors[], why? }` | select all that apply, swipe right to submit |
 | `truefalse` | `{ q, a:bool, why? }` | swipe left for false, right for true |
 | `number` | `{ q, value, unit, tolerance, step? }` | type it on the keypad (or dial it, with the slider setting) |
@@ -209,6 +210,15 @@ comes around again in the same session. A card counts as resolved once
 answered correctly, and the HUD tracks resolved-vs-deck. Per-card stats
 persist in `localStorage`; three correct answers in a row marks a card
 learned, which is what the deck meters on the home screen show.
+
+## Subjects and articles
+
+Every deck belongs to a `subject` (the built-in ones to "Family Medicine"),
+and the home screen shows one subject at a time; tap its name to switch.
+Inside a subject, decks group by `topic` as before. An article is a topic:
+its sections are ordinary decks, plus optionally one deck with
+`kind: "questions"` holding vignettes, which unlocks once every flashcard
+in the topic has been answered right at least once.
 
 ## Custom decks
 

@@ -43,6 +43,8 @@
   var DEFAULTS = {
     submitOnRelease: false,
     numberSlider: false,
+    /* The subject the home screen shows; null means the first one. */
+    subject: null,
     sound: true,
     haptics: true
   };
@@ -218,18 +220,69 @@
      decks' means. Averaging averages lets a five-card deck drag a topic
      down as hard as a hundred-card one, and produces the classic result
      where every deck improves and the total falls. */
-  function topics() {
+  /* ── Subjects ─────────────────────────────────────────────
+     The top level: separate bodies of material, studied apart. A deck
+     names its subject; the built-in decks, and anything older that
+     names none, belong to the default one. */
+  var DEFAULT_SUBJECT = 'Family Medicine';
+
+  function subjectOf(deck) { return deck.subject || DEFAULT_SUBJECT; }
+
+  function subjects() {
+    var seen = {}, out = [];
+    allDecks().forEach(function (deck) {
+      var name = subjectOf(deck);
+      if (!seen[name]) { seen[name] = { name: name, topics: {}, cards: 0 }; out.push(seen[name]); }
+      seen[name].topics[deck.topic || 'Other'] = true;
+      seen[name].cards += deck.cards.length;
+    });
+    return out.map(function (s) {
+      return { name: s.name, topics: Object.keys(s.topics).length, cards: s.cards };
+    });
+  }
+
+  function currentSubject() {
+    var all = subjects();
+    var want = setting('subject');
+    var hit = all.filter(function (s) { return s.name === want; })[0];
+    return (hit || all[0] || { name: DEFAULT_SUBJECT }).name;
+  }
+
+  /* ── Question decks ───────────────────────────────────────
+     A deck with kind "questions" holds the longer, vignette-style
+     questions for its topic. It opens once every flashcard in the
+     topic's other decks has been answered right at least once. */
+  function isQuestions(deck) { return deck.kind === 'questions'; }
+
+  function learnedCount(decks) {
+    var all = stats(), learned = 0, total = 0;
+    decks.forEach(function (deck) {
+      deck.cards.forEach(function (_, i) {
+        total++;
+        var e = all[deck.id + ':' + i];
+        if (e && e.right > 0) learned++;
+      });
+    });
+    return { learned: learned, total: total };
+  }
+
+  function topics(subject) {
     var groups = {}, order = [];
+    var want = subject || currentSubject();
 
     allDecks().forEach(function (deck) {
+      if (subjectOf(deck) !== want) return;
       var name = deck.topic || 'Other';
-      if (!groups[name]) { groups[name] = { name: name, decks: [] }; order.push(name); }
-      groups[name].decks.push(deck);
+      if (!groups[name]) { groups[name] = { name: name, decks: [], questions: [] }; order.push(name); }
+      (isQuestions(deck) ? groups[name].questions : groups[name].decks).push(deck);
     });
 
     var out = order.map(function (name) {
       var g = groups[name];
       var cards = 0, sum = 0, weak = 0, started = 0;
+
+      g.questions.forEach(function (deck) { deck._strength = deckStrength(deck); });
+      var gate = learnedCount(g.decks);
 
       g.decks.forEach(function (deck) {
         var d = deckStrength(deck);
@@ -245,6 +298,11 @@
       return {
         name: name,
         decks: g.decks,
+        questions: g.questions,
+        /* Open when there are no flashcards to finish first. */
+        unlocked: gate.learned >= gate.total,
+        learned: gate.learned,
+        flashcards: gate.total,
         strength: cards ? sum / cards : 0,
         weak: weak,
         cards: cards,
@@ -288,6 +346,9 @@
     setting: setting,
     setSetting: setSetting,
     SETTING_DEFAULTS: DEFAULTS,
+    subjects: subjects,
+    currentSubject: currentSubject,
+    subjectOf: subjectOf,
     customDecks: customDecks,
     saveDeck: saveDeck,
     deleteDeck: deleteDeck,

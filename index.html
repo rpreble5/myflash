@@ -11,9 +11,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/base.css?v=52">
-<link rel="stylesheet" href="css/themes.css?v=52">
-<link rel="stylesheet" href="css/animations.css?v=52">
+<link rel="stylesheet" href="css/base.css?v=53">
+<link rel="stylesheet" href="css/themes.css?v=53">
+<link rel="stylesheet" href="css/animations.css?v=53">
 </head>
 <body>
 
@@ -26,7 +26,11 @@
       <h1 class="wordmark">
         <span class="wordmark-a">my</span><span class="wordmark-b">flash</span>
       </h1>
-      <p class="tagline">Family medicine board prep</p>
+      <!-- Which subject the list below shows; tapping it opens the list
+           of subjects to switch between. -->
+      <button class="subject-switch" id="btn-subject" aria-haspopup="true">
+        <span id="subject-name">Family Medicine</span><span class="subject-caret" aria-hidden="true">▾</span>
+      </button>
 
       <div class="deck-list" id="deck-list"></div>
     </div>
@@ -121,11 +125,11 @@
 
 </div>
 
-<script src="js/audio.js?v=52"></script>
-<script src="js/decks.js?v=52"></script>
-<script src="js/store.js?v=52"></script>
-<script src="js/text.js?v=52"></script>
-<script src="js/modes.js?v=52"></script>
-<script src="js/app.js?v=52"></script>
+<script src="js/audio.js?v=53"></script>
+<script src="js/decks.js?v=53"></script>
+<script src="js/store.js?v=53"></script>
+<script src="js/text.js?v=53"></script>
+<script src="js/modes.js?v=53"></script>
+<script src="js/app.js?v=53"></script>
 </body>
 </html>

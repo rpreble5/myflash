@@ -270,8 +270,11 @@
          once you have picked. An mcq explanation usually says why the
          other three are wrong, which is worth more here than anywhere. */
       var why = ctx.card.why;
+      /* A vignette scrolls, so its explanation is always shown in full
+         under the question rather than behind the WHY button. */
+      var whyMax = ctx.card.stem ? Infinity : STACK_WHY_INLINE;
       ctx.stack('', why ? function (fits) {
-        var w = explanation(why, ctx, fits ? STACK_WHY_INLINE : 0);
+        var w = explanation(why, ctx, fits ? whyMax : 0);
         w.classList.add('is-held');
         return w;
       } : null);

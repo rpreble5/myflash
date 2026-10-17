@@ -67,6 +67,7 @@
     list.textContent = '';
     list.classList.toggle('is-entering', !homeShown);
     homeShown = true;
+    $('#subject-name').textContent = global.Store.currentSubject();
 
     global.Store.topics().forEach(function (topic, ti) {
       var group = h('div', 'topic');
@@ -143,6 +144,34 @@
         inner.appendChild(row);
       });
 
+      /* An article's longer questions, held back until its flashcards
+         have each been answered right once. */
+      topic.questions.forEach(function (deck, qi) {
+        var row = h('button', 'deck-row deck-questions');
+        row.style.setProperty('--i', topic.decks.length + qi + 2);
+        row.appendChild(h('span', 'deck-name', deck.name));
+        if (topic.unlocked) {
+          var d = deck._strength;
+          row.appendChild(h('span', 'deck-line', d.started
+            ? d.weak + ' of ' + d.total + ' weak'
+            : d.total + ' questions · not started'));
+          row.appendChild(meter(d.strength));
+          pressable(row);
+          row.addEventListener('click', function (e) {
+            e.stopPropagation();
+            startSession([deck]);
+          });
+        } else {
+          row.classList.add('is-locked');
+          row.disabled = true;
+          row.appendChild(h('span', 'deck-line',
+            'Unlocks when every flashcard is answered right once · ' +
+            topic.learned + ' of ' + topic.flashcards));
+          row.appendChild(meter(topic.flashcards ? topic.learned / topic.flashcards : 0));
+        }
+        inner.appendChild(row);
+      });
+
       pressable(head, group);
       head.addEventListener('click', function () {
         var open = group.classList.toggle('is-open');
@@ -153,6 +182,44 @@
       group.appendChild(body);
       list.appendChild(group);
     });
+  }
+
+  /* ──────────────────── subjects ───────────────────── */
+  /* A sheet over the home screen listing every subject; picking one
+     switches the list underneath. */
+  function openSubjects() {
+    if ($('.sheet')) return;
+    var current = global.Store.currentSubject();
+    var sheet = h('div', 'sheet');
+    var panel = h('div', 'sheet-panel');
+    panel.appendChild(h('p', 'sheet-title', 'Subjects'));
+    global.Store.subjects().forEach(function (sub) {
+      var b = h('button', 'sheet-row' + (sub.name === current ? ' is-current' : ''));
+      b.appendChild(h('span', 'sheet-name', sub.name));
+      b.appendChild(h('span', 'sheet-line',
+        sub.topics + (sub.topics === 1 ? ' topic' : ' topics') + ' · ' + sub.cards + ' cards'));
+      pressable(b);
+      b.addEventListener('click', function (e) {
+        e.stopPropagation();
+        global.Store.setSetting('subject', sub.name);
+        closeSubjects();
+        homeShown = false;               // a new list arrives the same way the first did
+        renderHome();
+      });
+      panel.appendChild(b);
+    });
+    sheet.appendChild(panel);
+    sheet.addEventListener('click', closeSubjects);
+    panel.addEventListener('click', function (e) { e.stopPropagation(); });
+    $('#screen-home').appendChild(sheet);
+    requestAnimationFrame(function () { sheet.classList.add('is-in'); });
+  }
+
+  function closeSubjects() {
+    var sheet = $('.sheet');
+    if (!sheet) return;
+    sheet.classList.remove('is-in');
+    setTimeout(function () { if (sheet.parentNode) sheet.remove(); }, reduceMotion ? 0 : 220);
   }
 
   /* What the phone says about its screen, to diagnose layouts that get
@@ -444,6 +511,9 @@
     function place(node, y) { node.style.transform = 'translateY(' + Math.round(y) + 'px)'; }
 
     function layoutStack() {
+      /* A vignette is read top to bottom and scrolls, so nothing is
+         placed: the CSS lays it out as ordinary text. */
+      if (stack.flow) { qEl.style.fontSize = ''; return; }
       var R = flipper.clientHeight, GAP = STACK_GAP;
       /* Under a typed number the correct one matches it in size. */
       stack.answer.style.fontSize = (stack.entry
@@ -658,10 +728,17 @@
          explanation: inline when `fits`, the WHY button otherwise. */
       stack: function (answerText, makeWhy, entry) {
         el.classList.add('is-stack');
+        /* A card with a scenario (`stem`) is a vignette: the scenario
+           and question read as a scrolling page above the options. */
+        var flow = !!card.stem;
+        if (flow) {
+          el.classList.add('is-flow');
+          front.insertBefore(h('p', 'q-stem', card.stem), qEl);
+        }
         var node = h('div', 'q a-face stack-answer', answerText);
         front.appendChild(node);
         if (entry) front.appendChild(entry);
-        stack = { answer: node, entry: entry || null, makeWhy: makeWhy, why: null, cue: false, shown: false };
+        stack = { answer: node, entry: entry || null, makeWhy: makeWhy, why: null, cue: false, shown: false, flow: flow };
         /* Built now rather than at layout, so the fallback below that adds
            a missing explanation sees this one and does not add a second. */
         if (makeWhy) setWhy(makeWhy(true));
@@ -1075,6 +1152,8 @@
       show('screen-settings');
     });
 
+    $('#btn-subject').addEventListener('click', openSubjects);
+    pressable($('#btn-subject'));
     $('#btn-settings-back').addEventListener('click', function () { show('screen-home'); renderHome(); });
     $('#btn-quit').addEventListener('click', function () { show('screen-home'); renderHome(); });
     $('#btn-home').addEventListener('click', function () { show('screen-home'); });
