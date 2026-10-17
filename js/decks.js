@@ -1966,6 +1966,157 @@
           distractors: ['Only during menstruation', 'Only after a negative scan', 'Only in the luteal phase'],
           why: 'Restricting insertion to menstruation is a barrier with no basis. Reasonable certainty that a woman is not pregnant is what permits same-day placement, and most women meet it.' }
       ]
+    },
+
+    /* ═══════════════ FM ITE ═══════════════
+       One deck per concept the In-Training Exam tests, written in our
+       own words from the concept rather than from the exam's text. */
+
+    {
+      id: 'ite-qi',
+      subject: 'FM ITE',
+      topic: 'Practice & QI',
+      name: 'QUALITY IMPROVEMENT',
+      blurb: 'Where a QI project starts, and what actually moves rates',
+      cards: [
+        { type: 'mcq', q: 'First step in a quality improvement project',
+          a: 'Find out why the gap exists',
+          distractors: ['Send patients reminders', 'Remind clinicians of guidelines', 'Start chart review and outreach'],
+          why: 'An intervention chosen before the cause is known often targets the wrong barrier. QI starts by measuring the gap and finding out why it exists.' },
+        { type: 'recall', q: 'The four steps of the PDSA cycle', a: 'Plan, Do, Study, Act',
+          why: 'Small, quick tests of change, each one shaping the next plan, rather than one large rollout.' },
+        { type: 'recall', q: 'Diagram that sorts the causes of a quality problem into categories',
+          a: 'Fishbone (Ishikawa) diagram' },
+        { type: 'truefalse', q: 'Posters and general reminders are among the most effective ways to raise screening rates', a: false,
+          why: 'Passive education has the weakest effect. System changes such as registries, outreach to overdue patients, and standing orders do better.' },
+        { type: 'bucket', q: 'Process or outcome measure?', bins: ['Process', 'Outcome'], items: [
+          { label: 'Screening rate among eligible', bin: 'Process' },
+          { label: 'Cervical cancer deaths', bin: 'Outcome' },
+          { label: 'Time to colposcopy', bin: 'Process' },
+          { label: 'Cancer stage at diagnosis', bin: 'Outcome' }
+        ] }
+      ]
+    },
+
+    {
+      id: 'ite-prediabetes',
+      subject: 'FM ITE',
+      topic: 'Endocrine',
+      name: 'PREDIABETES',
+      blurb: 'What prevents diabetes, and by how much',
+      cards: [
+        { type: 'mcq', q: 'Most effective way to prevent prediabetes progressing to diabetes',
+          a: 'Intensive lifestyle program',
+          distractors: ['Metformin', 'Low-carbohydrate diet alone', 'Strength training alone'],
+          why: 'In the Diabetes Prevention Program, intensive lifestyle change cut progression by 58%, nearly twice the 31% seen with metformin.' },
+        { type: 'number', q: 'Relative reduction in new diabetes with the DPP lifestyle program', value: 58, unit: '%', tolerance: 3 },
+        { type: 'number', q: 'Weight loss goal in the DPP lifestyle program', value: 7, unit: '%' },
+        { type: 'number', q: 'Weekly moderate activity goal in the DPP lifestyle program', value: 150, unit: 'min' },
+        { type: 'multi', q: 'Prediabetes patients most likely to benefit from metformin',
+          answers: ['BMI 35 or higher', 'Age under 60', 'Prior gestational diabetes'],
+          distractors: ['Age over 70', 'BMI under 25'],
+          why: 'These were the groups in which metformin worked about as well as lifestyle change in the DPP.' }
+      ]
+    },
+
+    {
+      id: 'ite-septic-shock',
+      subject: 'FM ITE',
+      topic: 'Critical Care',
+      name: 'SEPTIC SHOCK',
+      blurb: 'Fluids, the pressure target, and the first pressor',
+      cards: [
+        { type: 'mcq', q: 'First-line vasopressor in septic shock',
+          a: 'Norepinephrine', distractors: ['Dopamine', 'Vasopressin', 'Phenylephrine'],
+          why: 'Dopamine causes more arrhythmias. Vasopressin is added to norepinephrine rather than started first.' },
+        { type: 'number', q: 'Initial crystalloid for sepsis with hypotension', value: 30, unit: 'mL/kg' },
+        { type: 'number', q: 'Mean arterial pressure target in septic shock', value: 65, unit: 'mmHg' },
+        { type: 'truefalse', q: 'Norepinephrine should wait until a central line is placed', a: false,
+          why: 'It can start through a good peripheral IV. Waiting for central access only delays the pressure the patient needs now.' },
+        { type: 'recall', q: 'Vasopressor added when norepinephrine alone is not enough', a: 'Vasopressin' },
+        { type: 'number', q: 'Lactate above which, with pressors needed for a MAP of 65, sepsis is septic shock',
+          value: 2, unit: 'mmol/L' }
+      ]
+    },
+
+    {
+      id: 'ite-thyroid-storm',
+      subject: 'FM ITE',
+      topic: 'Endocrine',
+      name: 'THYROID STORM',
+      blurb: 'What goes first, and why the order matters',
+      cards: [
+        { type: 'mcq', q: 'First antithyroid step in thyroid storm, ahead of iodine',
+          a: 'Propylthiouracil', distractors: ['Inorganic iodine', 'Prednisone', 'Plasmapheresis'],
+          why: 'A thionamide has to block hormone synthesis first. Iodine given before that can feed new hormone production.' },
+        { type: 'number', q: 'Minimum wait after the thionamide before giving iodine', value: 1, unit: 'hour' },
+        { type: 'recall', q: 'Why propylthiouracil is preferred over methimazole in thyroid storm',
+          a: 'It also blocks T4-to-T3 conversion',
+          why: 'Outside a storm and early pregnancy, methimazole is preferred because propylthiouracil carries a risk of liver failure.' },
+        { type: 'recall', q: 'Beta blocker classically used in thyroid storm', a: 'Propranolol',
+          why: 'Nonselective, and at high doses it also slows T4-to-T3 conversion.' },
+        { type: 'multi', q: 'Standard treatments for thyroid storm',
+          answers: ['Beta blocker', 'Thionamide', 'Iodine after the thionamide', 'Glucocorticoids'],
+          distractors: ['Aspirin for the fever', 'Radioactive iodine'],
+          why: 'Aspirin displaces thyroid hormone from its binding protein and raises the free level, so acetaminophen is used for fever.' },
+        { type: 'recall', q: 'Score used to judge whether thyrotoxicosis is thyroid storm', a: 'Burch-Wartofsky score' }
+      ]
+    },
+
+    {
+      id: 'ite-graves',
+      subject: 'FM ITE',
+      topic: 'Endocrine',
+      name: 'GRAVES DISEASE',
+      blurb: 'Telling it apart from thyroiditis, and treating it',
+      cards: [
+        { type: 'mcq', q: 'Drug of choice for Graves disease outside the first trimester',
+          a: 'Methimazole', distractors: ['Propylthiouracil', 'Levothyroxine', 'Prednisone'] },
+        { type: 'trend', q: 'Untreated Graves disease', items: [
+          { label: 'TSH', dir: 'down' },
+          { label: 'Free T4', dir: 'up' },
+          { label: 'Radioiodine uptake', dir: 'up' }
+        ] },
+        { type: 'bucket', q: 'Graves disease or thyroiditis?', bins: ['Graves', 'Thyroiditis'], items: [
+          { label: 'High, diffuse iodine uptake', bin: 'Graves' },
+          { label: 'Low iodine uptake', bin: 'Thyroiditis' },
+          { label: 'Exophthalmos', bin: 'Graves' },
+          { label: 'Tender gland after a virus', bin: 'Thyroiditis' },
+          { label: 'TSH receptor antibodies', bin: 'Graves' },
+          { label: 'Settles without thionamides', bin: 'Thyroiditis' }
+        ] },
+        { type: 'recall', q: 'Antithyroid drug preferred in the first trimester', a: 'Propylthiouracil',
+          why: 'Methimazole is linked to birth defects early in pregnancy, so the liver risk of propylthiouracil is accepted for those weeks only.' },
+        { type: 'truefalse', q: 'Fever or sore throat on methimazole calls for stopping it and checking a CBC', a: true,
+          why: 'Agranulocytosis is rare but sudden, and those are its first signs.' }
+      ]
+    },
+
+    {
+      id: 'ite-hyperkalemia',
+      subject: 'FM ITE',
+      topic: 'Electrolytes',
+      name: 'HYPERKALEMIA',
+      blurb: 'Reading the ECG and what to give first',
+      cards: [
+        { type: 'mcq', q: 'Earliest ECG sign of hyperkalemia',
+          a: 'Peaked T waves', distractors: ['U waves', 'Delta waves', 'Prolonged QT interval'] },
+        { type: 'recall', q: 'ECG change beyond peaked T waves that signals worsening hyperkalemia',
+          a: 'A widened QRS',
+          why: 'As potassium rises the P wave flattens and the QRS widens, heading toward a sine wave and arrest.' },
+        { type: 'mcq', q: 'First drug for hyperkalemia with ECG changes',
+          a: 'IV calcium', distractors: ['Insulin with glucose', 'Albuterol', 'Patiromer'],
+          why: 'Calcium steadies the heart within minutes but does not lower potassium. Shifting and removal come next.' },
+        { type: 'bucket', q: 'Shifts potassium into cells, or removes it?', bins: ['Shifts in', 'Removes'], items: [
+          { label: 'Insulin with glucose', bin: 'Shifts in' },
+          { label: 'Albuterol', bin: 'Shifts in' },
+          { label: 'Loop diuretic', bin: 'Removes' },
+          { label: 'Patiromer', bin: 'Removes' },
+          { label: 'Hemodialysis', bin: 'Removes' }
+        ] },
+        { type: 'truefalse', q: 'U waves are a sign of hyperkalemia', a: false,
+          why: 'U waves point to hypokalemia.' }
+      ]
     }
   ];
 
