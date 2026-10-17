@@ -1,5 +1,5 @@
-/* audio.js — tiny WebAudio synth. No files to load, no licensing,
-   ~30 lines. Muted until the first user gesture (browser policy). */
+/* audio.js — WebAudio: a tiny synth for most sounds, plus a few short
+   recorded clips. Muted until the first user gesture (browser policy). */
 
 (function (global) {
   'use strict';
@@ -40,6 +40,45 @@
     osc.stop(t0 + dur + 0.02);
   }
 
+  /* Recorded clips. Fetched and decoded on the first touch, since the
+     audio context cannot start before one. Until a clip is ready — or if
+     it never loads — the synth version plays instead. */
+  var CLIPS = { wrong: 'assets/sfx/wrong.mp3' };
+  var buffers = {};
+  var loading = false;
+
+  function loadClips() {
+    if (loading || !global.fetch) return;
+    loading = true;
+    var c = ac();
+    if (!c) return;
+    Object.keys(CLIPS).forEach(function (name) {
+      fetch(CLIPS[name])
+        .then(function (r) { return r.arrayBuffer(); })
+        .then(function (data) {
+          /* The callback form, for Safari versions without the promise. */
+          c.decodeAudioData(data, function (buf) { buffers[name] = buf; }, function () {});
+        })
+        .catch(function () { /* offline or missing: the synth covers it */ });
+    });
+  }
+  global.addEventListener('pointerdown', loadClips, { once: true });
+
+  /* Returns false when the clip is not ready, so the caller can fall back. */
+  function clip(name, gain) {
+    if (!enabled) return true;
+    var c = ac();
+    var buf = buffers[name];
+    if (!c || !buf) return false;
+    var src = c.createBufferSource();
+    var amp = c.createGain();
+    src.buffer = buf;
+    amp.gain.value = gain;
+    src.connect(amp).connect(c.destination);
+    src.start();
+    return true;
+  }
+
   function buzz(ms) {
     if (!haptics) return;
     if (global.navigator && navigator.vibrate) navigator.vibrate(ms);
@@ -62,10 +101,12 @@
       blip(560, 560, 0.11,  'triangle', 0.05, 0.075);
       buzz(10);
     },
-    /* Shorter and flatter than it was. The old 220ms plummet with a
-       triple buzz was covering a wait — the card used to sweep away on a
-       timer. Nothing is waiting now; the card just sits there. */
-    wrong:   function () { blip(200, 120, 0.13, 'sawtooth', 0.05); buzz(20); },
+    /* A recorded clip, played well under full volume: it peaks near
+       0 dB while the synth sounds sit around -25. */
+    wrong:   function () {
+      if (!clip('wrong', 0.35)) blip(200, 120, 0.13, 'sawtooth', 0.05);
+      buzz(20);
+    },
     /* Transport, not verdict: you moved the session on. Flat pitch and
        the quietest thing in the app apart from a tick, because it is
        confirming input rather than judging it. */
