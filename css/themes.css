@@ -184,25 +184,25 @@
   display: flex;
   align-items: center;
   gap: .65rem;
-  padding: 1.1rem 1.1rem;
-  min-height: 64px;
-  border-radius: 16px;
-  border: 2px solid var(--line);
-  border-bottom-width: 4px;
+  padding: 1rem .9rem;
+  border-radius: 18px;
+  /* Chunky: a heavy outline and a deep bottom edge to press into. */
+  border: 3px solid var(--line);
+  border-bottom-width: 7px;
   background: var(--bg);
   color: var(--ink);
   font-family: var(--body-face);
   font-weight: 700;
-  font-size: 1.15rem;
+  font-size: 1.1rem;
   text-align: left;
   animation: choice-in .24s cubic-bezier(.22,1,.36,1) backwards;
   animation-delay: calc(var(--i) * 65ms);
   transition: transform .12s ease, background-color .18s, color .18s, opacity .18s;
 }
 .choice-btn { transition: transform .07s ease, background-color .18s, border-color .18s, color .18s, opacity .25s ease; }
-/* Sinks into its bottom edge. The margin gives back the 2px the border
+/* Sinks into its bottom edge. The margin gives back the 4px the border
    loses, so nothing around it moves. */
-.choice-btn.is-pressed { transform: translateY(2px); border-bottom-width: 2px; margin-top: 2px; background: var(--soft); }
+.choice-btn.is-pressed { border-bottom-width: 3px; margin-top: 4px; background: var(--soft); }
 /* Select-all options are divs so a submit swipe can start on them. */
 .choice-btn[role="button"] { cursor: pointer; }
 .choice-key {
