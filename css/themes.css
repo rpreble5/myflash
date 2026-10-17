@@ -198,7 +198,10 @@
   animation-delay: calc(var(--i) * 65ms);
   transition: transform .12s ease, background-color .18s, color .18s, opacity .18s;
 }
-.choice-btn:active { transform: scale(.97); }
+.choice-btn { transition: transform .07s ease, background-color .18s, border-color .18s, color .18s, opacity .25s ease; }
+/* Sinks into its bottom edge. The margin gives back the 2px the border
+   loses, so nothing around it moves. */
+.choice-btn.is-pressed { transform: translateY(2px); border-bottom-width: 2px; margin-top: 2px; background: var(--soft); }
 /* Select-all options are divs so a submit swipe can start on them. */
 .choice-btn[role="button"] { cursor: pointer; }
 .choice-key {
@@ -218,6 +221,13 @@
 .choice-btn.is-right .choice-key { border-color: var(--ok); color: var(--ok-dark); }
 .choice-btn.is-wrong { background: #FFDFE0; border-color: var(--bad); color: var(--bad-dark); }
 .choice-btn.is-wrong .choice-key { border-color: var(--bad); color: var(--bad-dark); }
+
+/* Pick one: a small pop when right; a short shake when wrong, then the
+   right answer pops a beat later. The rest step back. */
+.is-single .choice-btn.is-right { animation: choice-pop .3s cubic-bezier(.3, 1.5, .5, 1) both; }
+.is-single .choice-btn.is-truth { animation-delay: .2s; }
+.is-single .choice-btn.is-wrong { animation: choice-shake .3s ease both; }
+.is-single.is-locked .choice-btn:not(.is-right):not(.is-wrong) { opacity: .45; }
 
 /* ── Select all that apply ───────────────────────────────────
    Submitting is a right swipe over the options, so the block itself

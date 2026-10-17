@@ -12,10 +12,7 @@
 .card.exit-shrink { animation: exit-shrink .26s cubic-bezier(.5, 0, .84, .3) both; }
 @keyframes exit-shrink { to { opacity: 0; transform: scale(.86); } }
 
-/* ── Feedback ────────────────────────────────────────────────
-   Wrong answers settle. There is deliberately no shake: colour
-   already says "wrong", and oscillation only adds noise on top of
-   information you have already received.                         */
+/* ── Feedback ────────────────────────────────────────────── */
 @keyframes answer-in {
   from { opacity: 0; transform: scale(.9); }
   to   { opacity: 1; transform: scale(1); }
@@ -32,6 +29,19 @@
 @keyframes tile-in {
   from { opacity: 0; transform: translateY(10px) scale(.92); }
   to   { opacity: 1; transform: none; }
+}
+
+@keyframes choice-pop {
+  0%   { transform: scale(1); }
+  45%  { transform: scale(1.04); }
+  100% { transform: scale(1); }
+}
+/* Small and quick: two short swings that settle, not a wobble. */
+@keyframes choice-shake {
+  0%, 100% { transform: translateX(0); }
+  25%      { transform: translateX(-5px); }
+  55%      { transform: translateX(4px); }
+  80%      { transform: translateX(-2px); }
 }
 
 /* ── Chrome ──────────────────────────────────────────────── */

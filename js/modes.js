@@ -228,18 +228,17 @@
     eligible: function (card) { return card.distractors && card.distractors.length >= 2; },
     mount: function (area, ctx) {
       var options = global.Txt.shuffle([ctx.card.a].concat(ctx.card.distractors));
-      var grid = h('div', 'choice-grid');
+      var grid = h('div', 'choice-grid is-single');
       grid.dataset.lay = layoutFor(options);
       var locked = false, keyMap = {};
 
       options.forEach(function (opt, i) {
+        /* No number label: the 1-4 keys still work, and the label only
+           cost the text room. */
         var b = h('button', 'choice-btn');
-        /* The number is a keyboard affordance. In grid mode it costs the
-           text a third of an already narrow cell, and every option there
-           is short enough to hit directly. */
-        if (grid.dataset.lay === 'list') b.appendChild(h('span', 'choice-key', String(i + 1)));
         b.appendChild(h('span', 'choice-text', opt));
         b.style.setProperty('--i', i);
+        pressable(b);
 
         function answer() {
           if (locked) return;
@@ -248,7 +247,7 @@
           b.classList.add(ok ? 'is-right' : 'is-wrong');
           if (!ok) {
             Array.prototype.forEach.call(grid.children, function (other, j) {
-              if (global.Txt.normalize(options[j]) === global.Txt.normalize(ctx.card.a)) other.classList.add('is-right');
+              if (global.Txt.normalize(options[j]) === global.Txt.normalize(ctx.card.a)) other.classList.add('is-right', 'is-truth');
             });
           }
           grid.classList.add('is-locked');
@@ -275,6 +274,22 @@
       ctx.keys(keyMap);
     }
   };
+
+  /* The press: the button sinks into its thicker bottom edge the moment
+     a finger lands, with a light tick, and comes back up if the finger
+     slides off. A class rather than :active, which iOS only applies
+     reliably with a touch handler present. */
+  function pressable(b) {
+    function up() { b.classList.remove('is-pressed'); }
+    b.addEventListener('pointerdown', function () {
+      if (b.closest('.is-locked')) return;
+      b.classList.add('is-pressed');
+      global.Sfx.press();
+    });
+    b.addEventListener('pointerup', up);
+    b.addEventListener('pointercancel', up);
+    b.addEventListener('pointerleave', up);
+  }
 
   /* ═══════════════ multi: select all that apply ═══════════════ */
 

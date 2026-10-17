@@ -48,6 +48,8 @@
   global.Sfx = {
     flip:    function () { blip(320, 620, 0.09, 'triangle', 0.05); buzz(8); },
     tick:    function () { blip(880, 880, 0.03, 'square', 0.03); },
+    /* A finger landing on a button: softer than a tick, and felt. */
+    press:   function () { blip(660, 560, 0.025, 'triangle', 0.035); buzz(6); },
     /* A swipe has passed the point where letting go would commit. The
        card itself doesn't move, so this is the only signal that the
        gesture has taken hold. */
