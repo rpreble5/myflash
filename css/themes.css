@@ -58,11 +58,11 @@
   flex: 0 0 auto;
   align-self: flex-start;
   font-family: var(--body-face);
-  font-size: .68rem;
-  font-weight: 700;
-  letter-spacing: .24em;
+  font-size: .85rem;
+  font-weight: 800;
+  letter-spacing: .06em;
   text-transform: uppercase;
-  opacity: .5;
+  color: var(--muted);
   /* The only hard cut left on an otherwise eased card — crossfade the
      label rather than snapping it. */
   transition: opacity .13s ease;
@@ -113,7 +113,7 @@
   font-family: var(--face);
   font-weight: var(--weight, 400);
   letter-spacing: var(--track, 0);
-  line-height: .92;
+  line-height: 1.25;
   text-align: left;
   /* `balance` is for centred headlines; ragged-right wants `pretty`. */
   text-wrap: pretty;
@@ -153,8 +153,8 @@
   font-family: var(--face);
   font-weight: var(--weight, 400);
   letter-spacing: var(--track, 0);
-  font-size: clamp(1.9rem, 8.5vw, 4.2rem);
-  line-height: .95;
+  font-size: clamp(1.5rem, 6vw, 2.2rem);
+  line-height: 1.2;
   text-align: left;
   color: var(--acc);
 }
@@ -187,32 +187,32 @@
   z-index: 3;
   text-align: center;
   font-family: var(--body-face);
-  font-size: .62rem;
-  font-weight: 700;
-  letter-spacing: .22em;
+  font-size: .85rem;
+  font-weight: 800;
+  letter-spacing: .06em;
   text-transform: uppercase;
-  color: var(--ink);
+  color: var(--muted);
   opacity: 0;
   transition: opacity .22s ease;
   pointer-events: none;
 }
-.tap-cue.is-in { opacity: .45; }
+.tap-cue.is-in { opacity: 1; }
 
 .hint {
   font-family: var(--body-face);
-  font-size: .78rem;
-  letter-spacing: .16em;
+  font-size: .85rem;
+  font-weight: 800;
+  letter-spacing: .06em;
   text-transform: uppercase;
-  opacity: .45;
-  animation: hint-pulse 2.2s ease-in-out infinite;
+  color: var(--muted);
 }
 /* A readout, not a prompt — it stays put. */
 .hint.is-static { animation: none; }
 
 .grade-bar { display: flex; gap: .7rem; flex-wrap: wrap; justify-content: center; animation: answer-in .26s cubic-bezier(.22,1,.36,1) both; }
-.btn-grade { min-width: 132px; font-family: "Archivo Black", sans-serif; font-size: .9rem; letter-spacing: .05em; }
-.btn-miss { border: 3px solid var(--ink); color: var(--ink); }
-.btn-got  { background: var(--ink); color: var(--bg); }
+.btn-grade { min-width: 132px; }
+.btn-miss { background: var(--bad); color: #fff; box-shadow: 0 4px 0 var(--bad-dark); }
+.btn-got  { background: var(--ok); color: #fff; box-shadow: 0 4px 0 var(--ok-dark); }
 
 /* Multiple choice — the option set picks its own shape (see layoutFor). */
 .choice-grid { display: grid; gap: .65rem; width: min(700px, 100%); }
@@ -227,11 +227,13 @@
   gap: .65rem;
   padding: 1rem .9rem;
   border-radius: 16px;
-  border: 3px solid var(--ink);
+  border: 2px solid var(--line);
+  border-bottom-width: 4px;
+  background: var(--bg);
   color: var(--ink);
   font-family: var(--body-face);
   font-weight: 700;
-  font-size: 1.02rem;
+  font-size: 1.1rem;
   text-align: left;
   animation: choice-in .24s cubic-bezier(.22,1,.36,1) backwards;
   animation-delay: calc(var(--i) * 65ms);
@@ -244,18 +246,19 @@
   flex: 0 0 auto;
   width: 26px; height: 26px;
   border-radius: 8px;
-  background: var(--ink);
-  color: var(--bg);
+  border: 2px solid var(--line);
+  color: var(--muted);
   display: grid; place-items: center;
-  font-size: .78rem;
+  font-size: .85rem;
 }
 .choice-text { flex: 1; min-width: 0; }
 .choice-grid.is-locked .choice-btn { pointer-events: none; }
 /* No scale-up: the fill already carries it, and on a full-width option the
    growth is invisible everywhere except the container it overflows. */
-.choice-btn.is-right { background: var(--ink); color: var(--bg); }
-.choice-btn.is-right .choice-key { background: var(--bg); color: var(--ink); }
-.choice-btn.is-wrong { opacity: .45; transform: scale(.98); }
+.choice-btn.is-right { background: #D7FFB8; border-color: var(--ok); color: var(--ok-dark); }
+.choice-btn.is-right .choice-key { border-color: var(--ok); color: var(--ok-dark); }
+.choice-btn.is-wrong { background: #FFDFE0; border-color: var(--bad); color: var(--bad-dark); }
+.choice-btn.is-wrong .choice-key { border-color: var(--bad); color: var(--bad-dark); }
 
 /* ── Select all that apply ───────────────────────────────────
    Submitting is a right swipe over the options, so the block itself
@@ -266,8 +269,8 @@
 
 /* Where the CHECK button used to be. It holds that box whether or not it
    is legible, so revealing the answer never shifts the options. */
-.submit-cue { opacity: .3; transition: opacity .18s ease; }
-.submit-cue.is-live { opacity: .75; }
+.submit-cue { opacity: .7; transition: opacity .18s ease; }
+.submit-cue.is-live { opacity: 1; color: var(--ok-dark); }
 .submit-cue.is-hidden { visibility: hidden; }
 /* Once the drag is heading somewhere, the cue confirms rather than asks. */
 .card[data-armed="right"] .submit-cue { opacity: 1; }
@@ -276,21 +279,20 @@
    what is already selected, so it stays in both layouts. */
 .choice-box {
   background: transparent;
-  border: 2px solid var(--ink);
-  color: var(--ink);
+  border: 2px solid var(--line);
+  color: var(--muted);
   transition: background-color .14s ease, color .14s ease, border-color .14s ease;
 }
 /* The tint means "selected right now", so it stops meaning anything once
    the answer is in — and must not outrank the reveal states below. */
-.choice-grid:not(.is-locked) .choice-btn.is-picked { background: color-mix(in srgb, var(--ink) 14%, transparent); }
-.choice-grid:not(.is-locked) .choice-btn.is-picked .choice-box { background: var(--ink); color: var(--bg); }
+.choice-grid:not(.is-locked) .choice-btn.is-picked { background: var(--sel-bg); border-color: var(--sel); color: #1899D6; }
+.choice-grid:not(.is-locked) .choice-btn.is-picked .choice-box { background: var(--sel); border-color: var(--sel); color: #fff; }
 
 /* After CHECK. Every answer fills, so the set reads as the answer; the
    two failure states are told apart by fill, not by hue alone —
    a missed answer is loud and solid, a wrong pick is quiet and hollow. */
-.choice-btn.is-missed { border-color: var(--acc); }
-.is-multi .choice-btn.is-wrong { border-color: var(--acc); color: var(--acc); }
-.is-multi .choice-btn.is-wrong .choice-box { border-color: var(--acc); background: transparent; color: var(--acc); }
+.choice-btn.is-missed { border-color: var(--ok); border-style: dashed; }
+.is-multi .choice-btn.is-wrong .choice-box { border-color: var(--bad); background: transparent; color: var(--bad); }
 .is-multi .choice-btn.is-idle { opacity: .3; }
 
 /* ── Explanation ─────────────────────────────────────────────
@@ -310,14 +312,15 @@
 }
 .why {
   font-family: var(--body-face);
-  font-size: .92rem;
+  font-size: 1rem;
+  font-weight: 600;
   line-height: 1.45;
   text-align: left;
   opacity: 0;
   transform: translateY(6px);
   transition: opacity .26s ease, transform .26s cubic-bezier(.22,1,.36,1);
 }
-.why.is-in { opacity: .8; transform: none; }
+.why.is-in { opacity: 1; transform: none; }
 /* Mounted early so it holds its box from the first frame, then released
    on reveal — the note appears without shoving the answer around. */
 .why-wrap.is-held { animation: none; opacity: 0; pointer-events: none; }
@@ -329,21 +332,22 @@
   align-items: center;
   gap: .5rem;
   font-family: var(--body-face);
-  font-size: .68rem;
-  font-weight: 700;
-  letter-spacing: .18em;
-  color: var(--ink);
+  font-size: .85rem;
+  font-weight: 800;
+  letter-spacing: .06em;
+  color: var(--sel);
   opacity: 0;
-  padding: .35rem .8rem;
-  border: 2px solid currentColor;
-  border-radius: 999px;
+  padding: .5rem .9rem;
+  border: 2px solid var(--line);
+  border-bottom-width: 4px;
+  border-radius: 14px;
   background: transparent;
   transition: opacity .26s ease, transform .18s cubic-bezier(.22,1,.36,1);
   /* The gesture is vertical, so the browser must not claim it for
      scrolling before the handler sees it. */
   touch-action: none;
 }
-.why-cue.is-in { opacity: .6; }
+.why-cue.is-in { opacity: 1; }
 .why-cue:hover { opacity: 1; }
 .why-cue:active { transform: translateY(-2px); }
 .why-cue-arrow { font-size: .9rem; line-height: 1; }
@@ -374,7 +378,8 @@
 .note-text {
   margin: 0;
   font-family: var(--body-face);
-  font-size: clamp(1.05rem, 4.6vw, 1.35rem);
+  font-size: 1.15rem;
+  font-weight: 600;
   line-height: 1.5;
   text-align: left;
   color: var(--ink);
@@ -386,12 +391,11 @@
   bottom: calc(1rem + env(safe-area-inset-bottom));
   text-align: center;
   font-family: var(--body-face);
-  font-size: .62rem;
-  font-weight: 700;
-  letter-spacing: .22em;
+  font-size: .85rem;
+  font-weight: 800;
+  letter-spacing: .06em;
   text-transform: uppercase;
-  color: var(--ink);
-  opacity: .4;
+  color: var(--muted);
   pointer-events: none;
 }
 
@@ -411,22 +415,24 @@
   animation-delay: 180ms;
 }
 .swipe-side {
-  font-family: "Archivo Black", sans-serif;
-  font-size: .82rem;
-  letter-spacing: .05em;
-  padding: .7rem 1.2rem;
-  border-radius: 999px;
-  border: 3px solid var(--ink);
+  font-weight: 800;
+  font-size: .95rem;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  padding: .8rem 1.3rem;
+  border-radius: 16px;
+  border: 2px solid var(--line);
+  border-bottom-width: 4px;
   color: var(--ink);
-  opacity: .55;
   transition: opacity .16s ease, background-color .16s ease, color .16s ease;
 }
 .swipe-cue {
   font-family: var(--body-face);
-  font-size: .64rem;
-  letter-spacing: .22em;
+  font-size: .8rem;
+  font-weight: 800;
+  letter-spacing: .06em;
   text-transform: uppercase;
-  opacity: .3;
+  color: var(--muted);
 }
 /* Two states, because a swipe answers two questions. Heading toward a
    side brightens its label; having gone far enough that letting go
@@ -434,12 +440,10 @@
    haptic tick are the whole of the feedback. */
 .card[data-swipe="left"]  .swipe-miss,
 .card[data-swipe="right"] .swipe-got { opacity: 1; }
-.card[data-armed="left"]  .swipe-miss,
-.card[data-armed="right"] .swipe-got {
-  opacity: 1;
-  background: var(--ink);
-  color: var(--bg);
-}
+.card[data-swipe="left"]  .swipe-miss { border-color: var(--bad); color: var(--bad); }
+.card[data-swipe="right"] .swipe-got  { border-color: var(--ok); color: var(--ok-dark); }
+.card[data-armed="left"]  .swipe-miss { background: var(--bad); border-color: var(--bad-dark); color: #fff; }
+.card[data-armed="right"] .swipe-got  { background: var(--ok); border-color: var(--ok-dark); color: #fff; }
 
 .card { transition: transform .26s cubic-bezier(.22,1,.36,1), opacity .26s ease; }
 .card.is-dragging { transition: none; }
@@ -447,15 +451,12 @@
 
 /* ── Shared submit ───────────────────────────────────────── */
 .btn-check {
-  background: var(--ink);
-  color: var(--bg);
-  font-family: "Archivo Black", sans-serif;
-  font-size: .9rem;
-  letter-spacing: .06em;
+  background: var(--ok);
+  color: #fff;
+  box-shadow: 0 4px 0 var(--ok-dark);
   min-width: 160px;
-  transition: opacity .18s ease, transform .12s cubic-bezier(.22,1,.36,1);
 }
-.btn-check:disabled { opacity: .28; cursor: default; }
+.btn-check:disabled { background: var(--line); color: #AFAFAF; box-shadow: 0 4px 0 #D0D0D0; cursor: default; }
 /* Hidden, not removed: the button keeps its box so the lines above it stay
    put — both after answering and in submit-on-release mode. */
 .btn-check.is-hidden { visibility: hidden; }
@@ -471,12 +472,14 @@
 .tf-btn {
   flex: 1;
   padding: 1.4rem .8rem;
-  border-radius: 20px;
-  border: 3px solid var(--ink);
+  border-radius: 16px;
+  border: 2px solid var(--line);
+  border-bottom-width: 4px;
   color: var(--ink);
-  font-family: "Archivo Black", sans-serif;
+  font-weight: 800;
   font-size: 1.15rem;
-  letter-spacing: .06em;
+  letter-spacing: .04em;
+  text-transform: uppercase;
   position: relative;
   overflow: hidden;
   animation: choice-in .24s cubic-bezier(.22,1,.36,1) backwards;
@@ -489,7 +492,7 @@
   content: "";
   position: absolute;
   inset: 0;
-  background: var(--ink);
+  background: var(--sel);
   opacity: 0;
   transition: opacity .18s ease;
   pointer-events: none;
@@ -497,8 +500,8 @@
 .tf-label { position: relative; }
 .tf-btn:active { transform: scale(.96); }
 .tf-bar.is-locked .tf-btn { pointer-events: none; }
-.tf-btn.is-right { background: var(--ink); color: var(--bg); }
-.tf-btn.is-wrong { opacity: .4; transform: scale(.98); }
+.tf-btn.is-right { background: #D7FFB8; border-color: var(--ok); color: var(--ok-dark); }
+.tf-btn.is-wrong { background: #FFDFE0; border-color: var(--bad); color: var(--bad-dark); }
 
 /* Dragging colours the side you are heading for, continuously with
    distance. It stops short of solid: past about 40% the ink would start
@@ -513,7 +516,7 @@
 .card[data-armed="left"]  .tf-false::before,
 .card[data-armed="right"] .tf-true::before { opacity: 1; }
 .card[data-armed="left"]  .tf-false,
-.card[data-armed="right"] .tf-true { color: var(--bg); }
+.card[data-armed="right"] .tf-true { color: #fff; }
 
 /* `.why` itself is defined once, in the Explanation section above. */
 
@@ -534,7 +537,7 @@
   gap: .7rem;
   padding: .45rem .5rem .45rem .9rem;
   border-radius: 16px;
-  border: 3px solid color-mix(in srgb, var(--ink) 35%, transparent);
+  border: 2px solid var(--line);
   animation: choice-in .24s cubic-bezier(.22,1,.36,1) backwards;
   animation-delay: calc(var(--i) * 60ms);
   transition: border-color .2s, opacity .2s;
@@ -555,8 +558,9 @@
   display: grid;
   place-items: center;
   border-radius: 13px;
-  border: 2px solid color-mix(in srgb, var(--ink) 40%, transparent);
-  color: var(--ink);
+  border: 2px solid var(--line);
+  border-bottom-width: 4px;
+  color: var(--muted);
   transition: transform .12s cubic-bezier(.22,1,.36,1), background-color .15s, color .15s;
 }
 /* Round caps and joins, to match the corner radius the arrows sit in.
@@ -573,19 +577,14 @@
 .dir-btn[role="button"] { cursor: pointer; }
 .dir-btn:active { transform: scale(.9); }
 /* Your pick, before the answer is in. */
-.dir-btn.is-on { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.dir-btn.is-on { background: var(--sel-bg); color: var(--sel); border-color: var(--sel); }
 
 /* After submitting. The true direction fills on every row so the card
    reads as the pattern; a wrong pick is marked but stays secondary. */
-.dir-btn.is-truth { background: var(--ink); color: var(--bg); border-color: var(--ink); }
-.dir-btn.is-miss {
-  background: transparent;
-  border-color: var(--acc);
-  color: var(--acc);
-  opacity: .55;
-}
-.trend-row.is-right { border-color: var(--ink); }
-.trend-row.is-wrong { border-color: var(--acc); }
+.dir-btn.is-truth { background: var(--ok); color: #fff; border-color: var(--ok-dark); }
+.dir-btn.is-miss { background: #FFDFE0; border-color: var(--bad); color: var(--bad); }
+.trend-row.is-right { border-color: var(--ok); }
+.trend-row.is-wrong { border-color: var(--bad); }
 
 /* ── Bucket ──────────────────────────────────────────────── */
 /* Two bins: swipe the item left or right and it settles into a single
@@ -597,12 +596,11 @@
 
 .sort-heads { display: flex; justify-content: space-between; gap: 1rem; }
 .sort-head {
-  font-family: "Archivo Black", sans-serif;
-  font-size: .74rem;
-  letter-spacing: .06em;
+  font-weight: 800;
+  font-size: .85rem;
+  letter-spacing: .04em;
   text-transform: uppercase;
-  color: var(--ink);
-  opacity: .5;
+  color: var(--muted);
   transition: opacity .16s ease;
 }
 /* Heading toward a side lifts its heading; far enough to commit fills it. */
@@ -615,11 +613,12 @@
 .sort-item {
   max-width: 84%;
   font-family: var(--body-face);
-  font-size: .84rem;
-  line-height: 1.2;
-  padding: .3rem .55rem;
+  font-size: .95rem;
+  line-height: 1.25;
+  padding: .4rem .65rem;
   border-radius: 10px;
-  background: color-mix(in srgb, var(--ink) 14%, transparent);
+  background: var(--soft);
+  border: 2px solid var(--line);
   color: var(--ink);
   animation: sort-drop .2s cubic-bezier(.25,.8,.4,1) both;
 }
@@ -627,9 +626,9 @@
 .sort-item[data-side="right"] { align-self: flex-end; text-align: right; }
 /* Landed on its true side, but that isn't where the user sent it. */
 .sort-item.is-wrong {
-  background: transparent;
-  box-shadow: inset 0 0 0 2px var(--acc);
-  color: var(--acc);
+  background: #FFDFE0;
+  border-color: var(--bad);
+  color: var(--bad-dark);
 }
 
 /* Only the item moves during a sort; the card underneath holds still. */
@@ -645,19 +644,20 @@
   flex: 1 1 40%;
   min-width: 140px;
   padding: 1.25rem .9rem;
-  border-radius: 20px;
-  border: 3px solid var(--ink);
+  border-radius: 16px;
+  border: 2px solid var(--line);
+  border-bottom-width: 4px;
   color: var(--ink);
-  font-family: "Archivo Black", sans-serif;
-  font-size: 1rem;
+  font-weight: 800;
+  font-size: 1.05rem;
   animation: choice-in .24s cubic-bezier(.22,1,.36,1) backwards;
   animation-delay: calc(var(--i) * 70ms);
   transition: transform .12s ease, background-color .18s, color .18s, opacity .18s;
 }
 .bin-btn:active { transform: scale(.96); }
-.bin-btn.is-right { background: var(--ink); color: var(--bg); }
-.bin-btn.is-wrong { opacity: .4; transform: scale(.98); }
-.bin-btn.is-answer { border-color: var(--acc); color: var(--acc); }
+.bin-btn.is-right { background: #D7FFB8; border-color: var(--ok); color: var(--ok-dark); }
+.bin-btn.is-wrong { background: #FFDFE0; border-color: var(--bad); color: var(--bad-dark); }
+.bin-btn.is-answer { border-color: var(--ok); color: var(--ok-dark); }
 
 /* ── Order ───────────────────────────────────────────────── */
 .order-slots { width: min(560px, 100%); display: flex; flex-direction: column; gap: .35rem; }
@@ -668,7 +668,7 @@
   min-height: 46px;
   padding: .4rem .7rem;
   border-radius: 13px;
-  border: 2px dashed color-mix(in srgb, var(--ink) 32%, transparent);
+  border: 2px dashed var(--line);
   animation: choice-in .24s cubic-bezier(.22,1,.36,1) backwards;
   animation-delay: calc(var(--i) * 50ms);
 }
@@ -676,11 +676,11 @@
   flex: 0 0 auto;
   width: 26px; height: 26px;
   border-radius: 8px;
-  background: color-mix(in srgb, var(--ink) 22%, transparent);
-  color: var(--ink);
+  background: var(--line);
+  color: var(--muted);
   display: grid; place-items: center;
-  font-family: "Archivo Black", sans-serif;
-  font-size: .76rem;
+  font-weight: 800;
+  font-size: .85rem;
 }
 .order-text {
   flex: 1;
@@ -690,23 +690,25 @@
   font-size: .95rem;
   text-align: left;
 }
-.order-slot.is-filled { border-style: solid; border-color: var(--ink); }
-.order-slot.is-right { border-color: var(--ink); background: color-mix(in srgb, var(--ink) 12%, transparent); }
+.order-slot.is-filled { border-style: solid; border-color: var(--line); }
+.order-slot.is-right { border-color: var(--ok); background: #D7FFB8; }
 /* The slot holds the true step either way, so the text stays ink and only
    the frame says you had this one in the wrong place. Colouring the text
    accent made the correct answer look like the mistake. */
-.order-slot.is-wrong { border-color: var(--acc); }
-.order-slot.is-wrong .order-num { background: var(--acc); color: var(--bg); }
+.order-slot.is-wrong { border-color: var(--bad); }
+.order-slot.is-wrong .order-num { background: var(--bad); color: #fff; }
 
 .order-chips { display: flex; gap: .4rem; flex-wrap: wrap; justify-content: center; width: min(620px, 100%); }
 .order-chip {
   padding: .6rem .9rem;
   border-radius: 13px;
-  background: var(--ink);
-  color: var(--bg);
+  border: 2px solid var(--line);
+  border-bottom-width: 4px;
+  background: var(--bg);
+  color: var(--ink);
   font-family: var(--body-face);
   font-weight: 700;
-  font-size: .9rem;
+  font-size: 1rem;
   animation: tile-in .24s cubic-bezier(.22,1,.36,1) backwards;
   animation-delay: calc(var(--i) * 45ms);
   transition: transform .14s cubic-bezier(.22,1,.36,1), opacity .14s;
@@ -726,7 +728,8 @@
 .match-btn {
   padding: .85rem .7rem;
   border-radius: 15px;
-  border: 3px solid var(--ink);
+  border: 2px solid var(--line);
+  border-bottom-width: 4px;
   color: var(--ink);
   font-family: var(--body-face);
   font-weight: 700;
@@ -736,18 +739,17 @@
   animation-delay: calc(var(--i) * 55ms);
   transition: transform .14s cubic-bezier(.22,1,.36,1), background-color .18s, color .18s, opacity .18s;
 }
-.match-btn.is-sel { background: var(--ink); color: var(--bg); transform: scale(1.03); }
+.match-btn.is-sel { background: var(--sel-bg); border-color: var(--sel); color: #1899D6; }
 .match-btn.is-solved {
-  background: var(--acc);
-  color: var(--bg);
-  border-color: var(--acc);
-  opacity: .9;
+  background: #D7FFB8;
+  color: var(--ok-dark);
+  border-color: var(--ok);
   pointer-events: none;
 }
-.match-btn.is-miss { opacity: .5; transform: scale(.98); }
+.match-btn.is-miss { background: #FFDFE0; border-color: var(--bad); color: var(--bad-dark); }
 /* Solved, but not first time. An inset ring in the card's own ground cuts
    into the accent fill, which an accent outline could not. */
-.match-btn.is-fumbled { box-shadow: inset 0 0 0 3px var(--bg); }
+.match-btn.is-fumbled { border-style: dashed; }
 
 /* ── Number ──────────────────────────────────────────────────
    No track. The whole card is the control: drag up to raise, down
@@ -772,14 +774,14 @@
   font-family: var(--face);
   font-weight: var(--weight, 400);
   letter-spacing: var(--track, 0);
-  font-size: clamp(3rem, 19vw, 7rem);
-  line-height: 1;
+  font-size: clamp(3rem, 16vw, 5rem);
+  line-height: 1.1;
   font-variant-numeric: tabular-nums;
 }
 .num-unit { font-family: var(--body-face); font-size: 1rem; opacity: .6; }
 
 .num-dial.is-right .num-val { color: var(--acc); }
-.num-dial.is-wrong .num-val { color: var(--acc); }
+.num-dial.is-wrong .num-val { color: var(--ok-dark); }
 .num-dial.is-right .num-arrow,
 .num-dial.is-wrong .num-arrow { opacity: 0; }
 
@@ -810,13 +812,13 @@
      doesn't push the number down the card. */
   min-height: 1.2em;
   font-family: var(--body-face);
-  font-size: .82rem;
-  letter-spacing: .04em;
+  font-size: .95rem;
+  color: var(--bad);
   opacity: 0;
   transform: translateY(6px);
   transition: opacity .22s ease, transform .22s cubic-bezier(.22, 1, .36, 1);
 }
-.num-said.is-in { opacity: .5; transform: none; }
+.num-said.is-in { opacity: 1; transform: none; }
 
 /* Crossfade the hero value rather than cutting it, same as the kicker. */
 .num-val { transition: opacity .13s ease; }

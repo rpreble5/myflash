@@ -6,7 +6,7 @@
   var h = global.Modes.h;
   var $ = function (sel) { return document.querySelector(sel); };
 
-  var EXITS = ['exit-fly', 'exit-shrink', 'exit-wipe', 'exit-spin', 'exit-drop'];
+  var EXITS = ['exit-shrink'];
   var reduceMotion = global.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   /* ───────────────────────── screens ───────────────────────── */
@@ -36,8 +36,6 @@
     return m;
   }
 
-  var HOME_PALETTES = global.Theme.live(global.Theme.PALETTES);
-
   /* How many cards a short run holds. Long enough to be worth opening,
      short enough to finish in a queue. */
   var SHORT_RUN = 20;
@@ -51,15 +49,7 @@
     list.textContent = '';
 
     global.Store.topics().forEach(function (topic, ti) {
-      /* Live only. The full list still carries everything that has been
-         retired, and the home screen is the last place a rejected palette
-         should reappear. */
-      var pal = HOME_PALETTES[ti % HOME_PALETTES.length];
-
       var group = h('div', 'topic');
-      group.style.setProperty('--bg', pal.bg);
-      group.style.setProperty('--ink', pal.ink);
-      group.style.setProperty('--acc', pal.acc);
       group.style.setProperty('--i', ti);
       if (!topic.started) group.classList.add('is-fresh');
 

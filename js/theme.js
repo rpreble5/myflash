@@ -320,7 +320,7 @@
     { face: '"Silkscreen", sans-serif', track: '0', caps: false, wght: 700, off: true }
   ];
 
-  var BODY_FACE = '"Space Grotesk", system-ui, sans-serif';
+  var BODY_FACE = '"Nunito", system-ui, sans-serif';
 
   /* ── SVG helper ────────────────────────────────────────────
      Vector shapes gradients can't express — ridges, waves, torn
@@ -1187,7 +1187,25 @@
   /* How often a card gets grain laid over its backdrop. */
   var GRAIN_CHANCE = 0.38;
 
-  function random() {
+  /* The plain look: one font, one color scheme, no backdrop or entrance.
+     Every card gets this while the design is rebuilt; the random engine
+     below is kept but not called. */
+  var PLAIN = {
+    palette: { name: 'plain', bg: '#FFFFFF', ink: '#3C3C3C', acc: '#58A700' },
+    font: { face: '"Nunito", system-ui, sans-serif', wght: 800, track: '0', caps: false },
+    backdrop: { name: 'none', tier: 'plain' },
+    grain: null,
+    backdropImage: 'none',
+    backdropSize: 'auto',
+    backdropRepeat: null,
+    backdropLayers: null,
+    entrance: { name: 'none', perLetter: false, stagger: 0 },
+    treatment: 'plain'
+  };
+
+  function random() { return PLAIN; }
+
+  function randomLook() {
     var backdrop = pickFresh(LIVE_BACKDROPS, 'backdrop', true);
     var font = pickFresh(LIVE_FONTS, 'font', true);
 

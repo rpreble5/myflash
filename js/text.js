@@ -52,10 +52,11 @@
      `pad` covers that spill against the clip edge. */
   function fit(el, box, opts) {
     opts = opts || {};
-    var min = opts.min || 28;
+    var min = opts.min || 18;
     var pad = opts.pad == null ? 8 : opts.pad;
     var limit = box.clientHeight - pad;
-    var max = opts.max || Math.min(box.clientHeight * 0.62, 340);
+    /* Capped at reading size rather than poster size. */
+    var max = opts.max || Math.min(box.clientHeight * 0.62, 34);
     var best = min;
 
     function overflows() {

@@ -1,13 +1,30 @@
 /* base.css — reset, screens, and the chrome around the cards. */
 
+/* One color scheme for the whole app. Cards read --bg/--ink/--acc, which
+   theme.js sets to the same values; the rest are used directly. */
+:root {
+  --bg: #FFFFFF;
+  --ink: #3C3C3C;
+  --acc: #58A700;
+  --muted: #777777;
+  --line: #E5E5E5;
+  --soft: #F7F7F7;
+  --ok: #58CC02;
+  --ok-dark: #58A700;
+  --bad: #FF4B4B;
+  --bad-dark: #EA2B2B;
+  --sel: #1CB0F6;
+  --sel-bg: #DDF4FF;
+  --face: "Nunito", system-ui, -apple-system, sans-serif;
+  --body-face: "Nunito", system-ui, -apple-system, sans-serif;
+}
+
+[hidden] { display: none !important; }
+
 *, *::before, *::after { box-sizing: border-box; }
 
 /* No scrollbars anywhere. They are desktop chrome in a layout built to
-   run edge to edge — a grey gutter biting into a card, or into a deck
-   list, on a surface that is dragged and swiped rather than scrolled
-   with a mouse. Scrolling itself is untouched; only the bar is gone.
-   Phones draw overlay bars that fade on their own, so this shows up
-   almost entirely on desktop. */
+   run edge to edge. Scrolling itself is untouched; only the bar is gone. */
 * { scrollbar-width: none; -ms-overflow-style: none; }
 *::-webkit-scrollbar { width: 0; height: 0; }
 
@@ -16,9 +33,10 @@ html, body {
   padding: 0;
   height: 100%;
   overflow: hidden;
-  background: #0b0b0b;
-  color: #f5f5f5;
-  font-family: "Space Grotesk", system-ui, -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--body-face);
+  font-weight: 700;
   -webkit-font-smoothing: antialiased;
   -webkit-tap-highlight-color: transparent;
   overscroll-behavior: none;
@@ -31,8 +49,7 @@ button { cursor: pointer; border: 0; background: none; }
   position: fixed;
   inset: 0;
   /* Cards are dragged, not read-and-copied. Selection has to be off before
-     the pointer goes down — switching it off once a drag starts is already
-     too late, the browser has begun selecting. */
+     the pointer goes down. */
   user-select: none;
   -webkit-user-select: none;
 }
@@ -49,150 +66,145 @@ button { cursor: pointer; border: 0; background: none; }
 
 /* ── Buttons ─────────────────────────────────────────────── */
 .btn {
-  border-radius: 999px;
-  padding: .85rem 1.6rem;
-  font-weight: 700;
+  border-radius: 16px;
+  padding: .85rem 1.4rem;
+  font-weight: 800;
+  font-size: 1rem;
   letter-spacing: .02em;
-  transition: transform .12s cubic-bezier(.22,1,.36,1), background-color .15s, color .15s;
+  text-transform: uppercase;
+  transition: transform .08s ease, box-shadow .08s ease;
 }
-.btn:active { transform: scale(.94); }
+.btn:active { transform: translateY(2px); }
 
-.btn-solid { background: #f5f5f5; color: #0b0b0b; }
-.btn-ghost { border: 2px solid currentColor; opacity: .75; }
-.btn-ghost:hover { opacity: 1; }
+.btn-solid {
+  background: var(--ok);
+  color: #fff;
+  box-shadow: 0 4px 0 var(--ok-dark);
+}
+.btn-solid:active { box-shadow: 0 2px 0 var(--ok-dark); }
+.btn-ghost {
+  background: var(--bg);
+  color: var(--ink);
+  border: 2px solid var(--line);
+  box-shadow: 0 4px 0 var(--line);
+}
+.btn-ghost:active { box-shadow: 0 2px 0 var(--line); }
 
 /* ── Home ────────────────────────────────────────────────── */
 .home-wrap {
   position: relative;
   min-height: 100%;
-  padding: max(2rem, env(safe-area-inset-top)) 1.25rem 3rem;
-  max-width: 900px;
+  padding: max(1.25rem, env(safe-area-inset-top)) 1.25rem 3rem;
+  max-width: 640px;
   margin: 0 auto;
 }
 
 .wordmark {
-  margin: 1.5rem 0 .25rem;
-  font-size: clamp(3.5rem, 17vw, 8rem);
-  line-height: .84;
-  letter-spacing: -.045em;
-  font-family: "Archivo Black", sans-serif;
-  font-weight: 400;
+  margin: .4rem 0 .15rem;
+  padding-right: 3.5rem;
+  font-size: 2.4rem;
+  line-height: 1.1;
+  font-weight: 900;
+  letter-spacing: -.01em;
 }
-.wordmark-a { color: #f5f500; }
-.wordmark-b {
-  color: transparent;
-  -webkit-text-stroke: 3px #f5f500;
-  animation: wordmark-throb 3.4s ease-in-out infinite;
-  display: inline-block;
-}
+.wordmark-a { color: var(--ok); }
+.wordmark-b { color: var(--ink); }
 
 .tagline {
-  margin: 0 0 2rem;
+  margin: 0 0 1.5rem;
   font-size: 1rem;
-  opacity: .55;
-  letter-spacing: .01em;
+  color: var(--muted);
 }
 
-.deck-list { display: flex; flex-direction: column; gap: .7rem; }
+.deck-list { display: flex; flex-direction: column; gap: .8rem; }
 
 /* ── Topics ──────────────────────────────────────────────────
-   Two levels, collapsed. Eight decks already pushed everything else
-   below the fold and generated material only ever adds more, so the
-   list has to stay one screen however much accumulates. */
+   Two levels, collapsed, so the list stays one screen however much
+   accumulates. */
 .topic {
-  --bg: #191919; --ink: #f5f5f5; --acc: #ff6b00;
-  border-radius: 20px;
+  border-radius: 16px;
   background: var(--bg);
   color: var(--ink);
-  border: 2px solid color-mix(in srgb, var(--ink) 20%, transparent);
+  border: 2px solid var(--line);
+  border-bottom-width: 4px;
   overflow: hidden;
-  animation: deck-in .32s cubic-bezier(.22,1,.36,1) both;
-  animation-delay: calc(var(--i) * 50ms);
 }
-/* Untouched material is a different situation, not a worse score. */
-.topic.is-fresh { opacity: .72; }
-
 .topic-head {
   display: grid;
   grid-template-columns: 1fr auto;
-  gap: .15rem .8rem;
+  gap: .2rem .8rem;
   width: 100%;
   text-align: left;
-  padding: 1.1rem 1.2rem;
+  padding: 1rem 1.1rem;
   color: inherit;
 }
 .topic-name {
   grid-column: 1;
-  font-family: "Anton", sans-serif;
-  font-size: clamp(1.5rem, 5.5vw, 2.1rem);
-  line-height: 1;
-  letter-spacing: -.01em;
+  font-size: 1.3rem;
+  font-weight: 800;
+  line-height: 1.2;
 }
 .topic-tag {
   grid-column: 2;
   grid-row: 1;
   align-self: center;
-  font-size: .62rem;
-  font-weight: 700;
-  letter-spacing: .14em;
+  font-size: .75rem;
+  font-weight: 800;
+  letter-spacing: .06em;
   text-transform: uppercase;
-  opacity: .6;
+  color: var(--muted);
 }
-.topic-line { grid-column: 1 / -1; font-size: .78rem; opacity: .65; }
+.topic-line { grid-column: 1 / -1; font-size: .9rem; color: var(--muted); }
 .topic-head .meter { grid-column: 1 / -1; margin-top: .5rem; }
 
 .meter {
   display: block;
-  height: 6px;
+  height: 10px;
   border-radius: 99px;
-  background: color-mix(in srgb, var(--ink) 18%, transparent);
+  background: var(--line);
   overflow: hidden;
 }
 .meter-fill {
   display: block;
   height: 100%;
   border-radius: 99px;
-  background: var(--ink);
-  transition: width .5s cubic-bezier(.22,1,.36,1);
+  background: var(--ok);
+  transition: width .5s ease;
 }
 
-.topic-decks { display: none; padding: 0 1.2rem 1.1rem; }
+.topic-decks { display: none; padding: 0 1.1rem 1.1rem; }
 .topic.is-open .topic-decks { display: block; }
 
-.btn-topic-all {
+.btn-topic-all,
+.btn-topic-weak {
   width: 100%;
-  margin-bottom: .7rem;
-  padding: .7rem 1rem;
-  font-size: .8rem;
-  border-width: 2px;
+  margin-bottom: .75rem;
+  font-size: .9rem;
+}
+.btn-topic-all {
+  background: var(--ok);
+  color: #fff;
+  border: 0;
+  box-shadow: 0 4px 0 var(--ok-dark);
 }
 
 .deck-row {
   display: grid;
   grid-template-columns: 1fr;
-  gap: .1rem;
+  gap: .15rem;
   width: 100%;
   text-align: left;
-  padding: .7rem .85rem;
-  margin-bottom: .4rem;
+  padding: .8rem .9rem;
+  margin-bottom: .5rem;
   border-radius: 14px;
-  background: color-mix(in srgb, var(--ink) 8%, transparent);
+  border: 2px solid var(--line);
+  background: var(--bg);
   color: inherit;
 }
-.deck-row:active { transform: scale(.985); }
-.deck-name { font-family: "Anton", sans-serif; font-size: 1.15rem; line-height: 1.05; }
-.deck-line { font-size: .72rem; opacity: .6; }
-.deck-row .meter { margin-top: .4rem; height: 5px; }
-
-/* The short run sits under the full one and reads as the lighter option —
-   it is the same action at a smaller scale, not a different destination. */
-.btn-topic-weak {
-  width: 100%;
-  margin-bottom: .55rem;
-  opacity: .75;
-  font-size: .82rem;
-}
-.btn-topic-weak:hover { opacity: 1; }
+.deck-row:active { background: var(--soft); }
+.deck-name { font-size: 1.05rem; font-weight: 800; line-height: 1.2; }
+.deck-line { font-size: .85rem; color: var(--muted); }
+.deck-row .meter { margin-top: .45rem; height: 8px; }
 
 /* ── Settings ────────────────────────────────────────────── */
 .settings-wrap {
@@ -201,54 +213,42 @@ button { cursor: pointer; border: 0; background: none; }
   margin: 0 auto;
   padding: max(1.25rem, env(safe-area-inset-top)) 1.25rem 3rem;
 }
-.screen-head { display: flex; align-items: center; gap: .75rem; margin-bottom: 2rem; }
-.screen-title {
-  margin: 0;
-  font-family: "Anton", sans-serif;
-  font-size: clamp(2.2rem, 9vw, 3.2rem);
-  letter-spacing: -.02em;
-}
+.screen-head { display: flex; align-items: center; gap: .75rem; margin-bottom: 1.75rem; }
+.screen-title { margin: 0; font-size: 1.8rem; font-weight: 900; }
 
 .icon-btn {
-  width: 42px; height: 42px;
+  width: 44px; height: 44px;
   flex: 0 0 auto;
-  border-radius: 50%;
-  border: 2px solid rgba(255,255,255,.22);
-  font-size: 1.15rem;
+  border-radius: 14px;
+  border: 2px solid var(--line);
+  border-bottom-width: 4px;
+  color: var(--muted);
+  font-size: 1.2rem;
   line-height: 1;
-  opacity: .7;
-  transition: opacity .15s ease, transform .12s cubic-bezier(.22,1,.36,1);
 }
-.icon-btn:hover { opacity: 1; }
-.icon-btn:active { transform: scale(.92); }
-/* The gear rides the top-right of the home screen rather than sitting
-   under the deck list, where it was below the fold and sinking further
-   with every deck added. */
+.icon-btn:active { transform: translateY(2px); border-bottom-width: 2px; }
 .corner-btn { position: absolute; top: max(1.25rem, env(safe-area-inset-top)); right: 1.25rem; z-index: 2; }
 
 .settings-group {
   display: flex;
   flex-direction: column;
-  /* Toggles ask for full width themselves; a lone button should not be
-     stretched into a banner just because it shares the column. */
+  /* A lone button should not be stretched into a banner just because it
+     shares the column with toggles. */
   align-items: flex-start;
   gap: 1.1rem;
   margin-bottom: 2.25rem;
 }
-/* Still readable, still switchable — it just cannot do anything here. */
 .toggle.is-unsupported { opacity: .45; }
 .settings-head {
-  font-size: .72rem;
-  font-weight: 700;
-  letter-spacing: .18em;
+  font-size: .8rem;
+  font-weight: 800;
+  letter-spacing: .08em;
   text-transform: uppercase;
-  opacity: .45;
+  color: var(--muted);
   margin: 0 0 .85rem;
 }
 
 /* ── Deck manager ────────────────────────────────────────── */
-/* The group's default gap is sized for toggles, which are far taller
-   than a deck row; these set their own. */
 #deck-manager { gap: .5rem; align-items: stretch; width: 100%; }
 
 .manage-row {
@@ -256,40 +256,40 @@ button { cursor: pointer; border: 0; background: none; }
   align-items: center;
   gap: .75rem;
   width: 100%;
-  padding: .6rem .75rem;
-  border-radius: 12px;
-  background: color-mix(in srgb, currentColor 7%, transparent);
+  padding: .7rem .8rem;
+  border-radius: 14px;
+  border: 2px solid var(--line);
 }
 .manage-text { display: flex; flex-direction: column; gap: .1rem; min-width: 0; flex: 1; }
 .manage-name {
-  font-family: "Anton", sans-serif;
   font-size: 1rem;
-  line-height: 1.1;
+  font-weight: 800;
+  line-height: 1.2;
   /* A generated deck name can run long; it should ellipsis rather than
      push the delete button off the row. */
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.manage-line { font-size: .7rem; opacity: .55; }
+.manage-line { font-size: .8rem; color: var(--muted); }
 
 .manage-del {
   flex: none;
   padding: .45rem .8rem;
-  border: 1px solid currentColor;
-  border-radius: 999px;
+  border: 2px solid var(--line);
+  border-radius: 12px;
   background: transparent;
-  color: inherit;
+  color: var(--bad);
   font: inherit;
-  font-size: .68rem;
-  letter-spacing: .1em;
+  font-size: .75rem;
+  font-weight: 800;
+  letter-spacing: .06em;
   text-transform: uppercase;
-  opacity: .6;
   cursor: pointer;
 }
-.manage-del:active { opacity: 1; transform: scale(.96); }
+.manage-del:active { transform: scale(.96); }
 
-.settings-empty { font-size: .8rem; opacity: .5; margin: 0; }
+.settings-empty { font-size: .9rem; color: var(--muted); margin: 0; }
 .look-group {
   font-size: .68rem; letter-spacing: .16em; text-transform: uppercase;
   opacity: .4; margin: 1rem 0 .1rem; font-weight: 700;
@@ -385,7 +385,8 @@ button { cursor: pointer; border: 0; background: none; }
   width: 46px;
   height: 26px;
   border-radius: 999px;
-  border: 2px solid rgba(255,255,255,.3);
+  border: 2px solid var(--line);
+  background: var(--line);
   padding: 3px;
   transition: background-color .16s ease, border-color .16s ease;
 }
@@ -394,14 +395,14 @@ button { cursor: pointer; border: 0; background: none; }
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  background: rgba(255,255,255,.55);
+  background: #fff;
   transition: transform .16s cubic-bezier(.22,1,.36,1), background-color .16s ease;
 }
-.toggle.is-on .toggle-track { background: #f5f500; border-color: #f5f500; }
-.toggle.is-on .toggle-thumb { background: #0b0b0b; transform: translateX(20px); }
+.toggle.is-on .toggle-track { background: var(--ok); border-color: var(--ok); }
+.toggle.is-on .toggle-thumb { background: #fff; transform: translateX(20px); }
 .toggle-text { display: flex; flex-direction: column; gap: .15rem; }
-.toggle-name { font-weight: 700; font-size: .95rem; }
-.toggle-note { font-size: .8rem; opacity: .55; line-height: 1.35; }
+.toggle-name { font-weight: 800; font-size: 1rem; }
+.toggle-note { font-size: .9rem; color: var(--muted); line-height: 1.35; }
 
 .home-actions {
   display: flex;
@@ -422,57 +423,44 @@ button { cursor: pointer; border: 0; background: none; }
   gap: .9rem;
   padding: max(.9rem, env(safe-area-inset-top)) 1rem .9rem;
   pointer-events: none;
-  color: var(--hud-ink, #fff);
-  transition: color .35s ease;
+  color: var(--ink);
 }
 .hud > * { pointer-events: auto; }
 
 .hud-btn {
-  width: 34px; height: 34px;
+  width: 36px; height: 36px;
   border-radius: 50%;
-  font-size: 1rem;
+  font-size: 1.1rem;
   line-height: 1;
-  opacity: .7;
+  color: var(--muted);
 }
-.hud-btn:hover { opacity: 1; }
 
-/* Quiet until used. A verdict button that shouts competes with the card
-   it is meant to be judging. */
-.hud-nope {
-  opacity: .3;
-  font-size: .82rem;
-  transition: opacity .15s ease, transform .15s cubic-bezier(.22,1,.36,1);
-}
-.hud-nope:active { transform: scale(.88); }
-.hud-nope.is-on {
-  opacity: 1;
-  background: color-mix(in srgb, currentColor 22%, transparent);
-}
+.hud-nope { font-size: .82rem; }
 
 .progress {
   flex: 1;
-  height: 5px;
+  height: 14px;
   border-radius: 99px;
-  background: color-mix(in srgb, currentColor 28%, transparent);
+  background: var(--line);
   overflow: hidden;
 }
 .progress-fill {
   height: 100%;
   width: 0;
-  background: currentColor;
+  background: var(--ok);
   border-radius: 99px;
-  transition: width .45s cubic-bezier(.22,1,.36,1);
+  transition: width .45s ease;
 }
 
 .streak {
-  font-weight: 700;
-  font-size: .95rem;
+  font-weight: 800;
+  font-size: 1rem;
   display: flex;
   align-items: center;
   gap: .2rem;
-  opacity: .8;
+  color: #FF9600;
 }
-.streak.is-hot { animation: streak-pop .26s cubic-bezier(.22,1,.36,1); opacity: 1; }
+.streak.is-hot { animation: streak-pop .26s ease; }
 
 .stage { position: absolute; inset: 0; }
 
@@ -487,47 +475,43 @@ button { cursor: pointer; border: 0; background: none; }
   padding: 2rem 1.25rem;
 }
 .summary-title {
-  font-family: "Anton", sans-serif;
-  font-size: clamp(3rem, 15vw, 7rem);
-  margin: 0 0 2rem;
-  letter-spacing: -.03em;
-  color: #f5f500;
-  animation: slam-in .3s cubic-bezier(.22,1,.36,1) both;
+  font-size: 2.2rem;
+  font-weight: 900;
+  margin: 0 0 1.75rem;
+  color: var(--ok);
 }
 .summary-stats {
   display: grid;
   grid-template-columns: repeat(2, minmax(120px, 1fr));
-  gap: 1rem;
+  gap: .8rem;
   max-width: 460px;
   width: 100%;
 }
 .stat {
-  padding: 1.2rem .8rem;
-  border-radius: 18px;
-  background: #191919;
-  animation: deck-in .3s cubic-bezier(.22,1,.36,1) both;
-  animation-delay: calc(var(--i) * 80ms + 120ms);
+  padding: 1rem .8rem;
+  border-radius: 16px;
+  border: 2px solid var(--line);
 }
 .stat-n {
   display: block;
-  font-family: "Archivo Black", sans-serif;
-  font-size: clamp(1.6rem, 7vw, 2.4rem);
-  line-height: 1;
+  font-size: 1.8rem;
+  font-weight: 900;
+  line-height: 1.1;
 }
-.stat-l { display: block; margin-top: .35rem; font-size: .72rem; text-transform: uppercase; letter-spacing: .08em; opacity: .55; }
+.stat-l { display: block; margin-top: .3rem; font-size: .8rem; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
 
 /* ── Editor ──────────────────────────────────────────────── */
 .editor-wrap { max-width: 640px; margin: 0 auto; padding: max(2rem, env(safe-area-inset-top)) 1.25rem 3rem; }
-.editor-title { font-family: "Anton", sans-serif; font-size: clamp(2.4rem, 10vw, 4rem); margin: 1rem 0 1.5rem; letter-spacing: -.02em; }
+.editor-title { font-size: 1.8rem; font-weight: 900; margin: 1rem 0 1.5rem; }
 .field { display: block; margin-bottom: 1.25rem; }
-.field > span { display: block; margin-bottom: .45rem; font-size: .8rem; text-transform: uppercase; letter-spacing: .08em; opacity: .6; }
+.field > span { display: block; margin-bottom: .45rem; font-size: .85rem; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
 .field input, .field textarea {
   width: 100%;
   padding: .9rem 1rem;
   border-radius: 14px;
-  border: 2px solid rgba(255,255,255,.18);
-  background: #141414;
+  border: 2px solid var(--line);
+  background: var(--soft);
   resize: vertical;
 }
-.field input:focus, .field textarea:focus { outline: none; border-color: #f5f500; }
-.field code { background: rgba(255,255,255,.1); padding: .1em .35em; border-radius: 5px; }
+.field input:focus, .field textarea:focus { outline: none; border-color: var(--sel); }
+.field code { background: var(--line); padding: .1em .35em; border-radius: 5px; }
