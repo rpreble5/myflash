@@ -18,6 +18,7 @@
      behaviour, so an empty store behaves exactly as before. */
   var DEFAULTS = {
     submitOnRelease: false,
+    numberSlider: false,
     sound: true,
     haptics: true
   };

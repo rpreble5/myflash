@@ -1010,7 +1010,10 @@
     id: 'number', label: 'DRAG TO SET', types: ['number'], weight: 1,
     /* The value is the interaction; the question is only the prompt. */
     compact: true,
-    eligible: function (card) { return card.value != null || card.low != null; },
+    /* Kept for anyone who prefers it: Settings → Slider for number cards. */
+    eligible: function (card) {
+      return (card.value != null || card.low != null) && !!global.Store.setting('numberSlider');
+    },
     mount: function (area, ctx) {
       var card = ctx.card;
       var sc = scaleFor(card);
@@ -1135,7 +1138,118 @@
     }
   };
 
-  var ALL = [recall, choice, multi, truefalse, trend, bucket, order, match, number];
+  /* ═══════════════ number: the keypad ═══════════════
+
+     Type the number. No scale to guess at and nothing on screen that
+     hints at the answer, so every card works and it tests real recall.
+     Range cards take any value inside the band, as with the slider.    */
+
+  var keypad = {
+    id: 'keypad', label: '', types: ['number'], weight: 1,
+    eligible: function (card) {
+      return (card.value != null || card.low != null) && !global.Store.setting('numberSlider');
+    },
+    mount: function (area, ctx) {
+      var card = ctx.card;
+      /* Decimals come from the answer itself: a decimal key only appears
+         when the answer has one, and only that many places can be typed. */
+      var dp = Math.max(decimals(card.value == null ? 0 : card.value),
+                        decimals(card.low == null ? 0 : card.low),
+                        decimals(card.high == null ? 0 : card.high));
+      /* One more whole digit than the answer has, so a wrong answer an
+         order of magnitude out can still be typed. */
+      var top = Math.max(card.value || 0, card.high || 0);
+      var maxDigits = String(Math.round(top)).length + 1;
+      var unit = card.unit ? ' ' + card.unit : '';
+      var typed = '', locked = false;
+
+      var entry = h('div', 'q kp-entry');
+      var num = h('span', 'kp-num is-empty', '?');
+      entry.appendChild(num);
+      if (card.unit) entry.appendChild(h('span', 'kp-unit', card.unit));
+
+      var truth = card.low != null
+        ? fmt(card.low, dp) + ' – ' + fmt(card.high, dp)
+        : fmt(card.value, dp);
+      var why = card.why;
+      ctx.stack(truth + unit, why ? function (fits) {
+        var w = explanation(why, ctx, fits ? STACK_WHY_INLINE : 0);
+        w.classList.add('is-held');
+        return w;
+      } : null, entry);
+
+      var pad = h('div', 'keypad');
+      function key(label, cls, fn) {
+        var b = h('button', 'key' + (cls ? ' ' + cls : ''), label);
+        b.addEventListener('click', function (e) { e.stopPropagation(); fn(); });
+        pad.appendChild(b);
+        return b;
+      }
+      ['1', '2', '3', '4', '5', '6', '7', '8', '9'].forEach(function (d) {
+        key(d, null, function () { press(d); });
+      });
+      if (dp > 0) key('.', null, function () { press('.'); });
+      else pad.appendChild(h('span', 'key key-blank'));
+      key('0', null, function () { press('0'); });
+      key('⌫', 'key-del', del).setAttribute('aria-label', 'Delete');
+      var check = h('button', 'key-check', 'CHECK');
+      check.disabled = true;
+      check.addEventListener('click', function (e) { e.stopPropagation(); submit(); });
+      pad.appendChild(check);
+      area.appendChild(pad);
+
+      function show() {
+        var parts = typed.split('.');
+        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        num.textContent = typed ? parts.join('.') : '?';
+        num.classList.toggle('is-empty', !typed);
+        check.disabled = !typed || typed === '.' || /\.$/.test(typed);
+      }
+
+      function press(d) {
+        if (locked) return;
+        var parts = typed.split('.');
+        if (d === '.') {
+          if (!dp || parts.length > 1) return;
+          typed = (typed || '0') + '.';
+        } else if (parts.length > 1) {
+          if (parts[1].length >= dp) return;
+          typed += d;
+        } else {
+          if (typed === '0') typed = '';
+          if (typed.length >= maxDigits) return;
+          typed += d;
+        }
+        global.Sfx.tick();
+        show();
+      }
+
+      function del() {
+        if (locked || !typed) return;
+        typed = typed.slice(0, -1);
+        global.Sfx.tick();
+        show();
+      }
+
+      function submit() {
+        if (locked || check.disabled) return;
+        locked = true;
+        var ok = isCorrect(card, Number(typed));
+        entry.classList.add(ok ? 'is-right' : 'is-wrong');
+        pad.classList.add('is-done');
+        /* Right: your number is the answer and is already on screen. Wrong:
+           it stays, in red, and the correct one rises in under it. */
+        ctx.stackReveal(!ok);
+        settle(ctx, ok ? 1 : 0);
+      }
+
+      var keyMap = { 'Backspace': del, 'Enter': submit, '.': function () { press('.'); } };
+      '0123456789'.split('').forEach(function (d) { keyMap[d] = function () { press(d); }; });
+      ctx.keys(keyMap);
+    }
+  };
+
+  var ALL = [recall, choice, multi, truefalse, trend, bucket, order, match, number, keypad];
 
   /* Presentations are chosen only from those that serve the card's type. */
   var lastId = null;

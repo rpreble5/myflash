@@ -778,3 +778,57 @@
    guess and the band, so the gap is always legible — see windowFor. Your
    mark is ink, the accepted region is accent, matching what those colours
    mean everywhere else. Sequenced behind the stack. */
+
+/* ── Number: the keypad ──────────────────────────────────────
+   Round keys sized from the screen height, so the pad fills the bottom
+   of a tall phone and still leaves the question room on a short one. */
+.kp-entry { font-size: 40px; font-weight: 900; line-height: 1.2; white-space: nowrap; transition: color .2s ease; }
+.kp-num { font-variant-numeric: tabular-nums; }
+.kp-num.is-empty { color: var(--line); }
+.kp-unit { margin-left: .3em; font-size: .5em; font-weight: 700; color: var(--muted); }
+.kp-entry.is-right { color: var(--ok-dark); }
+.kp-entry.is-wrong { color: var(--bad); }
+
+.keypad {
+  --key: clamp(46px, 7.4vh, 66px);
+  display: grid;
+  grid-template-columns: repeat(3, var(--key));
+  justify-content: center;
+  gap: 12px 30px;
+  transition: opacity .25s ease;
+}
+.keypad.is-done { opacity: 0; pointer-events: none; }
+
+.key {
+  width: var(--key);
+  height: var(--key);
+  border-radius: 50%;
+  border: 2px solid var(--line);
+  border-bottom-width: 4px;
+  background: var(--bg);
+  color: var(--ink);
+  font-size: calc(var(--key) * .42);
+  font-weight: 800;
+  line-height: 1;
+  transition: transform .06s ease, background-color .08s ease;
+}
+.key:active { transform: translateY(2px) scale(.96); border-bottom-width: 2px; background: var(--soft); }
+.key-del { color: var(--muted); font-size: calc(var(--key) * .36); }
+.key-blank { visibility: hidden; }
+
+.key-check {
+  grid-column: 1 / -1;
+  height: calc(var(--key) * .8);
+  margin-top: 4px;
+  border-radius: 999px;
+  background: var(--ok);
+  color: #fff;
+  box-shadow: 0 4px 0 var(--ok-dark);
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: .04em;
+  transition: transform .06s ease, box-shadow .06s ease, background-color .15s ease;
+}
+.key-check:active { transform: translateY(2px); box-shadow: 0 2px 0 var(--ok-dark); }
+.key-check:disabled { background: var(--line); color: #AFAFAF; box-shadow: 0 4px 0 #D0D0D0; }
+

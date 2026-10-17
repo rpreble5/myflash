@@ -386,13 +386,27 @@
     function place(node, y) { node.style.transform = 'translateY(' + Math.round(y) + 'px)'; }
 
     function layoutStack() {
-      qEl.style.fontSize = questionSize(qEl.textContent) + 'px';
-      stack.answer.style.fontSize = answerSize(stack.answer.textContent) + 'px';
-
       var R = flipper.clientHeight, GAP = STACK_GAP;
-      var qH = qEl.getBoundingClientRect().height;
+      /* Under a typed number the correct one matches it in size. */
+      stack.answer.style.fontSize = (stack.entry ? 40 : answerSize(stack.answer.textContent)) + 'px';
       var aH = stack.answer.getBoundingClientRect().height;
-      var block = qH + GAP + aH;
+      /* A live entry line (the keypad's number) sits between the question
+         and the answer, which then only appears on a miss. */
+      var eH = stack.entry ? stack.entry.getBoundingClientRect().height + GAP : 0;
+
+      /* The question's size comes from its length. Only on a screen too
+         short for the whole block does it step down, and only before the
+         answer is shown, so it never rewraps in front of you. */
+      var qSize = questionSize(qEl.textContent);
+      qEl.style.fontSize = qSize + 'px';
+      var qH = qEl.getBoundingClientRect().height;
+      while (!stack.shown && qSize > 18 && qH + GAP + eH + aH > R) {
+        qSize -= 2;
+        qEl.style.fontSize = qSize + 'px';
+        qH = qEl.getBoundingClientRect().height;
+      }
+
+      var block = qH + GAP + eH + aH;
       var top = Math.max(0, R * STACK_SETTLE - block / 2);
 
       /* The explanation: inline if it fits under the answer, lifting the
@@ -410,8 +424,9 @@
         }
       }
 
-      var aEnd = top + qH + GAP;
+      var aEnd = top + qH + GAP + eH;
       place(qEl, top);
+      if (stack.entry) place(stack.entry, top + qH + GAP);
       place(stack.answer, stack.shown ? aEnd : aEnd + STACK_RISE);
       stack.aEnd = aEnd;
       if (stack.why) {
@@ -581,21 +596,26 @@
 
       /* Switch this card to the stacked layout. `makeWhy(fits)` builds the
          explanation: inline when `fits`, the WHY button otherwise. */
-      stack: function (answerText, makeWhy) {
+      stack: function (answerText, makeWhy, entry) {
         el.classList.add('is-stack');
         var node = h('div', 'q a-face stack-answer', answerText);
         front.appendChild(node);
-        stack = { answer: node, makeWhy: makeWhy, why: null, cue: false, shown: false };
+        if (entry) front.appendChild(entry);
+        stack = { answer: node, entry: entry || null, makeWhy: makeWhy, why: null, cue: false, shown: false };
         /* Built now rather than at layout, so the fallback below that adds
            a missing explanation sees this one and does not add a second. */
         if (makeWhy) setWhy(makeWhy(true));
         layoutStackLater();
       },
 
-      stackReveal: function () {
+      /* `withAnswer: false` releases only the explanation — a right answer
+         on the keypad is already on screen. */
+      stackReveal: function (withAnswer) {
         stack.shown = true;
-        place(stack.answer, stack.aEnd);
-        stack.answer.classList.add('is-in');
+        if (withAnswer !== false) {
+          place(stack.answer, stack.aEnd);
+          stack.answer.classList.add('is-in');
+        }
         if (stack.why) stack.why.classList.remove('is-held');
       },
 
@@ -979,6 +999,7 @@
     renderHome();
 
     bindToggle('#tg-submit', 'submitOnRelease');
+    bindToggle('#tg-slider', 'numberSlider');
     bindToggle('#tg-sound', 'sound', function (on) { global.Sfx.setEnabled(on); });
     bindToggle('#tg-haptics', 'haptics', function (on) { global.Sfx.setHaptics(on); });
     /* Say so rather than offering a switch that does nothing: desktop
