@@ -40,7 +40,7 @@
     display: flex;
     align-items: center;
     gap: .6rem;
-    margin-top: .7rem;
+    margin-top: .55rem;
     font-size: .9rem;
     color: var(--muted);
   }
@@ -138,7 +138,7 @@
                 font-size .42s cubic-bezier(.22, 1, .36, 1),
                 color .42s ease;
   }
-  .pv-q.is-small { font-size: 20px; color: var(--muted); }
+  .pv-q.is-small { font-size: 24px; color: var(--muted); }
 
   /* Replacing the question: the current fade. */
   .pv-q.is-leaving {
@@ -200,6 +200,10 @@
     <span class="toggle-track"><span class="toggle-thumb"></span></span>
     <span id="keep-label">Keep the question on screen</span>
   </button>
+  <button class="pv-keep" id="whypos" role="switch" aria-checked="false">
+    <span class="toggle-track"><span class="toggle-thumb"></span></span>
+    <span>Explanation at the bottom</span>
+  </button>
 
   <div class="pv-card" id="card">
     <div class="pv-kicker" id="kicker">Tap to reveal</div>
@@ -246,7 +250,9 @@
   var region = $('#region'), qEl = $('#q'), aEl = $('#a'), whyEl = $('#why');
   var kicker = $('#kicker'), bar = $('#bar'), tap = $('#tap');
 
-  var mode = 'slide', keep = false, index = 0, revealed = false, busy = false;
+  var mode = 'slide', keep = false, whyAtBottom = false, index = 0, revealed = false, busy = false;
+  /* The question's size once it has moved aside, against 30px before. */
+  var Q_SMALL = 24;
 
   function setKicker(text) {
     kicker.classList.add('is-changing');
@@ -327,25 +333,32 @@
     var aH = heightAt(aEl, 32);
     var whyH = whyEl.textContent || whyEl.firstChild ? heightAt(whyEl, 16) : 0;
     var GAP = 18;
-    var aTop, whyTop;
+    var smallH = keeping() ? heightAt(qEl, Q_SMALL) : 0;
+
+    /* The answer sits in the middle of the screen. The question sits just
+       above it, so it only travels as far as it has to. */
+    var aTop = (regionH - aH) / 2;
+    var qTop = aTop - GAP - smallH;
+    var whyTop = whyAtBottom ? regionH - whyH - GAP : aTop + aH + GAP;
+
+    /* Long text can push past the edges; slide the block back in. */
+    var lowest = whyH ? Math.max(whyTop + whyH, aTop + aH) : aTop + aH;
+    if (!whyAtBottom && lowest > regionH) { var up = lowest - regionH; aTop -= up; qTop -= up; whyTop -= up; }
+    var highest = keeping() ? qTop : aTop;
+    if (highest < 0) { aTop -= highest; qTop -= highest; if (!whyAtBottom) whyTop -= highest; }
+    if (whyAtBottom && whyTop < aTop + aH + GAP) whyTop = aTop + aH + GAP;
 
     if (keeping()) {
-      var smallH = heightAt(qEl, 20);
-      aTop = smallH + GAP;
       qEl.classList.add('is-moving', 'is-small');
-      qEl.style.transform = 'translateY(0)';
+      qEl.style.transform = 'translateY(' + qTop + 'px)';
     } else {
-      /* The answer takes the question's place in the middle. */
-      var block = aH + (whyH ? GAP + whyH : 0);
-      aTop = Math.max(0, (regionH - block) / 2);
       qEl.classList.add('is-leaving');
       qEl.style.transform = 'translateY(' + (Number(qEl.dataset.mid) - regionH * 0.18) + 'px)';
     }
-    whyTop = aTop + aH + GAP;
 
     var cls = { slide: 'm-slide', words: 'm-words', mark: 'm-mark', fade: 'm-fade' }[mode];
     /* Where each answer starts from before it settles. */
-    var from = mode === 'slide' ? 40 : mode === 'fade' ? (keeping() ? 24 : regionH * 0.18) : 0;
+    var from = mode === 'slide' ? 28 : mode === 'fade' ? (keeping() ? 24 : regionH * 0.18) : 0;
     aEl.style.transition = 'none';
     aEl.style.transform = 'translateY(' + (aTop + from) + 'px)';
     aEl.getBoundingClientRect();
@@ -389,6 +402,9 @@
     sw.classList.toggle('is-on', keeping());
     sw.classList.toggle('is-off', mode === 'slide');
     sw.setAttribute('aria-checked', keeping() ? 'true' : 'false');
+    var wp = $('#whypos');
+    wp.classList.toggle('is-on', whyAtBottom);
+    wp.setAttribute('aria-checked', whyAtBottom ? 'true' : 'false');
     $('#keep-label').textContent = mode === 'slide'
       ? 'Option 1 always keeps the question'
       : 'Keep the question on screen';
@@ -398,6 +414,11 @@
     var t = e.target.closest('.pv-tab');
     if (!t) return;
     mode = t.dataset.mode;
+    paintControls();
+    render();
+  });
+  $('#whypos').addEventListener('click', function () {
+    whyAtBottom = !whyAtBottom;
     paintControls();
     render();
   });
