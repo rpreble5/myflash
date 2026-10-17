@@ -209,7 +209,7 @@
   flex: 0 0 auto;
   width: 26px; height: 26px;
   border-radius: 8px;
-  border: 2px solid var(--line);
+  border: 3px solid var(--line);
   color: var(--muted);
   display: grid; place-items: center;
   font-size: .85rem;
@@ -242,7 +242,7 @@
 /* Where the CHECK button used to be. It holds that box whether or not it
    is legible, so revealing the answer never shifts the options. */
 .submit-cue { opacity: .7; transition: opacity .18s ease; }
-.submit-cue.is-live { opacity: 1; color: var(--ok-dark); }
+.submit-cue.is-live { opacity: 1; color: var(--brand-dark); }
 .submit-cue.is-hidden { visibility: hidden; }
 /* Once the drag is heading somewhere, the cue confirms rather than asks. */
 .card[data-armed="right"] .submit-cue { opacity: 1; }
@@ -257,7 +257,7 @@
 }
 /* The tint means "selected right now", so it stops meaning anything once
    the answer is in — and must not outrank the reveal states below. */
-.choice-grid:not(.is-locked) .choice-btn.is-picked { background: var(--sel-bg); border-color: var(--sel); color: #1899D6; }
+.choice-grid:not(.is-locked) .choice-btn.is-picked { background: var(--sel-bg); border-color: var(--sel); color: var(--brand-dark); }
 .choice-grid:not(.is-locked) .choice-btn.is-picked .choice-box { background: var(--sel); border-color: var(--sel); color: #fff; }
 
 /* After CHECK. Every answer fills, so the set reads as the answer; the
@@ -339,8 +339,8 @@
   color: var(--sel);
   opacity: 0;
   padding: .5rem .9rem;
-  border: 2px solid var(--line);
-  border-bottom-width: 4px;
+  border: 3px solid var(--line);
+  border-bottom-width: 6px;
   border-radius: 14px;
   background: transparent;
   transition: opacity .26s ease, transform .18s cubic-bezier(.22,1,.36,1);
@@ -424,8 +424,8 @@
   text-transform: uppercase;
   padding: .45rem .9rem;
   border-radius: 12px;
-  border: 2px solid var(--line);
-  border-bottom-width: 3px;
+  border: 3px solid var(--line);
+  border-bottom-width: 5px;
   color: var(--ink);
   transition: opacity .16s ease, background-color .16s ease, color .16s ease;
 }
@@ -454,12 +454,12 @@
 
 /* ── Shared submit ───────────────────────────────────────── */
 .btn-check {
-  background: var(--ok);
+  background: var(--brand);
   color: #fff;
-  box-shadow: 0 4px 0 var(--ok-dark);
+  box-shadow: 0 5px 0 var(--brand-dark);
   min-width: 160px;
 }
-.btn-check:disabled { background: var(--line); color: #AFAFAF; box-shadow: 0 4px 0 #D0D0D0; cursor: default; }
+.btn-check:disabled { background: var(--line); color: #AFAFAF; box-shadow: 0 5px 0 #D0D0D0; cursor: default; }
 /* Hidden, not removed: the button keeps its box so the lines above it stay
    put — both after answering and in submit-on-release mode. */
 .btn-check.is-hidden { visibility: hidden; }
@@ -477,7 +477,7 @@
 .card[data-swipe="left"]  .tf-false,
 .card[data-swipe="right"] .tf-true { border-color: var(--sel); color: var(--sel); }
 .card[data-armed="left"]  .tf-false,
-.card[data-armed="right"] .tf-true { background: var(--sel); border-color: #1899D6; color: #fff; }
+.card[data-armed="right"] .tf-true { background: var(--sel); border-color: var(--brand-dark); color: #fff; }
 .tf-side.is-right { background: var(--ok); border-color: var(--ok-dark); color: #fff; }
 .tf-side.is-wrong { background: var(--bad); border-color: var(--bad-dark); color: #fff; }
 
@@ -500,7 +500,7 @@
   gap: .7rem;
   padding: .45rem .5rem .45rem .9rem;
   border-radius: 16px;
-  border: 2px solid var(--line);
+  border: 3px solid var(--line);
   animation: choice-in .24s cubic-bezier(.22,1,.36,1) backwards;
   animation-delay: calc(var(--i) * 60ms);
   transition: border-color .2s, opacity .2s;
@@ -521,8 +521,8 @@
   display: grid;
   place-items: center;
   border-radius: 13px;
-  border: 2px solid var(--line);
-  border-bottom-width: 4px;
+  border: 3px solid var(--line);
+  border-bottom-width: 6px;
   color: var(--muted);
   transition: transform .12s cubic-bezier(.22,1,.36,1), background-color .15s, color .15s;
 }
@@ -581,7 +581,7 @@
   padding: .4rem .65rem;
   border-radius: 10px;
   background: var(--soft);
-  border: 2px solid var(--line);
+  border: 3px solid var(--line);
   color: var(--ink);
   animation: sort-drop .2s cubic-bezier(.25,.8,.4,1) both;
 }
@@ -608,8 +608,8 @@
   min-width: 140px;
   padding: 1.25rem .9rem;
   border-radius: 16px;
-  border: 2px solid var(--line);
-  border-bottom-width: 4px;
+  border: 3px solid var(--line);
+  border-bottom-width: 6px;
   color: var(--ink);
   font-weight: 800;
   font-size: 1.05rem;
@@ -666,8 +666,8 @@
 .order-chip {
   padding: .6rem .9rem;
   border-radius: 13px;
-  border: 2px solid var(--line);
-  border-bottom-width: 4px;
+  border: 3px solid var(--line);
+  border-bottom-width: 6px;
   background: var(--bg);
   color: var(--ink);
   font-family: var(--body-face);
@@ -692,8 +692,8 @@
 .match-btn {
   padding: .85rem .7rem;
   border-radius: 15px;
-  border: 2px solid var(--line);
-  border-bottom-width: 4px;
+  border: 3px solid var(--line);
+  border-bottom-width: 6px;
   color: var(--ink);
   font-family: var(--body-face);
   font-weight: 700;
@@ -703,7 +703,7 @@
   animation-delay: calc(var(--i) * 55ms);
   transition: transform .14s cubic-bezier(.22,1,.36,1), background-color .18s, color .18s, opacity .18s;
 }
-.match-btn.is-sel { background: var(--sel-bg); border-color: var(--sel); color: #1899D6; }
+.match-btn.is-sel { background: var(--sel-bg); border-color: var(--sel); color: var(--brand-dark); }
 .match-btn.is-solved {
   background: var(--ok);
   color: #fff;
@@ -817,8 +817,8 @@
   width: var(--key);
   height: var(--key);
   border-radius: 50%;
-  border: 2px solid var(--line);
-  border-bottom-width: 4px;
+  border: 3px solid var(--line);
+  border-bottom-width: 6px;
   background: var(--bg);
   color: var(--ink);
   font-size: calc(var(--key) * .42);
@@ -826,7 +826,7 @@
   line-height: 1;
   transition: transform .06s ease, background-color .08s ease;
 }
-.key:active { transform: translateY(2px) scale(.96); border-bottom-width: 2px; background: var(--soft); }
+.key:active { transform: translateY(3px); border-bottom-width: 3px; background: var(--soft); }
 .key-del { color: var(--muted); font-size: calc(var(--key) * .36); }
 .key-blank { visibility: hidden; }
 
@@ -835,14 +835,14 @@
   height: calc(var(--key) * .8);
   margin-top: 4px;
   border-radius: 999px;
-  background: var(--ok);
+  background: var(--brand);
   color: #fff;
-  box-shadow: 0 4px 0 var(--ok-dark);
+  box-shadow: 0 5px 0 var(--brand-dark);
   font-size: 1rem;
   font-weight: 800;
   letter-spacing: .04em;
   transition: transform .06s ease, box-shadow .06s ease, background-color .15s ease;
 }
-.key-check:active { transform: translateY(2px); box-shadow: 0 2px 0 var(--ok-dark); }
-.key-check:disabled { background: var(--line); color: #AFAFAF; box-shadow: 0 4px 0 #D0D0D0; }
+.key-check:active { transform: translateY(3px); box-shadow: 0 2px 0 var(--brand-dark); }
+.key-check:disabled { background: var(--line); color: #AFAFAF; box-shadow: 0 5px 0 #D0D0D0; }
 

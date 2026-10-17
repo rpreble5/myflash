@@ -4,16 +4,23 @@
 :root {
   --bg: #FFFFFF;
   --ink: #3C3C3C;
-  --acc: #58A700;
   --muted: #777777;
   --line: #E5E5E5;
   --soft: #F7F7F7;
-  --ok: #58CC02;
-  --ok-dark: #58A700;
-  --bad: #FF4B4B;
-  --bad-dark: #EA2B2B;
-  --sel: #1CB0F6;
-  --sel-bg: #DDF4FF;
+  /* The app's color: buttons, progress, the logo, and the revealed
+     answer. */
+  --brand: #2F6FED;
+  --brand-dark: #2357C5;
+  --brand-soft: #E6EEFD;
+  --acc: var(--brand);
+  /* How you did. Calmer than a traffic light on purpose. */
+  --ok: #3FA66B;
+  --ok-dark: #2F8655;
+  --bad: #E5675F;
+  --bad-dark: #C9524B;
+  /* Picked but not yet submitted. */
+  --sel: var(--brand);
+  --sel-bg: var(--brand-soft);
   --weight: 800;
   --track: 0;
   --face: "Nunito", system-ui, -apple-system, sans-serif;
@@ -77,16 +84,16 @@ button { cursor: pointer; border: 0; background: none; }
 .btn:active { transform: translateY(2px); }
 
 .btn-solid {
-  background: var(--ok);
+  background: var(--brand);
   color: #fff;
-  box-shadow: 0 4px 0 var(--ok-dark);
+  box-shadow: 0 5px 0 var(--brand-dark);
 }
-.btn-solid:active { box-shadow: 0 2px 0 var(--ok-dark); }
+.btn-solid:active { box-shadow: 0 2px 0 var(--brand-dark); }
 .btn-ghost {
   background: var(--bg);
   color: var(--ink);
-  border: 2px solid var(--line);
-  box-shadow: 0 4px 0 var(--line);
+  border: 3px solid var(--line);
+  box-shadow: 0 5px 0 var(--line);
 }
 .btn-ghost:active { box-shadow: 0 2px 0 var(--line); }
 
@@ -107,7 +114,7 @@ button { cursor: pointer; border: 0; background: none; }
   font-weight: 900;
   letter-spacing: -.01em;
 }
-.wordmark-a { color: var(--ok); }
+.wordmark-a { color: var(--brand); }
 .wordmark-b { color: var(--ink); }
 
 .tagline {
@@ -125,8 +132,8 @@ button { cursor: pointer; border: 0; background: none; }
   border-radius: 16px;
   background: var(--bg);
   color: var(--ink);
-  border: 2px solid var(--line);
-  border-bottom-width: 4px;
+  border: 3px solid var(--line);
+  border-bottom-width: 6px;
   overflow: hidden;
 }
 .topic-head {
@@ -168,7 +175,7 @@ button { cursor: pointer; border: 0; background: none; }
   display: block;
   height: 100%;
   border-radius: 99px;
-  background: var(--ok);
+  background: var(--brand);
   transition: width .5s ease;
 }
 
@@ -182,10 +189,10 @@ button { cursor: pointer; border: 0; background: none; }
   font-size: .9rem;
 }
 .btn-topic-all {
-  background: var(--ok);
+  background: var(--brand);
   color: #fff;
   border: 0;
-  box-shadow: 0 4px 0 var(--ok-dark);
+  box-shadow: 0 5px 0 var(--brand-dark);
 }
 
 .deck-row {
@@ -197,7 +204,7 @@ button { cursor: pointer; border: 0; background: none; }
   padding: .8rem .9rem;
   margin-bottom: .5rem;
   border-radius: 14px;
-  border: 2px solid var(--line);
+  border: 3px solid var(--line);
   background: var(--bg);
   color: inherit;
 }
@@ -220,13 +227,13 @@ button { cursor: pointer; border: 0; background: none; }
   width: 44px; height: 44px;
   flex: 0 0 auto;
   border-radius: 14px;
-  border: 2px solid var(--line);
-  border-bottom-width: 4px;
+  border: 3px solid var(--line);
+  border-bottom-width: 6px;
   color: var(--muted);
   font-size: 1.2rem;
   line-height: 1;
 }
-.icon-btn:active { transform: translateY(2px); border-bottom-width: 2px; }
+.icon-btn:active { transform: translateY(3px); border-bottom-width: 3px; }
 .corner-btn { position: absolute; top: max(1.25rem, env(safe-area-inset-top)); right: 1.25rem; z-index: 2; }
 
 .settings-group {
@@ -258,7 +265,7 @@ button { cursor: pointer; border: 0; background: none; }
   width: 100%;
   padding: .7rem .8rem;
   border-radius: 14px;
-  border: 2px solid var(--line);
+  border: 3px solid var(--line);
 }
 .manage-text { display: flex; flex-direction: column; gap: .1rem; min-width: 0; flex: 1; }
 .manage-name {
@@ -276,7 +283,7 @@ button { cursor: pointer; border: 0; background: none; }
 .manage-del {
   flex: none;
   padding: .45rem .8rem;
-  border: 2px solid var(--line);
+  border: 3px solid var(--line);
   border-radius: 12px;
   background: transparent;
   color: var(--bad);
@@ -303,7 +310,7 @@ button { cursor: pointer; border: 0; background: none; }
   width: 46px;
   height: 26px;
   border-radius: 999px;
-  border: 2px solid var(--line);
+  border: 3px solid var(--line);
   background: var(--line);
   padding: 3px;
   transition: background-color .16s ease, border-color .16s ease;
@@ -316,7 +323,7 @@ button { cursor: pointer; border: 0; background: none; }
   background: #fff;
   transition: transform .16s cubic-bezier(.22,1,.36,1), background-color .16s ease;
 }
-.toggle.is-on .toggle-track { background: var(--ok); border-color: var(--ok); }
+.toggle.is-on .toggle-track { background: var(--brand); border-color: var(--brand); }
 .toggle.is-on .toggle-thumb { background: #fff; transform: translateX(20px); }
 .toggle-text { display: flex; flex-direction: column; gap: .15rem; }
 .toggle-name { font-weight: 800; font-size: 1rem; }
@@ -363,7 +370,7 @@ button { cursor: pointer; border: 0; background: none; }
 .progress-fill {
   height: 100%;
   width: 0;
-  background: var(--ok);
+  background: var(--brand);
   border-radius: 99px;
   transition: width .45s ease;
 }
@@ -394,7 +401,7 @@ button { cursor: pointer; border: 0; background: none; }
   font-size: 2.2rem;
   font-weight: 900;
   margin: 0 0 1.75rem;
-  color: var(--ok);
+  color: var(--brand);
 }
 .summary-stats {
   display: grid;
@@ -406,7 +413,7 @@ button { cursor: pointer; border: 0; background: none; }
 .stat {
   padding: 1rem .8rem;
   border-radius: 16px;
-  border: 2px solid var(--line);
+  border: 3px solid var(--line);
 }
 .stat-n {
   display: block;
