@@ -738,17 +738,17 @@
 /* A custom property is not checked against the browser, so the dvh
    version has to be gated or an older browser loses the key size. */
 @supports (height: 1dvh) {
-  .keypad { --key: clamp(42px, 5.8dvh, 58px); }
+  .keypad { --key: clamp(54px, 7.6dvh, 76px); }
 }
 
 .keypad {
   /* Sized from the visible height (dvh) where the browser knows it; vh
      can include space behind a hidden navigation bar. */
-  --key: clamp(42px, 5.8vh, 58px);
+  --key: clamp(54px, 7.6vh, 76px);
   display: grid;
   grid-template-columns: repeat(3, var(--key));
   justify-content: center;
-  gap: 12px 30px;
+  gap: 10px 16px;
   transition: opacity .25s ease;
 }
 .keypad.is-done { opacity: 0; pointer-events: none; }
