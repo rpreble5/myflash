@@ -2046,48 +2046,29 @@
       ]
     },
 
-    {
-      id: 'ite-thyroid-storm',
-      subject: 'FM ITE',
-      topic: 'Endocrine',
-      name: 'THYROID STORM',
-      blurb: 'What goes first, and why the order matters',
-      cards: [
-        { type: 'mcq', q: 'First antithyroid step in thyroid storm, ahead of iodine',
-          a: 'Propylthiouracil', distractors: ['Inorganic iodine', 'Prednisone', 'Plasmapheresis'],
-          why: 'A thionamide has to block hormone synthesis first. Iodine given before that can feed new hormone production.' },
-        { type: 'number', q: 'Minimum wait after the thionamide before giving iodine', value: 1, unit: 'hour' },
-        { type: 'recall', q: 'Why propylthiouracil is preferred over methimazole in thyroid storm',
-          a: 'It also blocks T4-to-T3 conversion',
-          why: 'Outside a storm and early pregnancy, methimazole is preferred because propylthiouracil carries a risk of liver failure.' },
-        { type: 'recall', q: 'Beta blocker classically used in thyroid storm', a: 'Propranolol',
-          why: 'Nonselective, and at high doses it also slows T4-to-T3 conversion.' },
-        { type: 'multi', q: 'Standard treatments for thyroid storm',
-          answers: ['Beta blocker', 'Thionamide', 'Iodine after the thionamide', 'Glucocorticoids'],
-          distractors: ['Aspirin for the fever', 'Radioactive iodine'],
-          why: 'Aspirin displaces thyroid hormone from its binding protein and raises the free level, so acetaminophen is used for fever.' },
-        { type: 'recall', q: 'Score used to judge whether thyrotoxicosis is thyroid storm', a: 'Burch-Wartofsky score' },
-        { type: 'mcq', q: 'Preferred glucocorticoid in thyroid storm',
-          a: 'Hydrocortisone', distractors: ['Prednisone', 'Methylprednisolone', 'Budesonide'],
-          why: 'Hydrocortisone or dexamethasone. Besides covering relative adrenal insufficiency, they slow T4-to-T3 conversion.' },
-        { type: 'recall', q: 'Treatment kept for thyroid storm that fails drug therapy', a: 'Plasmapheresis' }
-      ]
-    },
+    /* ── Thyroid: the pilot of a whole topic built from several ITE
+       questions (5, 24, 170, 194), their wrong answers, and the
+       neighbouring facts the exam tends to ask. ── */
 
     {
-      id: 'ite-graves',
+      id: 'ite-thyroid-recognize',
       subject: 'FM ITE',
-      topic: 'Endocrine',
-      name: 'GRAVES DISEASE',
-      blurb: 'Telling it apart from thyroiditis, and treating it',
+      topic: 'Thyroid',
+      name: 'RECOGNIZE',
+      blurb: 'Causes, patterns and the clues that separate them',
       cards: [
-        { type: 'mcq', q: 'Drug of choice for Graves disease outside the first trimester',
-          a: 'Methimazole', distractors: ['Propylthiouracil', 'Levothyroxine', 'Prednisone'] },
-        { type: 'trend', q: 'Untreated Graves disease', items: [
-          { label: 'TSH', dir: 'down' },
-          { label: 'Free T4', dir: 'up' },
-          { label: 'Radioiodine uptake', dir: 'up' }
+        { type: 'recall', q: 'Most common cause of hyperthyroidism in the US', a: 'Graves disease' },
+        { type: 'recall', q: 'Most common cause of hypothyroidism in the US', a: 'Hashimoto thyroiditis',
+          why: 'Worldwide it is iodine deficiency.' },
+        { type: 'match', q: 'Radioiodine uptake → cause', pairs: [
+          { left: 'Diffuse, high', right: 'Graves disease' },
+          { left: 'One hot spot', right: 'Toxic adenoma' },
+          { left: 'Several hot spots', right: 'Multinodular goiter' },
+          { left: 'Low', right: 'Thyroiditis' }
         ] },
+        { type: 'recall', q: 'Why exophthalmos points to Graves over other causes of hyperthyroidism',
+          a: 'Its antibodies also act on orbital tissue',
+          why: 'TSH receptor antibodies drive both the gland and the eye disease. Toxic nodules and thyroiditis raise hormone levels but never cause orbitopathy.' },
         { type: 'bucket', q: 'Graves disease or thyroiditis?', bins: ['Graves', 'Thyroiditis'], items: [
           { label: 'High, diffuse iodine uptake', bin: 'Graves' },
           { label: 'Low iodine uptake', bin: 'Thyroiditis' },
@@ -2096,18 +2077,201 @@
           { label: 'TSH receptor antibodies', bin: 'Graves' },
           { label: 'Settles without thionamides', bin: 'Thyroiditis' }
         ] },
+        { type: 'recall', q: 'Painful, tender thyroid weeks after a viral illness, with a high ESR',
+          a: 'Subacute (de Quervain) thyroiditis' },
+        { type: 'recall', q: 'Why thyroiditis swings from hyperthyroid to hypothyroid',
+          a: 'Stored hormone leaks out, then runs out',
+          why: 'It is release, not overproduction. That is why uptake is low, and why it usually settles back to normal.' },
+        { type: 'bucket', q: 'Too much thyroid hormone, or too little?', bins: ['Too much', 'Too little'], items: [
+          { label: 'Heat intolerance', bin: 'Too much' },
+          { label: 'Cold intolerance', bin: 'Too little' },
+          { label: 'Frequent loose stools', bin: 'Too much' },
+          { label: 'Constipation', bin: 'Too little' },
+          { label: 'Slow-relaxing reflexes', bin: 'Too little' },
+          { label: 'Fine tremor', bin: 'Too much' }
+        ] },
+        { type: 'trend', q: 'Untreated Graves disease', items: [
+          { label: 'TSH', dir: 'down' },
+          { label: 'Free T4', dir: 'up' },
+          { label: 'Radioiodine uptake', dir: 'up' }
+        ] },
+        { type: 'trend', q: 'Subclinical hypothyroidism', items: [
+          { label: 'TSH', dir: 'up' },
+          { label: 'Free T4', dir: 'same' }
+        ] }
+      ]
+    },
+
+    {
+      id: 'ite-thyroid-workup',
+      subject: 'FM ITE',
+      topic: 'Thyroid',
+      name: 'WORKUP',
+      blurb: 'Which test, in which order, and when the labs mislead',
+      cards: [
+        { type: 'mcq', q: 'First test when thyroid disease is suspected',
+          a: 'TSH', distractors: ['Free T4', 'Total T3', 'Thyroid ultrasound'] },
+        { type: 'recall', q: 'Why TSH is the first thyroid test', a: 'It moves before free T4 leaves normal',
+          why: 'A small change in T4 makes a large change in TSH, so TSH is the most sensitive screen — as long as the pituitary works.' },
+        { type: 'recall', q: 'When a normal TSH can miss hypothyroidism', a: 'Pituitary disease (central hypothyroidism)',
+          why: 'TSH is low or inappropriately normal while free T4 is low. If central disease is suspected, measure free T4 directly.' },
+        { type: 'recall', q: 'Why a T3 level adds little in suspected hypothyroidism',
+          a: 'It stays normal until disease is advanced',
+          why: 'TSH and free T4 make the diagnosis. Routine T3 testing was a wrong answer on the 2025 exam.' },
+        { type: 'recall', q: 'Test that separates Graves from thyroiditis', a: 'Radioactive iodine uptake',
+          why: 'High uptake means the gland is making hormone; low uptake means it is leaking stored hormone, or the hormone is coming from outside.' },
+        { type: 'recall', q: 'Why uptake is low when a patient is secretly taking levothyroxine',
+          a: 'Outside hormone shuts off TSH',
+          why: 'Low thyroglobulin separates this from thyroiditis, where thyroglobulin is high because the gland is breaking down.' },
+        { type: 'recall', q: 'Next test for a thyroid nodule when the TSH is low', a: 'Radionuclide uptake scan',
+          why: 'A hot nodule is rarely cancer and usually needs no biopsy. With a normal or high TSH, the next step is ultrasound.' },
+        { type: 'recall', q: 'Antibody that predicts progression of subclinical hypothyroidism', a: 'Anti-TPO antibody' },
+        { type: 'truefalse', q: 'Thyroid tests are best avoided during acute illness unless thyroid disease is suspected', a: true,
+          why: 'Illness lowers T3 and can shift TSH for a while, and those changes resolve on their own. Treating them helps no one.' }
+      ]
+    },
+
+    {
+      id: 'ite-thyroid-treat-hyper',
+      subject: 'FM ITE',
+      topic: 'Thyroid',
+      name: 'TREAT: HYPER',
+      blurb: 'Thionamides, iodine ablation, surgery and symptom control',
+      cards: [
+        { type: 'mcq', q: 'Drug of choice for Graves disease outside the first trimester',
+          a: 'Methimazole', distractors: ['Propylthiouracil', 'Levothyroxine', 'Prednisone'] },
+        { type: 'recall', q: 'Why methimazole is preferred over propylthiouracil', a: 'PTU carries a risk of severe liver injury' },
         { type: 'recall', q: 'Antithyroid drug preferred in the first trimester', a: 'Propylthiouracil',
           why: 'Methimazole is linked to birth defects early in pregnancy, so the liver risk of propylthiouracil is accepted for those weeks only.' },
-        { type: 'truefalse', q: 'Fever or sore throat on methimazole calls for stopping it and checking a CBC', a: true,
-          why: 'Agranulocytosis is rare but sudden, and those are its first signs.' },
-        { type: 'match', q: 'Radioiodine uptake → cause', pairs: [
-          { left: 'Diffuse, high', right: 'Graves disease' },
-          { left: 'One hot spot', right: 'Toxic adenoma' },
-          { left: 'Several hot spots', right: 'Multinodular goiter' },
-          { left: 'Low', right: 'Thyroiditis' }
-        ] },
+        { type: 'recall', q: 'Why switch from propylthiouracil to methimazole after the first trimester',
+          a: 'Liver risk now outweighs birth-defect risk',
+          why: 'Organ formation is complete after the first trimester, so the birth-defect concern with methimazole has passed.' },
+        { type: 'recall', q: 'Why add a beta blocker when starting a thionamide',
+          a: 'It eases symptoms while the drug takes weeks',
+          why: 'Tremor, palpitations and anxiety settle within hours; hormone levels take weeks to fall.' },
         { type: 'recall', q: 'Rate control for hyperthyroidism when a beta blocker cannot be used',
-          a: 'A calcium channel blocker such as verapamil' }
+          a: 'A calcium channel blocker such as verapamil' },
+        { type: 'multi', q: 'Treatment options for Graves disease',
+          answers: ['Antithyroid drugs', 'Radioactive iodine', 'Thyroidectomy'],
+          distractors: ['Levothyroxine', 'Prednisone'],
+          why: 'The choice rests on the risks of each and on what the patient prefers.' },
+        { type: 'recall', q: 'Why radioactive iodine is avoided with active, moderate Graves eye disease',
+          a: 'It can make the eye disease worse' },
+        { type: 'recall', q: 'Usual long-term result of radioactive iodine for Graves', a: 'Hypothyroidism needing levothyroxine' },
+        { type: 'truefalse', q: 'Radioactive iodine is contraindicated in pregnancy and breastfeeding', a: true,
+          why: 'The fetal thyroid takes up iodine from about 10–12 weeks and would be destroyed along with the mother\'s.' },
+        { type: 'truefalse', q: 'Fever or sore throat on methimazole calls for stopping it and checking a CBC', a: true,
+          why: 'Agranulocytosis is rare but sudden, and those are its first signs.' }
+      ]
+    },
+
+    {
+      id: 'ite-thyroid-storm',
+      subject: 'FM ITE',
+      topic: 'Thyroid',
+      name: 'THYROID STORM',
+      blurb: 'What goes first, and why the order matters',
+      cards: [
+        { type: 'mcq', q: 'First antithyroid step in thyroid storm, ahead of iodine',
+          a: 'Propylthiouracil', distractors: ['Inorganic iodine', 'Prednisone', 'Plasmapheresis'],
+          why: 'A thionamide has to block hormone synthesis first. Iodine given before that can feed new hormone production.' },
+        { type: 'recall', q: 'Why propylthiouracil is preferred over methimazole in thyroid storm',
+          a: 'It also blocks T4-to-T3 conversion',
+          why: 'It lowers circulating T3 faster, though clinically the two do about equally well.' },
+        { type: 'number', q: 'Minimum wait after the thionamide before giving iodine', value: 1, unit: 'hour' },
+        { type: 'recall', q: 'Why give iodine at all in thyroid storm', a: 'It stops release of stored hormone' },
+        { type: 'mcq', q: 'Preferred glucocorticoid in thyroid storm',
+          a: 'Hydrocortisone', distractors: ['Prednisone', 'Methylprednisolone', 'Budesonide'],
+          why: 'Hydrocortisone or dexamethasone. Prednisone was the wrong answer on the 2025 exam.' },
+        { type: 'recall', q: 'Why glucocorticoids help in thyroid storm', a: 'They slow T4-to-T3 conversion',
+          why: 'They also cover any relative adrenal insufficiency under the stress of the storm.' },
+        { type: 'recall', q: 'Beta blocker classically used in thyroid storm', a: 'Propranolol',
+          why: 'Nonselective, and at high doses it also slows T4-to-T3 conversion.' },
+        { type: 'recall', q: 'Why aspirin is avoided for fever in thyroid storm',
+          a: 'It frees hormone from its binding protein',
+          why: 'That raises the free hormone level. Acetaminophen and cooling instead.' },
+        { type: 'recall', q: 'Treatment kept for thyroid storm that fails drug therapy', a: 'Plasmapheresis' },
+        { type: 'recall', q: 'Score used to judge whether thyrotoxicosis is thyroid storm', a: 'Burch-Wartofsky score' }
+      ]
+    },
+
+    {
+      id: 'ite-thyroid-treat-hypo',
+      subject: 'FM ITE',
+      topic: 'Thyroid',
+      name: 'TREAT: HYPO',
+      blurb: 'Who to treat, how to dose, and myxedema coma',
+      cards: [
+        { type: 'mcq', q: 'Standard treatment for hypothyroidism',
+          a: 'Levothyroxine', distractors: ['Liothyronine (T3)', 'Desiccated thyroid', 'Levothyroxine plus T3'],
+          why: 'T4 alone. Combination and desiccated products have shown no consistent benefit.' },
+        { type: 'multi', q: 'Reasons to treat subclinical hypothyroidism outside pregnancy',
+          answers: ['TSH above 10', 'Positive TPO antibodies', 'Treatment-resistant depression'],
+          distractors: ['Resistant constipation', 'Fatigue alone'],
+          why: 'Resistant depression counts; resistant constipation does not. That pair was the trap on the 2025 exam.' },
+        { type: 'recall', q: 'Why start levothyroxine low in older or cardiac patients',
+          a: 'A full dose can bring on angina or arrhythmia',
+          why: 'Start at 25–50 mcg and titrate up.' },
+        { type: 'number', q: 'Weeks to wait before rechecking TSH after a dose change', low: 6, high: 8, unit: 'weeks' },
+        { type: 'recall', q: 'Why recheck TSH only after 6–8 weeks', a: 'T4 takes that long to reach a steady level',
+          why: 'Its half-life is about a week, and it takes about five half-lives to settle.' },
+        { type: 'recall', q: 'How levothyroxine should be taken', a: 'Empty stomach, 30–60 min before food',
+          why: 'Calcium, iron and food all cut absorption. Separate calcium and iron by about 4 hours.' },
+        { type: 'number', q: 'Approximate full replacement dose of levothyroxine', value: 1.6, unit: 'mcg/kg' },
+        { type: 'recall', q: 'Life-threatening extreme of hypothyroidism', a: 'Myxedema coma',
+          why: 'Hypothermia, confusion, hyponatremia and slow breathing. IV levothyroxine plus stress-dose steroids.' },
+        { type: 'recall', q: 'Why steroids come before thyroid hormone in myxedema coma',
+          a: 'Hormone can unmask adrenal insufficiency',
+          why: 'Thyroid hormone speeds cortisol use, which can tip an untreated adrenal deficiency into crisis.' }
+      ]
+    },
+
+    {
+      id: 'ite-thyroid-special',
+      subject: 'FM ITE',
+      topic: 'Thyroid',
+      name: 'SPECIAL CASES',
+      blurb: 'Pregnancy, older adults, drugs and Down syndrome',
+      cards: [
+        { type: 'number', q: 'Increase in levothyroxine need once pregnancy is confirmed', low: 25, high: 30, unit: '%' },
+        { type: 'recall', q: 'Why levothyroxine is raised as soon as pregnancy is confirmed',
+          a: 'The early fetal brain relies on maternal T4' },
+        { type: 'recall', q: 'Usual course of postpartum thyroiditis', a: 'Hyper, then hypo, then usually normal',
+          why: 'It appears within the first year after delivery. Check a TSH when postpartum depression symptoms appear.' },
+        { type: 'recall', q: 'Drug that can cause both hypothyroidism and hyperthyroidism', a: 'Amiodarone',
+          why: 'It is loaded with iodine and can also inflame the gland directly. Lithium mostly causes hypothyroidism.' },
+        { type: 'recall', q: 'How hyperthyroidism often shows up in older adults', a: 'Atrial fibrillation, weight loss, apathy',
+          why: 'The classic tremor and anxiety can be absent, which is why it is called apathetic hyperthyroidism.' },
+        { type: 'recall', q: 'Why treat subclinical hyperthyroidism over 65 with a TSH under 0.1',
+          a: 'It raises atrial fibrillation and bone loss risk' },
+        { type: 'number', q: 'Years between TSH checks in adults with Down syndrome', low: 1, high: 2, unit: 'years',
+          why: 'About half of adults with Down syndrome over 30 have hypothyroidism.' },
+        { type: 'truefalse', q: 'The USPSTF recommends screening asymptomatic adults for thyroid disease', a: false,
+          why: 'The evidence is insufficient (an I statement). Test when there are symptoms or risk factors.' }
+      ]
+    },
+
+    {
+      id: 'ite-thyroid-traps',
+      subject: 'FM ITE',
+      topic: 'Thyroid',
+      name: 'TRAPS',
+      blurb: 'The wrong answers that look right',
+      cards: [
+        { type: 'recall', q: 'Why iodine must never come first in thyroid storm', a: 'It can fuel new hormone synthesis' },
+        { type: 'recall', q: 'Why methimazole is avoided in the first trimester', a: 'It is linked to birth defects' },
+        { type: 'recall', q: 'Why thionamides do nothing for thyroiditis', a: 'The gland is leaking, not overproducing',
+          why: 'A beta blocker for symptoms, and an NSAID for the pain of subacute thyroiditis.' },
+        { type: 'truefalse', q: 'Constipation that resists treatment is a reason to treat subclinical hypothyroidism', a: false,
+          why: 'Treatment-resistant depression is; constipation is not.' },
+        { type: 'truefalse', q: 'A normal TSH rules out hypothyroidism caused by pituitary disease', a: false,
+          why: 'A failing pituitary cannot raise TSH, so it stays low or normal while free T4 falls.' },
+        { type: 'truefalse', q: 'Biotin supplements can make thyroid labs look like Graves disease', a: true,
+          why: 'Biotin interferes with many immunoassays. Stopping it for a couple of days before testing avoids the false result.' },
+        { type: 'mcq', q: 'Finding that marks hormone ingestion rather than thyroiditis',
+          a: 'Low thyroglobulin', distractors: ['High thyroglobulin', 'TSH receptor antibodies', 'High, diffuse uptake'] },
+        { type: 'truefalse', q: 'Levothyroxine plus T3 works better than levothyroxine alone for most patients', a: false,
+          why: 'Trials have not shown a consistent benefit, and T3 swings levels up and down through the day.' }
       ]
     },
 
