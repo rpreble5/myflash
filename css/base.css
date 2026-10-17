@@ -9,15 +9,16 @@
   --soft: #F7F7F7;
   /* The app's color: buttons, progress, the logo, and the revealed
      answer. */
-  --brand: #2F6FED;
-  --brand-dark: #2357C5;
-  --brand-soft: #E6EEFD;
+  --brand: #4C8DF6;
+  --brand-dark: #3A74D6;
+  --brand-soft: #E8F1FE;
   --acc: var(--brand);
-  /* How you did. Calmer than a traffic light on purpose. */
-  --ok: #3FA66B;
-  --ok-dark: #2F8655;
-  --bad: #E5675F;
-  --bad-dark: #C9524B;
+  /* How you did: right is the app's blue, wrong is orange. No green
+     and red — and blue against orange stays apart for colorblind eyes. */
+  --ok: var(--brand);
+  --ok-dark: var(--brand-dark);
+  --bad: #F28C38;
+  --bad-dark: #D2701F;
   /* Picked but not yet submitted. */
   --sel: var(--brand);
   --sel-bg: var(--brand-soft);
