@@ -443,7 +443,7 @@
         var ok = value === truth;
         bar.classList.add('is-locked');
         (value ? tBtn : fBtn).classList.add(ok ? 'is-right' : 'is-wrong');
-        cueText.textContent = 'tap to continue';
+        cueText.textContent = '';
         ctx.stackReveal();
         settle(ctx, ok ? 1 : 0);
       }
