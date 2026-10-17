@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
 <meta name="theme-color" content="#ffffff">
 <title>Reveal Preview</title>
-<!-- A throwaway preview for choosing the recall reveal. Nothing in the app
-     reads this page. -->
+<!-- A throwaway preview for the recall reveal. Nothing in the app reads
+     this page. -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
@@ -22,36 +22,16 @@
     -webkit-user-select: none;
   }
 
-  /* ── Controls ─────────────────────────────────────────── */
-  .pv-tabs { display: flex; gap: .4rem; }
-  .pv-tab {
-    flex: 1;
-    padding: .55rem .3rem;
-    border-radius: 12px;
-    border: 2px solid var(--line);
-    border-bottom-width: 4px;
+  /* Which rules this card hit, so they can be judged. */
+  .pv-rules {
+    min-height: 2.6em;
     font-size: .8rem;
-    font-weight: 800;
-    line-height: 1.15;
-    color: var(--muted);
+    font-weight: 700;
+    line-height: 1.3;
+    color: #AFAFAF;
   }
-  .pv-tab.is-on { background: var(--sel-bg); border-color: var(--sel); color: #1899D6; }
-  .pv-keep {
-    display: flex;
-    align-items: center;
-    gap: .6rem;
-    margin-top: .55rem;
-    font-size: .9rem;
-    color: var(--muted);
-  }
-  .pv-keep.is-off { opacity: .4; pointer-events: none; }
-  .pv-keep .toggle-track { width: 42px; height: 24px; }
-  .pv-keep .toggle-thumb { width: 14px; height: 14px; }
-  .pv-keep.is-on .toggle-track { background: var(--ok); border-color: var(--ok); }
-  .pv-keep.is-on .toggle-thumb { transform: translateX(18px); }
 
-  /* ── The card ─────────────────────────────────────────── */
-  .pv-card { flex: 1; display: flex; flex-direction: column; min-height: 0; margin-top: 1.25rem; }
+  .pv-card { flex: 1; display: flex; flex-direction: column; min-height: 0; margin-top: .75rem; }
   .pv-kicker {
     font-size: .85rem;
     font-weight: 800;
@@ -63,38 +43,41 @@
   .pv-kicker.is-changing { opacity: 0; }
 
   /* Everything inside is placed absolutely and measured in JS, so the
-     question can travel from the middle to the top without the layout
-     jumping underneath it. */
+     question can travel without the layout jumping underneath it. */
   .pv-region { position: relative; flex: 1; min-height: 0; margin-top: .75rem; }
   .pv-q, .pv-a, .pv-why { position: absolute; left: 0; right: 0; top: 0; margin: 0; }
 
   .pv-q {
-    font-size: 30px;
     font-weight: 800;
     line-height: 1.25;
     color: var(--ink);
     text-wrap: pretty;
   }
+  .pv-q.is-moving { transition: transform .42s cubic-bezier(.22, 1, .36, 1); }
+
   .pv-a {
-    font-size: 32px;
     font-weight: 900;
     line-height: 1.2;
     color: var(--acc);
     opacity: 0;
     text-wrap: pretty;
   }
+  .pv-a.is-moving {
+    transition: transform .36s cubic-bezier(.22, 1, .36, 1) .12s, opacity .3s ease .12s;
+  }
+  .pv-a.is-in { opacity: 1; }
+
   .pv-why {
-    font-size: 1rem;
+    font-size: 16px;
     font-weight: 600;
     line-height: 1.45;
-    color: var(--ink);
+    color: var(--muted);
     opacity: 0;
-    transition: opacity .25s ease;
+    transition: opacity .35s ease .34s;
   }
   .pv-why.is-in { opacity: 1; }
   .pv-cue {
     display: inline-flex;
-    gap: .4rem;
     font-size: .85rem;
     font-weight: 800;
     letter-spacing: .06em;
@@ -130,81 +113,12 @@
     color: var(--muted);
   }
 
-  /* ── Motion ───────────────────────────────────────────────
-     The question's move to the top is shared: option 1 always does it,
-     and the switch adds it to the others. */
-  .pv-q.is-moving {
-    transition: transform .42s cubic-bezier(.22, 1, .36, 1),
-                font-size .42s cubic-bezier(.22, 1, .36, 1),
-                color .42s ease;
-  }
-  .pv-q.is-small { font-size: 24px; color: var(--muted); }
-
-  /* Replacing the question: the current fade. */
-  .pv-q.is-leaving {
-    transition: transform .2s cubic-bezier(.25, .8, .4, 1), opacity .2s cubic-bezier(.25, .8, .4, 1);
-    opacity: 0;
-  }
-
-  /* Now: fade in with a short rise. */
-  .pv-a.m-fade { transition: transform .2s cubic-bezier(.25, .8, .4, 1), opacity .2s cubic-bezier(.25, .8, .4, 1); }
-
-  /* 1: rises into the space the question left, a beat behind it. */
-  .pv-a.m-slide {
-    transition: transform .42s cubic-bezier(.22, 1, .36, 1) .1s, opacity .3s ease .1s;
-  }
-
-  /* 2: word by word. The block is visible; each word arrives on its own. */
-  .pv-a.m-words { opacity: 1; }
-  .pv-a .w {
-    display: inline-block;
-    opacity: 0;
-    transform: translateY(8px);
-    transition: opacity .2s ease, transform .2s cubic-bezier(.22, 1, .36, 1);
-    transition-delay: var(--d, 0ms);
-  }
-  .pv-a.is-in .w { opacity: 1; transform: none; }
-
-  /* 3: highlighter. The text fades in, then a marker stroke sweeps
-     behind it. `clone` keeps the stroke on every line of a wrapped answer. */
-  .pv-a.m-mark { transition: opacity .15s ease; }
-  .pv-a .mark {
-    background-image: linear-gradient(#D7FFB8, #D7FFB8);
-    background-repeat: no-repeat;
-    background-position: 0 85%;
-    background-size: 0% 70%;
-    -webkit-box-decoration-break: clone;
-    box-decoration-break: clone;
-    padding: 0 .12em;
-    margin: 0 -.12em;
-    border-radius: 4px;
-    transition: background-size .45s cubic-bezier(.5, 0, .2, 1) .15s;
-  }
-  .pv-a.m-mark.is-in .mark { background-size: 100% 70%; }
-
-  .pv-a.is-in { opacity: 1; }
-
-  /* The whole card turns over between questions. */
   .pv-region.is-out { opacity: 0; transition: opacity .15s ease; }
 </style>
 </head>
 <body>
 <div class="pv">
-  <div class="pv-tabs" id="tabs">
-    <button class="pv-tab" data-mode="slide">1<br>Shrink &amp; slide</button>
-    <button class="pv-tab" data-mode="words">2<br>Word by word</button>
-    <button class="pv-tab" data-mode="mark">3<br>Highlighter</button>
-    <button class="pv-tab" data-mode="fade">Now<br>Fade</button>
-  </div>
-  <button class="pv-keep" id="keep" role="switch" aria-checked="false">
-    <span class="toggle-track"><span class="toggle-thumb"></span></span>
-    <span id="keep-label">Keep the question on screen</span>
-  </button>
-  <button class="pv-keep" id="whypos" role="switch" aria-checked="false">
-    <span class="toggle-track"><span class="toggle-thumb"></span></span>
-    <span>Explanation at the bottom</span>
-  </button>
-
+  <div class="pv-rules" id="rules"></div>
   <div class="pv-card" id="card">
     <div class="pv-kicker" id="kicker">Tap to reveal</div>
     <div class="pv-region" id="region">
@@ -225,156 +139,106 @@
 (function () {
   'use strict';
 
-  /* Real recall cards, picked to stress the layout: the longest questions,
-     the longest answers, short explanations that show inline, long ones
-     that only show the WHY button, and some with none. */
+  /* ── The rules ───────────────────────────────────────────── */
+  /* Sizes are picked once from the length of the text and never change
+     while the card is on screen, so nothing rewraps mid-motion. */
+  function questionSize(text) { return text.length <= 50 ? 30 : text.length <= 80 ? 26 : 22; }
+  function answerSize(text)   { return text.length <= 24 ? 34 : 28; }
+  /* Up to this many characters the explanation shows by itself after the
+     answer. Longer ones get the WHY button and the swipe-up screen. */
+  var WHY_INLINE = 220;
+  /* Where the question and answer settle, as a share of the space: a
+     little above the middle, to leave the explanation room below. */
+  var SETTLE = 0.4;
+  var GAP = 16;
+
+  /* Every recall card, the hardest layouts first. */
   var recall = [];
   Decks.BUILTIN.forEach(function (d) {
     d.cards.forEach(function (c) { if ((c.type || 'recall') === 'recall') recall.push(c); });
   });
-  function by(fn) { return recall.slice().sort(function (x, y) { return fn(y) - fn(x); }); }
-  var picked = [];
-  function add(list, n) {
-    list.forEach(function (c) { if (n > 0 && picked.indexOf(c) < 0) { picked.push(c); n--; } });
-  }
-  add(recall.filter(function (c) { return c.why && c.why.length <= 140; }), 4);
-  add(by(function (c) { return c.q.length; }), 3);
-  add(by(function (c) { return String(c.a).length; }), 3);
-  add(recall.filter(function (c) { return !c.why; }), 2);
-  /* Interleave so the long ones are not all at the end. */
-  var CARDS = [];
-  for (var i = 0; i < 4; i++) [0, 4, 7, 10].forEach(function (o) { if (picked[o + i] && CARDS.indexOf(picked[o + i]) < 0) CARDS.push(picked[o + i]); });
-  picked.forEach(function (c) { if (CARDS.indexOf(c) < 0) CARDS.push(c); });
+  function weight(c) { return c.q.length + String(c.a).length * 2 + (c.why && c.why.length <= WHY_INLINE ? c.why.length : 0); }
+  var hard = recall.slice().sort(function (x, y) { return weight(y) - weight(x); }).slice(0, 6);
+  var CARDS = hard.concat(recall.filter(function (c) { return hard.indexOf(c) < 0; }));
 
   var $ = function (s) { return document.querySelector(s); };
   var region = $('#region'), qEl = $('#q'), aEl = $('#a'), whyEl = $('#why');
-  var kicker = $('#kicker'), bar = $('#bar'), tap = $('#tap');
-
-  var mode = 'slide', keep = false, whyAtBottom = false, index = 0, revealed = false, busy = false;
-  /* The question's size once it has moved aside, against 30px before. */
-  var Q_SMALL = 24;
+  var kicker = $('#kicker'), bar = $('#bar'), tap = $('#tap'), rules = $('#rules');
+  var index = 0, revealed = false, busy = false, plan = null;
 
   function setKicker(text) {
     kicker.classList.add('is-changing');
     setTimeout(function () { kicker.textContent = text; kicker.classList.remove('is-changing'); }, 130);
   }
 
-  /* Height of an element's text at a given font size, at the region's
-     width, without disturbing the real one. */
-  function heightAt(el, size) {
-    var c = el.cloneNode(true);
-    c.className = el.className.replace(/\bis-\S+/g, '');
-    c.style.cssText = 'position:absolute;visibility:hidden;left:0;right:0;top:0;transition:none;font-size:' + size + 'px';
-    region.appendChild(c);
-    var hgt = c.getBoundingClientRect().height;
-    c.remove();
-    return hgt;
-  }
-
-  function keeping() { return mode === 'slide' || keep; }
+  function place(el, y) { el.style.transform = 'translateY(' + Math.round(y) + 'px)'; }
 
   function render() {
     var card = CARDS[index % CARDS.length];
+    var q = card.q, a = String(card.a), why = card.why || '';
     revealed = false;
 
     qEl.className = 'pv-q';
-    qEl.style.transform = '';
-    qEl.style.opacity = '';
-    qEl.textContent = card.q;
+    qEl.style.fontSize = questionSize(q) + 'px';
+    qEl.textContent = q;
 
     aEl.className = 'pv-a';
-    aEl.style.transform = '';
-    aEl.textContent = '';
-    var text = String(card.a);
-    if (mode === 'words') {
-      text.split(/\s+/).forEach(function (w, i, all) {
-        var s = document.createElement('span');
-        s.className = 'w';
-        s.textContent = w;
-        /* The whole answer lands within about a quarter second. */
-        s.style.setProperty('--d', Math.round(i * Math.min(70, 260 / all.length)) + 'ms');
-        aEl.appendChild(s);
-        if (i < all.length - 1) aEl.appendChild(document.createTextNode(' '));
-      });
-    } else if (mode === 'mark') {
-      var m = document.createElement('span');
-      m.className = 'mark';
-      m.textContent = text;
-      aEl.appendChild(m);
-    } else {
-      aEl.textContent = text;
-    }
+    aEl.style.fontSize = answerSize(a) + 'px';
+    aEl.textContent = a;
 
     whyEl.className = 'pv-why';
     whyEl.textContent = '';
-    if (card.why && card.why.length <= 140) whyEl.textContent = card.why;
-    else if (card.why) {
+    var inline = why && why.length <= WHY_INLINE;
+    if (inline) whyEl.textContent = why;
+
+    /* Measure, then work out both resting places. */
+    var R = region.clientHeight;
+    var qH = qEl.getBoundingClientRect().height;
+    var aH = aEl.getBoundingClientRect().height;
+    var whyH = inline ? whyEl.getBoundingClientRect().height : 0;
+
+    var block = qH + GAP + aH;
+    var top = Math.max(0, R * SETTLE - block / 2);
+    /* If the explanation would run into the buttons, lift the block. If it
+       still does not fit, fall back to the WHY button. */
+    if (inline && top + block + GAP + whyH > R) top = Math.max(0, R - (block + GAP + whyH));
+    if (inline && top + block + GAP + whyH > R) { inline = false; whyEl.textContent = ''; }
+    if (why && !inline) {
       var cue = document.createElement('span');
       cue.className = 'pv-cue';
       cue.textContent = '↑ WHY';
       whyEl.appendChild(cue);
     }
 
+    plan = { qStart: (R - qH) / 2, qEnd: top, aEnd: top + qH + GAP, whyTop: top + block + GAP };
+    place(qEl, plan.qStart);
+    place(aEl, plan.aEnd + 18);
+    place(whyEl, plan.whyTop);
+
+    rules.textContent =
+      'Question ' + q.length + ' chars → ' + questionSize(q) + 'px · answer ' + a.length + ' → ' + answerSize(a) + 'px · ' +
+      (!why ? 'no explanation' : 'explanation ' + why.length + ' chars → ' + (inline ? 'shown' : 'WHY button'));
+
     bar.classList.remove('is-in');
     tap.textContent = 'Tap anywhere';
     kicker.textContent = 'Tap to reveal';
-
-    /* The question is laid out at the top and pushed down to the middle,
-       so the move to the top is a single transform. */
-    var big = qEl.getBoundingClientRect().height;
-    qEl.dataset.mid = Math.max(0, (region.clientHeight - big) / 2);
-    qEl.style.transform = 'translateY(' + qEl.dataset.mid + 'px)';
   }
 
   function reveal() {
     revealed = true;
     setKicker('Knew it?');
-    var regionH = region.clientHeight;
-    var aH = heightAt(aEl, 32);
-    var whyH = whyEl.textContent || whyEl.firstChild ? heightAt(whyEl, 16) : 0;
-    var GAP = 18;
-    var smallH = keeping() ? heightAt(qEl, Q_SMALL) : 0;
-
-    /* The answer sits in the middle of the screen. The question sits just
-       above it, so it only travels as far as it has to. */
-    var aTop = (regionH - aH) / 2;
-    var qTop = aTop - GAP - smallH;
-    var whyTop = whyAtBottom ? regionH - whyH - GAP : aTop + aH + GAP;
-
-    /* Long text can push past the edges; slide the block back in. */
-    var lowest = whyH ? Math.max(whyTop + whyH, aTop + aH) : aTop + aH;
-    if (!whyAtBottom && lowest > regionH) { var up = lowest - regionH; aTop -= up; qTop -= up; whyTop -= up; }
-    var highest = keeping() ? qTop : aTop;
-    if (highest < 0) { aTop -= highest; qTop -= highest; if (!whyAtBottom) whyTop -= highest; }
-    if (whyAtBottom && whyTop < aTop + aH + GAP) whyTop = aTop + aH + GAP;
-
-    if (keeping()) {
-      qEl.classList.add('is-moving', 'is-small');
-      qEl.style.transform = 'translateY(' + qTop + 'px)';
-    } else {
-      qEl.classList.add('is-leaving');
-      qEl.style.transform = 'translateY(' + (Number(qEl.dataset.mid) - regionH * 0.18) + 'px)';
-    }
-
-    var cls = { slide: 'm-slide', words: 'm-words', mark: 'm-mark', fade: 'm-fade' }[mode];
-    /* Where each answer starts from before it settles. */
-    var from = mode === 'slide' ? 28 : mode === 'fade' ? (keeping() ? 24 : regionH * 0.18) : 0;
-    aEl.style.transition = 'none';
-    aEl.style.transform = 'translateY(' + (aTop + from) + 'px)';
-    aEl.getBoundingClientRect();
-    aEl.style.transition = '';
-    aEl.classList.add(cls);
-    whyEl.style.transform = 'translateY(' + whyTop + 'px)';
-
+    qEl.classList.add('is-moving');
+    aEl.classList.add('is-moving');
     requestAnimationFrame(function () {
-      aEl.style.transform = 'translateY(' + aTop + 'px)';
+      place(qEl, plan.qEnd);
+      place(aEl, plan.aEnd);
       aEl.classList.add('is-in');
+      whyEl.classList.add('is-in');
     });
     setTimeout(function () {
-      whyEl.classList.add('is-in');
       bar.classList.add('is-in');
       tap.textContent = 'swipe';
-    }, mode === 'slide' ? 380 : 260);
+    }, 380);
   }
 
   function next() {
@@ -394,41 +258,6 @@
     if (!revealed) reveal(); else next();
   });
 
-  function paintControls() {
-    [].forEach.call(document.querySelectorAll('.pv-tab'), function (t) {
-      t.classList.toggle('is-on', t.dataset.mode === mode);
-    });
-    var sw = $('#keep');
-    sw.classList.toggle('is-on', keeping());
-    sw.classList.toggle('is-off', mode === 'slide');
-    sw.setAttribute('aria-checked', keeping() ? 'true' : 'false');
-    var wp = $('#whypos');
-    wp.classList.toggle('is-on', whyAtBottom);
-    wp.setAttribute('aria-checked', whyAtBottom ? 'true' : 'false');
-    $('#keep-label').textContent = mode === 'slide'
-      ? 'Option 1 always keeps the question'
-      : 'Keep the question on screen';
-  }
-
-  $('#tabs').addEventListener('click', function (e) {
-    var t = e.target.closest('.pv-tab');
-    if (!t) return;
-    mode = t.dataset.mode;
-    paintControls();
-    render();
-  });
-  $('#whypos').addEventListener('click', function () {
-    whyAtBottom = !whyAtBottom;
-    paintControls();
-    render();
-  });
-  $('#keep').addEventListener('click', function () {
-    keep = !keep;
-    paintControls();
-    render();
-  });
-
-  paintControls();
   render();
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { if (!revealed) render(); });
 })();
