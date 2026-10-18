@@ -728,13 +728,21 @@
     paint();
   }
 
+  /* Same list as sortTwo, with a button per bin instead of two sides.
+     Each answered row gets its bin written beside it, so the finished
+     list is the true grouping here too. */
   function sortMany(area, ctx, items, bins) {
-    var idx = 0, right = 0, locked = false;
-    ctx.stack('', stackWhy(ctx));
-    ctx.setKicker(ctx.card.q);
-    var hint = h('div', 'hint is-static');
+    var idx = 0, right = 0;
+
+    var list = h('div', 'q sort-list');
+    var rows = items.map(function (item) {
+      var row = h('div', 'sort-row', item.label);
+      list.appendChild(row);
+      return row;
+    });
+    ctx.stack('', stackWhy(ctx), list);
+
     var group = h('div', 'bin-group');
-    area.appendChild(hint);
     area.appendChild(group);
 
     var keyMap = {};
@@ -747,45 +755,31 @@
     });
     ctx.keys(keyMap);
 
-    function show() {
-      hint.textContent = (items.length - idx) + ' LEFT';
-      ctx.setQuestion(items[idx].label);
+    function paint() {
+      rows.forEach(function (r, i) { r.classList.toggle('is-current', i === idx); });
     }
 
     function answer(bin, btn) {
-      /* idx can already be past the end while the card waits to be
-         replaced; a click landing in that window read items[idx].bin
-         off the end of the array. */
-      if (locked || idx >= items.length) return;
-      locked = true;
-      var item = items[idx];
+      if (idx >= items.length) return;
+      var item = items[idx], row = rows[idx];
       var ok = bin === item.bin;
       if (ok) right++;
-      /* The last item's verdict is the card's verdict, which settle
-         plays a moment later; two sounds for one action is noise. */
-      if (idx < items.length - 1) (ok ? global.Sfx.right : global.Sfx.wrong)();
+      row.classList.add(ok ? 'is-right' : 'is-wrong');
+      row.appendChild(h('span', 'sort-bin', ' · ' + item.bin));
+      /* The button flashes its verdict and clears, since it is reused
+         for the next item. */
       btn.classList.add(ok ? 'is-right' : 'is-wrong');
-      if (!ok) {
-        Array.prototype.forEach.call(group.children, function (b) {
-          if (b.textContent === item.bin) b.classList.add('is-answer');
-        });
-      }
-      setTimeout(function () {
-        Array.prototype.forEach.call(group.children, function (b) {
-          b.classList.remove('is-right', 'is-wrong', 'is-answer');
-        });
-        idx++;
-        if (idx >= items.length) {
-          ctx.stackReveal(false);
-          settle(ctx, right / items.length);   // stay locked; card is done
-          return;
-        }
-        locked = false;
-        show();
-      }, ok ? 260 : 900);
+      setTimeout(function () { btn.classList.remove('is-right', 'is-wrong'); }, ok ? 260 : 700);
+      idx++;
+      paint();
+      if (idx >= items.length) {
+        group.classList.add('is-locked');
+        ctx.stackReveal(false);
+        settle(ctx, right / items.length);
+      } else global.Sfx.select();
     }
 
-    show();
+    paint();
   }
 
   /* ═══════════════ match: link two columns ═══════════════ */

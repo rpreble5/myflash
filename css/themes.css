@@ -586,6 +586,9 @@
 .sort-row.is-current { color: var(--ink); }
 .sort-row.is-right { color: var(--ok); }
 .sort-row.is-wrong { color: var(--bad); }
+/* The bin written beside an answered row on a many-bin card. */
+.sort-bin { font-weight: 700; opacity: .75; }
+.bin-group.is-locked .bin-btn { pointer-events: none; opacity: .45; }
 
 /* Three or more bins have nowhere to swipe to, so they keep buttons. */
 .bin-group { display: flex; gap: .6rem; flex-wrap: wrap; justify-content: center; width: min(620px, 100%); }
