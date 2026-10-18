@@ -514,18 +514,16 @@
   width: min(560px, 100%);
   display: flex;
   flex-direction: column;
-  gap: .6rem;
+  gap: .55rem;
 }
+/* Plain lines, no box: the arrows are the only controls on the row. */
 .trend-row {
   display: flex;
   align-items: center;
   gap: .7rem;
-  padding: .5rem .55rem .5rem 1rem;
-  border-radius: 16px;
-  border: 3px solid var(--line);
+  padding: .15rem 0 .15rem .25rem;
   animation: choice-in .24s cubic-bezier(.22,1,.36,1) backwards;
   animation-delay: calc(var(--i) * 60ms);
-  transition: border-color .2s, opacity .2s;
 }
 .trend-label {
   flex: 1;
@@ -535,41 +533,39 @@
   font-size: clamp(1.05rem, 4.5vw, 1.3rem);
   text-align: left;
 }
-.dir-group { display: flex; gap: .3rem; flex: 0 0 auto; }
+.dir-group { display: flex; gap: .35rem; flex: 0 0 auto; }
 .dir-btn {
-  width: 52px; height: 52px;
-  /* The glyph was a bare text node in a block box: left-aligned, and
-     sitting high because line-height 1 crops the arrow's own leading. */
+  width: 60px; height: 60px;
   display: grid;
   place-items: center;
-  border-radius: 13px;
+  border-radius: 15px;
   border: 3px solid var(--line);
   border-bottom-width: 6px;
   color: var(--muted);
-  transition: transform .12s cubic-bezier(.22,1,.36,1), background-color .15s, color .15s;
+  cursor: pointer;
+  transition: transform .12s cubic-bezier(.22,1,.36,1), background-color .18s, border-color .18s, color .18s, opacity .25s;
 }
 /* Round caps and joins, to match the corner radius the arrows sit in.
    currentColor means the filled states flip the mark with the text. */
 .dir-art {
-  width: 30px;
-  height: 30px;
+  width: 34px;
+  height: 34px;
   fill: none;
   stroke: currentColor;
-  stroke-width: 3;
+  stroke-width: 3.2;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
-.dir-btn[role="button"] { cursor: pointer; }
 .dir-btn:active { transform: translateY(2px); }
-/* Your pick, before the answer is in. */
-.dir-btn.is-on { background: var(--brand); color: #fff; border-color: var(--brand-dark); animation: box-pop .24s cubic-bezier(.3, 1.6, .5, 1); }
+.trend-row.is-done .dir-btn { pointer-events: none; }
 
-/* After submitting. The true direction fills on every row so the card
-   reads as the pattern; a wrong pick is marked but stays secondary. */
-.dir-btn.is-truth { background: var(--ok); color: #fff; border-color: var(--ok-dark); }
-.dir-btn.is-miss { background: var(--bad); border-color: var(--bad-dark); color: #fff; }
-.trend-row.is-right { border-color: var(--ok); }
-.trend-row.is-wrong { border-color: var(--bad); }
+/* A graded row fills exactly one arrow, the true direction, in the
+   verdict's colour. The other two step back. The wrong pick only
+   flashes, then leaves no mark. */
+.trend-row.is-done .dir-btn:not(.is-truth) { opacity: .3; }
+.dir-btn.is-truth { background: var(--ok); color: #fff; border-color: var(--ok-dark); animation: box-pop .24s cubic-bezier(.3, 1.6, .5, 1); }
+.dir-btn.is-truth.is-missed { background: var(--bad); border-color: var(--bad-dark); }
+.trend-row.is-done .dir-btn.is-miss { opacity: 1; color: var(--bad); border-color: var(--bad); }
 
 /* ── Bucket ──────────────────────────────────────────────────
    Plain lines of text under the question. The one being sorted is dark,

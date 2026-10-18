@@ -528,7 +528,7 @@
   }
 
   var trend = {
-    /* No label: the hint at the bottom says what to do. */
+    /* No label and no hint: three arrows beside each row say what to do. */
     id: 'trend', label: '', types: ['trend'], weight: 1,
     eligible: function (card) { return card.items && card.items.length; },
     mount: function (area, ctx) {
@@ -536,11 +536,8 @@
       /* The rows ride in the stacked layout's entry slot, right under the
          question, rather than down at the bottom of the card. */
       var rows = h('div', 'q trend-rows');
-      var picks = new Array(items.length).fill(null);
-      var locked = false;
+      var done = 0, right = 0;
       var btnAt = [];
-
-      var hint = h('div', 'hint is-static submit-cue', 'mark each row');
 
       items.forEach(function (item, i) {
         var row = h('div', 'trend-row');
@@ -550,17 +547,11 @@
         var group = h('div', 'dir-group');
         var byDir = {};
         DIRS.forEach(function (d) {
-          /* Divs, not buttons: the dir groups run down the right of every
-             row, and enableSwipe steps around real buttons — a submit
-             swipe starting on one would die. The gesture's own onTap
-             does the selecting, as it does for select-all. */
           var b = h('div', 'dir-btn');
           b.innerHTML = dirArt(d);
           b.setAttribute('role', 'button');
           b.setAttribute('aria-label', item.label + ' ' + d.name);
-          b.setAttribute('aria-pressed', 'false');
-          b.dataset.dir = d.key;
-          b.dataset.row = String(i);
+          b.addEventListener('click', function (e) { e.stopPropagation(); pick(i, d.key); });
           byDir[d.key] = b;
           group.appendChild(b);
         });
@@ -570,62 +561,44 @@
         rows.appendChild(row);
       });
 
-      function complete() { return picks.indexOf(null) === -1; }
-
+      /* Each row grades the moment it is marked. One arrow per row ends
+         up filled — always the true direction — and its colour is the
+         verdict, so a finished card reads as the pattern itself (TSH up,
+         free T4 down) with the misses in magenta. The pick is not kept
+         on screen: it is wherever the fill is not. */
       function pick(i, dir) {
-        if (locked) return;
-        global.Sfx.select();
-        picks[i] = dir;
-        DIRS.forEach(function (d) {
-          var on = d.key === dir;
-          btnAt[i][d.key].classList.toggle('is-on', on);
-          btnAt[i][d.key].setAttribute('aria-pressed', on ? 'true' : 'false');
-        });
-        var done = complete();
-        hint.classList.toggle('is-live', done);
-        hint.textContent = done ? 'swipe right to check →' : 'mark each row';
+        var item = items[i], row = rows.children[i];
+        if (row.classList.contains('is-done')) return;
+        row.classList.add('is-done');
+        var ok = dir === item.dir;
+        if (ok) right++;
+        var truth = btnAt[i][item.dir];
+        truth.classList.add('is-truth');
+        if (!ok) {
+          truth.classList.add('is-missed');
+          var miss = btnAt[i][dir];
+          miss.classList.add('is-miss');
+          setTimeout(function () { miss.classList.remove('is-miss'); }, 600);
+        }
+        done++;
+        if (done >= items.length) {
+          rows.classList.add('is-locked');
+          ctx.stackReveal(false);
+          settle(ctx, right / items.length);
+        } else (ok ? global.Sfx.select : global.Sfx.wrong)();
       }
 
-      function submit() {
-        if (locked || !complete()) return;
-        locked = true;
-        rows.classList.add('is-locked');
-        hint.classList.add('is-hidden');
-
-        var right = 0;
-        items.forEach(function (item, i) {
-          var row = rows.children[i];
-          var ok = picks[i] === item.dir;
-          if (ok) right++;
-          else btnAt[i][picks[i]].classList.add('is-miss');
-          row.classList.add(ok ? 'is-right' : 'is-wrong');
-          /* The true direction fills on every row, right or wrong, so a
-             finished card reads as the pattern itself — platelets down,
-             PT up, PTT up — rather than as a record of the attempt. */
-          btnAt[i][item.dir].classList.add('is-truth');
-        });
-
-        ctx.stackReveal(false);
-        settle(ctx, right / items.length);
-      }
-
-      area.appendChild(hint);
       ctx.stack('', stackWhy(ctx), rows);
 
-      /* Same shape as select-all: several sub-answers, then one submit.
-         The rows hold still; only the hint lights up as the swipe heads
-         right. */
-      var swipe = ctx.enableSwipe({
-        motion: 'none',
-        onRight: function () { if (complete()) submit(); else swipe.reset(); },
-        onLeft:  function () { swipe.reset(); },
-        onTap: function (target) {
-          var b = target && target.closest && target.closest('.dir-btn');
-          if (b) pick(Number(b.dataset.row), b.dataset.dir);
+      /* Arrow keys mark the first row still waiting. */
+      function nextRow() {
+        for (var i = 0; i < items.length; i++) {
+          if (!rows.children[i].classList.contains('is-done')) return i;
         }
-      });
-
-      ctx.keys({ 'Enter': submit });
+        return -1;
+      }
+      function key(dir) { return function () { var i = nextRow(); if (i >= 0) pick(i, dir); }; }
+      ctx.keys({ 'ArrowUp': key('up'), 'ArrowDown': key('down'), 'ArrowRight': key('same') });
     }
   };
 
