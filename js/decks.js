@@ -2585,6 +2585,989 @@
       ]
     },
 
+    /* ═══════════════ Other AI ═══════════════
+       Cardiology decks written by a different model from the format
+       prompt, kept verbatim for side-by-side review. */
+
+    {
+      "id": "cad-chest-pain-post-mi",
+      "subject": "Other AI",
+      "topic": "Cardiology",
+      "name": "CAD, CHEST PAIN & POST-MI",
+      "blurb": "ACS triage, stress testing, antianginals, post-MI complications",
+      "cards": [
+        {
+          "type": "recall",
+          "q": "Within how many minutes should a 12-lead EKG be obtained for acute chest pain?",
+          "a": "10 minutes"
+        },
+        {
+          "type": "truefalse",
+          "q": "A new LBBB with acute chest pain is a STEMI equivalent that needs EMS transfer to a PCI-capable hospital.",
+          "a": true,
+          "why": "The left bundle is supplied by LAD septal perforators, so new LBBB suggests a large proximal LAD occlusion and masks ST elevation."
+        },
+        {
+          "type": "truefalse",
+          "q": "Do not delay EMS transfer of a patient with ST elevation to draw an office troponin.",
+          "a": true,
+          "why": "Troponin takes 2–3 hours to rise and is only about 40% sensitive at presentation. Never delay EMS transfer for it."
+        },
+        {
+          "type": "mcq",
+          "q": "Which finding contraindicates sublingual nitroglycerin in an inferior STEMI?",
+          "a": "Right ventricular infarction",
+          "distractors": [
+            "Q waves in lead III",
+            "Elevated troponin",
+            "Pleuritic chest pain"
+          ],
+          "why": "The ischemic RV is preload dependent. Treat hypotension with saline and avoid nitrates, morphine and diuretics."
+        },
+        {
+          "type": "mcq",
+          "stem": "A 58-year-old man with type 2 diabetes has recurrent chest pain. Serial troponins are negative and an exercise stress test was normal 8 months ago.",
+          "q": "What is the best next diagnostic step?",
+          "a": "Coronary CT angiography",
+          "distractors": [
+            "Repeat treadmill stress test",
+            "Cardiac MRI",
+            "FFR-CT as a standalone test"
+          ],
+          "whyNot": {
+            "Repeat treadmill stress test": "Functional testing misses non-obstructive plaque and was recently normal.",
+            "Cardiac MRI": "Assesses myocardium and viability, not coronary lumen patency.",
+            "FFR-CT as a standalone test": "FFR-CT is applied after CCTA shows an intermediate stenosis."
+          }
+        },
+        {
+          "type": "mcq",
+          "q": "Which stress modality is preferred with nuclear MPI in a patient with LBBB?",
+          "a": "Regadenoson or adenosine",
+          "distractors": [
+            "Treadmill exercise",
+            "Dobutamine",
+            "Atropine"
+          ],
+          "why": "Exercise or dobutamine in LBBB or RV pacing causes false-positive septal defects."
+        },
+        {
+          "type": "recall",
+          "q": "Best add-on antianginal when angina persists on a beta-blocker with resting HR 52?",
+          "a": "Long-acting nitrate or amlodipine"
+        },
+        {
+          "type": "truefalse",
+          "q": "Ivabradine is useful for chronic stable angina with a normal LVEF.",
+          "a": false,
+          "why": "SIGNIFY showed no benefit and more bradycardia and AF. It is approved only for HFrEF with HR ≥70."
+        },
+        {
+          "type": "multi",
+          "q": "Which findings suggest a posterior wall MI?",
+          "answers": [
+            "ST depression in V1–V3",
+            "Tall, broad R in V1–V2",
+            "Upright T waves in V1–V3"
+          ],
+          "distractors": [
+            "ST elevation in V4R",
+            "Diffuse PR depression"
+          ]
+        },
+        {
+          "type": "recall",
+          "q": "Which papillary muscle most often ruptures after an inferior MI?",
+          "a": "Posteromedial",
+          "why": "It has a single blood supply from the posterior descending artery."
+        },
+        {
+          "type": "truefalse",
+          "q": "Ibuprofen and corticosteroids are preferred for post-MI pericarditis.",
+          "a": false,
+          "why": "Use high-dose aspirin plus colchicine. Other NSAIDs and steroids impair scar healing and risk free wall rupture."
+        },
+        {
+          "type": "bucket",
+          "q": "Sort each post-MI complication by its usual timing.",
+          "bins": [
+            "1–3 days",
+            "3–5 days",
+            "5–14 days"
+          ],
+          "items": [
+            {
+              "label": "Peri-infarction pericarditis",
+              "bin": "1–3 days"
+            },
+            {
+              "label": "Papillary muscle rupture",
+              "bin": "3–5 days"
+            },
+            {
+              "label": "Septal rupture (VSD)",
+              "bin": "3–5 days"
+            },
+            {
+              "label": "LV free wall rupture",
+              "bin": "5–14 days"
+            }
+          ]
+        },
+        {
+          "type": "match",
+          "q": "Match the clue to the post-MI complication.",
+          "pairs": [
+            {
+              "left": "Flash edema, no JVD",
+              "right": "Papillary rupture"
+            },
+            {
+              "left": "Step-up in O2 RA to RV",
+              "right": "Septal rupture (VSD)"
+            },
+            {
+              "left": "Beck triad, PEA",
+              "right": "Free wall rupture"
+            },
+            {
+              "left": "Fever and rub at 2–8 wk",
+              "right": "Dressler syndrome"
+            }
+          ]
+        }
+      ]
+    },
+
+    {
+      "id": "heart-failure-hcm",
+      "subject": "Other AI",
+      "topic": "Cardiology",
+      "name": "HEART FAILURE & HCM",
+      "blurb": "GDMT pillars, HF drugs to avoid, murmur maneuvers",
+      "cards": [
+        {
+          "type": "recall",
+          "q": "LVEF cutoff that defines HFrEF?",
+          "a": "≤40%"
+        },
+        {
+          "type": "number",
+          "q": "Washout period when switching from an ACE inhibitor to sacubitril/valsartan?",
+          "value": 36,
+          "unit": "hours",
+          "why": "Prevents severe angioedema."
+        },
+        {
+          "type": "multi",
+          "q": "Select the mortality-reducing pillars of HFrEF GDMT.",
+          "answers": [
+            "ARNi",
+            "Evidence-based beta-blocker",
+            "MRA",
+            "SGLT2 inhibitor"
+          ],
+          "distractors": [
+            "Loop diuretic",
+            "Digoxin"
+          ],
+          "why": "Loop diuretics control congestion but do not reduce mortality."
+        },
+        {
+          "type": "truefalse",
+          "q": "SGLT2 inhibitors reduce HF hospitalization regardless of diabetes status or ejection fraction.",
+          "a": true
+        },
+        {
+          "type": "truefalse",
+          "q": "After LVEF recovers from 30% to 55% on GDMT, therapy can be safely withdrawn.",
+          "a": false,
+          "why": "In TRED-HF, 44% relapsed within 6 months of withdrawal. Recovered EF is remission, not cure."
+        },
+        {
+          "type": "mcq",
+          "q": "Which diabetes drug is contraindicated in symptomatic heart failure?",
+          "a": "Pioglitazone",
+          "distractors": [
+            "Empagliflozin",
+            "Linagliptin",
+            "Metformin"
+          ],
+          "why": "Thiazolidinediones cause renal sodium and fluid retention."
+        },
+        {
+          "type": "mcq",
+          "q": "Which claudication drug is contraindicated in heart failure of any severity?",
+          "a": "Cilostazol",
+          "distractors": [
+            "Clopidogrel",
+            "Aspirin",
+            "Atorvastatin"
+          ],
+          "why": "Oral PDE-3 inhibitors reduce survival in HF."
+        },
+        {
+          "type": "truefalse",
+          "q": "Obesity falsely lowers BNP, while CKD and atrial fibrillation raise it.",
+          "a": true
+        },
+        {
+          "type": "number",
+          "q": "NT-proBNP level at or above which heart failure is strongly supported?",
+          "value": 300,
+          "unit": "pg/mL"
+        },
+        {
+          "type": "recall",
+          "q": "Switch from spironolactone to what if painful gynecomastia develops?",
+          "a": "Eplerenone"
+        },
+        {
+          "type": "truefalse",
+          "q": "A normal chest x-ray rules out systolic heart failure.",
+          "a": false,
+          "why": "About 20% of outpatients with HFrEF have a normal CXR."
+        },
+        {
+          "type": "trend",
+          "q": "How does the HCM murmur change with each maneuver?",
+          "items": [
+            {
+              "label": "Valsalva strain",
+              "dir": "up"
+            },
+            {
+              "label": "Standing from squat",
+              "dir": "up"
+            },
+            {
+              "label": "Squatting",
+              "dir": "down"
+            },
+            {
+              "label": "Isometric handgrip",
+              "dir": "down"
+            },
+            {
+              "label": "Amyl nitrite",
+              "dir": "up"
+            }
+          ],
+          "why": "A smaller LV cavity worsens septal–mitral contact and obstruction. A larger cavity relieves it."
+        },
+        {
+          "type": "trend",
+          "q": "How does the aortic stenosis murmur change with each maneuver?",
+          "items": [
+            {
+              "label": "Squatting",
+              "dir": "up"
+            },
+            {
+              "label": "Standing",
+              "dir": "down"
+            },
+            {
+              "label": "Isometric handgrip",
+              "dir": "down"
+            },
+            {
+              "label": "Amyl nitrite",
+              "dir": "up"
+            }
+          ]
+        },
+        {
+          "type": "truefalse",
+          "q": "Isometric handgrip increases the MR, AR and VSD murmurs.",
+          "a": true,
+          "why": "Higher afterload increases the backward driving pressure."
+        }
+      ]
+    },
+
+    {
+      "id": "valves-screening-ie",
+      "subject": "Other AI",
+      "topic": "Cardiology",
+      "name": "VALVES, SPORTS SCREENING & IE",
+      "blurb": "Severe AS triggers, 14-point screen, endocarditis prophylaxis",
+      "cards": [
+        {
+          "type": "number",
+          "q": "Peak aortic velocity that defines severe aortic stenosis?",
+          "value": 4,
+          "unit": "m/s"
+        },
+        {
+          "type": "number",
+          "q": "Mean transvalvular gradient that defines severe aortic stenosis?",
+          "value": 40,
+          "unit": "mm Hg"
+        },
+        {
+          "type": "recall",
+          "q": "Aortic valve area that typically defines severe AS?",
+          "a": "≤1.0 cm2"
+        },
+        {
+          "type": "truefalse",
+          "q": "Asymptomatic severe AS with an LVEF of 45% warrants valve replacement.",
+          "a": true,
+          "why": "LVEF <50% signals LV decompensation even without symptoms."
+        },
+        {
+          "type": "truefalse",
+          "q": "Symptomatic severe AS carries over 50% two-year mortality without valve replacement.",
+          "a": true
+        },
+        {
+          "type": "multi",
+          "q": "Select the indications for aortic valve replacement in severe AS.",
+          "answers": [
+            "Any symptoms",
+            "LVEF <50%",
+            "Other cardiac surgery planned"
+          ],
+          "distractors": [
+            "Mean gradient 30 mm Hg",
+            "Isolated systolic murmur"
+          ]
+        },
+        {
+          "type": "truefalse",
+          "q": "Asymptomatic athletes with a normal 14-point screen need a routine screening EKG.",
+          "a": false,
+          "why": "Order an EKG or echo only when at least one of the 14 elements is positive."
+        },
+        {
+          "type": "mcq",
+          "q": "Which sports screening finding warrants an EKG or echo?",
+          "a": "Exertional syncope",
+          "distractors": [
+            "Mild COVID ≥14 days ago",
+            "Family rheumatic heart disease",
+            "Coach request"
+          ],
+          "whyNot": {
+            "Mild COVID ≥14 days ago": "Recovered mild COVID does not require an EKG before return to sport.",
+            "Family rheumatic heart disease": "This is not an inherited cardiomyopathy.",
+            "Coach request": "A request does not override evidence-based guidelines."
+          }
+        },
+        {
+          "type": "recall",
+          "q": "Continuous infraclavicular murmur that vanishes when supine or with jugular compression?",
+          "a": "Venous hum"
+        },
+        {
+          "type": "truefalse",
+          "q": "A pulmonary flow murmur in an adolescent quiets with standing or Valsalva.",
+          "a": true
+        },
+        {
+          "type": "bucket",
+          "q": "Does the condition require IE prophylaxis before dental procedures?",
+          "bins": [
+            "Prophylaxis",
+            "No prophylaxis"
+          ],
+          "items": [
+            {
+              "label": "Prosthetic heart valve",
+              "bin": "Prophylaxis"
+            },
+            {
+              "label": "Prior infective endocarditis",
+              "bin": "Prophylaxis"
+            },
+            {
+              "label": "Unrepaired cyanotic CHD",
+              "bin": "Prophylaxis"
+            },
+            {
+              "label": "Bicuspid aortic valve",
+              "bin": "No prophylaxis"
+            },
+            {
+              "label": "Mitral valve prolapse",
+              "bin": "No prophylaxis"
+            },
+            {
+              "label": "Native aortic stenosis",
+              "bin": "No prophylaxis"
+            }
+          ]
+        },
+        {
+          "type": "recall",
+          "q": "First-line IE prophylaxis regimen before a dental procedure?",
+          "a": "Amoxicillin 2 g PO, 30–60 min before"
+        },
+        {
+          "type": "mcq",
+          "q": "Which penicillin-allergy alternative is no longer recommended for IE prophylaxis?",
+          "a": "Clindamycin",
+          "distractors": [
+            "Cephalexin",
+            "Azithromycin",
+            "Doxycycline"
+          ],
+          "why": "Clindamycin carries a higher C. difficile risk."
+        },
+        {
+          "type": "truefalse",
+          "q": "A high-risk patient needs IE prophylaxis before colonoscopy.",
+          "a": false,
+          "why": "Routine GI and GU procedures never require IE prophylaxis."
+        }
+      ]
+    },
+
+    {
+      "id": "arrhythmia-syncope-af",
+      "subject": "Other AI",
+      "topic": "Cardiology",
+      "name": "ARRHYTHMIA, QTc & AF ANTICOAGULATION",
+      "blurb": "SVT, WPW, QTc, amiodarone, bridging, syncope workup",
+      "cards": [
+        {
+          "type": "recall",
+          "q": "First step for stable, regular narrow-complex SVT?",
+          "a": "Vagal maneuvers (modified Valsalva)"
+        },
+        {
+          "type": "truefalse",
+          "q": "Adenosine, beta-blockers and CCBs are safe in pre-excited atrial fibrillation.",
+          "a": false,
+          "why": "AV nodal blockade sends all impulses down the accessory pathway and can cause VF. Use procainamide or ibutilide, or cardiovert if unstable."
+        },
+        {
+          "type": "recall",
+          "q": "Drug options for stable pre-excited AF?",
+          "a": "IV procainamide or ibutilide"
+        },
+        {
+          "type": "mcq",
+          "stem": "A patient has palpitations after escitalopram was increased from 10 mg to 20 mg. The EKG shows a QTc of 500 ms.",
+          "q": "What is the best next step?",
+          "a": "Stop escitalopram, repeat EKG",
+          "distractors": [
+            "Reduce to 15 mg only",
+            "Start metoprolol",
+            "Order an echocardiogram"
+          ],
+          "why": "Citalopram and escitalopram have the highest dose-dependent QTc risk among SSRIs."
+        },
+        {
+          "type": "truefalse",
+          "q": "Methadone maintenance therapy warrants baseline and follow-up EKGs for QTc prolongation.",
+          "a": true
+        },
+        {
+          "type": "recall",
+          "q": "First-line treatment of torsades de pointes with a pulse?",
+          "a": "IV magnesium sulfate 2 g",
+          "why": "Give it even if serum magnesium is normal, and replete potassium."
+        },
+        {
+          "type": "multi",
+          "q": "Select the baseline tests for starting amiodarone.",
+          "answers": [
+            "Chest x-ray",
+            "PFTs with DLCO",
+            "TSH",
+            "AST and ALT"
+          ],
+          "distractors": [
+            "Digoxin level",
+            "HbA1c"
+          ]
+        },
+        {
+          "type": "truefalse",
+          "q": "Amiodarone corneal microdeposits are benign and do not require stopping the drug.",
+          "a": true
+        },
+        {
+          "type": "truefalse",
+          "q": "Bridging heparin before elective surgery benefits AF patients on warfarin with no recent stroke.",
+          "a": false,
+          "why": "BRIDGE showed more major bleeding (3.2% vs 1.3%) with no reduction in thromboembolism. Just stop warfarin 5 days before."
+        },
+        {
+          "type": "mcq",
+          "stem": "A patient has a mechanical aortic valve, prior stroke and DVT, and an eGFR of 25. Surgery is planned.",
+          "q": "What is the preferred perioperative bridge?",
+          "a": "IV unfractionated heparin",
+          "distractors": [
+            "Enoxaparin 1 mg/kg BID",
+            "Rivaroxaban",
+            "No bridging"
+          ],
+          "whyNot": {
+            "Enoxaparin 1 mg/kg BID": "LMWH accumulates in severe CKD.",
+            "Rivaroxaban": "DOACs are not used with mechanical valves.",
+            "No bridging": "This is a very high thromboembolic risk situation."
+          }
+        },
+        {
+          "type": "multi",
+          "q": "Which AF patients require warfarin rather than a DOAC?",
+          "answers": [
+            "Mechanical heart valve",
+            "Mod–severe rheumatic MS"
+          ],
+          "distractors": [
+            "Prior stroke",
+            "Age ≥75",
+            "Diabetes"
+          ]
+        },
+        {
+          "type": "truefalse",
+          "q": "Adding aspirin to a DOAC after an AF-related stroke, without a recent stent, adds bleeding but no benefit.",
+          "a": true
+        },
+        {
+          "type": "truefalse",
+          "q": "Syncope with a normal neurologic exam warrants carotid duplex and EEG.",
+          "a": false,
+          "why": "Yield is under 1%. Start with history, exam with orthostatics, and a 12-lead EKG."
+        }
+      ]
+    },
+
+    {
+      "id": "htn-orthostasis-pregnancy",
+      "subject": "Other AI",
+      "topic": "Cardiology",
+      "name": "HYPERTENSION, ORTHOSTASIS & PREGNANCY",
+      "blurb": "HTN urgency vs emergency, dissection, secondary HTN, orthostatic BP",
+      "cards": [
+        {
+          "type": "truefalse",
+          "q": "Start two first-line antihypertensive classes at once when BP is ≥160/100.",
+          "a": true,
+          "why": "A single-pill combination, such as CCB plus ACEi or ARB, improves control and adherence."
+        },
+        {
+          "type": "truefalse",
+          "q": "For BP above 180/110 with no end-organ damage, give oral clonidine and send to the ED.",
+          "a": false,
+          "why": "Restart or intensify oral therapy and follow up within 1–7 days. Rapid lowering risks hypoperfusion."
+        },
+        {
+          "type": "recall",
+          "q": "Limit on MAP reduction in the first hour of most hypertensive emergencies?",
+          "a": "No more than 20–25%"
+        },
+        {
+          "type": "mcq",
+          "q": "What is the first drug class in acute aortic dissection?",
+          "a": "IV esmolol or labetalol",
+          "distractors": [
+            "IV nitroprusside alone",
+            "IV hydralazine",
+            "IV nicardipine alone"
+          ],
+          "why": "Beta-blockade first lowers HR below 60 and shear stress. Vasodilators first cause reflex tachycardia."
+        },
+        {
+          "type": "number",
+          "q": "Target systolic BP range in acute aortic dissection?",
+          "values": [
+            100,
+            120
+          ],
+          "join": "–",
+          "unit": "mm Hg"
+        },
+        {
+          "type": "match",
+          "q": "Match the clue to the secondary HTN diagnosis.",
+          "pairs": [
+            {
+              "left": "Low K + resistant HTN",
+              "right": "Primary aldosteronism"
+            },
+            {
+              "left": "Spells + labile BP",
+              "right": "Pheochromocytoma"
+            },
+            {
+              "left": "Rib notching on CXR",
+              "right": "Coarctation"
+            },
+            {
+              "left": "String of beads, age <30",
+              "right": "Fibromuscular dysplasia"
+            }
+          ]
+        },
+        {
+          "type": "truefalse",
+          "q": "Most patients with primary hyperaldosteronism are hypokalemic.",
+          "a": false,
+          "why": "More than 50% are normokalemic."
+        },
+        {
+          "type": "truefalse",
+          "q": "A rise in creatinine above 30% after starting an ACEi or ARB suggests renal artery stenosis.",
+          "a": true
+        },
+        {
+          "type": "number",
+          "q": "Systolic BP drop within 3 minutes of standing that defines orthostatic hypotension?",
+          "value": 20,
+          "unit": "mm Hg"
+        },
+        {
+          "type": "truefalse",
+          "q": "In nonneurogenic orthostatic hypotension, heart rate rises by at least 15 bpm.",
+          "a": true,
+          "why": "An intact baroreflex gives a robust HR rise. A blunted rise points to neurogenic causes."
+        },
+        {
+          "type": "mcq",
+          "stem": "A patient loses weight on semaglutide. BP falls from 110/70 to 85/55 on standing and HR rises from 75 to 90. He takes lisinopril.",
+          "q": "What is the best management?",
+          "a": "Stop lisinopril",
+          "distractors": [
+            "Start midodrine",
+            "Start fludrocortisone",
+            "Tilt-table testing"
+          ]
+        },
+        {
+          "type": "recall",
+          "q": "First-line drugs for neurogenic orthostatic hypotension when nonpharmacologic measures fail?",
+          "a": "Midodrine or droxidopa"
+        },
+        {
+          "type": "multi",
+          "q": "Which changes occur in normal pregnancy?",
+          "answers": [
+            "CO increases 30–50%",
+            "Plasma volume increases 40–50%",
+            "SVR decreases"
+          ],
+          "distractors": [
+            "Resting HR falls",
+            "BP peaks in 2nd trimester"
+          ]
+        }
+      ]
+    },
+
+    {
+      "id": "ascvd-prevention-activity",
+      "subject": "Other AI",
+      "topic": "Cardiology",
+      "name": "ASCVD PREVENTION & ACTIVITY",
+      "blurb": "Statin thresholds, CAC, aspirin, exercise intensity",
+      "cards": [
+        {
+          "type": "mcq",
+          "q": "What statin intensity is recommended for clinical ASCVD?",
+          "a": "High-intensity",
+          "distractors": [
+            "Moderate-intensity",
+            "Low-intensity",
+            "Lifestyle only"
+          ]
+        },
+        {
+          "type": "recall",
+          "q": "Baseline LDL-C that warrants a high-intensity statin without risk calculation?",
+          "a": "≥190 mg/dL"
+        },
+        {
+          "type": "truefalse",
+          "q": "USPSTF recommends a statin at ages 40–75 with at least 1 CVD risk factor and 10-year risk ≥10%.",
+          "a": true
+        },
+        {
+          "type": "mcq",
+          "q": "Statin for a diabetic aged 40–75 with no additional ASCVD risk factors?",
+          "a": "Moderate-intensity statin",
+          "distractors": [
+            "High-intensity statin",
+            "No statin",
+            "Ezetimibe alone"
+          ],
+          "why": "Use high-intensity when aged 50–75 or when there are multiple risk factors."
+        },
+        {
+          "type": "bucket",
+          "q": "Sort each statin regimen by intensity.",
+          "bins": [
+            "High-intensity",
+            "Moderate-intensity"
+          ],
+          "items": [
+            {
+              "label": "Atorvastatin 40–80 mg",
+              "bin": "High-intensity"
+            },
+            {
+              "label": "Rosuvastatin 20–40 mg",
+              "bin": "High-intensity"
+            },
+            {
+              "label": "Simvastatin 20–40 mg",
+              "bin": "Moderate-intensity"
+            },
+            {
+              "label": "Pravastatin 40–80 mg",
+              "bin": "Moderate-intensity"
+            },
+            {
+              "label": "Rosuvastatin 5–10 mg",
+              "bin": "Moderate-intensity"
+            },
+            {
+              "label": "Atorvastatin 10–20 mg",
+              "bin": "Moderate-intensity"
+            }
+          ]
+        },
+        {
+          "type": "recall",
+          "q": "USPSTF intervention for adults under 40 with CVD risk factors?",
+          "a": "Behavioral counseling (diet, activity)"
+        },
+        {
+          "type": "truefalse",
+          "q": "USPSTF recommends starting low-dose aspirin for primary prevention at age 60 or older.",
+          "a": false,
+          "why": "This is Grade D because of GI and intracranial bleeding risk."
+        },
+        {
+          "type": "recall",
+          "q": "CAC score that allows deferring a statin in borderline or intermediate risk?",
+          "a": "CAC = 0",
+          "why": "Exceptions are diabetes, active smoking and strong family history of premature CAD."
+        },
+        {
+          "type": "truefalse",
+          "q": "A CAC score of 100 or more supports starting a statin.",
+          "a": true
+        },
+        {
+          "type": "number",
+          "q": "Weekly minutes of moderate-intensity aerobic activity recommended for adults?",
+          "value": 150,
+          "unit": "min/week"
+        },
+        {
+          "type": "bucket",
+          "q": "Classify each activity by intensity.",
+          "bins": [
+            "Light",
+            "Moderate",
+            "Vigorous"
+          ],
+          "items": [
+            {
+              "label": "Stretching",
+              "bin": "Light"
+            },
+            {
+              "label": "Water aerobics",
+              "bin": "Moderate"
+            },
+            {
+              "label": "Ballroom dancing",
+              "bin": "Moderate"
+            },
+            {
+              "label": "Jogging",
+              "bin": "Vigorous"
+            },
+            {
+              "label": "Singles tennis",
+              "bin": "Vigorous"
+            }
+          ]
+        },
+        {
+          "type": "truefalse",
+          "q": "Light activity such as stretching counts toward the 150-minute weekly goal.",
+          "a": false,
+          "why": "Light activity is under 3.0 METs and does not count."
+        }
+      ]
+    },
+
+    {
+      "id": "vte-pad-edema",
+      "subject": "Other AI",
+      "topic": "Cardiology",
+      "name": "VTE, AAA, PAD & LEG EDEMA",
+      "blurb": "VTE workup and drugs, AAA, ABI, limb ischemia, venous disease",
+      "cards": [
+        {
+          "type": "truefalse",
+          "q": "In high pretest probability for PE, a negative D-dimer safely excludes it.",
+          "a": false,
+          "why": "Go straight to CT pulmonary angiography, or duplex ultrasound for suspected DVT."
+        },
+        {
+          "type": "mcq",
+          "q": "Anticoagulant of choice for VTE in triple-positive antiphospholipid syndrome?",
+          "a": "Warfarin",
+          "distractors": [
+            "Apixaban",
+            "Rivaroxaban",
+            "Dabigatran"
+          ],
+          "why": "TRAPS showed more arterial thrombosis with DOACs than with warfarin."
+        },
+        {
+          "type": "mcq",
+          "stem": "A patient with acute DVT has an eGFR of 25 mL/min/1.73 m2.",
+          "q": "Which anticoagulation regimen is appropriate?",
+          "a": "Enoxaparin 1 mg/kg once daily",
+          "distractors": [
+            "Rivaroxaban 15 mg BID",
+            "Dabigatran after lead-in",
+            "Enoxaparin 1 mg/kg q12h"
+          ],
+          "why": "Reduce enoxaparin to once daily when CrCl is below 30. Avoid rivaroxaban, edoxaban and dabigatran."
+        },
+        {
+          "type": "number",
+          "q": "Duration of anticoagulation for a first VTE with a transient provoking factor?",
+          "value": 3,
+          "unit": "months"
+        },
+        {
+          "type": "truefalse",
+          "q": "Apixaban for acute DVT or PE requires a parenteral heparin lead-in.",
+          "a": false,
+          "why": "Apixaban and rivaroxaban do not. Dabigatran and edoxaban need 5–10 days of lead-in."
+        },
+        {
+          "type": "mcq",
+          "q": "Who gets one-time AAA ultrasound screening (USPSTF Grade B)?",
+          "a": "Men 65–75 who ever smoked",
+          "distractors": [
+            "Women 65–75, never smoked",
+            "Men 50–64 with HTN",
+            "Diabetic adults over 50"
+          ]
+        },
+        {
+          "type": "recall",
+          "q": "Size threshold for elective AAA repair in men?",
+          "a": "≥5.5 cm",
+          "why": "Use ≥5.0 cm in women. Also repair for rapid growth (≥0.5 cm in 6 months) or symptoms."
+        },
+        {
+          "type": "match",
+          "q": "Match the AAA diameter to its surveillance interval.",
+          "pairs": [
+            {
+              "left": "3.0–3.9 cm",
+              "right": "Every 3 years"
+            },
+            {
+              "left": "4.0–4.9 cm",
+              "right": "Every 12 months"
+            },
+            {
+              "left": "5.0–5.4 cm",
+              "right": "Every 6 months"
+            }
+          ]
+        },
+        {
+          "type": "bucket",
+          "q": "Interpret each ankle-brachial index.",
+          "bins": [
+            "Normal",
+            "PAD",
+            "Noncompressible"
+          ],
+          "items": [
+            {
+              "label": "ABI 1.10",
+              "bin": "Normal"
+            },
+            {
+              "label": "ABI 0.85",
+              "bin": "PAD"
+            },
+            {
+              "label": "ABI 0.35",
+              "bin": "PAD"
+            },
+            {
+              "label": "ABI 1.50",
+              "bin": "Noncompressible"
+            },
+            {
+              "label": "ABI 1.00",
+              "bin": "Normal"
+            }
+          ],
+          "why": "Order a toe-brachial index when ABI is above 1.40."
+        },
+        {
+          "type": "mcq",
+          "q": "What is the first-line treatment to improve walking distance in claudication?",
+          "a": "Supervised exercise therapy",
+          "distractors": [
+            "Cilostazol",
+            "Pentoxifylline",
+            "Angioplasty"
+          ]
+        },
+        {
+          "type": "recall",
+          "q": "Immediate step in suspected acute limb ischemia?",
+          "a": "IV heparin and emergent transfer",
+          "why": "Muscle and nerve tolerate only 4–6 hours of complete ischemia. Do not delay for duplex or CTA."
+        },
+        {
+          "type": "number",
+          "q": "Compression stocking pressure range for venous stasis ulcers?",
+          "values": [
+            30,
+            40
+          ],
+          "join": "–",
+          "unit": "mm Hg"
+        },
+        {
+          "type": "multi",
+          "q": "Which drugs commonly cause bilateral leg edema?",
+          "answers": [
+            "Amlodipine",
+            "Pioglitazone",
+            "Pregabalin",
+            "Estrogen"
+          ],
+          "distractors": [
+            "Losartan",
+            "Furosemide"
+          ],
+          "why": "Review the medication list before ordering an echocardiogram."
+        },
+        {
+          "type": "recall",
+          "q": "Cause to consider for unexplained bilateral edema after cardiac, renal, hepatic and venous workup is negative?",
+          "a": "Obstructive sleep apnea"
+        },
+        {
+          "type": "truefalse",
+          "q": "Cigarette smoking is the strongest risk factor for abdominal aortic aneurysm.",
+          "a": true
+        }
+      ]
+    }
+
   ];
 
   global.Decks = { BUILTIN: BUILTIN };
