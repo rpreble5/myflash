@@ -399,8 +399,8 @@
     }
     if (!checkStrings(r, w, c.bins, 'bins')) return;
     if (c.bins.length > 2) {
-      r.warn(w, c.bins.length + ' bins means the card loses the swipe and falls back to buttons.',
-        'Two bins is the good version of this card.');
+      return r.err(w, c.bins.length + ' bins; this card sorts into exactly two.',
+        'Split it into two cards of two bins each, or drop the third bin.');
     }
     if (!isArr(c.items) || !c.items.length) {
       return r.err(w, 'No items to sort.',

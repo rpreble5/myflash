@@ -145,10 +145,10 @@
 
 <!-- The real deck list, the real dial maths, the real store. A check
      against a copy of the rules is a check against nothing. -->
-<script src="../js/decks.js?v=83"></script>
-<script src="../js/modes.js?v=83"></script>
-<script src="../js/store.js?v=83"></script>
-<script src="validate.js?v=83"></script>
+<script src="../js/decks.js?v=84"></script>
+<script src="../js/modes.js?v=84"></script>
+<script src="../js/store.js?v=84"></script>
+<script src="validate.js?v=84"></script>
 
 <!-- The prompt lives here as inert text so there is exactly one copy of
      it: the page renders it and the clipboard button ships it. -->
@@ -331,12 +331,30 @@ wraps into a wall.
   trend row label   under 28
   match left/right  under 24
 
-Write questions as short, specific phrases rather than full sentences:
-"First test when thyroid disease is suspected", not "What is the first
-test to order when you suspect thyroid disease?". But never so short that
-the context goes missing: "Thyroid storm: minimum wait after PTU before
-iodine", not "Minimum wait before iodine". Prefer plain words to jargon
-("methimazole" over "a thionamide") unless the term is what is tested.
+═══ HOW TO WRITE THE QUESTION ═══
+
+A concise, complete question. It says exactly what to produce — a test, a
+drug, an age, an interval, a grade, a next step — so the reader never has
+to guess what is being asked. Not a label, and not padded either.
+
+  too short    "Cervical screening at ages 21–29"
+  too long     "What is the recommended screening approach for cervical
+               cancer in women between the ages of 21 and 29?"
+  right        "How often is a Pap done at ages 21–29?"
+
+  too short    "USPSTF on PSA screening at 55–69"
+  right        "USPSTF grade for PSA screening at 55–69?"
+
+Write it the way a doctor would say it to a resident. Plain words over
+jargon ("methimazole" over "a thionamide") unless the term is what is
+tested, and never guideline phrasing: not "adults with overweight", not
+"offered selectively", not "individualize". Say "an overweight
+45-year-old", "sometimes", "it depends on the patient".
+
+Write the fact in plain English first, then choose the type that fits it.
+Do not force a fact into a type: three variables will not fit in a
+32-character option, so that fact is a recall card, not an mcq.
+
 Answers are a short phrase.
 
 And how many:
@@ -357,7 +375,7 @@ even when every fact is right.
    not "Up", not an arrow.
 
 2. Every bucket "bin" must be one of the strings in "bins", copied character
-   for character. Use two bins; a third costs the card its best interaction.
+   for character. Exactly two bins — a third is rejected.
 
 3. No two "right" values in a match card may be the same, and no two options
    in an mcq or multi card may be the same. Identical options cannot be told
@@ -407,22 +425,46 @@ are listed separately because each one has actually gone wrong:
    from the same guideline.
 
 5. Read the questions as a set and confirm no two ask the same thing in
-   different words, across facets as well as within one.
+   different words, and no card's question or explanation gives away
+   another card's answer.
 
 6. Confirm every question has exactly one defensible answer.
 
-═══ "why" ═══
+═══ "why": THE EXPLANATION ═══
 
-On any card. Add it ONLY where the answer is counterintuitive or commonly
-confused, and use it to explain the trap. Most cards should not have one; a
-"why" on an obvious fact is noise the reader has to look past. On truefalse,
-always include it.
+The explanation is for the reader who got the card wrong. It should help
+them understand the reasoning so the answer sticks, not restate the
+answer in other words. Put one on most cards.
 
-Length is not something to ration. Under about 140 characters it sits under
-the answer; longer than that it gets a screen of its own, which the reader
-opens if they want it. So write one tight sentence when one will do, and
-take the room when the explanation genuinely needs it — but do not pad a
-thin point to fill space.
+What goes in it, in roughly this order: the reason (the mechanism, or the
+evidence), then the trap the exam sets or the exception the answer leaves
+out, then the next step if there is one. Two or three plain sentences.
+
+  restates     "Colonoscopy is the next step after a positive FIT."
+  explains     "A positive stool test is only half of a screening episode:
+               it has to be completed with colonoscopy, which can both
+               find and remove the source. Repeating the FIT is the classic
+               wrong answer — polyps bleed intermittently, so a negative
+               repeat does not cancel the positive."
+
+Leave it off only when there is genuinely nothing to add — a definition,
+a bare number with no story. On truefalse, always include it.
+
+Length: under about 220 characters it sits under the answer; longer than
+that it gets a screen of its own that the reader opens with a swipe.
+Both are fine. Write what the reasoning needs and stop.
+
+═══ "WHY" CARDS ═══
+
+Alongside the fact cards, write recall cards that ask why — "Why doesn't
+a negative repeat FIT cancel out a positive one?" — with a short answer
+("Polyps and cancers bleed intermittently") and the fuller reasoning in
+"why". These are the cards that make the facts stick.
+
+Only when there is a real mechanism or piece of evidence behind the
+answer. Never for a committee's cutoff or a guideline's choice of
+interval — "Why does the USPSTF require a 10% risk?" has no mechanism,
+only an abstraction, and the card should not exist.
 </script>
 
 <script type="text/plain" id="t-article">
