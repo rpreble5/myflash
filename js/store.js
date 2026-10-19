@@ -7,6 +7,7 @@
   var KEY_DECKS = 'myflash.decks.v1';
   var KEY_STATS = 'myflash.stats.v1';
   var KEY_PREFS = 'myflash.prefs.v1';
+  var KEY_CHALLENGE = 'myflash.challenge.v1';
 
   /* Left behind by the retired look feedback. Nothing reads them now. */
   try {
@@ -335,7 +336,18 @@
     return { learned: d.total - d.weak, total: d.total };
   }
 
-  function resetProgress() { write(KEY_STATS, {}); }
+  function resetProgress() { write(KEY_STATS, {}); write(KEY_CHALLENGE, {}); }
+
+  /* Challenge progress: which topics have been beaten, by id. Kept apart
+     from the card stats, since a challenge run teaches the strength model
+     nothing it should act on. */
+  function challengeBeaten() { return read(KEY_CHALLENGE, {}).beaten || {}; }
+  function beatChallengeTopic(id) {
+    var c = read(KEY_CHALLENGE, {});
+    c.beaten = c.beaten || {};
+    c.beaten[id] = Date.now();
+    write(KEY_CHALLENGE, c);
+  }
 
   function setting(key) {
     var prefs = read(KEY_PREFS, {});
@@ -369,6 +381,8 @@
     WEAK: WEAK,
     topics: topics,
     deckProgress: deckProgress,
-    resetProgress: resetProgress
+    resetProgress: resetProgress,
+    challengeBeaten: challengeBeaten,
+    beatChallengeTopic: beatChallengeTopic
   };
 })(window);

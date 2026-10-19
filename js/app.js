@@ -97,6 +97,11 @@
     list.classList.toggle('is-entering', !homeShown);
     homeShown = true;
     $('#subject-name').textContent = global.Store.currentSubject();
+    var beaten = global.Store.challengeBeaten();
+    var won = global.Challenge.TOPICS.filter(function (t) { return beaten[t.id]; }).length;
+    $('#challenge-line').textContent = won >= global.Challenge.TOPICS.length
+      ? 'Complete'
+      : won + ' of ' + global.Challenge.TOPICS.length;
 
     global.Store.topics().forEach(function (topic, ti) {
       var group = h('div', 'topic');
@@ -195,6 +200,40 @@
       list.appendChild(group);
     });
   }
+
+  /* ──────────────────── challenge ───────────────────── */
+  /* The path: one square per topic, beaten ones filled, the next one
+     breathing, the rest faded. Beaten topics can be replayed. */
+  var PATH_X = [0, 1, 1.5, 1, 0, -1, -1.5, -1, 0, 1];
+
+  function renderChallenge() {
+    var topics = global.Challenge.TOPICS;
+    var beaten = global.Store.challengeBeaten();
+    var won = topics.filter(function (t) { return beaten[t.id]; }).length;
+    $('#path-intro').textContent = won >= topics.length
+      ? 'All ' + topics.length + ' beaten. Replay any topic.'
+      : 'Beat all ' + topics.length + ' topics. ' + global.Challenge.HEARTS + ' hearts per topic.';
+
+    var path = $('#path');
+    path.textContent = '';
+    var currentSet = false;
+    topics.forEach(function (topic, i) {
+      var step = h('div', 'path-step');
+      step.style.setProperty('--i', i);
+      step.style.setProperty('--x', PATH_X[i % PATH_X.length]);
+      var node = h('button', 'path-node', beaten[topic.id] ? '✓' : String(i + 1));
+      node.setAttribute('aria-label', topic.name);
+      if (beaten[topic.id]) step.classList.add('is-beaten');
+      else if (!currentSet) { step.classList.add('is-current'); currentSet = true; }
+      else step.classList.add('is-locked');
+      node.addEventListener('click', function () { startSession([topic], null, { challenge: topic }); });
+      step.appendChild(node);
+      step.appendChild(h('span', 'path-name', topic.name));
+      path.appendChild(step);
+    });
+  }
+
+  function openChallenge() { renderChallenge(); show('screen-challenge'); }
 
   /* ──────────────────── subjects ───────────────────── */
   /* A sheet over the home screen listing every subject; picking one
@@ -383,8 +422,9 @@
      all of its, already weakest first. Each is shuffled within itself and
      finished before the next begins — the cards stay together, which is
      the whole point of grouping them. */
-  function startSession(decks, only) {
+  function startSession(decks, only, opts) {
     if (!Array.isArray(decks)) decks = [decks];
+    opts = opts || {};
 
     /* `only` restricts the run to a chosen set of positions — the weak
        ones — without touching how a session is built. Selection decides
@@ -422,8 +462,14 @@
       best: 0,
       started: Date.now(),
       keydown: {},
-      keyup: {}
+      keyup: {},
+      /* A challenge run: the topic being attempted and the hearts left.
+         Set only from the path. */
+      challenge: opts.challenge || null,
+      hearts: opts.challenge ? global.Challenge.HEARTS : 0
     };
+    $('#streak').hidden = !!session.challenge;
+    $('#hearts').hidden = !session.challenge;
     show('screen-session');
     updateHud();
     nextCard();
@@ -435,10 +481,27 @@
     $('#progress-fill').style.width = (total ? (done / total) * 100 : 0) + '%';
     $('#streak-n').textContent = session.streak;
     $('#streak').classList.toggle('is-hot', session.streak >= 3);
+    if (session.challenge) {
+      var row = $('#hearts');
+      var max = global.Challenge.HEARTS;
+      if (row.children.length !== max) {
+        row.textContent = '';
+        for (var i = 0; i < max; i++) row.appendChild(h('span', 'heart', '♥'));
+      }
+      Array.prototype.forEach.call(row.children, function (el, i) {
+        var lost = i >= session.hearts;
+        var was = el.classList.contains('is-lost');
+        el.classList.toggle('is-lost', lost);
+        if (lost && !was) {
+          el.classList.add('is-just-lost');
+          setTimeout(function () { el.classList.remove('is-just-lost'); }, 320);
+        }
+      });
+    }
   }
 
   function nextCard() {
-    if (!session.queue.length) return endSession();
+    if (!session.queue.length) return session.challenge ? endChallenge(true) : endSession();
     var next = session.queue.shift();
     session.deck = session.decks[next.deck];
     renderCard(session.deck, next.card, next);
@@ -640,6 +703,10 @@
            happened to wire it up. */
         var held = el.querySelector('.why-wrap.is-held');
         if (held) held.classList.remove('is-held');
+
+        /* A challenge heart goes the moment the miss is on screen, not
+           on the tap that moves on; the tally in finish() stays as it is. */
+        if (session.challenge && score < 0.999) { session.hearts--; updateHud(); }
 
         if (score < 0.999) {
           if (score > 0) global.Sfx.partial(); else global.Sfx.wrong();
@@ -1079,15 +1146,20 @@
           session.resolved[deck.id + ':' + cardIndex] = true;
         } else {
           session.streak = 0;
-          /* Requeue a missed card a few positions back so it comes
-             around again inside the same session. */
-          var at = Math.min(3, session.queue.length);
-          session.queue.splice(at, 0, ref);
+          /* A challenge miss costs a heart and the card does not come
+             back; a study miss is requeued a few positions back so it
+             comes around again inside the same session. */
+          if (!session.challenge) {
+            var at = Math.min(3, session.queue.length);
+            session.queue.splice(at, 0, ref);
+          }
         }
         /* The real score, not the boolean — a 4-of-5 and a 0-of-5 are not
-           the same thing and the ranking needs to know. */
-        global.Store.recordAnswer(deck.id, cardIndex, score);
+           the same thing and the ranking needs to know. A challenge run
+           stays out of the stats: its cards are not the study cards. */
+        if (!session.challenge) global.Store.recordAnswer(deck.id, cardIndex, score);
         updateHud();
+        if (session.challenge && session.hearts <= 0) { setTimeout(function () { endChallenge(false); }, 600); return; }
         setTimeout(nextCard, 180);
       }
     };
@@ -1151,7 +1223,39 @@
       stats.appendChild(box);
     });
 
+    $('#btn-again').textContent = 'Run it back';
+    $('#btn-home').textContent = 'Home';
     global.Sfx.done();
+    show('screen-summary');
+    renderHome();
+  }
+
+  /* A challenge run ends in one of two ways, and the summary says which.
+     Beating a topic unlocks the next; beating the last beats the lot. */
+  function endChallenge(won) {
+    var topic = session.challenge;
+    var secs = Math.round((Date.now() - session.started) / 1000);
+    if (won) global.Store.beatChallengeTopic(topic.id);
+    var beaten = global.Store.challengeBeaten();
+    var all = global.Challenge.TOPICS.every(function (t) { return beaten[t.id]; });
+
+    $('#summary-title').textContent = !won ? 'OUT OF HEARTS' : all ? 'CHALLENGE COMPLETE' : 'TOPIC BEATEN';
+    var stats = $('#summary-stats');
+    stats.textContent = '';
+    [
+      [session.hearts + '/' + global.Challenge.HEARTS, 'hearts left'],
+      [session.correct + '/' + session.answers, 'correct'],
+      [(secs < 60 ? secs + 's' : Math.floor(secs / 60) + 'm ' + (secs % 60) + 's'), 'time']
+    ].forEach(function (pair, i) {
+      var box = h('div', 'stat');
+      box.style.setProperty('--i', i);
+      box.appendChild(h('span', 'stat-n', String(pair[0])));
+      box.appendChild(h('span', 'stat-l', pair[1]));
+      stats.appendChild(box);
+    });
+    $('#btn-again').textContent = won ? 'Run it back' : 'Try again';
+    $('#btn-home').textContent = 'Path';
+    if (won) global.Sfx.done(); else global.Sfx.wrong();
     show('screen-summary');
     renderHome();
   }
@@ -1180,9 +1284,18 @@
     $('#btn-subject').addEventListener('click', openSubjects);
     pressable($('#btn-subject'));
     $('#btn-settings-back').addEventListener('click', function () { show('screen-home'); renderHome(); });
-    $('#btn-quit').addEventListener('click', function () { show('screen-home'); renderHome(); });
-    $('#btn-home').addEventListener('click', function () { show('screen-home'); });
-    $('#btn-again').addEventListener('click', function () { startSession(session.decks); });
+    /* Leaving a challenge run lands back on the path, not the home list. */
+    function leaveSession() {
+      if (session && session.challenge) openChallenge();
+      else { show('screen-home'); renderHome(); }
+    }
+    $('#btn-quit').addEventListener('click', leaveSession);
+    $('#btn-home').addEventListener('click', leaveSession);
+    $('#btn-again').addEventListener('click', function () {
+      startSession(session.decks, null, session.challenge ? { challenge: session.challenge } : null);
+    });
+    $('#btn-challenge').addEventListener('click', openChallenge);
+    $('#btn-challenge-back').addEventListener('click', function () { show('screen-home'); renderHome(); });
     var build = $('#app-build');
     if (build) build.textContent = 'Version ' + buildId();
     $('#btn-update').addEventListener('click', function () { forceUpdate(this); });
@@ -1198,7 +1311,7 @@
          key meant. */
       if (e.key === 'Escape') {
         if (session && session.closeNote) { session.closeNote(); return; }
-        show('screen-home'); renderHome(); return;
+        leaveSession(); return;
       }
       if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
       var fn = session && session.keydown[e.key];

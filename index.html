@@ -11,9 +11,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/base.css?v=72">
-<link rel="stylesheet" href="css/themes.css?v=72">
-<link rel="stylesheet" href="css/animations.css?v=72">
+<link rel="stylesheet" href="css/base.css?v=73">
+<link rel="stylesheet" href="css/themes.css?v=73">
+<link rel="stylesheet" href="css/animations.css?v=73">
 </head>
 <body>
 
@@ -32,7 +32,26 @@
         <span id="subject-name">Family Medicine</span><span class="subject-caret" aria-hidden="true">▾</span>
       </button>
 
+      <!-- The Challenge: ten topics on a path, each beaten on a run of
+           limited hearts. -->
+      <button class="challenge-entry" id="btn-challenge">
+        <span class="challenge-entry-name">CHALLENGE</span>
+        <span class="challenge-entry-line" id="challenge-line"></span>
+      </button>
+
       <div class="deck-list" id="deck-list"></div>
+    </div>
+  </section>
+
+  <!-- ─────────────────────── CHALLENGE ────────────────────── -->
+  <section class="screen" id="screen-challenge">
+    <div class="path-wrap">
+      <div class="screen-head">
+        <button class="icon-btn" id="btn-challenge-back" aria-label="Back">&#8592;</button>
+        <h2 class="screen-title">Challenge</h2>
+      </div>
+      <p class="path-intro" id="path-intro"></p>
+      <div class="path" id="path"></div>
     </div>
   </section>
 
@@ -107,6 +126,7 @@
       <button class="hud-btn" id="btn-quit" aria-label="End session">&#10005;</button>
       <div class="progress"><div class="progress-fill" id="progress-fill"></div></div>
       <div class="streak" id="streak"><span id="streak-n">0</span>&#128293;</div>
+      <div class="hearts" id="hearts" hidden></div>
     </div>
     <div id="stage" class="stage"></div>
   </section>
@@ -125,11 +145,12 @@
 
 </div>
 
-<script src="js/audio.js?v=72"></script>
-<script src="js/decks.js?v=72"></script>
-<script src="js/store.js?v=72"></script>
-<script src="js/text.js?v=72"></script>
-<script src="js/modes.js?v=72"></script>
-<script src="js/app.js?v=72"></script>
+<script src="js/audio.js?v=73"></script>
+<script src="js/decks.js?v=73"></script>
+<script src="js/challenge.js?v=73"></script>
+<script src="js/store.js?v=73"></script>
+<script src="js/text.js?v=73"></script>
+<script src="js/modes.js?v=73"></script>
+<script src="js/app.js?v=73"></script>
 </body>
 </html>
