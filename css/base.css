@@ -602,6 +602,17 @@ button { cursor: pointer; border: 0; background: none; }
    and the name to its inner side. */
 .baddie-stand { width: 136px; height: 136px; object-fit: contain; display: block; cursor: pointer; }
 .baddie-stand.is-map { animation: baddie-bob 1.6s ease-in-out infinite; }
+.baddie-stand.is-flipped { animation-name: baddie-bob-flipped; }
+@keyframes baddie-bob-flipped {
+  0%, 100% { transform: scaleX(-1) translateY(0); }
+  50%      { transform: scaleX(-1) translateY(-6px); }
+}
+.baddie-stand.is-flipped.is-go { animation-name: baddie-hop-flipped; }
+@keyframes baddie-hop-flipped {
+  0%   { transform: scaleX(-1) translateY(0) scale(1); }
+  40%  { transform: scaleX(-1) translateY(-14px) scale(1.08); }
+  100% { transform: scaleX(-1) translateY(0) scale(1); }
+}
 .baddie-stand.is-go { animation: baddie-hop .32s cubic-bezier(.3, 1.6, .5, 1); }
 @keyframes baddie-hop {
   0%   { transform: translateY(0) scale(1); }

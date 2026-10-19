@@ -285,6 +285,9 @@
         var stand = baddieNode(topic, 'map');
         stand.classList.add('baddie-stand');
         stand._x = x;
+        /* Art faces the viewer's left. When the button is on the right,
+           the baddie is mirrored so it still squares up to it. */
+        if (side === 'is-right') stand.classList.add('is-flipped');
         var col = h('div', 'path-go-col ' + side);
         var go = h('button', 'path-go', '▶');
         go.setAttribute('aria-label', 'Start ' + topic.name);
