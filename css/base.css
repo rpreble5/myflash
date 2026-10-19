@@ -708,7 +708,7 @@ button { cursor: pointer; border: 0; background: none; }
 .path-node .baddie-img { width: 82px; height: 82px; object-fit: contain; display: block; }
 .path-node .baddie-img.is-map { animation: baddie-bob 1.6s ease-in-out infinite; }
 .path-step.is-beaten .path-node .baddie-img { width: 78px; height: 78px; }
-.hud-baddie { width: 42px; height: 42px; object-fit: contain; flex: 0 0 auto; }
+.hud-baddie { width: 42px; height: 42px; object-fit: contain; flex: 0 0 auto; border-radius: 12px; }
 .hud-baddie:not([hidden]) { display: block; }
 .hud-baddie.is-react { animation: streak-pop .3s ease; }
 .summary-baddie { width: 170px; height: 170px; object-fit: contain; margin-bottom: .75rem; animation: deck-in .35s cubic-bezier(.22,1,.36,1) both; }

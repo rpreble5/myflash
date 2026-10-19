@@ -615,9 +615,10 @@
     var hudBaddie = $('#hud-baddie');
     hudBaddie.hidden = !(session.challenge && session.challenge.baddie);
     if (!hudBaddie.hidden) {
-      hudBaddie.src = baddieSrc(session.challenge, 'map');
-      /* All four poses, so the first reaction does not flash blank. */
-      BADDIE_POSES.forEach(function (p) { var im = new Image(); im.src = baddieSrc(session.challenge, p); });
+      hudBaddie.src = baddieSrc(session.challenge, baddieRest());
+      /* Every pose, so the first reaction does not flash blank. */
+      BADDIE_POSES.concat(session.challenge.baddieFace ? ['face', 'nervous'] : [])
+        .forEach(function (p) { var im = new Image(); im.src = baddieSrc(session.challenge, p); });
     }
     show('screen-session', !!session.challenge);
     updateHud();
@@ -631,6 +632,11 @@
     $('#streak-n').textContent = session.streak;
     $('#streak').classList.toggle('is-hot', session.streak >= 3);
     if (session.challenge) {
+      if (session.challenge.baddie && !reactTimer) {
+        var rest = baddieSrc(session.challenge, baddieRest());
+        var hb = $('#hud-baddie');
+        if (hb.getAttribute('src') !== rest) hb.src = rest;
+      }
       var row = $('#hearts');
       var max = global.Challenge.HEARTS;
       if (row.children.length !== max) {
@@ -1417,6 +1423,14 @@
   /* The HUD baddie answers each answer: a taunt when you miss, a flinch
      when you land one, then back to glaring. */
   var reactTimer = null;
+  /* What the HUD baddie shows between reactions: its close-up where the
+     art has one, and the nervous face once you are within two cards of
+     beating it. */
+  function baddieRest() {
+    var t = session && session.challenge;
+    if (!t || !t.baddieFace) return 'map';
+    return session.queue.length <= 2 && session.hearts > 0 ? 'nervous' : 'face';
+  }
   function baddieReact(pose) {
     var img = $('#hud-baddie');
     if (img.hidden || !session.challenge) return;
@@ -1426,7 +1440,8 @@
     img.classList.add('is-react');
     clearTimeout(reactTimer);
     reactTimer = setTimeout(function () {
-      if (session && session.challenge) img.src = baddieSrc(session.challenge, 'map');
+      reactTimer = null;
+      if (session && session.challenge) img.src = baddieSrc(session.challenge, baddieRest());
       img.classList.remove('is-react');
     }, 1100);
   }

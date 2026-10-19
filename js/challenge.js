@@ -75,6 +75,7 @@
       name: 'Endocrine',
       /* Demo of the kawaii style, on loan until Endocrine has its own. */
       baddie: 'heart-kawaii',
+      baddieFace: true,   // also has the close-up and nervous poses
       cards: [
         { type: 'number', q: 'Fasting glucose at or above which diabetes is diagnosed?', value: 126, unit: 'mg/dL',
           why: 'Or an A1c of 6.5% or more, a two-hour glucose of 200 or more on a tolerance test, or a random glucose of 200 or more with symptoms. An abnormal result without symptoms is confirmed with a second test.' },
