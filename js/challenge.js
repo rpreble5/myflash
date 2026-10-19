@@ -28,7 +28,7 @@
         { type: 'mcq', q: 'A 62-year-old has crushing chest pain, ST elevation in II, III and aVF, and a BP of 84/50. Which drug do you hold?',
           a: 'Nitroglycerin', distractors: ['Aspirin', 'Heparin', 'Clopidogrel'],
           why: 'An inferior MI with hypotension suggests the right ventricle is involved. The RV is preload-dependent, so nitrates can drop the pressure further. Give fluids and get him to the cath lab.' },
-        { type: 'number', q: 'Target time from first medical contact to balloon for primary PCI, in minutes?', value: 90, unit: 'minutes',
+        { type: 'number', q: 'Target time from first medical contact to balloon for primary PCI?', value: 90, unit: 'minutes',
           why: '120 minutes when the patient has to be transferred. If PCI cannot happen within that, fibrinolysis within 30 minutes of arrival is the alternative.' },
         { type: 'truefalse', q: 'Troponin can be normal in the first two hours of a myocardial infarction.', a: true,
           why: 'It starts to rise two to three hours after the injury. That is why a single early troponin never rules out an MI and why the ECG, not the lab, decides who goes to the cath lab.' },
@@ -158,7 +158,7 @@
       id: 'ch-women',
       name: "Women's Health",
       cards: [
-        { type: 'number', q: 'Gestational age in weeks at which routine gestational diabetes screening is done?', values: [24, 28], join: '–', unit: 'weeks' },
+        { type: 'number', q: 'At what gestational age is routine gestational diabetes screening done?', values: [24, 28], join: '–', unit: 'weeks' },
         { type: 'mcq', q: 'Most effective reversible contraceptive?',
           a: 'Levonorgestrel IUD', distractors: ['Combined pill', 'Depot medroxyprogesterone', 'Contraceptive patch'] },
         { type: 'truefalse', q: 'Cervical screening starts at age 21 regardless of sexual history.', a: true }
