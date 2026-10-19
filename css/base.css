@@ -586,9 +586,65 @@ button { cursor: pointer; border: 0; background: none; }
 .path-step {
   display: flex;
   transform: translateX(calc(var(--x) * 72px));
-  animation: deck-in .3s cubic-bezier(.22,1,.36,1) backwards;
-  animation-delay: calc(var(--i) * 45ms);
+  /* Each square pops in, from the bottom of the climb upward. */
+  animation: path-in .32s cubic-bezier(.22,1,.36,1) backwards;
+  animation-delay: calc(60ms + var(--i) * 40ms);
 }
+@keyframes path-in {
+  from { opacity: 0; transform: translateX(calc(var(--x) * 72px)) scale(.7); }
+  to   { opacity: 1; transform: translateX(calc(var(--x) * 72px)) scale(1); }
+}
+/* The trail follows once the squares are there. */
+.path-trail { animation: trail-in .3s ease .35s backwards; }
+@keyframes trail-in { from { opacity: 0; } to { opacity: 1; } }
+
+/* The next topic: the baddie at full size on the path, the go button
+   and the name to its inner side. */
+.baddie-stand { width: 136px; height: 136px; object-fit: contain; display: block; cursor: pointer; }
+.baddie-stand.is-map { animation: baddie-bob 1.6s ease-in-out infinite; }
+.baddie-stand.is-go { animation: baddie-hop .32s cubic-bezier(.3, 1.6, .5, 1); }
+@keyframes baddie-hop {
+  0%   { transform: translateY(0) scale(1); }
+  40%  { transform: translateY(-14px) scale(1.08); }
+  100% { transform: translateY(0) scale(1); }
+}
+.path-go-col {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .5rem;
+  width: 124px;
+}
+.path-go-col.is-left  { right: calc(100% - 6px); }
+.path-go-col.is-right { left: calc(100% - 6px); }
+.path-go {
+  width: 74px; height: 74px;
+  border-radius: 22px;
+  background: var(--brand);
+  color: #fff;
+  font-size: 1.6rem;
+  padding-left: 5px;   /* optical centre for the play glyph */
+  box-shadow: 0 8px 0 var(--brand-dark);
+  animation: path-breathe 1.8s ease-in-out infinite;
+  transition: transform .08s ease, box-shadow .08s ease;
+}
+.path-go.is-pressed { transform: translateY(6px); box-shadow: 0 2px 0 var(--brand-dark); }
+.path-go.is-go { animation: go-pop .32s cubic-bezier(.3, 1.6, .5, 1); }
+@keyframes go-pop {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.16); }
+  100% { transform: scale(1); }
+}
+.path-go-name { font-size: .85rem; font-weight: 800; color: var(--brand-dark); text-align: center; }
+
+/* Screen transitions: the old screen drops away, the new one rises. */
+.screen.is-leaving { animation: screen-out .15s ease forwards; }
+.screen.is-entering { animation: screen-in .3s cubic-bezier(.22,1,.36,1) both; }
+@keyframes screen-out { to { opacity: 0; transform: scale(.98); } }
+@keyframes screen-in { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
 /* Chunky: a thick outline, a deep bottom edge, and a sink on press. */
 .path-node {
   width: 98px; height: 98px;

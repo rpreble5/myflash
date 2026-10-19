@@ -9,10 +9,26 @@
   var reduceMotion = global.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   /* ───────────────────────── screens ───────────────────────── */
-  function show(id) {
-    Array.prototype.forEach.call(document.querySelectorAll('.screen'), function (s) {
-      s.classList.toggle('is-active', s.id === id);
-    });
+  /* Switches screens. With `animate`, the current screen fades down and
+     the next rises in; `after` runs once the next screen is on. Plain
+     calls switch at once, as before. */
+  function show(id, animate, after) {
+    var cur = document.querySelector('.screen.is-active');
+    var next = document.getElementById(id);
+    function flip() {
+      Array.prototype.forEach.call(document.querySelectorAll('.screen'), function (s) {
+        s.classList.remove('is-leaving', 'is-entering');
+        s.classList.toggle('is-active', s === next);
+      });
+      if (after) after();
+    }
+    if (!animate || reduceMotion || !cur || cur === next) { flip(); return; }
+    cur.classList.add('is-leaving');
+    setTimeout(function () {
+      flip();
+      next.classList.add('is-entering');
+      setTimeout(function () { next.classList.remove('is-entering'); }, 400);
+    }, 150);
   }
 
   /* ───────────────────────── home ──────────────────────────── */
@@ -254,30 +270,60 @@
     var nodes = [];
     for (var i = topics.length - 1; i >= 0; i--) (function (topic, i) {
       var step = h('div', 'path-step');
-      step.style.setProperty('--i', topics.length - 1 - i);
+      step.style.setProperty('--i', i);
       var x = PATH_X[i % PATH_X.length];
       step.style.setProperty('--x', x);
       var wrap = h('div', 'path-node-wrap');
       var node = h('button', 'path-node', String(i + 1));
       node.setAttribute('aria-label', topic.name);
       node._x = x;
+      var side = x > 0 ? 'is-left' : 'is-right';
+      if (i === current) {
+        /* The next topic: the baddie stands on the path at full size,
+           with the button to go beside it. */
+        step.classList.add('is-current');
+        var stand = baddieNode(topic, 'map');
+        stand.classList.add('baddie-stand');
+        stand._x = x;
+        var col = h('div', 'path-go-col ' + side);
+        var go = h('button', 'path-go', '▶');
+        go.setAttribute('aria-label', 'Start ' + topic.name);
+        col.appendChild(go);
+        col.appendChild(h('span', 'path-go-name', topic.name));
+        wrap.appendChild(stand);
+        wrap.appendChild(col);
+        step.appendChild(wrap);
+        path.appendChild(step);
+        nodes[i] = stand;
+        var going = false;
+        function launch() {
+          if (going) return;
+          going = true;
+          global.Sfx.flip();
+          go.classList.add('is-go');
+          /* The baddie gets a word in before the fight. */
+          if (topic.baddie) stand.src = baddieSrc(topic, 'taunt');
+          stand.classList.add('is-go');
+          setTimeout(function () { startSession([topic], null, { challenge: topic }); }, 320);
+        }
+        go.addEventListener('pointerdown', function () { global.Sfx.press(); });
+        pressable(go);
+        go.addEventListener('click', launch);
+        stand.addEventListener('click', launch);
+        return;
+      }
       if (beaten[topic.id]) {
         /* A beaten square shows the baddie knocked out, or a tick when
            the topic has no art yet. */
         step.classList.add('is-beaten');
         if (topic.baddie) { node.textContent = ''; node.appendChild(baddieNode(topic, 'down')); }
         else node.textContent = '✓';
-      } else if (i === current) {
-        /* The baddie sits in the square itself, in place of the number. */
-        step.classList.add('is-current');
-        node.textContent = '';
-        node.appendChild(baddieNode(topic, 'map'));
       } else step.classList.add('is-locked');
       node.addEventListener('click', function () { startSession([topic], null, { challenge: topic }); });
       wrap.appendChild(node);
       /* The name sits on the inner side, toward the middle of the screen,
          so it never crosses the trail. */
-      wrap.appendChild(h('span', 'path-name ' + (x > 0 ? 'is-left' : 'is-right'), topic.name));
+      wrap.appendChild(h('span', 'path-name ' + side, topic.name));
       step.appendChild(wrap);
       path.appendChild(step);
       nodes[i] = node;
@@ -321,10 +367,11 @@
 
   /* Opens scrolled to where you stand, so the climb ahead is up. */
   function openChallenge() {
-    show('screen-challenge');
-    renderChallenge();
-    var here = $('#path .path-step.is-current') || $('#path .path-step');
-    if (here) here.scrollIntoView({ block: 'center' });
+    show('screen-challenge', true, function () {
+      renderChallenge();
+      var here = $('#path .path-step.is-current') || $('#path .path-step');
+      if (here) here.scrollIntoView({ block: 'center' });
+    });
   }
 
   /* ──────────────────── subjects ───────────────────── */
@@ -569,7 +616,7 @@
       /* All four poses, so the first reaction does not flash blank. */
       BADDIE_POSES.forEach(function (p) { var im = new Image(); im.src = baddieSrc(session.challenge, p); });
     }
-    show('screen-session');
+    show('screen-session', !!session.challenge);
     updateHud();
     nextCard();
   }
@@ -1360,7 +1407,7 @@
     big.hidden = !topic.baddie;
     if (topic.baddie) big.src = baddieSrc(topic, won ? 'down' : 'taunt');
     if (won) global.Sfx.done(); else global.Sfx.wrong();
-    show('screen-summary');
+    show('screen-summary', true);
     renderHome();
   }
 
@@ -1419,7 +1466,7 @@
     global.addEventListener('resize', function () {
       if ($('#screen-challenge').classList.contains('is-active')) drawTrail();
     });
-    $('#btn-challenge-back').addEventListener('click', function () { show('screen-home'); renderHome(); });
+    $('#btn-challenge-back').addEventListener('click', function () { show('screen-home', true); renderHome(); });
     var build = $('#app-build');
     if (build) build.textContent = 'Version ' + buildId();
     $('#btn-update').addEventListener('click', function () { forceUpdate(this); });
