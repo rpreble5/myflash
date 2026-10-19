@@ -1148,6 +1148,19 @@
       pad.appendChild(check);
       area.appendChild(pad);
 
+      /* Temporary readout: where CHECK actually lands on this phone,
+         against what the browser says it has. Removed once the cut-off
+         is understood. */
+      setTimeout(function () {
+        var r = check.getBoundingClientRect();
+        var vv = global.visualViewport;
+        ctx.setKicker('check ' + Math.round(r.bottom) + ' win ' + global.innerHeight +
+          ' vis ' + (vv ? Math.round(vv.height) : '?') +
+          ' area ' + area.scrollHeight + '/' + area.clientHeight +
+          ' rem ' + parseFloat(global.getComputedStyle(document.documentElement).fontSize) +
+          ' key ' + Math.round(pad.firstChild.offsetWidth));
+      }, 400);
+
       function pretty(t) {
         var parts = t.split('.');
         parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
