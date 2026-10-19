@@ -217,6 +217,20 @@
     '<path class="baddie-line" d="M13 17.5l8 3.5M35 17.5l-8 3.5"/>' +
     '<path class="baddie-line" d="M19 33.5q5 3.5 10 0"/></svg>';
 
+  /* A topic's baddie in one of its poses: map, taunt, hit or down.
+     Topics without art fall back to the placeholder. */
+  var BADDIE_POSES = ['map', 'taunt', 'hit', 'down'];
+  function baddieSrc(topic, pose) {
+    return topic && topic.baddie ? 'assets/baddies/' + topic.baddie + '-' + pose + '.webp' : null;
+  }
+  function baddieNode(topic, pose) {
+    var src = baddieSrc(topic, pose);
+    if (src) { var img = h('img', 'baddie-img is-' + pose); img.src = src; img.alt = ''; return img; }
+    var ph = h('span', 'baddie');
+    ph.innerHTML = BADDIE;
+    return ph;
+  }
+
   function renderChallenge() {
     var topics = global.Challenge.TOPICS;
     var beaten = global.Store.challengeBeaten();
@@ -244,17 +258,20 @@
       var x = PATH_X[i % PATH_X.length];
       step.style.setProperty('--x', x);
       var wrap = h('div', 'path-node-wrap');
-      var node = h('button', 'path-node', beaten[topic.id] ? '✓' : String(i + 1));
+      var node = h('button', 'path-node', String(i + 1));
       node.setAttribute('aria-label', topic.name);
       node._x = x;
-      if (beaten[topic.id]) step.classList.add('is-beaten');
-      else if (i === current) {
+      if (beaten[topic.id]) {
+        /* A beaten square shows the baddie knocked out, or a tick when
+           the topic has no art yet. */
+        step.classList.add('is-beaten');
+        if (topic.baddie) { node.textContent = ''; node.appendChild(baddieNode(topic, 'down')); }
+        else node.textContent = '✓';
+      } else if (i === current) {
         /* The baddie sits in the square itself, in place of the number. */
         step.classList.add('is-current');
         node.textContent = '';
-        var baddie = h('span', 'baddie');
-        baddie.innerHTML = BADDIE;
-        node.appendChild(baddie);
+        node.appendChild(baddieNode(topic, 'map'));
       } else step.classList.add('is-locked');
       node.addEventListener('click', function () { startSession([topic], null, { challenge: topic }); });
       wrap.appendChild(node);
@@ -545,6 +562,13 @@
     };
     $('#streak').hidden = !!session.challenge;
     $('#hearts').hidden = !session.challenge;
+    var hudBaddie = $('#hud-baddie');
+    hudBaddie.hidden = !(session.challenge && session.challenge.baddie);
+    if (!hudBaddie.hidden) {
+      hudBaddie.src = baddieSrc(session.challenge, 'map');
+      /* All four poses, so the first reaction does not flash blank. */
+      BADDIE_POSES.forEach(function (p) { var im = new Image(); im.src = baddieSrc(session.challenge, p); });
+    }
     show('screen-session');
     updateHud();
     nextCard();
@@ -782,6 +806,7 @@
         /* A challenge heart goes the moment the miss is on screen, not
            on the tap that moves on; the tally in finish() stays as it is. */
         if (session.challenge && score < 0.999) { session.hearts--; updateHud(); }
+        if (session.challenge && session.challenge.baddie) baddieReact(score < 0.999 ? 'taunt' : 'hit');
 
         if (score < 0.999) {
           if (score > 0) global.Sfx.partial(); else global.Sfx.wrong();
@@ -1300,6 +1325,7 @@
 
     $('#btn-again').textContent = 'Run it back';
     $('#btn-home').textContent = 'Home';
+    $('#summary-baddie').hidden = true;
     global.Sfx.done();
     show('screen-summary');
     renderHome();
@@ -1330,9 +1356,29 @@
     });
     $('#btn-again').textContent = won ? 'Run it back' : 'Try again';
     $('#btn-home').textContent = 'Path';
+    var big = $('#summary-baddie');
+    big.hidden = !topic.baddie;
+    if (topic.baddie) big.src = baddieSrc(topic, won ? 'down' : 'taunt');
     if (won) global.Sfx.done(); else global.Sfx.wrong();
     show('screen-summary');
     renderHome();
+  }
+
+  /* The HUD baddie answers each answer: a taunt when you miss, a flinch
+     when you land one, then back to glaring. */
+  var reactTimer = null;
+  function baddieReact(pose) {
+    var img = $('#hud-baddie');
+    if (img.hidden || !session.challenge) return;
+    img.src = baddieSrc(session.challenge, pose);
+    img.classList.remove('is-react');
+    void img.offsetWidth;
+    img.classList.add('is-react');
+    clearTimeout(reactTimer);
+    reactTimer = setTimeout(function () {
+      if (session && session.challenge) img.src = baddieSrc(session.challenge, 'map');
+      img.classList.remove('is-react');
+    }, 1100);
   }
 
   /* ───────────────────────── wiring ────────────────────────── */

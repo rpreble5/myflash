@@ -21,6 +21,8 @@
     {
       id: 'ch-cardio',
       name: 'Cardiology',
+      /* Art: assets/baddies/<baddie>-{map,taunt,hit,down}.webp */
+      baddie: 'ch-cardio',
       cards: [
         { type: 'mcq', q: 'Which murmur gets louder with Valsalva?',
           a: 'Hypertrophic cardiomyopathy', distractors: ['Aortic stenosis', 'Mitral regurgitation', 'Ventricular septal defect'] },
