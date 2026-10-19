@@ -3566,7 +3566,162 @@
           "a": true
         }
       ]
-    }
+    },
+
+    /* ═══════════════ Cardiology & Vascular ═══════════════
+       Built section by section from the user's ITE study guide, under the
+       card-writing rules in tools/check.html. Module 1 first. */
+
+    {
+      id: 'cv-triage',
+      subject: 'Cardiology & Vascular',
+      topic: 'CAD & Chest Pain',
+      name: 'CHEST PAIN TRIAGE',
+      blurb: 'The ECG, what counts as ACS, and what to do while EMS is coming',
+      cards: [
+        { type: 'number', q: 'Within how many minutes should a patient with acute chest pain have a 12-lead ECG?', value: 10, unit: 'minutes',
+          why: 'The ECG is what separates the patient who needs the cath lab now from everyone else, and it costs nothing to get. Troponin cannot do that job early: it takes 2–3 hours to rise and misses more than half of infarcts at presentation.' },
+        { type: 'multi', q: 'Which ECG findings with chest pain mean an acute coronary syndrome and immediate EMS transfer?',
+          answers: ['New left bundle branch block', 'ST-segment elevation', 'Dynamic ST depression', 'New T-wave inversions'],
+          distractors: ['Sinus tachycardia', 'First-degree AV block'],
+          why: 'Any of these means an unstable plaque until proven otherwise, and the place to prove otherwise is a PCI-capable hospital, not the office. Pathologic Q waves with ongoing pain count too.' },
+        { type: 'recall', q: 'Why is a new left bundle branch block treated as a STEMI equivalent?', a: 'It usually means a proximal LAD occlusion',
+          why: 'The left bundle is fed by septal perforators off the LAD, so a bundle that has just failed points to a large occlusion upstream. The block also distorts the ST segments, hiding the elevation that would otherwise make the diagnosis obvious.' },
+        { type: 'mcq', q: 'ST elevation in the office and EMS is on the way. Which of these delays care without helping?',
+          a: 'An office troponin', distractors: ['Chewed aspirin 162–325 mg', 'Sublingual nitroglycerin', 'Oxygen if SpO2 is under 90%'],
+          why: 'Troponin takes 2–3 hours to rise and is only about 40% sensitive at presentation, so a normal value changes nothing and an abnormal one tells you what the ECG already did. Stress testing and CT angiography are off the table for the same reason: an unstable plaque is something to open, not to provoke or image.' },
+        { type: 'recall', q: 'How is aspirin given in the office for a suspected MI?', a: '162–325 mg, chewed, not enteric-coated',
+          why: 'Chewing gets it into the blood in minutes; an enteric coating holds it back for an hour you do not have.' },
+        { type: 'multi', q: 'Before giving sublingual nitroglycerin for chest pain, which three things do you rule out?',
+          answers: ['Right ventricular infarction', 'Hypotension', 'Recent sildenafil or tadalafil'],
+          distractors: ['Aspirin allergy', 'Diabetes'],
+          why: 'Nitrates drop preload and pressure. The infarcted right ventricle depends on preload, a hypotensive patient has none to spare, and a PDE-5 inhibitor turns the drop into a crash — sildenafil within 24 hours, tadalafil within 48.' },
+        { type: 'truefalse', q: 'Every patient with a suspected MI should get supplemental oxygen.', a: false,
+          why: 'Only if the saturation is below 90%. Extra oxygen in a patient who does not need it constricts the coronary arteries and has not been shown to help; it is one of the older reflexes the guidelines have retired.' },
+        { type: 'recall', q: 'Hypotension, JVD and clear lungs after an inferior MI point to what?', a: 'Right ventricular infarction',
+          why: 'The right ventricle is failing to push blood forward, so pressure falls and the neck veins fill, but nothing backs up into the lungs because the left side is not the problem. Confirm with a right-sided ECG: ST elevation in V4R. Up to 40% of inferior MIs involve the RV.' },
+        { type: 'mcq', q: 'A 62-year-old has an inferior STEMI and a BP of 84/50. What do you give first?',
+          a: 'IV normal saline', distractors: ['Sublingual nitroglycerin', 'IV morphine', 'IV furosemide'],
+          why: 'An ischemic right ventricle is preload-dependent: fluid is what keeps the left side filled. The three distractors all lower preload, which is exactly why they are the classic wrong answers here.' },
+        { type: 'match', q: 'Match the ECG pattern to the infarct it points to', pairs: [
+          { left: 'ST up in II, III, aVF', right: 'Inferior (RCA)' },
+          { left: 'ST up in V4R', right: 'Right ventricle' },
+          { left: 'ST down V1–V3, tall R', right: 'Posterior wall' },
+          { left: 'New LBBB with pain', right: 'Proximal LAD' }
+        ] },
+        { type: 'recall', q: 'Why does a posterior MI show ST depression rather than elevation in V1–V3?', a: 'V1–V3 see it from the opposite side',
+          why: 'The posterior wall faces away from the chest leads, so its ST elevation appears upside down: depression in V1–V3, tall broad R waves instead of Q waves, upright T waves. Posterior leads V7–V9 turn the picture the right way round.' },
+        { type: 'recall', q: 'In the Sgarbossa criteria, which finding scores the most points?', a: 'Concordant ST elevation ≥1 mm',
+          why: 'ST elevation in the same direction as the QRS is 5 points and alone is enough to call a STEMI in a paced rhythm or an old LBBB. Concordant depression in V1–V3 is 3 points; discordant elevation of 5 mm or more, or over a quarter of the S wave, is 2.' }
+      ]
+    },
+
+    {
+      id: 'cv-stress',
+      subject: 'Cardiology & Vascular',
+      topic: 'CAD & Chest Pain',
+      name: 'STRESS TESTING',
+      blurb: 'Choosing between treadmill, imaging, pharmacologic stress and CT',
+      cards: [
+        { type: 'mcq', q: 'Intermediate-risk chest pain, negative troponins, normal treadmill test 8 months ago, pain keeps recurring. Next test?',
+          a: 'Coronary CT angiography', distractors: ['Repeat treadmill test', 'Cardiac MRI', 'FFR-CT alone'],
+          why: 'A stress test only sees a lesion once it narrows the artery by about 70%, so a normal one does not exclude plaque, and repeating it asks the same question again. CT angiography looks at the lumen directly, with a negative predictive value above 95%.' },
+        { type: 'recall', q: 'Why can a stress test be normal in someone with significant coronary disease?', a: 'It only detects flow-limiting narrowing',
+          why: 'Ischemia only shows when a lesion limits flow, roughly a 70% stenosis. Non-obstructive plaque that will rupture next month is invisible, and balanced three-vessel disease can look normal because every territory is equally underperfused.' },
+        { type: 'recall', q: 'When is FFR-CT used?', a: 'After CCTA shows a 40–90% stenosis',
+          why: 'It is not a first test. Once CT angiography finds an intermediate narrowing, FFR-CT estimates whether it limits flow — an FFR of 0.80 or less — and so whether the patient needs invasive angiography and a stent.' },
+        { type: 'recall', q: 'Which test looks at myocardial viability, myocarditis or infiltrative disease rather than the coronary lumen?', a: 'Cardiac MRI',
+          why: 'MRI characterizes the muscle itself: scar, inflammation, amyloid, sarcoid. It is the wrong tool for the question of whether there is a blockage.' },
+        { type: 'multi', q: 'Which baseline ECG findings make an exercise treadmill ECG uninterpretable?',
+          answers: ['Left bundle branch block', 'Ventricular pacing', 'WPW pre-excitation', 'Resting ST depression >1 mm'],
+          distractors: ['First-degree AV block', 'Sinus bradycardia'],
+          why: 'Each of these distorts the ST segment at rest, so the ST depression that defines a positive test cannot be read. LVH with strain and digoxin do the same. Those patients need imaging — echo or nuclear — added to the stress.' },
+        { type: 'recall', q: 'What defines a positive exercise treadmill ECG?', a: '≥1 mm horizontal or downsloping ST depression',
+          why: 'Upsloping depression does not count. The patient also has to reach a useful workload, about 5 METs, or a negative test means little.' },
+        { type: 'mcq', q: 'A patient with LBBB needs a stress test and can walk. Which protocol?',
+          a: 'Regadenoson nuclear MPI', distractors: ['Exercise treadmill ECG', 'Exercise stress echo', 'Dobutamine stress echo'],
+          why: 'In LBBB or a paced rhythm, exercise and dobutamine both produce a false-positive septal defect: the septum contracts late, not because it is ischemic. A vasodilator with nuclear imaging sidesteps that. It is the one rule in this table the exam keeps returning to.' },
+        { type: 'multi', q: 'When are regadenoson and adenosine contraindicated for stress testing?',
+          answers: ['Active wheezing', 'Second- or third-degree AV block'],
+          distractors: ['A prior stent', 'Hypertension', 'Diabetes'],
+          why: 'Both act on adenosine receptors, which constrict airways and slow AV conduction. Caffeine and theophylline block the same receptors, so they are held for 12–24 hours before the test, and aminophylline reverses the drug if things go wrong.' },
+        { type: 'recall', q: 'Stress test for a patient who cannot exercise and has severe asthma?', a: 'Dobutamine stress echo',
+          why: 'Vasodilators are out because of the bronchospasm, so the stress comes from an inotrope instead. Dobutamine has its own exclusions: uncontrolled hypertension and ventricular arrhythmias.' },
+        { type: 'recall', q: 'What has to be controlled before a coronary CT angiogram, and to what?', a: 'Heart rate, to under 60–65 bpm',
+          why: 'The scanner needs the heart nearly still to resolve the lumen, so most patients get a beta-blocker first. The other prerequisite is a kidney that can take iodinated contrast.' },
+        { type: 'recall', q: 'Why is coronary CT angiography less useful in an 80-year-old with heavy coronary calcification?', a: 'Calcium blooms and hides the lumen',
+          why: 'Dense calcium scatters on CT and appears larger than it is, so a calcium score above 400–1000 obscures the very lumen the test is meant to show. Those patients do better with a functional test.' }
+      ]
+    },
+
+    {
+      id: 'cv-angina',
+      subject: 'Cardiology & Vascular',
+      topic: 'CAD & Chest Pain',
+      name: 'STABLE ANGINA',
+      blurb: 'First-line therapy, what to add, and the drugs that do not mix',
+      cards: [
+        { type: 'recall', q: 'First-line drug class for preventing episodes of chronic stable angina?', a: 'A beta-blocker',
+          why: 'It lowers heart rate, contractility and pressure, so the heart needs less oxygen, and a slower rate lengthens diastole, which is when the coronaries actually fill. Both sides of the supply–demand equation move the right way.' },
+        { type: 'number', q: 'Target resting heart rate on a beta-blocker for stable angina?', values: [55, 60], join: '–', unit: 'bpm',
+          why: 'Below 55, or with second- or third-degree block, the dose is not pushed further; the next step is a second class.' },
+        { type: 'mcq', q: 'Angina persists on a maximal beta-blocker and the resting heart rate is 52. What do you add?',
+          a: 'Isosorbide mononitrate', distractors: ['Diltiazem', 'Ivabradine', 'A higher beta-blocker dose'],
+          why: 'The rate is already low, so the add-on has to work without slowing it further: a long-acting nitrate or a dihydropyridine like amlodipine. Diltiazem and verapamil slow the node and can produce complete heart block on top of a beta-blocker; ivabradine is contraindicated below 60.' },
+        { type: 'recall', q: 'Why must long-acting nitrates have a 10–14 hour nitrate-free interval each day?', a: 'Continuous exposure causes tolerance',
+          why: 'The vessels stop responding when nitrate is always present, so the drug is dosed to leave a gap, usually overnight. Angina that breaks through in the gap is handled with sublingual nitroglycerin, not by closing the gap.' },
+        { type: 'recall', q: 'How do nitrates relieve angina?', a: 'Venodilation lowers preload and wall stress',
+          why: 'Less blood returning means a smaller, less stretched ventricle that needs less oxygen. They also dilate the epicardial coronaries. The effect on afterload is minor by comparison.' },
+        { type: 'bucket', q: 'Which calcium channel blockers can be combined with a beta-blocker?', bins: ['Safe to combine', 'Avoid combining'], items: [
+          { label: 'Amlodipine', bin: 'Safe to combine' },
+          { label: 'Nifedipine ER', bin: 'Safe to combine' },
+          { label: 'Diltiazem', bin: 'Avoid combining' },
+          { label: 'Verapamil', bin: 'Avoid combining' }
+        ], why: 'Dihydropyridines dilate vessels and leave the conduction system alone. Diltiazem and verapamil slow the SA and AV nodes, so stacking them on a beta-blocker in a bradycardic patient produces severe bradycardia or heart block.' },
+        { type: 'recall', q: 'Which antianginal works without changing heart rate or blood pressure?', a: 'Ranolazine',
+          why: 'It blocks the late inward sodium current, which reduces calcium overload in the cell and lets the muscle relax in diastole. That makes it the add-on for the patient whose rate and pressure are already too low for nitrates or calcium channel blockers.' },
+        { type: 'recall', q: 'In whom is ivabradine actually approved?', a: 'HFrEF, sinus rhythm, HR ≥70 on a beta-blocker',
+          why: 'It blocks the funny current in the sinus node and does nothing else. In stable angina with a normal ejection fraction the SIGNIFY trial found no benefit and more bradycardia and atrial fibrillation, and it is contraindicated with a resting rate under 60.' },
+        { type: 'truefalse', q: 'Verapamil can replace a beta-blocker as first-line antianginal when beta-blockers are contraindicated.', a: true,
+          why: 'It slows the node and reduces demand much as a beta-blocker does, which is exactly why it is a substitute and never an addition.' }
+      ]
+    },
+
+    {
+      id: 'cv-postmi',
+      subject: 'Cardiology & Vascular',
+      topic: 'CAD & Chest Pain',
+      name: 'POST-MI',
+      blurb: 'The ruptures, the pericarditis, the aneurysm, and when each happens',
+      cards: [
+        { type: 'mcq', q: 'Day 4 after an inferior MI: sudden pulmonary edema, hypotension, a new apical holosystolic murmur, no JVD. Diagnosis?',
+          a: 'Papillary muscle rupture', distractors: ['Ventricular septal rupture', 'Free wall rupture', 'Peri-infarction pericarditis'],
+          why: 'A torn posteromedial papillary muscle lets the mitral valve leak suddenly into a small, stiff left atrium, so the lungs flood and the pressure collapses within minutes. The neck veins stay flat because the right heart is not involved; that is the detail that separates it from a septal rupture.' },
+        { type: 'recall', q: 'Why does the posteromedial papillary muscle rupture far more often than the anterolateral?', a: 'It has a single blood supply',
+          why: 'The posteromedial muscle is fed only by the posterior descending artery, from the RCA or circumflex, so an inferior or posterior infarct can kill it outright. The anterolateral muscle draws on both the LAD and the circumflex and almost always survives.' },
+        { type: 'match', q: 'Match the post-MI complication to when it usually happens', pairs: [
+          { left: 'Pericarditis', right: 'Days 1–3' },
+          { left: 'Papillary rupture', right: 'Days 3–5' },
+          { left: 'Free wall rupture', right: 'Days 5–14' },
+          { left: 'Dressler syndrome', right: 'Weeks 2–8' }
+        ] },
+        { type: 'mcq', q: 'Which finding points to a ventricular septal rupture rather than papillary muscle rupture?',
+          a: 'Jugular venous distention', distractors: ['A holosystolic murmur', 'Pulmonary edema', 'Hypotension'],
+          why: 'A septal rupture shunts blood left to right, so the right ventricle fails too and the neck veins fill. The murmur sits at the left sternal border with a thrill in half of patients, and a catheter finds the oxygen saturation stepping up from right atrium to right ventricle. Both get an echo, afterload reduction with a balloon pump, and surgery.' },
+        { type: 'recall', q: 'Which drugs are used for pericarditis in the first days after an MI?', a: 'High-dose aspirin plus colchicine',
+          why: 'Other NSAIDs and steroids are avoided for the first weeks: both impair scar formation in the healing infarct, and a thin scar is what ruptures. Aspirin treats the inflammation without that cost.' },
+        { type: 'truefalse', q: 'Dressler syndrome is an autoimmune reaction and typically appears two to eight weeks after an MI.', a: true,
+          why: 'Antibodies against myocardial antigens cause a pleuropericarditis with fever, a rub, a raised ESR and effusions. Aspirin plus colchicine first; steroids only if that fails.' },
+        { type: 'recall', q: 'Sudden tearing chest pain, syncope and pulseless electrical activity a week after a large anterior MI. What happened?', a: 'Left ventricular free wall rupture',
+          why: 'The infarcted wall gives way and the pericardium fills with blood: tamponade with Beck triad, pulsus paradoxus and PEA. Typically an older woman, a first MI, no reperfusion, days 5 to 14. Pericardiocentesis buys minutes; the fix is surgical.' },
+        { type: 'recall', q: 'What does ST elevation that persists more than two weeks after an anterior MI suggest?', a: 'A left ventricular aneurysm',
+          why: 'A thinned, scarred segment bulges out with each beat and keeps the ST segments up, alongside deep Q waves. It can hold a mural thrombus, generate ventricular arrhythmias and cause heart failure; a thrombus on echo earns 3 to 6 months of anticoagulation.' },
+        { type: 'recall', q: 'Months after an MI: slowly progressive exertional dyspnea and an apical holosystolic murmur to the axilla. Mechanism?', a: 'LV dilation tethers the mitral leaflets',
+          why: 'As the ventricle remodels and enlarges, the papillary muscles are pulled outward and the leaflets cannot meet — functional mitral regurgitation. The atrium has had time to stretch, so this presents slowly in clinic rather than as flash pulmonary edema, and the murmur is loudest lying flat, when venous return is highest.' },
+        { type: 'recall', q: 'What do giant V waves on a wedge pressure tracing after an MI indicate?', a: 'Acute mitral regurgitation',
+          why: 'Each systole pushes a jet backward into the left atrium, and the V wave is that atrium filling under pressure. It is the catheter-lab signature of papillary muscle rupture.' }
+      ]
+    },
 
   ];
 
