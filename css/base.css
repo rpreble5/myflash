@@ -549,13 +549,47 @@ button { cursor: pointer; border: 0; background: none; }
 
 /* Ten square nodes that wind down the screen. Each is offset from the
    centre by --x; the pattern repeats so the path reads as a path. */
-.path { display: flex; flex-direction: column; align-items: center; gap: 1.1rem; }
+.path { position: relative; display: flex; flex-direction: column; align-items: center; gap: 3.2rem; padding: .5rem 0 1.5rem; }
+/* The trail sits behind the nodes. Round dots, from the dash pattern. */
+.path-trail { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; }
+.path-trail path { fill: none; stroke-width: 9; stroke-linecap: round; stroke-dasharray: 0 19; }
+.trail-all  { stroke: var(--line); }
+.trail-done { stroke: var(--brand); }
+.path-step { position: relative; z-index: 1; }
+.path-node-wrap { position: relative; }
+/* The header stays put while the path scrolls under it. */
+.path-wrap .screen-head {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  margin: 0 -1.25rem 1.75rem;
+  padding: max(1.25rem, env(safe-area-inset-top)) 1.25rem .75rem;
+  background: var(--bg);
+}
+.path-wrap { padding-top: 0; }
+
+/* The baddie waits beside the next topic, bobbing. Placeholder art. */
+.baddie {
+  position: absolute;
+  top: 50%;
+  margin-top: -25px;
+  width: 50px; height: 50px;
+  fill: var(--bad);
+  animation: baddie-bob 1.6s ease-in-out infinite;
+}
+.baddie.is-left { right: calc(100% + 10px); }
+.baddie.is-right { left: calc(100% + 10px); }
+.baddie svg { width: 100%; height: 100%; display: block; }
+.baddie-eye { fill: #fff; }
+.baddie-pupil { fill: #222; }
+.baddie-line { fill: none; stroke: #fff; stroke-width: 2.6; stroke-linecap: round; }
+@keyframes baddie-bob {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
+}
 .path-step {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: .45rem;
-  transform: translateX(calc(var(--x) * 64px));
+  transform: translateX(calc(var(--x) * 72px));
   animation: deck-in .3s cubic-bezier(.22,1,.36,1) backwards;
   animation-delay: calc(var(--i) * 45ms);
 }
@@ -574,12 +608,17 @@ button { cursor: pointer; border: 0; background: none; }
 }
 .path-node:active { transform: translateY(4px); border-bottom-width: 3px; }
 .path-name {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 124px;
   font-size: .85rem;
   font-weight: 800;
+  line-height: 1.2;
   color: var(--muted);
-  text-align: center;
-  max-width: 120px;
 }
+.path-name.is-left  { right: calc(100% + 12px); text-align: right; }
+.path-name.is-right { left: calc(100% + 12px); text-align: left; }
 /* Beaten: filled. Current: outlined in the brand colour and breathing.
    Locked: faded and inert. */
 .path-step.is-beaten .path-node { background: var(--ok); border-color: var(--ok-dark); color: #fff; }

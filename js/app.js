@@ -205,6 +205,17 @@
   /* The path: one square per topic, beaten ones filled, the next one
      breathing, the rest faded. Beaten topics can be replayed. */
   var PATH_X = [0, 1, 1.5, 1, 0, -1, -1.5, -1, 0, 1];
+  var PATH_STEP_PX = 72;
+  var trailNodes = null;   // what drawTrail last drew, for a redraw on resize
+
+  /* A placeholder for the baddie that waits at the next topic. Static
+     markup, no card content. Swap for real art later. */
+  var BADDIE = '<svg viewBox="0 0 48 48" aria-hidden="true">' +
+    '<path d="M24 6c10 0 17 7 17 17 0 8-3 14-8 19H15C10 37 7 31 7 23 7 13 14 6 24 6z"/>' +
+    '<circle class="baddie-eye" cx="18" cy="24" r="3.4"/><circle class="baddie-eye" cx="30" cy="24" r="3.4"/>' +
+    '<circle class="baddie-pupil" cx="18.8" cy="24.6" r="1.6"/><circle class="baddie-pupil" cx="30.8" cy="24.6" r="1.6"/>' +
+    '<path class="baddie-line" d="M13 17.5l8 3.5M35 17.5l-8 3.5"/>' +
+    '<path class="baddie-line" d="M19 33.5q5 3.5 10 0"/></svg>';
 
   function renderChallenge() {
     var topics = global.Challenge.TOPICS;
@@ -216,24 +227,86 @@
 
     var path = $('#path');
     path.textContent = '';
-    var currentSet = false;
-    topics.forEach(function (topic, i) {
+    var trail = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    trail.setAttribute('class', 'path-trail');
+    trail.innerHTML = '<path class="trail-all"/><path class="trail-done"/>';
+    path.appendChild(trail);
+
+    var current = -1;
+    topics.forEach(function (t, i) { if (current < 0 && !beaten[t.id]) current = i; });
+
+    /* Built from the top down so the first topic sits at the bottom and
+       the climb goes up the screen. */
+    var nodes = [];
+    for (var i = topics.length - 1; i >= 0; i--) (function (topic, i) {
       var step = h('div', 'path-step');
-      step.style.setProperty('--i', i);
-      step.style.setProperty('--x', PATH_X[i % PATH_X.length]);
+      step.style.setProperty('--i', topics.length - 1 - i);
+      var x = PATH_X[i % PATH_X.length];
+      step.style.setProperty('--x', x);
+      var wrap = h('div', 'path-node-wrap');
       var node = h('button', 'path-node', beaten[topic.id] ? '✓' : String(i + 1));
       node.setAttribute('aria-label', topic.name);
+      node._x = x;
       if (beaten[topic.id]) step.classList.add('is-beaten');
-      else if (!currentSet) { step.classList.add('is-current'); currentSet = true; }
-      else step.classList.add('is-locked');
+      else if (i === current) {
+        step.classList.add('is-current');
+        var baddie = h('div', 'baddie ' + (x > 0 ? 'is-right' : 'is-left'));
+        baddie.innerHTML = BADDIE;
+        wrap.appendChild(baddie);
+      } else step.classList.add('is-locked');
       node.addEventListener('click', function () { startSession([topic], null, { challenge: topic }); });
-      step.appendChild(node);
-      step.appendChild(h('span', 'path-name', topic.name));
+      wrap.appendChild(node);
+      /* The name sits on the inner side, toward the middle of the screen,
+         and the baddie on the outer side, so neither crosses the trail. */
+      wrap.appendChild(h('span', 'path-name ' + (x > 0 ? 'is-left' : 'is-right'), topic.name));
+      step.appendChild(wrap);
       path.appendChild(step);
-    });
+      nodes[i] = node;
+    })(topics[i], i);
+
+    trailNodes = { nodes: nodes, upTo: current < 0 ? topics.length - 1 : current };
+    drawTrail();
   }
 
-  function openChallenge() { renderChallenge(); show('screen-challenge'); }
+  /* A smooth curve through the node centres: dotted grey the whole way,
+     dotted blue over the part already climbed. Centres come from offsets
+     plus the --x shift, so the entrance animation cannot skew them. */
+  function drawTrail() {
+    if (!trailNodes) return;
+    var path = $('#path');
+    var pts = trailNodes.nodes.map(function (n) {
+      /* Offsets are summed up the positioned chain to the path itself. */
+      var x = n.offsetWidth / 2 + n._x * PATH_STEP_PX, y = n.offsetHeight / 2, el = n;
+      while (el && el !== path) { x += el.offsetLeft; y += el.offsetTop; el = el.offsetParent; }
+      return [x, y];
+    });
+    var svg = path.querySelector('.path-trail');
+    svg.setAttribute('viewBox', '0 0 ' + path.clientWidth + ' ' + path.clientHeight);
+    svg.querySelector('.trail-all').setAttribute('d', curveThrough(pts));
+    svg.querySelector('.trail-done').setAttribute('d', curveThrough(pts.slice(0, trailNodes.upTo + 1)));
+  }
+
+  function curveThrough(pts) {
+    if (pts.length < 2) return '';
+    var d = 'M' + Math.round(pts[0][0]) + ' ' + Math.round(pts[0][1]);
+    for (var i = 0; i < pts.length - 1; i++) {
+      var p0 = pts[i - 1] || pts[i], p1 = pts[i], p2 = pts[i + 1], p3 = pts[i + 2] || p2;
+      d += ' C' + [
+        p1[0] + (p2[0] - p0[0]) / 6, p1[1] + (p2[1] - p0[1]) / 6,
+        p2[0] - (p3[0] - p1[0]) / 6, p2[1] - (p3[1] - p1[1]) / 6,
+        p2[0], p2[1]
+      ].map(Math.round).join(' ');
+    }
+    return d;
+  }
+
+  /* Opens scrolled to where you stand, so the climb ahead is up. */
+  function openChallenge() {
+    show('screen-challenge');
+    renderChallenge();
+    var here = $('#path .path-step.is-current') || $('#path .path-step');
+    if (here) here.scrollIntoView({ block: 'center' });
+  }
 
   /* ──────────────────── subjects ───────────────────── */
   /* A sheet over the home screen listing every subject; picking one
@@ -1295,6 +1368,9 @@
       startSession(session.decks, null, session.challenge ? { challenge: session.challenge } : null);
     });
     $('#btn-challenge').addEventListener('click', openChallenge);
+    global.addEventListener('resize', function () {
+      if ($('#screen-challenge').classList.contains('is-active')) drawTrail();
+    });
     $('#btn-challenge-back').addEventListener('click', function () { show('screen-home'); renderHome(); });
     var build = $('#app-build');
     if (build) build.textContent = 'Version ' + buildId();
