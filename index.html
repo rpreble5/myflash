@@ -11,9 +11,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/base.css?v=82">
-<link rel="stylesheet" href="css/themes.css?v=82">
-<link rel="stylesheet" href="css/animations.css?v=82">
+<link rel="stylesheet" href="css/base.css?v=83">
+<link rel="stylesheet" href="css/themes.css?v=83">
+<link rel="stylesheet" href="css/animations.css?v=83">
 </head>
 <body>
 
@@ -113,6 +113,13 @@
           progress are stored separately and are kept.</p>
       </div>
 
+      <h3 class="settings-head">Card notes</h3>
+      <div class="settings-group">
+        <p class="settings-empty" id="notes-line"></p>
+        <button class="btn btn-ghost" id="btn-notes-copy">Copy notes</button>
+        <button class="btn btn-ghost" id="btn-notes-clear">Clear notes</button>
+      </div>
+
       <h3 class="settings-head">Data</h3>
       <div class="settings-group">
         <button class="btn btn-ghost" id="btn-reset-progress">Reset progress</button>
@@ -124,6 +131,7 @@
   <section class="screen" id="screen-session">
     <div class="hud">
       <button class="hud-btn" id="btn-quit" aria-label="End session">&#10005;</button>
+      <button class="hud-btn hud-note" id="btn-note" aria-label="Note on this card">&#9998;</button>
       <div class="progress"><div class="progress-fill" id="progress-fill"></div></div>
       <div class="streak" id="streak"><span id="streak-n">0</span>&#128293;</div>
       <img class="hud-baddie" id="hud-baddie" alt="" hidden>
@@ -147,12 +155,12 @@
 
 </div>
 
-<script src="js/audio.js?v=82"></script>
-<script src="js/decks.js?v=82"></script>
-<script src="js/challenge.js?v=82"></script>
-<script src="js/store.js?v=82"></script>
-<script src="js/text.js?v=82"></script>
-<script src="js/modes.js?v=82"></script>
-<script src="js/app.js?v=82"></script>
+<script src="js/audio.js?v=83"></script>
+<script src="js/decks.js?v=83"></script>
+<script src="js/challenge.js?v=83"></script>
+<script src="js/store.js?v=83"></script>
+<script src="js/text.js?v=83"></script>
+<script src="js/modes.js?v=83"></script>
+<script src="js/app.js?v=83"></script>
 </body>
 </html>

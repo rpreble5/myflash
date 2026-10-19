@@ -683,6 +683,8 @@
 
   function renderCard(deck, cardIndex, ref) {
     var card = deck.cards[cardIndex];
+    session.current = { deck: deck, index: cardIndex, card: card };
+    paintNoteButton();
     var mode = global.Modes.pickFor(card, deck);
     var stage = $('#stage');
 
@@ -1455,6 +1457,106 @@
     }, 1100);
   }
 
+  /* ──────────────────── card notes ───────────────────── */
+  /* A note on the card on screen: what should be different about it.
+     Saved locally and copied out from Settings as plain text. */
+  function noteFor(deckId, index) {
+    return global.Store.notes().filter(function (n) { return n.deck === deckId && n.index === index; }).pop();
+  }
+
+  function paintNoteButton() {
+    var b = $('#btn-note');
+    var cur = session && session.current;
+    b.classList.toggle('has-note', !!(cur && noteFor(cur.deck.id, cur.index)));
+  }
+
+  function openCardNote() {
+    if ($('.sheet') || !session || !session.current) return;
+    var cur = session.current;
+    var existing = noteFor(cur.deck.id, cur.index);
+    var sheet = h('div', 'sheet');
+    var panel = h('div', 'sheet-panel');
+    panel.appendChild(h('p', 'sheet-title', 'Note on this card'));
+    panel.appendChild(h('p', 'note-card-q', cur.card.q));
+    var box = h('textarea', 'note-box');
+    box.placeholder = 'What should be different?';
+    box.rows = 4;
+    if (existing) box.value = existing.text;
+    panel.appendChild(box);
+    var row = h('div', 'note-actions');
+    var save = h('button', 'btn btn-solid', 'Save');
+    var cancel = h('button', 'btn btn-ghost', 'Cancel');
+    row.appendChild(cancel);
+    row.appendChild(save);
+    panel.appendChild(row);
+    sheet.appendChild(panel);
+
+    function close() {
+      sheet.classList.remove('is-in');
+      session.closeNote = null;
+      setTimeout(function () { if (sheet.parentNode) sheet.remove(); }, reduceMotion ? 0 : 220);
+    }
+    save.addEventListener('click', function () {
+      var text = box.value.trim();
+      if (text) {
+        global.Store.addNote({
+          deck: cur.deck.id, deckName: cur.deck.name, index: cur.index,
+          type: cur.card.type || 'recall', q: cur.card.q,
+          a: cur.card.a != null ? String(cur.card.a) : undefined, text: text
+        });
+        global.Sfx.select();
+      }
+      paintNoteButton();
+      close();
+    });
+    cancel.addEventListener('click', close);
+    sheet.addEventListener('click', close);
+    panel.addEventListener('click', function (e) { e.stopPropagation(); });
+    /* The card underneath must not read the typing as swipes or keys. */
+    ['pointerdown', 'pointermove', 'pointerup'].forEach(function (t) {
+      sheet.addEventListener(t, function (e) { e.stopPropagation(); });
+    });
+    session.closeNote = close;
+    $('#screen-session').appendChild(sheet);
+    requestAnimationFrame(function () { sheet.classList.add('is-in'); box.focus(); });
+  }
+
+  function renderNotes() {
+    var all = global.Store.notes();
+    $('#notes-line').textContent = all.length
+      ? all.length + (all.length === 1 ? ' note' : ' notes') + ' waiting to be copied'
+      : 'No notes yet. Tap ✎ on a card while studying.';
+    $('#btn-notes-copy').disabled = !all.length;
+    $('#btn-notes-clear').disabled = !all.length;
+  }
+
+  function notesText() {
+    return global.Store.notes().map(function (n) {
+      return '[' + n.deck + ' #' + n.index + '] ' + n.type + ' · ' + n.q +
+        (n.a ? '\n  answer: ' + n.a : '') + '\n  note: ' + n.text;
+    }).join('\n\n');
+  }
+
+  function copyNotes(btn) {
+    var text = notesText();
+    function done(ok) {
+      btn.textContent = ok ? 'Copied' : 'Could not copy';
+      setTimeout(function () { btn.textContent = 'Copy notes'; }, 1600);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () { done(true); }, function () { done(false); });
+      return;
+    }
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    var ok = false;
+    try { ok = document.execCommand('copy'); } catch (e) { /* unsupported */ }
+    ta.remove();
+    done(ok);
+  }
+
   /* ───────────────────────── wiring ────────────────────────── */
   function init() {
     renderHome();
@@ -1470,9 +1572,15 @@
       $('#haptics-note').textContent = 'This device has no vibration motor the browser can reach.';
     }
 
+    $('#btn-note').addEventListener('click', openCardNote);
+    $('#btn-notes-copy').addEventListener('click', function () { copyNotes(this); });
+    $('#btn-notes-clear').addEventListener('click', function () {
+      if (confirm('Clear all card notes?')) { global.Store.clearNotes(); renderNotes(); }
+    });
     $('#btn-settings').addEventListener('click', function () {
       renderDeckManager();               // decks can arrive from the tool between visits
       renderScreenInfo();
+      renderNotes();
       show('screen-settings');
     });
 

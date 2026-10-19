@@ -8,6 +8,7 @@
   var KEY_STATS = 'myflash.stats.v1';
   var KEY_PREFS = 'myflash.prefs.v1';
   var KEY_CHALLENGE = 'myflash.challenge.v1';
+  var KEY_NOTES = 'myflash.notes.v1';
 
   /* Left behind by the retired look feedback. Nothing reads them now. */
   try {
@@ -338,6 +339,17 @@
 
   function resetProgress() { write(KEY_STATS, {}); write(KEY_CHALLENGE, {}); }
 
+  /* Notes left on cards while studying — what should be different about
+     a card — kept until they are copied out and cleared. */
+  function notes() { return read(KEY_NOTES, []); }
+  function addNote(note) {
+    var all = notes();
+    note.when = Date.now();
+    all.push(note);
+    write(KEY_NOTES, all);
+  }
+  function clearNotes() { write(KEY_NOTES, []); }
+
   /* Challenge progress: which topics have been beaten, by id. Kept apart
      from the card stats, since a challenge run teaches the strength model
      nothing it should act on. */
@@ -383,6 +395,9 @@
     deckProgress: deckProgress,
     resetProgress: resetProgress,
     challengeBeaten: challengeBeaten,
-    beatChallengeTopic: beatChallengeTopic
+    beatChallengeTopic: beatChallengeTopic,
+    notes: notes,
+    addNote: addNote,
+    clearNotes: clearNotes
   };
 })(window);

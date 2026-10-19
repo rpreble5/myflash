@@ -731,3 +731,25 @@ button { cursor: pointer; border: 0; background: none; }
 .hud-baddie.is-react { animation: streak-pop .3s ease; }
 .summary-baddie { width: 170px; height: 170px; object-fit: contain; margin-bottom: .75rem; animation: deck-in .35s cubic-bezier(.22,1,.36,1) both; }
 .summary-baddie:not([hidden]) { display: block; }
+
+/* ── Card notes ──────────────────────────────────────────── */
+.hud-note { font-size: 1rem; }
+.hud-note.has-note { color: var(--brand); }
+.note-card-q { margin: 0 0 .8rem; font-size: 1rem; font-weight: 700; color: var(--ink); }
+.note-box {
+  width: 100%;
+  padding: .8rem .9rem;
+  border-radius: 14px;
+  border: 3px solid var(--line);
+  font: inherit;
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--ink);
+  background: var(--bg);
+  resize: none;
+  outline: none;
+}
+.note-box:focus { border-color: var(--brand); }
+.note-actions { display: flex; justify-content: flex-end; gap: .6rem; margin-top: .8rem; }
+.note-actions .btn { margin-top: 0; }
+.settings-group .btn:disabled { opacity: .45; }
