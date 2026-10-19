@@ -289,7 +289,16 @@
            the baddie is mirrored so it still squares up to it. */
         if (side === 'is-right') stand.classList.add('is-flipped');
         var col = h('div', 'path-go-col ' + side);
-        var go = h('button', 'path-go', '▶');
+        /* The button is the baddie's close-up where the art has one,
+           looking back at the baddie; a play glyph otherwise. */
+        var go = h('button', 'path-go', topic.baddieFace ? '' : '▶');
+        if (topic.baddieFace) {
+          go.classList.add('has-face');
+          var face = h('img', 'path-go-face' + (side === 'is-left' ? ' is-flipped' : ''));
+          face.src = baddieSrc(topic, 'face');
+          face.alt = '';
+          go.appendChild(face);
+        }
         go.setAttribute('aria-label', 'Start ' + topic.name);
         col.appendChild(go);
         col.appendChild(h('span', 'path-go-name', topic.name));
