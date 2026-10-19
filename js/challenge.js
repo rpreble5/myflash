@@ -33,6 +33,8 @@
     {
       id: 'ch-endo',
       name: 'Endocrine',
+      /* Demo of the kawaii style, on loan until Endocrine has its own. */
+      baddie: 'heart-kawaii',
       cards: [
         { type: 'number', q: 'HbA1c at or above which diabetes is diagnosed?', value: 6.5, unit: '%' },
         { type: 'mcq', q: 'First-line drug for Graves disease in the first trimester of pregnancy?',
