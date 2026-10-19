@@ -355,6 +355,9 @@
 /* Clear of the rounded corners at the bottom of the screen, which
    safe-area insets do not always report. */
 .card.is-stack .card-body { padding-bottom: calc(1.75rem + env(safe-area-inset-bottom)); }
+/* Option blocks sit a little higher than the bottom edge allows: the
+   lowest one was uncomfortable to read and to reach. */
+.card.is-stack.is-choice .card-body { padding-bottom: calc(4rem + env(safe-area-inset-bottom)); }
 
 /* A long note is not folded into a strip under the answer — it takes the
    whole card. What sits here is only the invitation. */

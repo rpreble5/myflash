@@ -55,10 +55,11 @@
      gap costs a narrow cell about four characters. */
   var GRID_MAX_CHARS_BOXED = 11;
 
-  function layoutFor(options, maxGrid, maxChars) {
-    var longest = options.reduce(function (n, o) { return Math.max(n, String(o).length); }, 0);
-    return (options.length <= (maxGrid || 4) && longest <= (maxChars || GRID_MAX_CHARS)) ? 'grid' : 'list';
-  }
+  /* Options always run as a single column of full-width blocks. The two
+     by two grid for short options was dropped: it halved the tap targets
+     and made the options read as smaller than they are. Kept as a
+     function for the validator, which asks it the same question. */
+  function layoutFor() { return 'list'; }
 
   /* The answer is on screen; the card now waits for you.
 
@@ -230,6 +231,8 @@
     mount: function (area, ctx) {
       var options = global.Txt.shuffle([ctx.card.a].concat(ctx.card.distractors));
       var grid = h('div', 'choice-grid is-single');
+      var cardEl = area.closest('.card');
+      if (cardEl) cardEl.classList.add('is-choice');
       grid.dataset.lay = layoutFor(options);
       var locked = false, keyMap = {};
 
@@ -325,6 +328,8 @@
       var picked = {}, locked = false;
 
       var grid = h('div', 'choice-grid is-multi');
+      var multiCard = area.closest('.card');
+      if (multiCard) multiCard.classList.add('is-choice');
       /* Select-all sets run longer than four, and the extra rows are what
          make the question hard — they shouldn't also force a tall list. */
       grid.dataset.lay = layoutFor(options, 6, GRID_MAX_CHARS_BOXED);
