@@ -249,15 +249,17 @@
       node._x = x;
       if (beaten[topic.id]) step.classList.add('is-beaten');
       else if (i === current) {
+        /* The baddie sits in the square itself, in place of the number. */
         step.classList.add('is-current');
-        var baddie = h('div', 'baddie ' + (x > 0 ? 'is-right' : 'is-left'));
+        node.textContent = '';
+        var baddie = h('span', 'baddie');
         baddie.innerHTML = BADDIE;
-        wrap.appendChild(baddie);
+        node.appendChild(baddie);
       } else step.classList.add('is-locked');
       node.addEventListener('click', function () { startSession([topic], null, { challenge: topic }); });
       wrap.appendChild(node);
       /* The name sits on the inner side, toward the middle of the screen,
-         and the baddie on the outer side, so neither crosses the trail. */
+         so it never crosses the trail. */
       wrap.appendChild(h('span', 'path-name ' + (x > 0 ? 'is-left' : 'is-right'), topic.name));
       step.appendChild(wrap);
       path.appendChild(step);

@@ -568,17 +568,13 @@ button { cursor: pointer; border: 0; background: none; }
 }
 .path-wrap { padding-top: 0; }
 
-/* The baddie waits beside the next topic, bobbing. Placeholder art. */
+/* The baddie waits inside the next topic's square, bobbing. Placeholder art. */
 .baddie {
-  position: absolute;
-  top: 50%;
-  margin-top: -25px;
-  width: 50px; height: 50px;
+  display: block;
+  width: 64px; height: 64px;
   fill: var(--bad);
   animation: baddie-bob 1.6s ease-in-out infinite;
 }
-.baddie.is-left { right: calc(100% + 10px); }
-.baddie.is-right { left: calc(100% + 10px); }
 .baddie svg { width: 100%; height: 100%; display: block; }
 .baddie-eye { fill: #fff; }
 .baddie-pupil { fill: #222; }
@@ -593,20 +589,21 @@ button { cursor: pointer; border: 0; background: none; }
   animation: deck-in .3s cubic-bezier(.22,1,.36,1) backwards;
   animation-delay: calc(var(--i) * 45ms);
 }
+/* Chunky: a thick outline, a deep bottom edge, and a sink on press. */
 .path-node {
-  width: 86px; height: 86px;
-  border-radius: 24px;
-  border: 3px solid var(--line);
-  border-bottom-width: 7px;
+  width: 98px; height: 98px;
+  border-radius: 28px;
+  border: 4px solid var(--line);
+  border-bottom-width: 12px;
   background: var(--bg);
   color: var(--muted);
-  font-size: 1.7rem;
+  font-size: 2rem;
   font-weight: 900;
   display: grid;
   place-items: center;
   transition: transform .08s ease, border-bottom-width .08s ease, margin-top .08s ease, background-color .15s, color .15s;
 }
-.path-node:active { transform: translateY(4px); border-bottom-width: 3px; }
+.path-node:active { transform: translateY(7px); border-bottom-width: 5px; }
 .path-name {
   position: absolute;
   top: 50%;
@@ -622,6 +619,7 @@ button { cursor: pointer; border: 0; background: none; }
 /* Beaten: filled. Current: outlined in the brand colour and breathing.
    Locked: faded and inert. */
 .path-step.is-beaten .path-node { background: var(--ok); border-color: var(--ok-dark); color: #fff; }
+.path-step.is-current .path-node { background: var(--brand-soft); }
 .path-step.is-beaten .path-name { color: var(--ink); }
 .path-step.is-current .path-node { border-color: var(--brand); color: var(--brand-dark); animation: path-breathe 1.8s ease-in-out infinite; }
 .path-step.is-current .path-name { color: var(--brand-dark); }
