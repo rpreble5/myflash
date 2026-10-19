@@ -44,7 +44,7 @@
      audio context cannot start before one. Until a clip is ready — or if
      it never loads — the synth version plays instead. */
   /* The query string is a cache key: bump it when a clip is replaced. */
-  var CLIPS = { wrong: 'assets/sfx/wrong.mp3?v=2', select: 'assets/sfx/select.mp3' };
+  var CLIPS = { wrong: 'assets/sfx/wrong.mp3?v=3', select: 'assets/sfx/select.mp3' };
   var buffers = {};
   var loading = false;
 
@@ -108,7 +108,7 @@
     /* A recorded clip, played well under full volume: it peaks near
        0 dB while the synth sounds sit around -25. */
     wrong:   function () {
-      if (!clip('wrong', 0.35)) blip(200, 120, 0.13, 'sawtooth', 0.05);
+      if (!clip('wrong', 0.25)) blip(200, 120, 0.13, 'sawtooth', 0.05);
       buzz(20);
     },
     /* Transport, not verdict: you moved the session on. Flat pitch and
