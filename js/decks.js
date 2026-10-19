@@ -3879,7 +3879,7 @@
           answers: ['Angina', 'Exertional syncope', 'Dyspnea or heart failure'],
           distractors: ['Palpitations', 'Ankle edema alone'],
           why: 'The three classic symptoms each reflect the ventricle failing to meet demand across the narrowed valve: angina from a thick muscle outgrowing its supply, syncope from an output that cannot rise with exercise, and dyspnea from rising filling pressures. Any one of them changes the plan from watching to replacing.' },
-        { type: 'number', q: 'Average two-year mortality of symptomatic severe aortic stenosis without valve replacement exceeds what?', value: 50, unit: '%',
+        { type: 'number', q: 'Symptomatic severe aortic stenosis, no valve replacement: roughly what share of patients die within two years?', value: 50, unit: '%',
           why: 'Once symptoms appear the course is short, which is why a symptomatic patient is referred urgently for surgical or transcatheter replacement rather than followed.' },
         { type: 'mcq', q: 'Asymptomatic severe aortic stenosis with an ejection fraction of 45%. What do you do?',
           a: 'Refer for valve replacement', distractors: ['Repeat the echo in 6 months', 'Start a beta-blocker', 'Order an exercise test first'],
@@ -3890,8 +3890,8 @@
           answers: ['Other cardiac surgery planned', 'BP drops on exercise testing', 'Peak velocity of 5 m/s or more', 'BNP more than 3× normal'],
           distractors: ['Age over 80', 'A soft murmur'],
           why: 'If the chest is being opened anyway, the valve is done at the same time. A supervised exercise test that provokes symptoms or a fall in systolic pressure unmasks a patient who is symptomatic but has been limiting activity. Very high velocity, a markedly raised BNP, or rapid progression of 0.3 m/s a year or more all predict trouble soon.' },
-        { type: 'recall', q: 'Before aortic valve replacement, what else has to be assessed?', a: 'The coronary arteries',
-          why: 'Coronary disease is common in the same patients and, if present, is treated during the same operation or before a transcatheter valve. Angiography or CT angiography is part of the standard workup.' }
+        { type: 'recall', q: 'Why are the coronary arteries imaged before an aortic valve is replaced?', a: 'Coronary disease is fixed at the same time',
+          why: 'Aortic stenosis and coronary atherosclerosis share the same risk factors and the same patients, so a significant stenosis is common. If one is found it is bypassed during the same operation, or stented before a transcatheter valve, rather than discovered afterward. Angiography or CT angiography is part of the standard workup.' }
       ]
     },
 
