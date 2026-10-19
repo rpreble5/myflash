@@ -43,7 +43,8 @@
   /* Recorded clips. Fetched and decoded on the first touch, since the
      audio context cannot start before one. Until a clip is ready — or if
      it never loads — the synth version plays instead. */
-  var CLIPS = { wrong: 'assets/sfx/wrong.mp3', select: 'assets/sfx/select.mp3' };
+  /* The query string is a cache key: bump it when a clip is replaced. */
+  var CLIPS = { wrong: 'assets/sfx/wrong.mp3?v=2', select: 'assets/sfx/select.mp3' };
   var buffers = {};
   var loading = false;
 
