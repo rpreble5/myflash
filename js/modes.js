@@ -636,20 +636,25 @@
 
     /* The list rides in the stacked layout's entry slot, right under the
        question, since nothing in it needs to be touched. */
-    var list = h('div', 'q sort-list');
+    /* The two categories sit right under the question, with the list
+       beneath them, so the eye never has to leave the top of the card.
+       Tapping a category sorts to its side, as does a swipe; the chips
+       light up as the swipe heads their way. */
+    var wrap = h('div', 'q sort-wrap');
+    var binRow = h('div', 'sort-bins');
+    var lBin = h('div', 'sort-bin sort-bin-left', '← ' + bins[0]);
+    var rBin = h('div', 'sort-bin sort-bin-right', bins[1] + ' →');
+    binRow.appendChild(lBin);
+    binRow.appendChild(rBin);
+    wrap.appendChild(binRow);
+    var list = h('div', 'sort-list');
     var rows = items.map(function (item) {
       var row = h('div', 'sort-row', item.label);
       list.appendChild(row);
       return row;
     });
-    ctx.stack('', stackWhy(ctx), list);
-
-    var bar = h('div', 'swipe-bar tf-bar');
-    var lBtn = h('button', 'swipe-side tf-side tf-false', '← ' + bins[0]);
-    var rBtn = h('button', 'swipe-side tf-side tf-true', bins[1] + ' →');
-    bar.appendChild(lBtn);
-    bar.appendChild(rBtn);
-    area.appendChild(bar);
+    wrap.appendChild(list);
+    ctx.stack('', stackWhy(ctx), wrap);
 
     function paint() {
       rows.forEach(function (r, i) { r.classList.toggle('is-current', i === idx); });
@@ -673,7 +678,7 @@
       idx++;
       paint();
       if (idx >= items.length) {
-        bar.classList.add('is-locked');
+        binRow.classList.add('is-locked');
         ctx.stackReveal(false);
         settle(ctx, right / items.length);
       } else global.Sfx.select();
@@ -689,8 +694,6 @@
         sort(x < global.innerWidth / 2 ? 'left' : 'right');
       }
     });
-    lBtn.addEventListener('click', function (e) { e.stopPropagation(); sort('left'); });
-    rBtn.addEventListener('click', function (e) { e.stopPropagation(); sort('right'); });
     ctx.keys({
       'ArrowLeft':  function () { sort('left'); },
       'ArrowRight': function () { sort('right'); },

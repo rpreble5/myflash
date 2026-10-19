@@ -575,6 +575,30 @@
    Plain lines of text under the question. The one being sorted is dark,
    the rest wait in light gray; each slides toward the side it was sent
    to, blue when right and orange when wrong. */
+.sort-wrap { width: 100%; }
+/* The two categories, as chunky chips under the question. A swipe
+   toward one outlines it; far enough to commit fills it. */
+.sort-bins { display: flex; justify-content: center; gap: .6rem; margin: 0 auto 1.1rem; width: min(560px, 100%); }
+.sort-bin {
+  flex: 1 1 0;
+  padding: .7rem .5rem;
+  border-radius: 16px;
+  border: 3px solid var(--line);
+  border-bottom-width: 6px;
+  font-family: var(--body-face);
+  font-size: .9rem;
+  font-weight: 800;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--muted);
+  transition: background-color .16s ease, border-color .16s ease, color .16s ease, opacity .2s ease;
+}
+.sort-bins.is-locked .sort-bin { opacity: .45; }
+.card[data-swipe="left"]  .sort-bin-left,
+.card[data-swipe="right"] .sort-bin-right { border-color: var(--sel); color: var(--sel); }
+.card[data-armed="left"]  .sort-bin-left,
+.card[data-armed="right"] .sort-bin-right { background: var(--sel); border-color: var(--brand-dark); color: #fff; }
 .sort-list { text-align: center; font-size: 20px; font-weight: 800; }
 .sort-row {
   width: fit-content;
