@@ -589,6 +589,19 @@
       if (document.fonts && document.fonts.ready) document.fonts.ready.then(layoutStack);
     }
 
+    /* The pieces are placed against the flipper's height at layout time
+       and then left alone. That height moves afterwards — fonts arrive, a
+       kicker wraps to two lines, the system bars slide in on a phone — and
+       the pieces did not follow, which left the WHY cue sitting across
+       the flipper's edge, clipped. Lay out again whenever it changes. */
+    if (global.ResizeObserver) {
+      var watch = new ResizeObserver(function () {
+        if (!el.isConnected) { watch.disconnect(); return; }
+        if (stack) layoutStack();
+      });
+      watch.observe(flipper);
+    }
+
     session.keydown = {};
     session.keyup = {};
     var noteSwipe = null;

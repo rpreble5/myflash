@@ -313,6 +313,10 @@
    of flow. The question never moves, the answer rises in under it, and
    the explanation fades in slowly and lighter, lower down. */
 .card.is-stack .face-front { display: block; }
+/* The clip was for the flip animation. A stacked card hides its waiting
+   answer with opacity, so nothing needs cutting — and a piece placed a
+   few pixels past the edge should show rather than vanish. */
+.card.is-stack .flipper { overflow: visible; }
 .card.is-stack .face-front > .q,
 .card.is-stack .face-front > .why-wrap { position: absolute; left: 0; right: 0; top: 0; }
 .stack-answer {
