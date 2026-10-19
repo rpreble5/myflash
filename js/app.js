@@ -746,7 +746,7 @@
     var STACK_LIFT = 0.4;
     var STACK_RISE = 24;
 
-    function questionSize(t) { return t.length <= 50 ? 30 : t.length <= 80 ? 26 : 22; }
+    function questionSize(t) { return t.length <= 50 ? 34 : t.length <= 80 ? 30 : t.length <= 110 ? 26 : 24; }
     function answerSize(t)   { return t.length <= 24 ? 34 : 28; }
 
     function place(node, y) { node.style.transform = 'translateY(' + Math.round(y) + 'px)'; }
