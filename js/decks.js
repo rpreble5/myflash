@@ -3862,6 +3862,104 @@
       ]
     },
 
+    {
+      id: 'cv-as',
+      subject: 'Cardiology & Vascular',
+      topic: 'Valves & Screening',
+      name: 'SEVERE AS',
+      blurb: 'The numbers that define severe, and the four reasons to replace the valve',
+      cards: [
+        { type: 'number', q: 'Peak aortic jet velocity that defines severe aortic stenosis?', value: 4, unit: 'm/s',
+          why: 'Velocity is the most reproducible of the three echo measures. The faster the jet, the tighter the valve, and 4 m/s corresponds roughly to a mean gradient of 40 mm Hg and a valve area of about 1 cm².' },
+        { type: 'number', q: 'Mean transvalvular gradient that defines severe aortic stenosis?', value: 40, unit: 'mm Hg',
+          why: 'The gradient is the pressure difference the ventricle has to generate to push blood through the valve. It depends on flow as well as valve area, so a failing ventricle can have severe stenosis with a gradient under 40; velocity and valve area are read alongside it.' },
+        { type: 'number', q: 'Aortic valve area at or below which stenosis is typically severe?', value: 1, unit: 'cm²',
+          why: 'A normal valve opens to 3 to 4 cm². Symptoms usually begin once the area falls to about 1 cm², which is why that number marks the threshold for severe disease.' },
+        { type: 'multi', q: 'Which symptoms mark severe aortic stenosis as symptomatic?',
+          answers: ['Angina', 'Exertional syncope', 'Dyspnea or heart failure'],
+          distractors: ['Palpitations', 'Ankle edema alone'],
+          why: 'The three classic symptoms each reflect the ventricle failing to meet demand across the narrowed valve: angina from a thick muscle outgrowing its supply, syncope from an output that cannot rise with exercise, and dyspnea from rising filling pressures. Any one of them changes the plan from watching to replacing.' },
+        { type: 'number', q: 'Average two-year mortality of symptomatic severe aortic stenosis without valve replacement exceeds what?', value: 50, unit: '%',
+          why: 'Once symptoms appear the course is short, which is why a symptomatic patient is referred urgently for surgical or transcatheter replacement rather than followed.' },
+        { type: 'mcq', q: 'Asymptomatic severe aortic stenosis with an ejection fraction of 45%. What do you do?',
+          a: 'Refer for valve replacement', distractors: ['Repeat the echo in 6 months', 'Start a beta-blocker', 'Order an exercise test first'],
+          why: 'An ejection fraction under 50% in severe stenosis means the ventricle is already decompensating against the valve, whether or not the patient reports symptoms. Waiting risks dysfunction that does not recover after the valve is replaced.' },
+        { type: 'recall', q: 'Why does a falling ejection fraction in asymptomatic severe aortic stenosis call for valve replacement?', a: 'The ventricle is failing against the valve',
+          why: 'The stenotic valve is a fixed afterload. For years the ventricle compensates by thickening; when the ejection fraction starts to drop it means the muscle can no longer overcome the obstruction, a state called afterload mismatch. Replacing the valve removes the load, and the earlier it is done the more function returns.' },
+        { type: 'multi', q: 'Besides symptoms and a low ejection fraction, which findings justify replacing an asymptomatic severe aortic valve?',
+          answers: ['Other cardiac surgery planned', 'BP drops on exercise testing', 'Peak velocity of 5 m/s or more', 'BNP more than 3× normal'],
+          distractors: ['Age over 80', 'A soft murmur'],
+          why: 'If the chest is being opened anyway, the valve is done at the same time. A supervised exercise test that provokes symptoms or a fall in systolic pressure unmasks a patient who is symptomatic but has been limiting activity. Very high velocity, a markedly raised BNP, or rapid progression of 0.3 m/s a year or more all predict trouble soon.' },
+        { type: 'recall', q: 'Before aortic valve replacement, what else has to be assessed?', a: 'The coronary arteries',
+          why: 'Coronary disease is common in the same patients and, if present, is treated during the same operation or before a transcatheter valve. Angiography or CT angiography is part of the standard workup.' }
+      ]
+    },
+
+    {
+      id: 'cv-sports',
+      subject: 'Cardiology & Vascular',
+      topic: 'Valves & Screening',
+      name: 'SPORTS SCREENING',
+      blurb: 'The 14-point screen, what triggers testing, and the innocent murmurs',
+      cards: [
+        { type: 'truefalse', q: 'An asymptomatic athlete with a normal 14-point history and exam should have a screening ECG.', a: false,
+          why: 'The AHA protocol relies on history and examination. An ECG or echocardiogram is ordered only when one of the fourteen elements is positive. Routine ECGs in athletes with a normal screen produce many false positives and have not been shown to prevent sudden death.' },
+        { type: 'multi', q: 'Which items from the athlete\'s own history trigger an ECG or echo on the 14-point screen?',
+          answers: ['Exertional chest pain', 'Unexplained syncope', 'Excessive exertional dyspnea', 'A prior heart murmur'],
+          distractors: ['Mild COVID 14+ days ago', 'Asthma'],
+          why: 'Each of these can be the first sign of a cardiomyopathy or a channelopathy, and syncope during exercise is the most worrying of them. A high blood pressure reading also counts. Full recovery from mild COVID more than two weeks earlier does not require an ECG before return to play.' },
+        { type: 'multi', q: 'Which family-history items on the sports screen trigger further testing?',
+          answers: ['Sudden cardiac death under 50', 'Known HCM or long QT', 'Marfan syndrome'],
+          distractors: ['Rheumatic heart disease', 'Hypertension in a parent'],
+          why: 'The screen is looking for inherited conditions: hypertrophic and dilated cardiomyopathy, long QT, Brugada, Marfan. A premature sudden death or disability from heart disease in a close relative under 50 counts even without a named diagnosis.' },
+        { type: 'recall', q: 'Why doesn\'t rheumatic heart disease in a relative count on the sports screen?', a: 'It is acquired, not inherited',
+          why: 'Rheumatic valve disease follows a streptococcal infection and does not run in families through a gene. The family-history questions exist to find genetic cardiomyopathies and channelopathies, which is why a relative\'s rheumatic disease, however serious, is not a trigger.' },
+        { type: 'multi', q: 'Which exam findings on the sports screen prompt an ECG or echo?',
+          answers: ['A heart murmur', 'Diminished femoral pulses', 'Marfan features', 'Elevated brachial BP'],
+          distractors: ['A split S2', 'Resting heart rate of 48'],
+          why: 'The murmur is listened for both supine and standing, because the HCM murmur appears or grows on standing. Weak femoral pulses point to coarctation. A tall, long-limbed athlete with chest wall or lens findings may have Marfan syndrome and an aorta at risk. A slow resting rate is normal in a trained athlete.' },
+        { type: 'recall', q: 'Harsh systolic murmur at the left upper sternal border in a teenager that fades with Valsalva. Likely cause?', a: 'Pulmonary flow murmur',
+          why: 'This is an innocent murmur from brisk flow across a normal pulmonary valve. It is heard in healthy adolescents, has no click or radiation, and gets quieter when less blood returns to the heart, as with standing or the strain phase of Valsalva. No testing is needed if the rest of the screen is normal.' },
+        { type: 'recall', q: 'Continuous humming sound below the clavicle that disappears when lying down or pressing on the jugular vein. Likely cause?', a: 'Venous hum',
+          why: 'The sound is blood draining through the jugular veins when the patient is upright. Lying down or gentle pressure on the vein stops the flow and the hum with it, which is what distinguishes it from a patent ductus, whose continuous murmur does not change with position.' },
+        { type: 'recall', q: 'Why does an innocent flow murmur get quieter with standing or Valsalva?', a: 'Less venous return means less flow',
+          why: 'An innocent murmur is produced by the volume of blood crossing a normal valve. Standing and straining reduce venous return, so less blood crosses the valve and the murmur softens. The murmur of hypertrophic cardiomyopathy does the opposite in the same maneuvers, which is why a murmur that grows on standing is never called innocent.' }
+      ]
+    },
+
+    {
+      id: 'cv-ie',
+      subject: 'Cardiology & Vascular',
+      topic: 'Valves & Screening',
+      name: 'IE PROPHYLAXIS',
+      blurb: 'Who gets it, for which procedures, and with what',
+      cards: [
+        { type: 'bucket', q: 'Antibiotic prophylaxis before dental work?', bins: ['Prophylaxis', 'None'], items: [
+          { label: 'Prosthetic heart valve', bin: 'Prophylaxis' },
+          { label: 'Prior endocarditis', bin: 'Prophylaxis' },
+          { label: 'Unrepaired cyanotic CHD', bin: 'Prophylaxis' },
+          { label: 'Transplant valvulopathy', bin: 'Prophylaxis' },
+          { label: 'Bicuspid aortic valve', bin: 'None' },
+          { label: 'Mitral valve prolapse', bin: 'None' },
+          { label: 'Native aortic stenosis', bin: 'None' },
+          { label: 'Mitral regurgitation', bin: 'None' }
+        ], why: 'The list is short on purpose: prosthetic valves or repair material, a previous episode of endocarditis, unrepaired cyanotic congenital disease or a repair with a residual shunt or a device placed within six months, and valve disease in a transplanted heart. Native valve lesions, including bicuspid valves and prolapse, no longer qualify.' },
+        { type: 'recall', q: 'Why is endocarditis prophylaxis limited to prosthetic valves, prior endocarditis and cyanotic defects?', a: 'They have the worst outcomes if infected',
+          why: 'The guidelines stopped trying to prevent every case and focused on the patients in whom endocarditis is most likely to be fatal or to destroy a valve. Everyday bacteremia from chewing and brushing far exceeds what a dental visit causes, so antibiotics for a single procedure prevent very few cases in anyone else.' },
+        { type: 'multi', q: 'Which procedures need endocarditis prophylaxis in a high-risk patient?',
+          answers: ['Tooth extraction', 'Scaling of the gums', 'Tonsillectomy'],
+          distractors: ['Colonoscopy', 'Cystoscopy', 'Routine dental x-rays'],
+          why: 'Prophylaxis covers dental procedures that manipulate the gums or the root region of a tooth or breach the oral mucosa, and respiratory procedures that cut through mucosa. Routine endoscopy of the gut or urinary tract does not qualify, even in the highest-risk patient.' },
+        { type: 'truefalse', q: 'A patient with a prosthetic valve needs antibiotic prophylaxis before a colonoscopy.', a: false,
+          why: 'Gastrointestinal and genitourinary procedures were removed from the prophylaxis list because the bacteremia they cause rarely leads to endocarditis. The exception is an active infection at the site, which is treated on its own merits.' },
+        { type: 'recall', q: 'First-line prophylaxis regimen before a dental procedure?', a: 'Amoxicillin 2 g, 30–60 minutes before',
+          why: 'A single oral dose given shortly before the procedure, 50 mg/kg in children. The aim is a high blood level at the moment the bacteria enter.' },
+        { type: 'mcq', q: 'A penicillin-allergic patient needs dental prophylaxis. Which drug is no longer recommended?',
+          a: 'Clindamycin', distractors: ['Cephalexin', 'Azithromycin', 'Doxycycline'],
+          why: 'Clindamycin was dropped because of the risk of Clostridioides difficile infection, which outweighed any benefit from a single prophylactic dose. Cephalexin is used when the penicillin reaction was not anaphylaxis; azithromycin or doxycycline otherwise.' }
+      ]
+    },
+
   ];
 
   global.Decks = { BUILTIN: BUILTIN };
