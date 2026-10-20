@@ -4789,7 +4789,7 @@
       id: 'en-hypo',
       subject: 'Endocrine & Metabolism',
       topic: 'Thyroid',
-      name: 'HYPOTHYROIDISM & NODULES',
+      name: 'HYPO & NODULES',
       blurb: 'Replacing hormone, when subclinical disease is treated, and working up a nodule',
       cards: [
         { type: 'recall', q: 'Most common cause of primary hypothyroidism?', a: 'Hashimoto thyroiditis',
