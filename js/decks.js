@@ -5706,7 +5706,7 @@
           why: 'The axillary nerve wraps around the surgical neck of the humerus and is stretched when the head dislocates anteroinferiorly. Test sensation over the lateral deltoid, the regimental badge area, because deltoid strength cannot be tested in a dislocated or freshly reduced shoulder. Document it both times so a reduction is not blamed for the injury.' },
         { type: 'match', q: 'Match each lesion that accompanies anterior shoulder dislocation to what it is.',
           pairs: [
-            { left: 'Bankart lesion', right: 'Torn anteroinferior labrum' },
+            { left: 'Bankart lesion', right: 'Anterior labral tear' },
             { left: 'Hill-Sachs defect', right: 'Humeral head dent' },
             { left: 'Axillary nerve injury', right: 'Numb lateral deltoid' },
             { left: 'Rotator cuff tear', right: 'Weakness after age 40' }
@@ -5724,11 +5724,11 @@
         { type: 'match', q: 'Match each exam maneuver to the rotator cuff muscle it tests.',
           pairs: [
             { left: 'Empty can', right: 'Supraspinatus' },
-            { left: 'Resisted external rotation', right: 'Infraspinatus' },
+            { left: 'External rotation', right: 'Infraspinatus' },
             { left: 'Lift-off test', right: 'Subscapularis' },
             { left: 'Drop-arm test', right: 'Full-thickness tear' }
           ] },
-        { type: 'recall', q: 'Lateral shoulder pain with overhead reaching, worse lying on that side at night, painful arc 60 to 120 degrees. Diagnosis?', a: 'Rotator cuff tendinopathy',
+        { type: 'recall', q: 'Lateral shoulder pain reaching overhead, worse lying on that side at night, painful arc 60 to 120 degrees. Diagnosis?', a: 'Rotator cuff tendinopathy',
           why: 'The supraspinatus is pinched under the acromion through the middle of abduction, which is where the arc hurts, and lying on the shoulder compresses the inflamed tendon. Night pain is the classic complaint. Treat with eccentric cuff and scapular stabilizer strengthening, NSAIDs and a subacromial steroid injection if needed.' },
         { type: 'recall', q: 'Exam test that indicates a full-thickness rotator cuff tear rather than tendinopathy?', a: 'Drop-arm test',
           why: 'With the supraspinatus torn through, the patient cannot lower the abducted arm slowly and it drops. The empty can and impingement signs are positive in both tendinopathy and tear, so they cannot make the distinction.' },
@@ -5745,7 +5745,7 @@
           why: 'A fall on the outstretched hand with the wrist hyperextended and radially deviated drives the scaphoid against the radius. Look for anatomic snuffbox tenderness, tenderness over the volar scaphoid tubercle and pain with axial compression of the thumb.' },
         { type: 'number', q: 'Percent of acute scaphoid fractures missed on initial radiographs?', value: 20, unit: '%',
           why: 'Fifteen to twenty-five percent are invisible on the first films, even with a dedicated scaphoid view. That is why snuffbox tenderness with a normal x-ray is treated as a fracture until proven otherwise.' },
-        { type: 'recall', q: 'Why does a missed scaphoid waist fracture lead to avascular necrosis?', a: 'Blood enters distally and flows back to the proximal pole',
+        { type: 'recall', q: 'Why does a missed scaphoid waist fracture lead to avascular necrosis?', a: 'Blood enters distally and flows to the proximal pole',
           why: 'Branches of the radial artery enter at the distal pole, so a fracture through the waist cuts off the proximal fragment. Untreated, that fragment dies, the fracture fails to unite and the wrist develops arthritis, the SNAC wrist. Early immobilization protects the supply while it heals.' },
         { type: 'recall', q: 'Management of snuffbox tenderness with normal wrist radiographs?', a: 'Thumb spica splint and repeat films in 10 to 14 days',
           why: 'Bone resorbs along an occult fracture line over two weeks and makes it visible on the repeat films. If an athlete or manual worker needs an immediate answer, a noncontrast MRI or CT settles it the same day. Never discharge on the strength of the first x-ray.' },
@@ -5775,6 +5775,87 @@
           why: 'Forced extension of an actively flexed finger avulses the flexor digitorum profundus from the distal phalanx, and 75 percent occur in the ring finger. Test by holding the PIP in extension and asking for DIP flexion. The tendon retracts into the palm, so it cannot heal with a splint.' },
         { type: 'recall', q: 'Why does jersey finger need urgent surgical referral while mallet finger is splinted?', a: 'The retracted flexor tendon cannot reach bone on its own',
           why: 'The profundus tendon snaps back into the sheath or palm and loses its blood supply, so reinsertion within 7 to 10 days is the only way to restore DIP flexion. The extensor in mallet finger stays near the bone and heals in a splint.' }
+      ]
+    },
+
+    {
+      id: 'ms-hip', subject: 'MSK & Sports Medicine', topic: 'Hip & Knee', name: 'HIP & GROIN',
+      blurb: 'Localizing hip pain, hip fracture imaging, osteoarthritis, trochanteric pain and hernias.',
+      cards: [
+        { type: 'bucket', q: 'Sort each cause of hip pain by where the patient feels it.', bins: ['Groin', 'Lateral'],
+          items: [
+            { label: 'Osteoarthritis', bin: 'Groin' },
+            { label: 'Gluteus medius tendinopathy', bin: 'Lateral' },
+            { label: 'Femoral neck stress fracture', bin: 'Groin' },
+            { label: 'Labral tear', bin: 'Groin' },
+            { label: 'Snapping iliotibial band', bin: 'Lateral' },
+            { label: 'Avascular necrosis', bin: 'Groin' }
+          ],
+          why: 'Anything inside the hip joint refers to the groin and is reproduced by rotating the flexed hip, the log-roll, FADIR and FABER tests. Lateral pain over the greater trochanter comes from the abductor tendons and the iliotibial band outside the joint. Posterior buttock pain points to the sacroiliac joint, the lumbar spine or the piriformis.' },
+        { type: 'recall', q: 'Why does intra-articular hip pathology present as groin pain rather than pain over the hip?', a: 'The capsule shares nerves with the groin and thigh',
+          why: 'The hip capsule shares its nerve supply with the anterior thigh and groin, so arthritis, labral tears, stress fractures and avascular necrosis all refer there. Patients who point to the side of the hip usually have a tendon problem, and those pointing to the buttock have a spine or sacroiliac problem.' },
+        { type: 'recall', q: 'Leg position after a displaced hip fracture?', a: 'Shortened and externally rotated',
+          why: 'The fractured femur loses its lever against the acetabulum, the muscles pull the shaft upward and the short external rotators and iliopsoas turn it out. A fall with groin pain, inability to bear weight and this leg position is a hip fracture until the films say otherwise.' },
+        { type: 'recall', q: 'Next test when hip radiographs are negative but the patient still cannot bear weight after a fall?', a: 'MRI of the hip without contrast',
+          why: 'Two to ten percent of hip fractures in osteoporotic older adults are invisible on the first films. MRI is nearly 100 percent sensitive within 24 hours and shows the marrow edema of an occult femoral neck fracture. CT or bone scan is the fallback only when MRI is contraindicated.' },
+        { type: 'recall', q: 'Hip range of motion lost first in osteoarthritis?', a: 'Internal rotation',
+          why: 'Osteophytes and capsular thickening restrict internal rotation before any other plane, and less than 15 degrees with groin pain is a strong clinical sign. Morning stiffness lasts under 30 minutes, unlike inflammatory arthritis.' },
+        { type: 'recall', q: 'Why are topical NSAIDs not recommended for hip osteoarthritis when they work for the knee and hand?', a: 'The hip joint is too deep for the drug to reach',
+          why: 'Topical diclofenac penetrates a centimeter or two, enough for superficial joints but not for a joint buried under the gluteal and thigh muscles. Hip osteoarthritis gets land-based or aquatic exercise, weight loss and oral NSAIDs instead.' },
+        { type: 'recall', q: 'Next step for hip osteoarthritis that persists despite physical therapy and oral NSAIDs?', a: 'Image-guided intra-articular corticosteroid injection',
+          why: 'The hip cannot be injected reliably by landmarks, so ultrasound or fluoroscopy guides the needle. Steroid gives weeks to months of relief. Hyaluronic acid injection into the hip is recommended against because it has not shown benefit.' },
+        { type: 'recall', q: 'Why is "trochanteric bursitis" now called greater trochanteric pain syndrome?', a: 'It is abductor tendinopathy, not an inflamed bursa',
+          why: 'MRI and histology show degenerative tendinopathy or tears of the abductor tendons where they insert on the trochanter, with little inflammation in the bursa. Thinking of it as the rotator cuff of the hip explains why eccentric loading and abductor strengthening work better than rest.' },
+        { type: 'recall', q: 'Lateral hip pain lying on that side, tenderness over the greater trochanter and a Trendelenburg gait. Diagnosis?', a: 'Gluteus medius tendinopathy',
+          why: 'The abductor tendons insert on the trochanter, so pressure on it and resisted abduction hurt, and a weakened gluteus medius lets the opposite side of the pelvis drop when standing on the affected leg. Pain with resisted hip abduction confirms the source.' },
+        { type: 'recall', q: 'Next step when lateral hip pain fails NSAIDs, physical therapy and a corticosteroid injection?', a: 'MRI or ultrasound for a gluteus medius tear',
+          why: 'A full-thickness abductor tear does not respond to conservative care and may need surgical repair. Imaging separates it from tendinopathy that just needs more time. Persistent Trendelenburg weakness is the clue that a tear is present.' },
+        { type: 'recall', q: 'Imaging needed before referring a palpable, symptomatic inguinal hernia for repair?', a: 'None',
+          why: 'A groin bulge that aches with standing, lifting or coughing is diagnosed by history and exam, and ultrasound or CT adds nothing. Imaging is reserved for occult groin pain when no hernia can be felt. Minimally symptomatic reducible hernias in men can be watched safely.' },
+        { type: 'recall', q: 'Why does a femoral hernia always need prompt surgical repair while a small inguinal hernia can be watched?', a: 'Femoral hernias strangulate in 20 to 40 percent',
+          why: 'The femoral canal is a narrow rigid ring below and lateral to the pubic tubercle, so bowel that enters it is easily trapped and loses its blood supply. These hernias are more common in women and are often mistaken for inguinal hernias. Watchful waiting is only for asymptomatic reducible inguinal hernias.' }
+      ]
+    },
+
+    {
+      id: 'ms-knee', subject: 'MSK & Sports Medicine', topic: 'Hip & Knee', name: 'KNEE',
+      blurb: 'Ottawa knee rule, overuse syndromes by location, and ligament and meniscal tears.',
+      cards: [
+        { type: 'multi', q: 'Select the Ottawa knee rule criteria that call for radiographs after acute knee trauma.',
+          answers: ['Age 55 or older', 'Isolated patellar tenderness', 'Fibular head tenderness', 'Cannot flex to 90 degrees', 'Cannot take 4 steps'],
+          distractors: ['Joint effusion', 'Joint line tenderness'],
+          why: 'Any one of the five criteria means films, and together they catch 98 to 100 percent of clinically significant fractures. Effusion, joint line tenderness, bruising and a limp are common after soft-tissue injuries and are deliberately left out. The four-step test counts even if the patient limps.' },
+        { type: 'number', q: 'Age at or above which the Ottawa knee rule mandates radiographs after any acute knee injury?', value: 55, unit: 'years',
+          why: 'Bone quality falls with age and fractures occur with lower-energy mechanisms, so age alone is a criterion. Inability to bear weight for four steps both at the time of injury and in the exam room is the other criterion that applies regardless of where the tenderness is.' },
+        { type: 'truefalse', q: 'A moderate knee effusion after injury is an Ottawa criterion for radiographs.', a: false,
+          why: 'Effusions follow ligament and meniscal injuries far more often than fractures, so including them would make the rule order films on nearly everyone. The rule relies on bony tenderness at the patella and fibular head, age, flexion and weight bearing.' },
+        { type: 'recall', q: 'Lateral knee pain in a runner, worse downhill, with point tenderness 2 to 3 cm above the lateral joint line. Diagnosis?', a: 'Iliotibial band syndrome',
+          why: 'The distal band rubs over the lateral femoral epicondyle at about 30 degrees of flexion, exactly where the tenderness sits. The Noble compression test reproduces it as the knee extends through 30 degrees and the Ober test shows band tightness. Treat with hip abductor strengthening and band stretching.' },
+        { type: 'recall', q: 'Why does hip abductor strengthening treat iliotibial band syndrome at the knee?', a: 'Weak abductors let the knee drift in and tighten the band',
+          why: 'When the gluteus medius fatigues, the pelvis drops and the femur adducts and internally rotates, stretching the band across the lateral epicondyle with every stride. Strengthening the abductors corrects the mechanics that cause the friction.' },
+        { type: 'recall', q: 'Young woman with dull pain behind the kneecap after prolonged sitting, squatting and descending stairs. Diagnosis?', a: 'Patellofemoral pain syndrome',
+          why: 'Patellar maltracking loads the retropatellar cartilage whenever the knee is held or moved under flexion, which is why sitting through a movie hurts. There is no effusion or instability and no imaging is needed. Treat with vastus medialis and hip abductor and external rotator strengthening.' },
+        { type: 'match', q: 'Match each knee overuse condition to the site of tenderness.',
+          pairs: [
+            { left: 'Patellar tendinopathy', right: 'Inferior patellar pole' },
+            { left: 'Osgood-Schlatter', right: 'Tibial tubercle' },
+            { left: 'Pes anserine', right: 'Below medial joint line' },
+            { left: 'Iliotibial band', right: 'Lateral epicondyle' }
+          ] },
+        { type: 'recall', q: 'Why does Osgood-Schlatter disease occur only in adolescents?', a: 'It is traction on an open tibial tubercle apophysis',
+          why: 'During the growth spurt the patellar tendon pulls on cartilage that has not yet fused to the tibia, producing pain, swelling and a bony bump at the tubercle. Once the apophysis closes the condition resolves. Sport can continue as tolerated, with ice and eccentric quadriceps work, and steroid injections are avoided.' },
+        { type: 'recall', q: 'Treatment of choice for patellar tendinopathy?', a: 'Eccentric decline-board quadriceps strengthening',
+          why: 'Loading the tendon eccentrically on a decline board remodels the degenerated collagen, which rest alone does not do. Corticosteroid injection weakens the tendon and risks rupture, so it is avoided. Basketball and volleyball players are the typical patients.' },
+        { type: 'recall', q: 'Older woman with obesity and medial knee pain 4 to 5 cm below the joint line, worse climbing stairs. Diagnosis?', a: 'Pes anserine bursitis',
+          why: 'The sartorius, gracilis and semitendinosus insert together on the proximal medial tibia below the joint line, and that conjoined insertion is the point of tenderness. Pain at the joint line itself would suggest the meniscus or arthritis instead. Treat with hamstring stretching, NSAIDs, weight loss or a local steroid injection.' },
+        { type: 'recall', q: 'Why does an ACL tear swell within 2 to 4 hours while a meniscal tear swells the next day?', a: 'The ACL bleeds, the meniscus has almost no vessels',
+          why: 'The torn ligament tears its own blood supply and produces a rapid hemarthrosis, usually with a pop and inability to continue playing. Most of the meniscus has no blood vessels, so a tear causes a slower reactive effusion over 12 to 24 hours with locking or catching.' },
+        { type: 'recall', q: 'Most sensitive and specific exam test for an ACL tear?', a: 'Lachman test',
+          why: 'Pulling the tibia forward at 20 to 30 degrees of flexion isolates the ACL without hamstring guarding, giving sensitivity and specificity above 85 to 95 percent. The anterior drawer is less reliable in the acute swollen knee and the pivot shift is hard to perform awake.' },
+        { type: 'recall', q: 'Knee struck on the dashboard with the tibia pushed backward and a positive posterior sag sign. Diagnosis?', a: 'Posterior cruciate ligament tear',
+          why: 'A blow to the front of the flexed tibia drives it backward and tears the PCL. The tibia then sags behind the femur when the knee is flexed, and the posterior drawer test is positive. It is often missed because the swelling is modest compared with an ACL tear.' },
+        { type: 'recall', q: 'Most accurate physical exam test for a meniscal tear?', a: 'Thessaly test',
+          why: 'Standing on the affected leg with the knee flexed 20 degrees and rotating the body loads the meniscus under body weight, reproducing pain or catching. It outperforms McMurray and joint line tenderness alone. Confirm with MRI when the result would change management.' }
       ]
     },
 
