@@ -5218,6 +5218,80 @@
       ]
     },
 
+    {
+      id: 'gi-bariatric',
+      subject: 'GI & Hepatology',
+      topic: 'Bariatric & Nutrition',
+      name: 'BARIATRIC SURGERY',
+      blurb: 'Which operation, and the two kinds of dumping',
+      cards: [
+        { type: 'recall', q: 'Which bariatric operation gives the most weight loss and the highest diabetes remission?', a: 'Roux-en-Y gastric bypass',
+          why: 'About 30 to 35% total body weight loss at two years against 25 to 28% for sleeve gastrectomy and 15% for a band. Bariatric surgery is the most effective long-term treatment for severe obesity, with remission of type 2 diabetes, hypertension, sleep apnea and fatty liver, and lower mortality.' },
+        { type: 'recall', q: 'Why does gastric bypass improve diabetes beyond the weight loss?', a: 'Bypassing the duodenum boosts GLP-1 and PYY',
+          why: 'Food reaches the jejunum quickly and undigested, which drives a much larger release of the gut hormones that stimulate insulin and suppress appetite. Glucose often improves within days of surgery, before any weight has come off.' },
+        { type: 'truefalse', q: 'Sleeve gastrectomy is the preferred operation for a patient with severe GERD or Barrett esophagus.', a: false,
+          why: 'The sleeve raises pressure in a narrow stomach tube and worsens reflux. Roux-en-Y bypass diverts acid away from the esophagus and is the choice when reflux is already a problem.' },
+        { type: 'recall', q: 'Cramping, bloating, explosive diarrhea and palpitations 20 minutes after a meal, after a bypass. Diagnosis?', a: 'Early dumping syndrome',
+          why: 'Concentrated food enters the small bowel at once and pulls fluid out of the circulation into the gut, distending the bowel and dropping the blood volume. Flushing, tachycardia and lightheadedness within 30 minutes of eating complete the picture.' },
+        { type: 'recall', q: 'Sweating, tremor and confusion two hours after a meal, after a bypass. Diagnosis?', a: 'Late dumping syndrome',
+          why: 'Reactive hypoglycemia, with a glucose under 55 to 60 one to three hours after eating, relieved by glucose. It is the Whipple triad occurring after meals.' },
+        { type: 'recall', q: 'Why does late dumping cause hypoglycemia?', a: 'Rapid carbohydrate delivery triggers an insulin surge',
+          why: 'Simple sugars hit the jejunum fast and provoke an exaggerated GLP-1 response and a burst of insulin that outlasts the glucose it was meant for. An hour or two later the glucose crashes.' },
+        { type: 'multi', q: 'First-line measures for dumping syndrome?',
+          answers: ['Six small meals a day', 'Cut out simple sugars', 'No liquids within 30 min of meals', 'Protein and complex carbs'],
+          distractors: ['Large low-fat meals', 'Drink with meals'],
+          why: 'Smaller, slower, less sugary meals, with soluble fiber, and liquids kept apart from solids so the stomach does not flush its contents straight through. Diet alone controls most patients.' },
+        { type: 'recall', q: 'Drug for late dumping when diet is not enough?', a: 'Acarbose',
+          why: 'An alpha-glucosidase inhibitor that slows carbohydrate absorption and blunts the glucose spike that triggers the insulin surge. Subcutaneous octreotide is the alternative for either form of dumping.' }
+      ]
+    },
+
+    {
+      id: 'gi-nutrition',
+      subject: 'GI & Hepatology',
+      topic: 'Bariatric & Nutrition',
+      name: 'DEFICIENCIES & REFEEDING',
+      blurb: 'What goes missing after surgery, refeeding syndrome, and cannabis hyperemesis',
+      cards: [
+        { type: 'recall', q: 'Which vitamin deficiency causes dry beriberi?', a: 'Thiamine',
+          why: 'A symmetric distal sensory and motor neuropathy with burning feet, foot drop and lost reflexes. It follows persistent vomiting after bariatric surgery, hyperemesis gravidarum, alcohol use, or refeeding without thiamine.' },
+        { type: 'number', q: 'Body stores of thiamine last how many days?', values: [18, 20], join: '–', unit: 'days',
+          why: 'That is why a few weeks of vomiting after surgery is enough to produce beriberi or Wernicke encephalopathy, and why thiamine is given before glucose in any patient who may be depleted.' },
+        { type: 'multi', q: 'Which make up the triad of Wernicke encephalopathy?',
+          answers: ['Confusion', 'Nystagmus or lateral rectus palsy', 'Gait ataxia'],
+          distractors: ['Peripheral edema', 'Macrocytosis'],
+          why: 'Thiamine deficiency hitting the brain. Wet beriberi is the same deficiency hitting the heart: a high-output dilated cardiomyopathy with edema.' },
+        { type: 'recall', q: 'Where is vitamin B12 absorbed?', a: 'The terminal ileum',
+          why: 'Bound to intrinsic factor from the gastric parietal cells. Deficiency follows resection of the distal ileum, Crohn ileitis, Roux-en-Y bypass, pernicious anemia, a strict vegan diet and long-term metformin.' },
+        { type: 'recall', q: 'Which lab separates B12 deficiency from folate deficiency?', a: 'Methylmalonic acid, high only in B12 deficiency',
+          why: 'Homocysteine rises in both. Methylmalonic acid needs B12 specifically, so it rises only when B12 is short, and it catches the deficiency before the blood count changes.' },
+        { type: 'recall', q: 'Lost vibration sense, a positive Romberg and spastic weakness with a macrocytic anemia. Diagnosis?', a: 'Subacute combined degeneration',
+          why: 'B12 deficiency damaging the dorsal columns, which carry vibration and position sense, and the lateral corticospinal tracts, which give the spasticity. The anemia is megaloblastic with hypersegmented neutrophils, and glossitis often accompanies it.' },
+        { type: 'multi', q: 'Which nutrients are absorbed in the duodenum, and so lost after a gastric bypass?',
+          answers: ['Iron', 'Calcium', 'Copper'],
+          distractors: ['Folate', 'Vitamin B12'],
+          why: 'The bypass skips the duodenum, and celiac disease damages it. Folate is absorbed in the jejunum and B12 in the terminal ileum, so each deficiency points to a different stretch of bowel.' },
+        { type: 'recall', q: 'B12-like myelopathy with a normal B12, neutropenia, and heavy zinc supplement use. Deficiency?', a: 'Copper',
+          why: 'Excess zinc blocks copper absorption in the gut. Copper deficiency mimics subacute combined degeneration and adds a sideroblastic anemia and neutropenia. It is the answer when the picture says B12 but the level is normal.' },
+        { type: 'multi', q: 'Who is at high risk for refeeding syndrome?',
+          answers: ['BMI under 16', 'Weight loss >15% in 3–6 months', 'Little intake for over 10 days', 'Low phosphate before feeding'],
+          distractors: ['BMI over 30', 'Recent steroid course'],
+          why: 'The NICE criteria, along with anorexia nervosa, chronic alcohol use, and a low potassium or magnesium before feeding. The common thread is a body that has run its intracellular stores down.' },
+        { type: 'recall', q: 'Why does refeeding cause a dangerous fall in phosphate?', a: 'Insulin drives phosphate into depleted cells',
+          why: 'Starvation empties the cells of phosphate, potassium and magnesium while the blood levels stay deceptively normal. The first carbohydrate load releases insulin, which pulls all three into the cells at once. Without phosphate the cells cannot make ATP, and the heart, respiratory muscles and red cells fail.' },
+        { type: 'recall', q: 'First step before feeding a severely malnourished patient?', a: 'Thiamine, at least 30 minutes before food',
+          why: '100 to 300 mg a day with a multivitamin, continued for the first five to ten days. Phosphate, potassium and magnesium are checked and replaced before and during feeding, with levels every day for the first week.' },
+        { type: 'number', q: 'Start nutrition in a high-risk refeeding patient at what fraction of estimated caloric needs?', values: [25, 50], join: '–', unit: '%',
+          why: 'About 10 to 20 kcal/kg a day, or 5 to 10 in extreme malnutrition, advanced slowly over four to seven days.' },
+        { type: 'recall', q: 'Cyclic bouts of intractable vomiting in a daily cannabis user, relieved by hot showers. Diagnosis?', a: 'Cannabinoid hyperemesis syndrome',
+          why: 'Years of near-daily use, episodes of vomiting five to ten times a day for a day or two with colicky pain, a normal workup apart from dehydration, and the learned habit of long hot showers or baths. Permanent abstinence is the only cure.' },
+        { type: 'recall', q: 'Why do hot showers relieve cannabinoid hyperemesis?', a: 'Heat activates TRPV1 receptors',
+          why: 'Chronic THC disrupts the hypothalamic centers that control temperature and vomiting. Skin heat above 41°C, or topical capsaicin, stimulates the TRPV1 receptors in skin and brainstem and restores that regulation, which is why capsaicin cream on the abdomen works in the emergency department.' },
+        { type: 'recall', q: 'Acute treatment for cannabinoid hyperemesis in the emergency department?', a: 'IV fluids with haloperidol or capsaicin cream',
+          why: 'Ondansetron and the other standard antiemetics usually fail. Haloperidol or droperidol work through dopamine blockade in the chemoreceptor trigger zone. Opioids are avoided because they worsen the nausea and gastric stasis.' }
+      ]
+    },
+
   ];
 
   global.Decks = { BUILTIN: BUILTIN };
