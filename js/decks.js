@@ -4216,7 +4216,7 @@
           why: 'Or a diastolic drop of 10 mm Hg. The fall has to be sustained, measured after one and three minutes upright or on a tilt table.' },
         { type: 'recall', q: 'What separates neurogenic from non-neurogenic orthostatic hypotension at the bedside?', a: 'The heart rate response on standing',
           why: 'When the pressure falls on standing, an intact baroreflex speeds the heart up to compensate. A rise of 15 beats per minute or more means the reflex is working and the problem is volume or a drug. A rise under 15 means the autonomic nervous system itself has failed.' },
-        { type: 'number', q: 'Heart rate rise on standing at or above which suggests a non-neurogenic cause?', value: 15, unit: 'bpm',
+        { type: 'number', q: 'How much must the heart rate rise on standing to call orthostatic hypotension non-neurogenic?', value: 15, unit: 'bpm',
           why: 'Another way to express it is the ratio of heart rate change to systolic change: above 0.5 beats per mm Hg is non-neurogenic, below it is neurogenic.' },
         { type: 'mcq', q: 'Lost 30 lb on semaglutide. Standing BP 110/70 → 85/55, HR 75 → 90. Takes lisinopril. Best step?',
           a: 'Stop or reduce the lisinopril', distractors: ['Start midodrine', 'Start fludrocortisone', 'Tilt-table test'],
@@ -4229,8 +4229,8 @@
           why: 'Each damages the sympathetic nerves that constrict blood vessels on standing. Dehydration and weight loss cause orthostatic hypotension through volume, with a normal reflex and a brisk heart rate rise.' },
         { type: 'recall', q: 'First-line drug for neurogenic orthostatic hypotension once conservative measures have failed?', a: 'Midodrine or droxidopa',
           why: 'Midodrine is an alpha-1 agonist that constricts the vessels the failed nerves no longer reach; droxidopa is converted to norepinephrine. They come after the simple measures: a bolus of water before standing, extra salt, an abdominal binder, waist-high compression stockings and sleeping with the head of the bed raised.' },
-        { type: 'recall', q: 'Why is fludrocortisone second-line for neurogenic orthostatic hypotension?', a: 'Supine hypertension, low potassium, fluid overload',
-          why: 'It works by making the kidney retain salt and water, which raises the pressure lying down as well as standing, and the supine hypertension damages the heart and kidneys over time. It also wastes potassium. Atomoxetine is used only as an add-on.' }
+        { type: 'recall', q: 'Why is fludrocortisone second-line for neurogenic orthostatic hypotension?', a: 'It raises the pressure lying down as well',
+          why: 'It works by making the kidney retain salt and water, so the pressure goes up in every position. Supine hypertension damages the heart and kidneys over time, and the extra volume brings edema and heart failure in older patients. It also wastes potassium. Midodrine acts only while the patient is upright and active, which is why it comes first; atomoxetine is used only as an add-on.' }
       ]
     },
 
