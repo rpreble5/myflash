@@ -4481,6 +4481,162 @@
       ]
     },
 
+    /* ═══════════════ Endocrine & Metabolism ═══════════════
+       From the user's ITE endocrinology study guide, module by module. */
+
+    {
+      id: 'en-dm-dx',
+      subject: 'Endocrine & Metabolism',
+      topic: 'Diabetes',
+      name: 'SCREENING & DIAGNOSIS',
+      blurb: 'Who is screened, the numbers that diagnose, and when the A1c lies',
+      cards: [
+        { type: 'number', q: 'USPSTF: diabetes screening for adults with overweight or obesity starts at what age?', value: 35, unit: 'years',
+          why: 'Screening runs from 35 to 70, every three years if normal, for a BMI of 25 or more. The ADA goes further and screens every adult from 35 regardless of weight, and earlier when there is overweight plus another risk factor.' },
+        { type: 'number', q: 'USPSTF: routine diabetes screening stops at what age?', value: 70, unit: 'years',
+          why: 'The recommendation covers 35 to 70. The upper limit was the point of a 2024 question; the ADA sets no upper age.' },
+        { type: 'number', q: 'BMI at or above which an Asian American adult is screened for diabetes?', value: 23, unit: 'kg/m²',
+          why: 'The usual threshold is a BMI of 25. Asian Americans develop insulin resistance and diabetes at lower body weights, so the screening cutoff is lowered to 23.' },
+        { type: 'truefalse', q: 'The USPSTF recommends screening asymptomatic children and adolescents for type 2 diabetes.', a: false,
+          why: 'The evidence is insufficient to recommend for or against it, a grade I. That is different from the adult recommendation and is the kind of distinction the exam tests.' },
+        { type: 'number', q: 'Fasting glucose at or above which diabetes is diagnosed?', value: 126, unit: 'mg/dL',
+          why: 'After a fast of at least eight hours. Below 100 is normal and 100 to 125 is impaired fasting glucose, one form of prediabetes.' },
+        { type: 'number', q: 'Two-hour glucose on a 75-g tolerance test at or above which diabetes is diagnosed?', value: 200, unit: 'mg/dL',
+          why: 'Below 140 is normal and 140 to 199 is impaired glucose tolerance. The tolerance test picks up some patients the fasting value misses, particularly those whose problem is after meals.' },
+        { type: 'number', q: 'Hemoglobin A1c at or above which diabetes is diagnosed?', value: 6.5, unit: '%',
+          why: 'Below 5.7 is normal and 5.7 to 6.4 is prediabetes. The A1c reflects roughly three months of glucose and needs no fasting, but it is unreliable whenever red cell turnover is abnormal.' },
+        { type: 'match', q: 'Match the prediabetes range to its test', pairs: [
+          { left: '100–125 mg/dL', right: 'Fasting glucose' },
+          { left: '140–199 mg/dL', right: 'Two-hour OGTT' },
+          { left: '5.7–6.4%', right: 'Hemoglobin A1c' }
+        ] },
+        { type: 'recall', q: 'When does one random glucose of 200 or more diagnose diabetes without a repeat test?', a: 'When classic symptoms are present',
+          why: 'Polyuria, polydipsia, polyphagia, blurred vision or unexplained weight loss, or a hyperglycemic crisis, make the diagnosis on the spot. Without symptoms, two abnormal results are needed.' },
+        { type: 'recall', q: 'Why does an asymptomatic patient need two abnormal results before diabetes is diagnosed?', a: 'A single value has too many false positives',
+          why: 'Glucose varies with stress, illness and the day, and labs have error. Requiring two abnormal values, either two tests from the same sample such as a fasting glucose with an A1c, or the same test on two days, keeps a one-off reading from labeling someone diabetic for life.' },
+        { type: 'multi', q: 'Which conditions falsely lower the hemoglobin A1c?',
+          answers: ['Hemolytic anemia', 'Sickle cell disease', 'Pregnancy', 'Recent transfusion'],
+          distractors: ['Iron deficiency', 'Asplenia'],
+          why: 'Anything that shortens red cell survival or floods the blood with young cells lowers the A1c, because the cells have had less time to pick up glucose: hemolysis, sickle disease or trait, G6PD deficiency, blood loss or transfusion, the second and third trimesters, erythropoietin and dialysis. In those patients use a fasting glucose or a tolerance test instead.' },
+        { type: 'recall', q: 'Why does iron deficiency anemia falsely raise the hemoglobin A1c?', a: 'Old red cells stay in circulation longer',
+          why: 'When the marrow cannot make new cells, the existing ones age in the circulation and accumulate more glucose. Iron, B12 and folate deficiency and asplenia all push the A1c up for the same reason, so a high value in those patients should be confirmed with a glucose measurement.' }
+      ]
+    },
+
+    {
+      id: 'en-prediab',
+      subject: 'Endocrine & Metabolism',
+      topic: 'Diabetes',
+      name: 'PREDIABETES',
+      blurb: 'What prevents progression, and when metformin joins in',
+      cards: [
+        { type: 'recall', q: 'First-line intervention for prediabetes?', a: 'An intensive lifestyle program',
+          why: 'Programs modeled on the Diabetes Prevention Program: structured coaching toward 7% weight loss and 150 minutes a week of moderate activity such as brisk walking. It outperformed metformin in the trial and the gap was widest in older adults.' },
+        { type: 'number', q: 'Weight loss target in the Diabetes Prevention Program?', value: 7, unit: '%',
+          why: 'Alongside 150 minutes a week of moderate-intensity activity. Both targets are modest, which is part of why the program works in practice.' },
+        { type: 'number', q: 'In the DPP trial, lifestyle change reduced the three-year incidence of diabetes by how much?', value: 58, unit: '%',
+          why: 'Metformin reduced it by 31%. In adults 60 and older the lifestyle arm reduced it by 71%, while metformin did little in that group.' },
+        { type: 'truefalse', q: 'In the DPP trial, metformin prevented more cases of diabetes than lifestyle change.', a: false,
+          why: 'Lifestyle change prevented nearly twice as many, 58% against 31%. Metformin is an add-on for those at highest risk, not a substitute for the program.' },
+        { type: 'multi', q: 'In which patients with prediabetes is metformin considered in addition to lifestyle change?',
+          answers: ['BMI 35 or higher', 'Age under 60', 'A1c 6.0% or higher', 'History of gestational diabetes'],
+          distractors: ['Age over 70', 'BMI 25'],
+          why: 'These mark the patients most likely to progress, and metformin worked best in the trial in the young and the heavy. A fasting glucose of 110 or more is the other criterion.' }
+      ]
+    },
+
+    {
+      id: 'en-dm-choose',
+      subject: 'Endocrine & Metabolism',
+      topic: 'Diabetes',
+      name: 'CHOOSING THE DRUG',
+      blurb: 'Which class the comorbidity picks, independent of the A1c',
+      cards: [
+        { type: 'mcq', q: 'Type 2 diabetes with heart failure, A1c 7.8% on metformin. What do you add?',
+          a: 'An SGLT2 inhibitor', distractors: ['A GLP-1 agonist', 'Pioglitazone', 'Glipizide'],
+          why: 'SGLT2 inhibitors reduce heart failure hospitalizations and cardiovascular death whether the ejection fraction is reduced or preserved and whether or not the patient has diabetes. The same class is chosen for chronic kidney disease. The A1c does not change the decision.' },
+        { type: 'mcq', q: 'Type 2 diabetes, BMI 36, prior MI. Best add-on to metformin?',
+          a: 'A GLP-1 receptor agonist', distractors: ['A sulfonylurea', 'Basal insulin', 'A DPP-4 inhibitor'],
+          why: 'GLP-1 agonists reduce major cardiovascular events in established atherosclerotic disease and produce the most weight loss of any class. Semaglutide also slows kidney disease and improves steatotic liver disease. A sulfonylurea or insulin would add weight and hypoglycemia.' },
+        { type: 'recall', q: 'First-line drug for type 2 diabetes when there is no heart or kidney disease?', a: 'Metformin',
+          why: 'It lowers hepatic glucose production and improves insulin sensitivity, is weight neutral, costs little and does not cause hypoglycemia on its own. Cardiorenal disease is what moves an SGLT2 inhibitor or GLP-1 agonist ahead of it.' },
+        { type: 'recall', q: 'Why do SGLT2 inhibitors help heart failure even without diabetes?', a: 'They cause natriuresis, not just glycosuria',
+          why: 'Blocking the sodium-glucose transporter in the proximal tubule spills glucose and sodium into the urine together. The sodium loss offloads the heart and lowers blood pressure modestly, and the benefit on hospitalizations appears in patients whose glucose was normal to begin with. They do not cause hypoglycemia.' },
+        { type: 'number', q: 'An SGLT2 inhibitor can be started for kidney protection down to what eGFR?', value: 20, unit: 'mL/min',
+          why: 'The benefit is largest with albuminuria, a UACR of 200 mg/g or more. Below 20 the drug is not started, though one already running may be continued.' },
+        { type: 'recall', q: 'In whom is a GLP-1 agonist contraindicated?', a: 'Personal or family history of medullary thyroid cancer',
+          why: 'Also in multiple endocrine neoplasia type 2, which carries that cancer. The class is avoided in severe gastroparesis because it slows gastric emptying further, and it causes nausea, gallstones and occasionally pancreatitis.' },
+        { type: 'recall', q: 'Biopsy-proven MASH with fibrosis in a patient with type 2 diabetes. Which drug has evidence?', a: 'Pioglitazone',
+          why: 'It activates PPAR-gamma and improves insulin sensitivity in fat and muscle, which reduces liver fat and inflammation. It also lowered recurrent stroke in insulin-resistant patients in the IRIS trial. Its side effects limit it to these niches.' },
+        { type: 'recall', q: 'Why are a DPP-4 inhibitor and a GLP-1 agonist never combined?', a: 'They work through the same pathway',
+          why: 'A DPP-4 inhibitor blocks the breakdown of the body\'s own GLP-1. If a GLP-1 agonist is already supplying far more of that signal than the body makes, protecting the native hormone adds nothing. One or the other, never both.' },
+        { type: 'recall', q: 'Which DPP-4 inhibitor needs no dose adjustment at any kidney function?', a: 'Linagliptin',
+          why: 'It is cleared through the bile rather than the kidney. Sitagliptin and saxagliptin need lower doses as the eGFR falls.' }
+      ]
+    },
+
+    {
+      id: 'en-dm-harm',
+      subject: 'Endocrine & Metabolism',
+      topic: 'Diabetes',
+      name: 'SIDE EFFECTS',
+      blurb: 'What each class does wrong, and who should not take it',
+      cards: [
+        { type: 'multi', q: 'Which adverse effects go with SGLT2 inhibitors?',
+          answers: ['Genital yeast infections', 'Volume depletion', 'Euglycemic DKA'],
+          distractors: ['Hypoglycemia', 'Weight gain'],
+          why: 'Glucose in the urine feeds candida and pulls water with it, so thrush, urinary infections and orthostasis follow. Ketoacidosis can develop at a near-normal glucose during illness, fasting or surgery. The class causes modest weight loss and no hypoglycemia on its own.' },
+        { type: 'number', q: 'Hold an SGLT2 inhibitor how long before elective surgery?', values: [3, 4], join: '–', unit: 'days',
+          why: 'Fasting and surgical stress on top of the drug are the setting for euglycemic ketoacidosis. The glycosuria persists for up to two weeks after stopping, so the window is longer than for most drugs.' },
+        { type: 'number', q: 'Metformin is contraindicated below what eGFR?', value: 30, unit: 'mL/min',
+          why: 'The risk is lactic acidosis. It is not started between 30 and 45, and it is held for iodinated contrast when the eGFR is under 60, and during any acute illness with hypoxia or dehydration.' },
+        { type: 'recall', q: 'Which vitamin deficiency does long-term metformin cause?', a: 'Vitamin B12',
+          why: 'The level is checked yearly in anyone on metformin who develops neuropathy or anemia, since the deficiency produces a neuropathy that is easily mistaken for diabetic nerve damage.' },
+        { type: 'recall', q: 'Why does metformin cause B12 deficiency?', a: 'It blocks absorption in the terminal ileum',
+          why: 'Uptake of the B12-intrinsic factor complex in the ileum depends on calcium, and metformin interferes with that step. The effect builds over years, which is why it is a long-term complication rather than an early one.' },
+        { type: 'multi', q: 'Which are adverse effects of pioglitazone?',
+          answers: ['Fluid retention', 'Weight gain', 'Fractures in women', 'Bladder cancer'],
+          distractors: ['Hypoglycemia', 'Lactic acidosis'],
+          why: 'The fluid retention makes it contraindicated in class III and IV heart failure. The fractures are distal, in women, from an effect on bone. It does not cause hypoglycemia on its own.' },
+        { type: 'recall', q: 'Which sulfonylurea is avoided in older adults and in kidney disease?', a: 'Glyburide',
+          why: 'Its metabolites are active and cleared by the kidney, so they accumulate and cause prolonged hypoglycemia; it is on the Beers list. Glipizide is the sulfonylurea to use when one is needed in CKD.' },
+        { type: 'recall', q: 'Why do sulfonylureas cause hypoglycemia when metformin does not?', a: 'They force insulin release regardless of glucose',
+          why: 'They close the potassium channels on the beta cell, which triggers insulin secretion whether the glucose is high or low. Metformin lowers glucose production rather than raising insulin, and the GLP-1 and DPP-4 drugs only stimulate insulin when glucose is up.' },
+        { type: 'truefalse', q: 'Saxagliptin and alogliptin increase hospitalizations for heart failure.', a: true,
+          why: 'The signal appeared in their outcome trials and was not seen with sitagliptin or linagliptin. In a diabetic with heart failure an SGLT2 inhibitor is the choice in any case.' }
+      ]
+    },
+
+    {
+      id: 'en-dm-nerve-skin',
+      subject: 'Endocrine & Metabolism',
+      topic: 'Diabetes',
+      name: 'NEUROPATHY & SKIN',
+      blurb: 'Treating painful neuropathy, and the skin findings that point to diabetes',
+      cards: [
+        { type: 'recall', q: 'Burning, tingling pain in a stocking-and-glove pattern, worse at night, in a diabetic. Diagnosis?', a: 'Painful diabetic peripheral neuropathy',
+          why: 'It is distal and symmetric, and on examination the 10-g monofilament and 128-Hz vibration sense at the great toe are reduced. Loss of protective sensation is also what sets up foot ulcers.' },
+        { type: 'multi', q: 'Which drug classes are first-line for painful diabetic neuropathy?',
+          answers: ['Gabapentinoids', 'SNRIs (duloxetine)', 'Tricyclics'],
+          distractors: ['Opioids', 'SSRIs'],
+          why: 'Pregabalin or gabapentin, duloxetine or venlafaxine, and amitriptyline or nortriptyline are about equally effective; the choice follows side effects and comorbidities, with tricyclics used cautiously in older patients and in conduction disease. Opioids, including tramadol and tapentadol, and SSRIs are not recommended.' },
+        { type: 'recall', q: 'Why aren\'t opioids used for chronic diabetic neuropathic pain?', a: 'No lasting benefit and a high risk of addiction',
+          why: 'They relieve pain for a while, but tolerance erodes the effect, and the risks of dependence and overdose grow with time. Tramadol and tapentadol are included in that advice despite being weaker opioids.' },
+        { type: 'recall', q: 'A patient on long-term metformin develops neuropathy. Which lab do you check first?', a: 'Vitamin B12',
+          why: 'B12 deficiency from metformin produces a neuropathy that mimics diabetic nerve damage, and it is reversible if caught. It should be excluded before the symptoms are attributed to the diabetes.' },
+        { type: 'recall', q: 'Vomiting and a new sensorimotor neuropathy months after bariatric surgery. Likely deficiency?', a: 'Thiamine',
+          why: 'This is dry beriberi. Thiamine stores last only a few weeks, so prolonged vomiting after surgery depletes them quickly. It is replaced before glucose is given, since glucose can precipitate Wernicke encephalopathy in a thiamine-deficient patient.' },
+        { type: 'recall', q: 'Yellow-brown waxy atrophic plaques with raised violet borders on the shins. Likely cause?', a: 'Necrobiosis lipoidica',
+          why: 'Strongly associated with diabetes, with visible surface telangiectasias, and prone to ulcerating after minor trauma. It is treated with potent topical or intralesional corticosteroids.' },
+        { type: 'recall', q: 'Recurrent painful nodules, abscesses and sinus tracts in the axillae and groin. Diagnosis?', a: 'Hidradenitis suppurativa',
+          why: 'A chronic inflammatory disease of the apocrine skin folds that leaves rope-like scars. It is strongly associated with type 2 diabetes, obesity and the metabolic syndrome, which is why it appears in an endocrine guide.' },
+        { type: 'recall', q: 'Why does insulin resistance cause acanthosis nigricans?', a: 'High insulin stimulates IGF-1 receptors in skin',
+          why: 'The hyperinsulinemia that accompanies resistance activates insulin-like growth factor receptors in keratinocytes and fibroblasts, which thicken and darken the skin of the neck, axillae and groin into velvety plaques.' },
+        { type: 'recall', q: 'Most common skin finding in diabetes?', a: 'Diabetic dermopathy',
+          why: 'The "shin spots": small hyperpigmented atrophic patches on the shins. They are benign, cause no symptoms and need no treatment, but they mark long-standing disease.' }
+      ]
+    },
+
   ];
 
   global.Decks = { BUILTIN: BUILTIN };
