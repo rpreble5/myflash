@@ -4254,6 +4254,232 @@
       ]
     },
 
+    {
+      id: 'cv-statins',
+      subject: 'Cardiology & Vascular',
+      topic: 'Prevention',
+      name: 'STATINS',
+      blurb: 'Who gets one, at what intensity, under which guideline',
+      cards: [
+        { type: 'recall', q: 'Statin intensity for a patient with established atherosclerotic disease?', a: 'High-intensity',
+          why: 'Anyone with a prior MI or acute coronary syndrome, stable angina, revascularization, ischemic stroke or TIA, or peripheral artery disease is on secondary prevention. The target is an LDL reduction of at least 50% and an LDL under 70, or under 55 at very high risk; ezetimibe and then a PCSK9 inhibitor are added if the statin alone does not get there.' },
+        { type: 'number', q: 'LDL at or above which an adult gets a high-intensity statin without a risk calculation?', value: 190, unit: 'mg/dL',
+          why: 'This applies at any age from 20. The usual ten-year risk calculator is skipped because it badly underestimates the lifetime risk of someone who has carried an LDL that high since birth.' },
+        { type: 'recall', q: 'Why does an LDL of 190 skip the risk calculator?', a: 'It usually means familial hypercholesterolemia',
+          why: 'An LDL that high is rarely diet alone; most of these patients have a genetic defect in LDL clearance and have been exposed to it for decades. The calculator weighs age heavily, so a 30-year-old with an LDL of 200 scores low even though the arteries have been under attack the whole time.' },
+        { type: 'mcq', q: 'A 45-year-old with diabetes, no other risk factors, LDL 130. Statin intensity?',
+          a: 'Moderate-intensity', distractors: ['High-intensity', 'Low-intensity', 'None, lifestyle only'],
+          why: 'Diabetes between 40 and 75 earns at least a moderate-intensity statin regardless of the calculated risk. It becomes high-intensity when the patient is 50 or older or has additional risk factors such as smoking or hypertension.' },
+        { type: 'mcq', q: 'A 62-year-old smoker with diabetes and hypertension. Statin intensity?',
+          a: 'High-intensity', distractors: ['Moderate-intensity', 'Low-intensity', 'Decide after a calcium score'],
+          why: 'Diabetes with multiple risk factors, or diabetes at 50 to 75, gets high-intensity therapy aimed at an LDL reduction of 50% or more and an LDL under 70. A calcium score is for the uncertain middle, not for someone this clearly at risk.' },
+        { type: 'multi', q: 'Which count as cardiovascular risk factors in the USPSTF statin recommendation?',
+          answers: ['Dyslipidemia', 'Diabetes', 'Hypertension', 'Smoking'],
+          distractors: ['Obesity', 'Family history'],
+          why: 'The USPSTF recommends a statin for adults 40 to 75 with at least one of these four and a ten-year risk of 10% or more. Between 7.5 and 10% it is a shared decision. Obesity and family history raise risk but are not on the list the recommendation uses.' },
+        { type: 'number', q: 'USPSTF: ten-year cardiovascular risk at or above which a statin is recommended for primary prevention?', value: 10, unit: '%',
+          why: 'Together with at least one risk factor, in adults aged 40 to 75. That is a grade B. From 7.5 to 10% the recommendation drops to a grade C and the decision is shared with the patient.' },
+        { type: 'number', q: 'ACC/AHA: ten-year ASCVD risk at or above which a high-intensity statin is favored in primary prevention?', value: 20, unit: '%',
+          why: 'The ACC/AHA scheme starts a moderate-intensity statin at 7.5% and steps up to high-intensity at 20%. It is a different threshold from the USPSTF\'s, and the exam expects you to know which guideline a question is using.' },
+        { type: 'bucket', q: 'High- or moderate-intensity statin?', bins: ['High', 'Moderate'], items: [
+          { label: 'Atorvastatin 40–80 mg', bin: 'High' },
+          { label: 'Rosuvastatin 20–40 mg', bin: 'High' },
+          { label: 'Atorvastatin 10–20 mg', bin: 'Moderate' },
+          { label: 'Rosuvastatin 5–10 mg', bin: 'Moderate' },
+          { label: 'Simvastatin 20–40 mg', bin: 'Moderate' },
+          { label: 'Pravastatin 40–80 mg', bin: 'Moderate' }
+        ], why: 'Only atorvastatin and rosuvastatin reach high intensity, and only at their upper doses. The intensity is defined by the LDL reduction it produces: 50% or more for high, 30 to 49% for moderate.' },
+        { type: 'recall', q: 'By how much does a high-intensity statin lower the LDL?', a: 'By 50% or more',
+          why: 'A moderate-intensity statin lowers it by 30 to 49%. The percentage, not the absolute LDL, is how the intensities are defined, which is why a patient\'s response is judged against their own baseline.' },
+        { type: 'recall', q: 'USPSTF advice for a 35-year-old with hypertension and obesity who does not qualify for a statin?', a: 'Intensive behavioral counseling',
+          why: 'Adults under 40 with cardiovascular risk factors but below the statin thresholds are referred to structured programs on diet and physical activity. It is a grade B recommendation, and it is the answer when a young patient\'s risk factors are listed and no drug fits.' }
+      ]
+    },
+
+    {
+      id: 'cv-cac',
+      subject: 'Cardiology & Vascular',
+      topic: 'Prevention',
+      name: 'CAC & ASPIRIN',
+      blurb: 'When a calcium score settles the statin question, and who should not start aspirin',
+      cards: [
+        { type: 'recall', q: 'When is a coronary artery calcium score worth ordering?', a: 'Borderline or intermediate risk, statin undecided',
+          why: 'In adults 40 to 75 with a ten-year risk of 5 to 19.9% where the patient or clinician is unsure about a statin. It is not for patients who already clearly qualify, and not for those with established disease.' },
+        { type: 'recall', q: 'A calcium score of zero in an intermediate-risk patient means what for the statin?', a: 'It can be deferred',
+          why: 'A score of zero means no calcified plaque, and the event rate over the next several years is low enough that a statin can wait, with the score repeated in about five years. The exceptions are diabetes, active smoking and a strong family history of early coronary disease, where a statin is still started.' },
+        { type: 'multi', q: 'In which patients does a calcium score of zero not justify deferring a statin?',
+          answers: ['Diabetes', 'Active smoking', 'Family history of early CAD'],
+          distractors: ['Age over 60', 'Hypertension'],
+          why: 'In these three the risk comes from processes a calcium score does not capture well, and events occur despite a zero score often enough that the statin is given anyway.' },
+        { type: 'number', q: 'Calcium score at or above which a statin is clearly indicated?', value: 100,
+          why: 'A score of 100 or more, or at or above the 75th percentile for age and sex, settles the question in favor of a statin. A score of 1 to 99 favors one, especially from age 55 on.' },
+        { type: 'recall', q: 'Why does a calcium score of zero carry so much weight?', a: 'Very few events happen without any calcified plaque',
+          why: 'Calcium is a late stage of atherosclerosis, so its complete absence in a middle-aged adult means the disease has not progressed far. In the cohorts that were followed, people with a zero score had event rates low enough that a statin would prevent very few, which is why it is allowed to override an intermediate calculated risk.' },
+        { type: 'mcq', q: 'A 64-year-old with a 12% ten-year risk asks about starting daily aspirin. USPSTF advice?',
+          a: 'Do not start aspirin', distractors: ['81 mg daily', '325 mg daily', 'Only if the LDL is high'],
+          why: 'From age 60 the USPSTF recommends against starting aspirin for primary prevention, a grade D, because the bleeding it causes outweighs the heart attacks it prevents. The question is about starting; someone already taking it for a prior event is a different decision.' },
+        { type: 'number', q: 'USPSTF: from what age is starting aspirin for primary prevention recommended against?', value: 60, unit: 'years',
+          why: 'For adults 40 to 59 with a ten-year risk of 10% or more and no bleeding risk, starting low-dose aspirin is an individual decision, a grade C. The benefit is small either way.' },
+        { type: 'recall', q: 'Why did the USPSTF stop recommending aspirin for primary prevention at 60 and older?', a: 'Bleeding outweighs the benefit',
+          why: 'Aspirin prevents a modest number of heart attacks and strokes but causes gastrointestinal and intracranial bleeding, and the bleeding risk climbs steeply with age while the benefit does not. Past 60 the trade-off turns negative for someone who has never had an event.' }
+      ]
+    },
+
+    {
+      id: 'cv-activity',
+      subject: 'Cardiology & Vascular',
+      topic: 'Prevention',
+      name: 'PHYSICAL ACTIVITY',
+      blurb: 'The weekly targets and how intensity is classified',
+      cards: [
+        { type: 'number', q: 'How much moderate-intensity aerobic activity do adults need each week?', value: 150, unit: 'min/week',
+          why: 'Thirty minutes on five days is the usual way to get there. Vigorous activity counts double, so 75 minutes a week of that is equivalent, and the two can be mixed.' },
+        { type: 'number', q: 'How much vigorous aerobic activity substitutes for the moderate target?', value: 75, unit: 'min/week',
+          why: 'Vigorous means six METs or more: jogging, swimming laps, singles tennis. Each minute counts for two minutes of moderate activity.' },
+        { type: 'number', q: 'How many days a week should adults do muscle-strengthening activity?', value: 2, unit: 'days',
+          why: 'This is in addition to the aerobic target, covering the major muscle groups. It is the part of the recommendation most often left out of exam answers.' },
+        { type: 'bucket', q: 'Moderate or vigorous intensity?', bins: ['Moderate', 'Vigorous'], items: [
+          { label: 'Water aerobics', bin: 'Moderate' },
+          { label: 'Brisk walking', bin: 'Moderate' },
+          { label: 'Ballroom dancing', bin: 'Moderate' },
+          { label: 'Doubles tennis', bin: 'Moderate' },
+          { label: 'Jogging', bin: 'Vigorous' },
+          { label: 'Swimming laps', bin: 'Vigorous' },
+          { label: 'Singles tennis', bin: 'Vigorous' },
+          { label: 'Cycling over 10 mph', bin: 'Vigorous' }
+        ], why: 'Moderate is 3 to 5.9 METs: you can talk but not sing. Vigorous is 6 METs or more: you cannot say more than a few words. Water aerobics is the one the exam used, and it is moderate.' },
+        { type: 'truefalse', q: 'Slow walking and stretching count toward the 150-minute weekly goal.', a: false,
+          why: 'Both are light activity, under 3 METs, and do not count. Walking has to be brisk, about 2.5 miles an hour or faster, before it reaches moderate intensity.' },
+        { type: 'number', q: 'METs at or above which an activity counts as moderate intensity?', value: 3, unit: 'METs',
+          why: 'One MET is the energy used sitting still. Moderate runs from 3 to just under 6, and vigorous starts at 6.' }
+      ]
+    },
+
+    {
+      id: 'cv-vte',
+      subject: 'Cardiology & Vascular',
+      topic: 'Vascular',
+      name: 'VTE',
+      blurb: 'Working up a clot, picking the anticoagulant, and how long to treat',
+      cards: [
+        { type: 'mcq', q: 'Wells score for PE of 5, which is high probability. Next test?',
+          a: 'CT pulmonary angiography', distractors: ['D-dimer', 'Lower-extremity duplex', 'Chest x-ray'],
+          why: 'With a high pretest probability the D-dimer is skipped and imaging is done directly: CT angiography of the chest for PE, or a V/Q scan when contrast is not possible because of allergy or kidney failure. For a suspected DVT the equivalent is a proximal compression duplex.' },
+        { type: 'recall', q: 'Why isn\'t a D-dimer used when the pretest probability of PE is high?', a: 'A negative result cannot rule it out',
+          why: 'The D-dimer excludes a clot only when the chance of one was low to begin with. When half the patients tested actually have a PE, a negative test still leaves too many of them undiagnosed, so it is not safe to stop on the strength of it.' },
+        { type: 'recall', q: 'Age-adjusted D-dimer cutoff for a patient over 50?', a: 'Age × 10 µg/L',
+          why: 'D-dimer rises with age, so the fixed cutoff of 500 produces more false positives in older patients. An 80-year-old is negative below 800. In very low risk patients the PERC rule can exclude PE without any blood test.' },
+        { type: 'recall', q: 'First-line anticoagulant for an uncomplicated outpatient DVT with normal kidneys?', a: 'Apixaban or rivaroxaban',
+          why: 'Both can be started by mouth on day one without heparin: apixaban 10 mg twice daily for a week then 5 mg twice daily, rivaroxaban 15 mg twice daily for three weeks then 20 mg daily. The patient goes home from clinic.' },
+        { type: 'truefalse', q: 'Apixaban for a new DVT requires several days of heparin first.', a: false,
+          why: 'Apixaban and rivaroxaban are given as monotherapy from the start, with a higher loading dose instead. Dabigatran and edoxaban are the two that need five to ten days of a parenteral anticoagulant before they begin.' },
+        { type: 'mcq', q: 'Acute DVT in a patient with an eGFR of 25. Anticoagulant?',
+          a: 'Enoxaparin 1 mg/kg once daily', distractors: ['Rivaroxaban', 'Dabigatran', 'Enoxaparin 1 mg/kg twice daily'],
+          why: 'Below a creatinine clearance of 30 the enoxaparin dose is halved to once daily because the drug is cleared by the kidney. Rivaroxaban, edoxaban and dabigatran are avoided at that level for the same reason. Intravenous unfractionated heparin bridging to warfarin is the other option.' },
+        { type: 'mcq', q: 'VTE in a patient with triple-positive antiphospholipid syndrome. Anticoagulant?',
+          a: 'Warfarin', distractors: ['Apixaban', 'Rivaroxaban', 'Dabigatran'],
+          why: 'In the TRAPS trial, patients with triple-positive antiphospholipid syndrome on a DOAC had far more arterial thrombosis and strokes than those on warfarin. Warfarin is dosed to an INR of 2 to 3. In pregnancy the treatment is therapeutic LMWH with low-dose aspirin.' },
+        { type: 'recall', q: 'First-line anticoagulant for VTE in a patient with active cancer?', a: 'An oral factor Xa inhibitor',
+          why: 'Apixaban, edoxaban or rivaroxaban, with LMWH as the alternative. The exception is an unresected cancer of the gut or urinary tract, where rivaroxaban and edoxaban cause more bleeding from the tumor; those patients get LMWH or apixaban.' },
+        { type: 'recall', q: 'Why is rivaroxaban avoided for VTE in a patient with an unresected GI cancer?', a: 'More bleeding from the tumor surface',
+          why: 'Rivaroxaban and edoxaban pass through the gut lining at higher concentrations and were associated with more mucosal bleeding from luminal tumors in the trials. Apixaban did not show the same excess, and LMWH bypasses the gut entirely.' },
+        { type: 'number', q: 'Duration of anticoagulation for a first VTE provoked by surgery or a cast?', value: 3, unit: 'months',
+          why: 'A clot caused by a transient risk factor — surgery, trauma, immobilization, estrogen, an acute illness — is treated for three months and then stopped. Once the provoking factor is gone, the recurrence rate is under 3% a year, lower than the bleeding risk of continuing.' },
+        { type: 'recall', q: 'VTE with active cancer or antiphospholipid syndrome: how long is anticoagulation continued?', a: 'Indefinitely, while the risk persists',
+          why: 'A persistent risk factor means a persistent risk of recurrence, so treatment continues as long as the condition does and the bleeding risk stays acceptable. The same applies to recurrent unprovoked VTE, and most patients with a first unprovoked proximal DVT or PE and a low bleeding risk are also kept on long-term therapy.' }
+      ]
+    },
+
+    {
+      id: 'cv-pad',
+      subject: 'Cardiology & Vascular',
+      topic: 'Vascular',
+      name: 'AAA & PAD',
+      blurb: 'Aneurysm screening and repair, the ABI, claudication, and the ischemic limb',
+      cards: [
+        { type: 'recall', q: 'Strongest risk factor for abdominal aortic aneurysm?', a: 'Cigarette smoking',
+          why: 'Smoking accounts for about three quarters of aneurysms 4 cm or larger and raises the rupture rate. Male sex, age over 65, a family history and hypertension add to the risk. Diabetes, unusually, is associated with fewer aneurysms.' },
+        { type: 'truefalse', q: 'Diabetes increases the risk of abdominal aortic aneurysm.', a: false,
+          why: 'It is one of the few conditions negatively associated with aneurysm formation, possibly through changes in the aortic wall matrix. It is the odd one out on any list of vascular risk factors and the exam likes to use it.' },
+        { type: 'recall', q: 'Who gets a one-time ultrasound to screen for abdominal aortic aneurysm?', a: 'Men 65–75 who have ever smoked',
+          why: '"Ever smoked" means 100 cigarettes in a lifetime; the recommendation is a grade B. Men in that age range who never smoked are screened selectively, a C, and women who never smoked are not screened, a D.' },
+        { type: 'match', q: 'Match the aneurysm diameter to what happens next', pairs: [
+          { left: '3.0–3.9 cm', right: 'Ultrasound in 3 years' },
+          { left: '4.0–4.9 cm', right: 'Ultrasound yearly' },
+          { left: '5.0–5.4 cm', right: 'Ultrasound in 6 months' },
+          { left: '5.5 cm or more', right: 'Elective repair' }
+        ] },
+        { type: 'number', q: 'Aneurysm diameter at which elective repair is offered to a man?', value: 5.5, unit: 'cm',
+          why: 'Women are repaired from 5.0 cm, because their aortas are smaller and rupture at smaller diameters. Repair is also offered for growth of 0.5 cm in six months or 1 cm in a year, and for any aneurysm that causes pain or tenderness.' },
+        { type: 'recall', q: 'Why is an aneurysm repaired for rapid growth even below 5.5 cm?', a: 'Fast growth predicts rupture',
+          why: 'The rupture risk follows the wall stress, and a wall that is expanding quickly is one that is weakening quickly. Growth of half a centimeter in six months is treated as the same warning as reaching the size threshold.' },
+        { type: 'match', q: 'Match the ankle-brachial index to its meaning', pairs: [
+          { left: 'Above 1.40', right: 'Noncompressible' },
+          { left: '1.00–1.40', right: 'Normal' },
+          { left: '0.91–0.99', right: 'Borderline' },
+          { left: '0.90 or less', right: 'PAD' }
+        ] },
+        { type: 'recall', q: 'Ankle-brachial index above 1.40. Next test?', a: 'Toe-brachial index',
+          why: 'A value that high means the leg arteries are too calcified to compress, which is common in diabetes and kidney disease, and the index is meaningless. The toe vessels calcify less; a toe-brachial index below 0.70 confirms peripheral artery disease.' },
+        { type: 'recall', q: 'Exertional leg pain with a normal resting ankle-brachial index. Next test?', a: 'Exercise treadmill ABI',
+          why: 'A stenosis that does not limit flow at rest can limit it during walking, when the muscles demand more. Measuring the index right after exercise brings out a drop that the resting value missed.' },
+        { type: 'mcq', q: 'First-line treatment to improve walking distance in intermittent claudication?',
+          a: 'Supervised exercise program', distractors: ['Cilostazol', 'Pentoxifylline', 'Angioplasty'],
+          why: 'The patient walks to near-maximal pain, rests until it settles and repeats, for 30 to 45 minutes at least three times a week for at least twelve weeks. Every patient also gets smoking cessation, a high-intensity statin, blood pressure control and a single antiplatelet to prevent heart attack and stroke; those protect the patient but do not lengthen the walking distance.' },
+        { type: 'recall', q: 'Second-line drug for claudication when exercise alone is not enough?', a: 'Cilostazol',
+          why: 'A phosphodiesterase-3 inhibitor at 100 mg twice daily, which improves walking distance modestly. It is contraindicated in heart failure of any degree. Pentoxifylline is no longer recommended because it does not work. Revascularization is reserved for lifestyle-limiting claudication that fails exercise and medication, or for rest pain, non-healing ulcers or gangrene.' },
+        { type: 'recall', q: 'Why does supervised walking lengthen the distance a patient with claudication can walk?', a: 'Collateral vessels grow and muscle uses oxygen better',
+          why: 'Repeated ischemia stimulates collateral arteries around the blockage and makes the leg muscles more efficient at extracting oxygen, so the same narrowed artery supports more work. The improvement equals or exceeds what a stent achieves, and lasts as long as the walking continues.' },
+        { type: 'multi', q: 'Which are among the six P\'s of acute limb ischemia?',
+          answers: ['Pallor', 'Pulselessness', 'Paresthesia', 'Paralysis'],
+          distractors: ['Pitting edema', 'Purpura'],
+          why: 'The six are pain, pallor, poikilothermia (a cold limb), pulselessness, paresthesia and paralysis. Numbness and weakness come last and mean the nerves and muscle are already dying.' },
+        { type: 'recall', q: 'Suspected acute limb ischemia in the office. Immediate action?', a: 'IV heparin and emergency transfer',
+          why: 'Heparin stops the clot from extending while the patient is moved to a center with vascular surgery or interventional radiology for thrombolysis or thrombectomy. Nothing is allowed to delay the transfer: no duplex, no ankle-brachial index, no CT angiogram in the office.' },
+        { type: 'number', q: 'How long can muscle and nerve survive complete ischemia before the damage is permanent?', values: [4, 6], join: '–', unit: 'hours',
+          why: 'Beyond that window the muscle dies, releasing myoglobin and potassium, and the limb is usually lost. The clock starts at the moment of occlusion, not at the moment of presentation.' }
+      ]
+    },
+
+    {
+      id: 'cv-edema',
+      subject: 'Cardiology & Vascular',
+      topic: 'Vascular',
+      name: 'VEINS & EDEMA',
+      blurb: 'Venous ulcers and compression, and working up swollen legs',
+      cards: [
+        { type: 'recall', q: 'Shallow, weeping ulcer over the medial malleolus with brown skin staining around it. Likely cause?', a: 'Venous stasis ulcer',
+          why: 'Venous ulcers sit in the gaiter area above the inner ankle, have irregular borders and a granulating base, and are surrounded by hemosiderin pigmentation and thickened skin. The pedal pulses are intact. An arterial ulcer, by contrast, is punched out, dry and painful, on the toes or heel.' },
+        { type: 'number', q: 'Compression pressure needed to heal a venous stasis ulcer?', values: [30, 40], join: '–', unit: 'mm Hg',
+          why: 'Worn consistently, this pressure heals more than 90% of venous ulcers. Lower grades are for symptoms without ulceration; higher grades are for lymphedema.' },
+        { type: 'recall', q: 'Why check the pulses or an ankle-brachial index before prescribing high compression?', a: 'Compression can worsen arterial ischemia',
+          why: 'A stocking at 30 to 40 mm Hg squeezes the leg harder than a narrowed artery can push against. In a patient with unrecognized peripheral artery disease it can cause ischemia and necrosis. An ankle-brachial index above 0.8 to 0.9 is needed before high compression is safe.' },
+        { type: 'match', q: 'Match the compression pressure to its use', pairs: [
+          { left: 'Under 20 mm Hg', right: 'Tired legs, prevention' },
+          { left: '20–30 mm Hg', right: 'Varicose veins' },
+          { left: '30–40 mm Hg', right: 'Venous ulcers' },
+          { left: 'Over 50 mm Hg', right: 'Severe lymphedema' }
+        ] },
+        { type: 'mcq', q: 'Bilateral ankle edema, normal heart and lung exam, started amlodipine two months ago. First step?',
+          a: 'Stop the amlodipine', distractors: ['Echocardiogram', 'Bilateral venous duplex', 'Furosemide'],
+          why: 'In a patient who feels well with a normal examination, the medication list is reviewed before any imaging. Dihydropyridine calcium channel blockers are the commonest culprit, along with estrogens, NSAIDs, pioglitazone, gabapentin and pregabalin, steroids, hydralazine and minoxidil.' },
+        { type: 'recall', q: 'Why doesn\'t ankle edema from amlodipine respond to a loop diuretic?', a: 'It is from arteriolar dilation, not extra fluid',
+          why: 'The drug dilates the small arteries feeding the capillaries but not the veins draining them, so pressure inside the capillaries rises and fluid leaks into the tissue. The body is not overloaded, so a diuretic has nothing to remove. Adding an ACE inhibitor or ARB, which dilates the venous side too, reduces it; stopping the drug resolves it.' },
+        { type: 'multi', q: 'Which drugs commonly cause bilateral leg edema?',
+          answers: ['Amlodipine', 'Pioglitazone', 'Pregabalin', 'Estrogen'],
+          distractors: ['Losartan', 'Furosemide'],
+          why: 'Calcium channel blockers do it through capillary pressure, thiazolidinediones and steroids through sodium retention, hormones through fluid retention, and gabapentinoids by a mechanism that is not well understood. Losartan, if anything, reduces calcium channel blocker edema.' },
+        { type: 'multi', q: 'After the medication review, which systemic causes of bilateral edema are checked?',
+          answers: ['Heart failure (BNP, echo)', 'Nephrotic syndrome (UACR)', 'Cirrhosis (albumin, LFTs)', 'Hypothyroidism (TSH)'],
+          distractors: ['Anemia (CBC)', 'Gout (uric acid)'],
+          why: 'Each of these causes edema through a different route: raised venous pressure in heart failure, protein loss in nephrotic syndrome, low albumin and portal pressure in cirrhosis, and myxedema in hypothyroidism. A creatinine and urinalysis cover the kidney; BNP and an echo cover the heart.' },
+        { type: 'recall', q: 'Bilateral edema with a normal cardiac, renal, hepatic, thyroid and venous workup. What do you test for next?', a: 'Obstructive sleep apnea',
+          why: 'Especially in a patient with obesity or resistant hypertension. The test is polysomnography. It is the cause that is missed because nobody thinks to ask about snoring in a swollen-leg workup.' },
+        { type: 'recall', q: 'Why does obstructive sleep apnea cause leg edema?', a: 'Night-time hypoxia drives salt and water retention',
+          why: 'Each apnea drops the oxygen level, which constricts the pulmonary arteries and over time raises the pressure on the right side of the heart. The hypoxia also activates the sympathetic nervous system and the renin-angiotensin-aldosterone system, and the kidney holds on to sodium and water. Treating the apnea reverses it.' }
+      ]
+    },
+
   ];
 
   global.Decks = { BUILTIN: BUILTIN };
