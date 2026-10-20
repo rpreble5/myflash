@@ -6025,6 +6025,47 @@
       ]
     },
 
+    {
+      id: 'ms-sports', subject: 'MSK & Sports Medicine', topic: 'Sports Medicine', name: 'PPE & SIDELINE',
+      blurb: 'Preparticipation disqualifications, mononucleosis, solitary organs, Down syndrome, sickle trait and the cervical spine on the field.',
+      cards: [
+        { type: 'recall', q: 'Why is an athlete with infectious mononucleosis kept out of all sport, not just contact sport?', a: 'The swollen spleen can rupture with exertion alone',
+          why: 'EBV infiltrates the spleen and stretches its capsule, and rupture is the leading cause of fatal abdominal hemorrhage in athletes. It can happen with a Valsalva during lifting or a minor bump, not only a tackle, so vigorous exercise of any kind is withheld.' },
+        { type: 'number', q: 'Minimum weeks from symptom onset before an athlete with mononucleosis may return to sport?', value: 3, unit: 'weeks',
+          why: 'Three to four weeks covers the period when the spleen is largest and most fragile. Return also requires being afebrile, asymptomatic, well hydrated and free of palpable splenomegaly. Ultrasound is not needed when the exam is normal at that point.' },
+        { type: 'truefalse', q: 'A spleen ultrasound is required before an athlete with resolved mononucleosis returns to play.', a: false,
+          why: 'Normal spleen size varies so widely that ultrasound cannot reliably say whether an individual\'s spleen has returned to its baseline. The decision rests on time since onset, resolution of symptoms and a nonpalpable spleen on exam.' },
+        { type: 'number', q: 'Months of rest required after myocarditis before an athlete can be considered for return?', value: 3, unit: 'months',
+          why: 'Myocarditis causes exertional arrhythmias and sudden death, so athletes rest for three to six months and return only after a normal echocardiogram, Holter and exercise ECG. Any acute febrile illness also disqualifies until it has fully resolved.' },
+        { type: 'recall', q: 'Vision in the poorer eye below which an athlete is considered functionally one-eyed and needs protective eyewear?', a: '20/40 best corrected',
+          why: 'Losing the better eye would leave the athlete legally impaired, so polycarbonate goggles are mandatory and sports with no eye protection such as boxing are discouraged. The same counseling-plus-protection rule applies to a solitary testicle, which needs a protective cup.' },
+        { type: 'recall', q: 'Solitary kidney finding that excludes an athlete from contact and collision sport?', a: 'Hydronephrosis, multicystic dysplasia or pelvic ectopia',
+          why: 'A normal solitary kidney is well protected and participation is allowed after counseling. An abnormal or ectopic kidney is more exposed to injury, and losing it means dialysis, so contact and collision sport is advised against.' },
+        { type: 'recall', q: 'Why are routine cervical spine radiographs no longer recommended for asymptomatic athletes with Down syndrome?', a: 'They do not predict spinal cord injury',
+          why: 'Atlantoaxial laxity on film is common and poorly correlated with neurologic events, and films change over time. Imaging and restriction from contact, diving and tumbling are now reserved for athletes with myelopathic symptoms or signs.' },
+        { type: 'multi', q: 'Select the findings in an athlete with Down syndrome that call for cervical imaging and sport restriction.',
+          answers: ['Neck pain', 'Torticollis', 'Gait change', 'Hand clumsiness', 'Hyperreflexia'],
+          distractors: ['Short stature', 'Hypotonia since infancy'],
+          why: 'These are signs of cervical myelopathy from atlantoaxial instability, and any one of them triggers radiographs or MRI and withdrawal from contact, diving and tumbling until the spine is cleared. Hypotonia and short stature are baseline features of the syndrome, not warning signs.' },
+        { type: 'truefalse', q: 'Sickle cell trait is a contraindication to participation in strenuous sport.', a: false,
+          why: 'Athletes with sickle cell trait compete at every level. The risk is exertional sickling collapse during all-out exertion in heat, prevented by gradual heat acclimatization, generous hydration and not running timed maximal sprints on the first days of practice.' },
+        { type: 'recall', q: 'On the field, which equipment is removed from a helmeted football player with a suspected cervical spine injury?', a: 'Only the facemask, and only if airway access is needed',
+          why: 'The helmet and shoulder pads are left in place together for spine boarding and transport. The facemask comes off with a cordless screwdriver or loop-strap cutter if the player is unresponsive or needs ventilation. Helmet and pads are removed as a pair at the hospital.' },
+        { type: 'recall', q: 'Why must the helmet and shoulder pads be removed together rather than one at a time?', a: 'Removing one alone bends the neck out of neutral',
+          why: 'The two are built as a coupled unit that holds the cervical spine in neutral when the player lies supine. Taking off only the helmet drops the occiput into hyperextension, and taking off only the pads forces hyperflexion. Either movement can convert an unstable fracture into a cord injury.' },
+        { type: 'bucket', q: 'Sort each preparticipation finding by whether the athlete may play.', bins: ['Clear to play', 'Hold out'],
+          items: [
+            { label: 'Sickle cell trait', bin: 'Clear to play' },
+            { label: 'Palpable spleen after mono', bin: 'Hold out' },
+            { label: 'Single testicle with a cup', bin: 'Clear to play' },
+            { label: 'Fever today', bin: 'Hold out' },
+            { label: 'Myocarditis 6 weeks ago', bin: 'Hold out' },
+            { label: 'Asymptomatic Down syndrome', bin: 'Clear to play' }
+          ],
+          why: 'Temporary disqualifiers are an active febrile illness, splenomegaly and myocarditis within its rest period. Sickle trait, a solitary organ with protection and counseling, and Down syndrome without myelopathic signs are all cleared. The exam tests whether you know which common findings are not barriers.' }
+      ]
+    },
+
   ];
 
   global.Decks = { BUILTIN: BUILTIN };
