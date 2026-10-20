@@ -835,20 +835,24 @@
 }
 .keypad.is-done { opacity: 0; pointer-events: none; }
 
+/* Rounded squares with a deep bottom edge: the same chunk as the choice
+   buttons, scaled to the key. The radius follows the key size so the
+   corners stay in proportion from a short phone to a tall one. */
 .key {
   width: var(--key);
   height: var(--key);
-  border-radius: 50%;
+  border-radius: calc(var(--key) * .3);
   border: 3px solid var(--line);
-  border-bottom-width: 6px;
+  border-bottom-width: 8px;
   background: var(--bg);
   color: var(--ink);
-  font-size: calc(var(--key) * .42);
+  font-size: calc(var(--key) * .44);
   font-weight: 800;
   line-height: 1;
+  --sink: 5px;
   transition: transform .06s ease, background-color .08s ease;
 }
-.key.is-pressed { transform: translateY(3px); border-bottom-width: 3px; background: var(--soft); }
+.key.is-pressed { transform: translateY(5px); border-bottom-width: 3px; background: var(--soft); }
 .key-del { color: var(--muted); font-size: calc(var(--key) * .36); }
 .key-blank { visibility: hidden; }
 .key-join { color: var(--brand); }
@@ -859,10 +863,10 @@
   grid-column: 1 / -1;
   height: calc(var(--key) * .8);
   margin-top: 4px;
-  border-radius: 999px;
+  border-radius: calc(var(--key) * .24);
   background: var(--brand);
   color: #fff;
-  box-shadow: 0 5px 0 var(--brand-dark);
+  box-shadow: 0 6px 0 var(--brand-dark);
   font-size: 1rem;
   font-weight: 800;
   letter-spacing: .04em;
@@ -878,7 +882,7 @@
    hair past rest before settling. Vertical only: real buttons do not
    change size. --sink is how far each one went down, so the rise
    starts exactly where the press left it. */
-.topic, .deck-row, .key, .dir-btn { --sink: 3px; }
+.topic, .deck-row, .dir-btn { --sink: 3px; }
 .path-go { --sink: 6px; }
 .path-go.has-face { --sink: 7px; }
 .match-btn.is-pressed { border-bottom-width: 3px; margin-top: 3px; background: var(--soft); --sink: 3px; }
