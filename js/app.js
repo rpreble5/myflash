@@ -629,7 +629,8 @@
       BADDIE_POSES.concat(session.challenge.baddieFace ? ['face', 'nervous'] : [])
         .forEach(function (p) { var im = new Image(); im.src = baddieSrc(session.challenge, p); });
     }
-    show('screen-session', !!session.challenge);
+    /* The list drops away and the first card rises in. */
+    show('screen-session', true);
     updateHud();
     nextCard();
   }
@@ -1404,7 +1405,7 @@
     $('#btn-home').textContent = 'Home';
     $('#summary-baddie').hidden = true;
     global.Sfx.done();
-    show('screen-summary');
+    show('screen-summary', true);
     renderHome();
   }
 
@@ -1599,8 +1600,9 @@
     $('#btn-settings-back').addEventListener('click', function () { show('screen-home'); renderHome(); });
     /* Leaving a challenge run lands back on the path, not the home list. */
     function leaveSession() {
-      if (session && session.challenge) openChallenge();
-      else { show('screen-home'); renderHome(); }
+      if (session && session.challenge) { openChallenge(); return; }
+      homeShown = false;             // the topics arrive again, one after another
+      show('screen-home', true, renderHome);
     }
     $('#btn-quit').addEventListener('click', leaveSession);
     $('#btn-home').addEventListener('click', leaveSession);
