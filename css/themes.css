@@ -408,6 +408,7 @@
 /* Long notes scroll rather than shrink: reducing the type to fit is how
    an explanation stops being read. */
 .note-body { max-height: 100%; overflow-y: auto; touch-action: pan-y; }
+.note-sheet.is-leaving { pointer-events: none; }
 
 .note-text {
   margin: 0;

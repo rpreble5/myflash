@@ -928,6 +928,16 @@
           if (reduceMotion) go(); else setTimeout(go, 200);
         }
 
+        /* Moving on from the note. The sheet is not slid away — that
+           showed the old question and answer for a moment before the next
+           card arrived. It stays where it is and leaves with the card. */
+        function leaveWithCard() {
+          session.noteOpen = false;
+          session.noteGuard = Date.now() + 400;
+          session.closeNote = null;
+          sheet.classList.add('is-leaving');
+        }
+
         /* The sheet stops pointer events reaching the card: without this
            a drag to scroll a long note reads as a swipe on the question
            underneath it. */
@@ -963,7 +973,7 @@
              the card behind it, so reading the explanation never costs a
              trip back to grade. */
           if (noteSwipe && Math.abs(dx) >= GRADE_PX && Math.abs(dx) > Math.abs(dy)) {
-            close();
+            leaveWithCard();
             noteSwipe(dx > 0);
             return;
           }
@@ -975,8 +985,8 @@
           }
           /* A tap means done. Closing and then making the reader tap a
              second time to move on is a step that carries no decision. */
-          close();
-          if (session.advance) session.advance();
+          if (session.advance) { leaveWithCard(); session.advance(); }
+          else close();
         });
         sheet.addEventListener('click', function (e) { e.stopPropagation(); });
 
