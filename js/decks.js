@@ -4115,6 +4115,145 @@
       ]
     },
 
+    {
+      id: 'cv-htn-start',
+      subject: 'Cardiology & Vascular',
+      topic: 'Hypertension',
+      name: 'STARTING TREATMENT',
+      blurb: 'First-line classes, when to start with two, and why race no longer picks the drug',
+      cards: [
+        { type: 'multi', q: 'Which drug classes are first-line for hypertension?',
+          answers: ['Thiazide diuretic', 'Dihydropyridine CCB', 'ACE inhibitor', 'ARB'],
+          distractors: ['Beta-blocker', 'Clonidine'],
+          why: 'These four lower blood pressure and reduce strokes and heart attacks in trials. Beta-blockers are kept for patients with a separate reason to take one, such as angina or heart failure, and clonidine is a late add-on because of rebound hypertension and sedation.' },
+        { type: 'number', q: 'Start two drugs at once when the systolic pressure is at or above what?', value: 160, unit: 'mm Hg',
+          why: 'Stage 2 hypertension is 160/100 or higher, or more than 20/10 above the patient\'s goal. At that level a single drug almost never reaches target, so two first-line agents from different classes are started together, ideally as one combination pill.' },
+        { type: 'mcq', q: 'A new patient has a BP of 168/104 on two visits. How do you start treatment?',
+          a: 'Amlodipine plus an ACE inhibitor', distractors: ['Lisinopril alone, titrate up', 'Hydrochlorothiazide alone', 'Metoprolol alone'],
+          why: 'Stage 2 hypertension gets two agents from the start. A calcium channel blocker or a thiazide paired with an ACE inhibitor or ARB is the usual combination, and a single pill containing both improves the chance the patient keeps taking it.' },
+        { type: 'recall', q: 'Why is stage 2 hypertension started on two drugs rather than one titrated up?', a: 'One drug rarely brings it to goal',
+          why: 'Most patients this far above target need at least two drugs eventually. Starting with both reaches control sooner, with fewer visits and smaller doses of each, which means fewer side effects than pushing one drug to its maximum.' },
+        { type: 'truefalse', q: 'A Black patient with stage 2 hypertension should be started on a calcium channel blocker alone.', a: false,
+          why: 'Older guidance picked monotherapy by race on the idea that renin levels differed between groups. Current guidelines treat race as a social category rather than a biological one and start everyone with stage 2 hypertension on two drugs. A CCB or thiazide combined with an ACE inhibitor or ARB covers the whole range of renin profiles and protects the kidney.' },
+        { type: 'recall', q: 'Why does pairing a CCB or thiazide with an ACE inhibitor work whatever the patient\'s renin level?', a: 'The pair covers low- and high-renin disease',
+          why: 'Hypertension driven by volume and salt responds to the diuretic or the vasodilator, and hypertension driven by the renin-angiotensin system responds to the ACE inhibitor or ARB. Giving one of each means the combination works without having to guess which kind the patient has.' }
+      ]
+    },
+
+    {
+      id: 'cv-htn-emerg',
+      subject: 'Cardiology & Vascular',
+      topic: 'Hypertension',
+      name: 'URGENCY & EMERGENCY',
+      blurb: 'Severe pressure without damage, with damage, and the dissection exception',
+      cards: [
+        { type: 'mcq', q: 'BP 196/114 in clinic, no symptoms, normal exam, ran out of pills a month ago. What do you do?',
+          a: 'Restart the pills, see in a week', distractors: ['Oral clonidine now', 'Send to the emergency department', 'Stat troponin and ECG'],
+          why: 'Severe hypertension without acute organ damage is treated by restarting or stepping up the oral regimen and seeing the patient again within a week. There is no benefit from lowering it quickly in clinic, no role for a loading dose of clonidine or short-acting nifedipine, and no reason for emergency labs in someone without symptoms.' },
+        { type: 'recall', q: 'Why isn\'t severe asymptomatic hypertension brought down quickly in clinic?', a: 'Rapid lowering causes organ hypoperfusion',
+          why: 'In a patient whose pressure has been high for months, the brain, heart and kidneys have reset their autoregulation to that higher range. A sudden drop takes the pressure below what those organs now need, and strokes and heart attacks have followed. Oral drugs over days bring it down at a pace the organs can follow.' },
+        { type: 'number', q: 'After severe asymptomatic hypertension in clinic, follow-up is arranged within how long?', values: [1, 7], join: '–', unit: 'days',
+          why: 'Soon enough to confirm the patient is taking the medicine and the pressure is coming down, without the urgency of an emergency.' },
+        { type: 'multi', q: 'Which findings turn severe hypertension into a hypertensive emergency?',
+          answers: ['Encephalopathy', 'Pulmonary edema', 'Acute kidney injury', 'Acute MI'],
+          distractors: ['Headache alone', 'Nosebleed'],
+          why: 'An emergency is defined by acute damage to a target organ: the brain (encephalopathy, hemorrhage, stroke), the heart (infarction, unstable angina, pulmonary edema), the kidney, or eclampsia in pregnancy. A headache or a nosebleed without those is still an urgency. Emergencies go to intensive care for a titratable IV drug such as nicardipine, clevidipine, labetalol or nitroprusside.' },
+        { type: 'number', q: 'In most hypertensive emergencies, lower the mean arterial pressure by no more than what in the first hour?', values: [20, 25], join: '–', unit: '%',
+          why: 'Then toward 160/100 over the next two to six hours. The limit exists for the same reason as in urgency: organs adapted to high pressure cannot tolerate a sudden fall.' },
+        { type: 'mcq', q: 'Tearing chest pain radiating to the back, BP 190/110, widened mediastinum. First drug?',
+          a: 'IV esmolol', distractors: ['IV nitroprusside', 'IV hydralazine', 'IV nicardipine'],
+          why: 'Aortic dissection is the one emergency where the pressure comes down fast, and the beta-blocker goes first. Esmolol or labetalol brings the heart rate under 60 and the systolic pressure to 100 to 120 within about 20 minutes. A vasodilator is added only once the rate is controlled.' },
+        { type: 'recall', q: 'Why is the beta-blocker given before any vasodilator in aortic dissection?', a: 'A vasodilator alone causes reflex tachycardia',
+          why: 'What extends a dissection is the force of each heartbeat against the torn wall, the rate of rise of pressure. A vasodilator given on its own drops the pressure and the heart speeds up to compensate, which increases that force and can propagate the tear. Blocking the rate first prevents the reflex.' },
+        { type: 'number', q: 'Target systolic blood pressure in acute aortic dissection?', values: [100, 120], join: '–', unit: 'mm Hg',
+          why: 'Reached within about 20 minutes, which is far faster than any other hypertensive emergency allows.' },
+        { type: 'number', q: 'Heart rate is brought below what in acute aortic dissection?', value: 60, unit: 'bpm',
+          why: 'The rate target comes first and the pressure target second, both with the same aim of reducing the shear stress on the aortic wall.' }
+      ]
+    },
+
+    {
+      id: 'cv-htn-2ry',
+      subject: 'Cardiology & Vascular',
+      topic: 'Hypertension',
+      name: 'SECONDARY CAUSES',
+      blurb: 'The clues that point to a cause, and the first test for each',
+      cards: [
+        { type: 'match', q: 'Match the clue to the cause of secondary hypertension', pairs: [
+          { left: 'Low K, resistant HTN', right: 'Primary aldosteronism' },
+          { left: 'Spells, labile BP', right: 'Pheochromocytoma' },
+          { left: 'Rib notching on CXR', right: 'Coarctation' },
+          { left: 'Young woman, sudden HTN', right: 'Fibromuscular dysplasia' }
+        ] },
+        { type: 'recall', q: 'Screening test for primary aldosteronism?', a: 'Aldosterone-to-renin ratio',
+          why: 'A morning blood sample. Excess aldosterone from the adrenal suppresses renin, so the ratio is high. Spironolactone and eplerenone are stopped for at least four weeks beforehand because they distort the result.' },
+        { type: 'truefalse', q: 'Most patients with primary aldosteronism are hypokalemic.', a: false,
+          why: 'More than half have a normal potassium. The classic picture of resistant hypertension with a low potassium is real but is the minority, so the test is ordered for resistant hypertension, an adrenal mass or hypokalemia on a diuretic, not only for a low potassium.' },
+        { type: 'recall', q: 'Why is spironolactone held for four weeks before an aldosterone-to-renin ratio?', a: 'It raises renin and masks the ratio',
+          why: 'Blocking the aldosterone receptor makes the body behave as if aldosterone were low, so renin rises. A high renin pulls the ratio back toward normal and the diagnosis is missed. Four weeks lets the drug and its effect wash out.' },
+        { type: 'recall', q: 'Screening test for pheochromocytoma?', a: 'Plasma free metanephrines',
+          why: 'Metanephrines are the breakdown products of the catecholamines the tumor releases, and they are produced steadily even between spells, which makes them more sensitive than catecholamines themselves. A 24-hour urine for fractionated metanephrines is the alternative.' },
+        { type: 'mcq', q: 'Creatinine rises 40% after starting lisinopril in a 68-year-old smoker with an abdominal bruit. Likely cause?',
+          a: 'Renal artery stenosis', distractors: ['Primary aldosteronism', 'Coarctation', 'ACE inhibitor allergy'],
+          why: 'A rise of more than 30% after an ACE inhibitor or ARB, in an older patient with vascular disease and a bruit, points to atherosclerotic narrowing of the renal arteries. Recurrent flash pulmonary edema is another clue. It is treated mainly with medication; stenting rarely helps.' },
+        { type: 'recall', q: 'Why does an ACE inhibitor drop the GFR sharply in bilateral renal artery stenosis?', a: 'Angiotensin II was holding the filtration pressure',
+          why: 'With the arteries narrowed, the kidney maintains its filtration pressure by constricting the efferent arteriole, the vessel leaving the glomerulus, and angiotensin II is what does that. Block angiotensin and the efferent arteriole relaxes, the pressure inside the glomerulus falls, and filtration drops.' },
+        { type: 'recall', q: 'Sudden severe hypertension in a 26-year-old woman, a "string of beads" on angiography. Treatment?', a: 'Angioplasty without a stent',
+          why: 'This is fibromuscular dysplasia, a non-atherosclerotic narrowing of the renal artery seen mostly in young women. Unlike atherosclerotic stenosis, it responds well to balloon angioplasty, and a stent is not usually needed.' },
+        { type: 'recall', q: 'Hypertension in the arms, lower pressure in the legs, and a brachial-femoral pulse delay. Diagnosis?', a: 'Coarctation of the aorta',
+          why: 'The narrowing sits past the vessels to the arms, so the arms see high pressure and the legs see low. Blood finds its way around the narrowing through enlarged intercostal arteries, which erode the undersides of the ribs and produce the notching seen on a chest film.' }
+      ]
+    },
+
+    {
+      id: 'cv-ortho',
+      subject: 'Cardiology & Vascular',
+      topic: 'Hypertension',
+      name: 'ORTHOSTASIS',
+      blurb: 'The definition, the heart rate that tells you why, and the treatment',
+      cards: [
+        { type: 'number', q: 'Systolic drop within three minutes of standing that defines orthostatic hypotension?', value: 20, unit: 'mm Hg',
+          why: 'Or a diastolic drop of 10 mm Hg. The fall has to be sustained, measured after one and three minutes upright or on a tilt table.' },
+        { type: 'recall', q: 'What separates neurogenic from non-neurogenic orthostatic hypotension at the bedside?', a: 'The heart rate response on standing',
+          why: 'When the pressure falls on standing, an intact baroreflex speeds the heart up to compensate. A rise of 15 beats per minute or more means the reflex is working and the problem is volume or a drug. A rise under 15 means the autonomic nervous system itself has failed.' },
+        { type: 'number', q: 'Heart rate rise on standing at or above which suggests a non-neurogenic cause?', value: 15, unit: 'bpm',
+          why: 'Another way to express it is the ratio of heart rate change to systolic change: above 0.5 beats per mm Hg is non-neurogenic, below it is neurogenic.' },
+        { type: 'mcq', q: 'Lost 30 lb on semaglutide. Standing BP 110/70 → 85/55, HR 75 → 90. Takes lisinopril. Best step?',
+          a: 'Stop or reduce the lisinopril', distractors: ['Start midodrine', 'Start fludrocortisone', 'Tilt-table test'],
+          why: 'The heart rate rose 15 beats, so the baroreflex is intact and this is not autonomic failure. He has lost weight and volume, and the dose of blood pressure medicine that suited him before is now too much. Reducing or stopping it is the treatment; a pressor would be treating the wrong problem.' },
+        { type: 'recall', q: 'Why does a brisk heart rate rise on standing point away from autonomic failure?', a: 'The baroreflex is still working',
+          why: 'The rise is the sympathetic nervous system responding to a drop in pressure. In autonomic failure that response is blunted or absent, so the pressure falls and the heart rate barely moves. A working reflex means the nerves are fine and the cause is elsewhere: dehydration, blood loss, or a medication.' },
+        { type: 'multi', q: 'Which conditions cause neurogenic orthostatic hypotension?',
+          answers: ['Parkinson disease', 'Multiple system atrophy', 'Diabetic autonomic neuropathy'],
+          distractors: ['Dehydration', 'Weight loss'],
+          why: 'Each damages the sympathetic nerves that constrict blood vessels on standing. Dehydration and weight loss cause orthostatic hypotension through volume, with a normal reflex and a brisk heart rate rise.' },
+        { type: 'recall', q: 'First-line drug for neurogenic orthostatic hypotension once conservative measures have failed?', a: 'Midodrine or droxidopa',
+          why: 'Midodrine is an alpha-1 agonist that constricts the vessels the failed nerves no longer reach; droxidopa is converted to norepinephrine. They come after the simple measures: a bolus of water before standing, extra salt, an abdominal binder, waist-high compression stockings and sleeping with the head of the bed raised.' },
+        { type: 'recall', q: 'Why is fludrocortisone second-line for neurogenic orthostatic hypotension?', a: 'Supine hypertension, low potassium, fluid overload',
+          why: 'It works by making the kidney retain salt and water, which raises the pressure lying down as well as standing, and the supine hypertension damages the heart and kidneys over time. It also wastes potassium. Atomoxetine is used only as an add-on.' }
+      ]
+    },
+
+    {
+      id: 'cv-preg',
+      subject: 'Cardiology & Vascular',
+      topic: 'Hypertension',
+      name: 'PREGNANCY',
+      blurb: 'What the heart and circulation do in a normal pregnancy',
+      cards: [
+        { type: 'number', q: 'Cardiac output rises by roughly how much in a normal pregnancy?', values: [30, 50], join: '–', unit: '%',
+          why: 'The rise begins early in the first trimester and peaks between 16 and 28 weeks. A woman with a fixed obstruction such as mitral stenosis can decompensate as the output climbs.' },
+        { type: 'multi', q: 'Which changes drive the rise in cardiac output in pregnancy?',
+          answers: ['Plasma volume up 40–50%', 'Lower systemic resistance', 'Heart rate up 10–20 bpm'],
+          distractors: ['Higher blood pressure', 'Rising hematocrit'],
+          why: 'More volume returning to the heart raises the stroke volume, progesterone and nitric oxide relax the arteries so the heart pumps against less resistance, and the resting rate climbs. The pressure falls rather than rises, and the hematocrit drops because the plasma expands faster than the red cells.' },
+        { type: 'truefalse', q: 'Blood pressure normally rises through the second trimester of pregnancy.', a: false,
+          why: 'It falls, reaching its lowest point in the second trimester as the vessels dilate, then drifts back toward the pre-pregnancy level by term. A pressure that is rising in the second trimester is not normal.' },
+        { type: 'recall', q: 'Why does a healthy pregnant woman develop a mild anemia?', a: 'Plasma expands more than red cell mass',
+          why: 'Plasma volume grows by 40 to 50% while red cell mass grows by 20 to 30%, so the same cells are diluted in more fluid. The hemoglobin falls even though the total amount of red cells has gone up. It is physiologic and needs no treatment on its own.' }
+      ]
+    },
+
   ];
 
   global.Decks = { BUILTIN: BUILTIN };
