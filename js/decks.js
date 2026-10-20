@@ -3700,9 +3700,10 @@
       name: 'POST-MI',
       blurb: 'The ruptures, the pericarditis, the aneurysm, and when each happens',
       cards: [
-        { type: 'mcq', q: 'Day 4 after an inferior MI: sudden pulmonary edema, hypotension, a new apical holosystolic murmur, no JVD. Diagnosis?',
-          a: 'Papillary muscle rupture', distractors: ['Ventricular septal rupture', 'Free wall rupture', 'Peri-infarction pericarditis'],
-          why: 'A torn posteromedial papillary muscle lets the mitral valve leak suddenly into a small, stiff left atrium, so the lungs flood and the pressure collapses within minutes. The neck veins stay flat because the right heart is not involved; that is the detail that separates it from a septal rupture.' },
+        { type: 'recall', q: 'Sudden severe mitral regurgitation three to five days after an inferior MI. Likely cause?', a: 'Papillary muscle rupture',
+          why: 'The posteromedial papillary muscle dies with the inferior wall and tears a few days later, when the infarcted tissue is at its weakest. The patient goes from stable to pulmonary edema and shock within minutes, with a new holosystolic murmur at the apex.' },
+        { type: 'recall', q: 'Why does papillary muscle rupture cause pulmonary edema within minutes?', a: 'The leak hits a small, stiff left atrium',
+          why: 'In chronic mitral regurgitation the atrium has had years to enlarge and can absorb the backward jet. After a rupture the atrium is normal-sized and non-compliant, so the whole regurgitant volume raises the pressure at once and is passed straight back into the pulmonary veins and lungs.' },
         { type: 'recall', q: 'Why does the posteromedial papillary muscle rupture far more often than the anterolateral?', a: 'It has a single blood supply',
           why: 'The posteromedial muscle is fed only by the posterior descending artery, from the RCA or circumflex, so an inferior or posterior infarct can kill it outright. The anterolateral muscle draws on both the LAD and the circumflex and almost always survives.' },
         { type: 'match', q: 'Match the post-MI complication to when it usually happens', pairs: [
@@ -3724,8 +3725,8 @@
           why: 'The infarcted wall tears and blood fills the pericardium, producing tamponade: hypotension, distended neck veins, muffled heart sounds and a pulsus paradoxus, then PEA. It happens 5 to 14 days after a large anterior or lateral infarct, most often in an older woman with a first MI who was not reperfused. Pericardiocentesis is done immediately, and the repair is surgical.' },
         { type: 'recall', q: 'What does ST elevation that persists more than two weeks after an anterior MI suggest?', a: 'A left ventricular aneurysm',
           why: 'A thinned, scarred segment bulges out with each beat and keeps the ST segments up, alongside deep Q waves. It can hold a mural thrombus, generate ventricular arrhythmias and cause heart failure; a thrombus on echo earns 3 to 6 months of anticoagulation.' },
-        { type: 'recall', q: 'Months after an MI: slowly progressive exertional dyspnea and an apical holosystolic murmur to the axilla. Diagnosis?', a: 'Functional mitral regurgitation',
-          why: 'As the ventricle remodels and dilates, the papillary muscles are pulled outward and tether the mitral leaflets so they no longer meet. The valve itself is normal; the leak comes from the shape of the ventricle. Because the left atrium has had months to enlarge, this presents gradually in clinic rather than as flash pulmonary edema. The murmur is loudest at the apex, radiates to the axilla, and gets louder lying flat, when venous return is highest.' },
+        { type: 'recall', q: 'Why does mitral regurgitation develop gradually in the months after an MI?', a: 'The dilating ventricle tethers the leaflets',
+          why: 'As the ventricle remodels and enlarges, the papillary muscles are pulled outward and hold the mitral leaflets apart so they no longer meet. The valve itself is normal; the leak comes from the shape of the ventricle, which is why it is called functional or secondary regurgitation. The left atrium enlarges alongside, so it presents as slowly worsening exertional dyspnea and an apical murmur to the axilla rather than as an emergency.' },
         { type: 'recall', q: 'What do giant V waves on a wedge pressure tracing after an MI indicate?', a: 'Acute mitral regurgitation',
           why: 'Each systole pushes a jet backward into the left atrium, and the V wave is that atrium filling under pressure. It is the catheter-lab signature of papillary muscle rupture.' }
       ]
@@ -4289,7 +4290,7 @@
           { label: 'Simvastatin 20–40 mg', bin: 'Moderate' },
           { label: 'Pravastatin 40–80 mg', bin: 'Moderate' }
         ], why: 'Only atorvastatin and rosuvastatin reach high intensity, and only at their upper doses. The intensity is defined by the LDL reduction it produces: 50% or more for high, 30 to 49% for moderate.' },
-        { type: 'recall', q: 'By how much does a high-intensity statin lower the LDL?', a: 'By 50% or more',
+        { type: 'number', q: 'A high-intensity statin lowers the LDL by at least how much?', value: 50, unit: '%',
           why: 'A moderate-intensity statin lowers it by 30 to 49%. The percentage, not the absolute LDL, is how the intensities are defined, which is why a patient\'s response is judged against their own baseline.' },
         { type: 'recall', q: 'USPSTF advice for a 35-year-old with hypertension and obesity who does not qualify for a statin?', a: 'Intensive behavioral counseling',
           why: 'Adults under 40 with cardiovascular risk factors but below the statin thresholds are referred to structured programs on diet and physical activity. It is a grade B recommendation, and it is the answer when a young patient\'s risk factors are listed and no drug fits.' }
@@ -4403,12 +4404,12 @@
           why: 'It is one of the few conditions negatively associated with aneurysm formation, possibly through changes in the aortic wall matrix. It is the odd one out on any list of vascular risk factors and the exam likes to use it.' },
         { type: 'recall', q: 'Who gets a one-time ultrasound to screen for abdominal aortic aneurysm?', a: 'Men 65–75 who have ever smoked',
           why: '"Ever smoked" means 100 cigarettes in a lifetime; the recommendation is a grade B. Men in that age range who never smoked are screened selectively, a C, and women who never smoked are not screened, a D.' },
-        { type: 'match', q: 'Match the aneurysm diameter to what happens next', pairs: [
-          { left: '3.0–3.9 cm', right: 'Ultrasound in 3 years' },
-          { left: '4.0–4.9 cm', right: 'Ultrasound yearly' },
-          { left: '5.0–5.4 cm', right: 'Ultrasound in 6 months' },
-          { left: '5.5 cm or more', right: 'Elective repair' }
-        ] },
+        { type: 'number', q: 'Aneurysm of 3.0–3.9 cm: repeat the ultrasound in how long?', value: 3, unit: 'years',
+          why: 'Small aneurysms grow slowly, about 2 to 3 mm a year, and almost never rupture below 4 cm, so a long interval is safe.' },
+        { type: 'number', q: 'Aneurysm of 4.0–4.9 cm: repeat the ultrasound in how long?', value: 12, unit: 'months',
+          why: 'Growth speeds up as the aneurysm enlarges, and from 4 cm the yearly scan is also looking for the rapid expansion that would move repair forward.' },
+        { type: 'number', q: 'Aneurysm of 5.0–5.4 cm: repeat the ultrasound in how long?', value: 6, unit: 'months',
+          why: 'This is the last interval before the repair threshold. A woman in this range is already referred, since women are repaired from 5.0 cm.' },
         { type: 'number', q: 'Aneurysm diameter at which elective repair is offered to a man?', value: 5.5, unit: 'cm',
           why: 'Women are repaired from 5.0 cm, because their aortas are smaller and rupture at smaller diameters. Repair is also offered for growth of 0.5 cm in six months or 1 cm in a year, and for any aneurysm that causes pain or tenderness.' },
         { type: 'recall', q: 'Why is an aneurysm repaired for rapid growth even below 5.5 cm?', a: 'Fast growth predicts rupture',
