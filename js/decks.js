@@ -4833,6 +4833,143 @@
       ]
     },
 
+    {
+      id: 'en-hyperca',
+      subject: 'Endocrine & Metabolism',
+      topic: 'Calcium & Bone',
+      name: 'HIGH CALCIUM',
+      blurb: 'Confirming it, the PTH that sorts the causes, and when to operate',
+      cards: [
+        { type: 'recall', q: 'First step when a calcium level comes back high?', a: 'Correct it for albumin, or check ionized calcium',
+          why: 'Add 0.8 mg/dL for every 1 g/dL the albumin is below 4. A low albumin makes the total calcium read low, so a borderline value in a well-nourished patient can be real hypercalcemia once corrected, and a high value in a malnourished one may not be.' },
+        { type: 'recall', q: 'Mandatory first test once hypercalcemia is confirmed?', a: 'Intact PTH',
+          why: 'Primary hyperparathyroidism, the commonest cause in outpatients, and malignancy, the commonest in inpatients, together account for more than 90% of cases, and the PTH separates them: high or inappropriately normal in the first, suppressed in the second.' },
+        { type: 'match', q: 'Match the lab pattern to the cause of hypercalcemia', pairs: [
+          { left: 'High Ca, PTH high', right: 'Primary hyperpara' },
+          { left: 'High Ca, PTH <20', right: 'Malignancy' },
+          { left: 'High Ca, urine Ca <100', right: 'FHH' }
+        ] },
+        { type: 'recall', q: 'Most common cause of primary hyperparathyroidism?', a: 'A single parathyroid adenoma',
+          why: 'About 85%. The rest is hyperplasia of all four glands and, rarely, carcinoma. The phosphate is low or low-normal because PTH wastes it, and the 24-hour urine calcium is normal or high.' },
+        { type: 'multi', q: 'Which findings in asymptomatic primary hyperparathyroidism call for parathyroidectomy?',
+          answers: ['Age under 50', 'Calcium >1 above normal', 'T-score −2.5 or lower', 'eGFR under 60'],
+          distractors: ['Age over 70', 'Mild fatigue'],
+          why: 'Any symptomatic patient — stones, a fragility fracture — is operated on. In the asymptomatic, the triggers are age under 50, calcium more than 1 mg/dL above the upper limit, osteoporosis or a vertebral fracture on imaging, an eGFR under 60, a 24-hour urine calcium over 400, or stones or nephrocalcinosis on renal imaging.' },
+        { type: 'number', q: 'Asymptomatic primary hyperparathyroidism: surgery is advised under what age?', value: 50, unit: 'years',
+          why: 'A younger patient has decades ahead for the bone and kidney damage to accumulate, so the operation is offered even without symptoms or other triggers.' },
+        { type: 'recall', q: 'How is familial hypocalciuric hypercalcemia told apart from primary hyperparathyroidism?', a: 'A 24-hour urine calcium under 100 mg',
+          why: 'Both have a high calcium with a PTH that is normal or mildly raised. In FHH the kidney holds on to calcium, so the urine calcium is low and the calcium-to-creatinine clearance ratio is under 0.01. In hyperparathyroidism the urine calcium is normal or high.' },
+        { type: 'recall', q: 'Why must familial hypocalciuric hypercalcemia never be treated with parathyroidectomy?', a: 'The problem is the receptor, not the glands',
+          why: 'An inherited inactivating mutation of the calcium-sensing receptor resets the set point in both the parathyroid and the kidney. Removing the glands does not change the kidney\'s handling of calcium and leaves the patient hypoparathyroid. The condition is benign and is simply observed.' },
+        { type: 'multi', q: 'Which mechanisms cause hypercalcemia of malignancy?',
+          answers: ['PTHrP secretion', 'Osteolytic metastases', 'Calcitriol from lymphoma'],
+          distractors: ['Excess PTH', 'Milk-alkali'],
+          why: 'PTH-related peptide from squamous cancers of the lung and head and neck, renal, breast and bladder cancer; direct bone destruction by myeloma and breast metastases; and activated vitamin D made by lymphoma or granulomas. In all of them the real PTH is suppressed, usually below 20.' },
+        { type: 'recall', q: 'Calcium of 14.5 with confusion. Treatment?', a: 'IV saline, calcitonin, then zoledronic acid',
+          why: 'Four to six liters of normal saline rehydrates and makes the kidney excrete calcium. Calcitonin works within four to six hours but wears off. Zoledronic acid takes two to four days to act and then holds the calcium down for weeks.' },
+        { type: 'recall', q: 'Why is calcitonin given alongside the bisphosphonate in severe hypercalcemia?', a: 'It works in hours; the bisphosphonate takes days',
+          why: 'Calcitonin lowers calcium quickly by blocking osteoclasts and increasing renal excretion, but the receptors downregulate within two days and it stops working. The bisphosphonate is slow to start and long to last. Together they cover both the first day and the following weeks.' },
+        { type: 'recall', q: 'Low calcium, high phosphate and a very high PTH in stage 3 kidney disease. Diagnosis?', a: 'Secondary hyperparathyroidism',
+          why: 'Chronic kidney disease mineral and bone disorder. The treatment works on the causes: dietary phosphate restriction, phosphate binders such as sevelamer or calcium acetate, calcitriol to replace the active vitamin D the kidney can no longer make, and cinacalcet to quiet the glands.' },
+        { type: 'recall', q: 'Why does kidney failure drive the PTH up?', a: 'Retained phosphate and low calcitriol drop the calcium',
+          why: 'The failing kidney cannot excrete phosphate, which binds calcium, and cannot convert vitamin D to its active form, so less calcium is absorbed from the gut. The low calcium stimulates the parathyroids continuously, and over years they enlarge.' }
+      ]
+    },
+
+    {
+      id: 'en-hypoca',
+      subject: 'Endocrine & Metabolism',
+      topic: 'Calcium & Bone',
+      name: 'LOW CALCIUM',
+      blurb: 'Recognizing tetany, the magnesium trap, and reading the phosphate',
+      cards: [
+        { type: 'recall', q: 'Carpal spasm when a blood pressure cuff is inflated above systolic. Sign?', a: 'Trousseau sign',
+          why: 'A sign of hypocalcemia, along with Chvostek sign, a facial twitch on tapping the facial nerve. Perioral and fingertip tingling and muscle cramps usually come first; laryngospasm and seizures come late.' },
+        { type: 'recall', q: 'Why does low calcium cause tetany?', a: 'It lowers the threshold for nerves to fire',
+          why: 'Extracellular calcium stabilizes voltage-gated sodium channels. With less of it the channels open more easily, nerves and muscle fire spontaneously, and the patient gets paresthesias, cramps and spasms.' },
+        { type: 'multi', q: 'Which cardiac findings go with hypocalcemia?',
+          answers: ['Prolonged QTc', 'Heart block'],
+          distractors: ['Short QT', 'Peaked T waves', 'Delta wave'],
+          why: 'Calcium shapes the plateau of the action potential, so a low level prolongs repolarization and the QT. Hypercalcemia does the opposite and shortens it. Peaked T waves belong to potassium.' },
+        { type: 'recall', q: 'Hypocalcemia that will not correct with calcium. What do you check?', a: 'Magnesium',
+          why: 'Low magnesium is the usual reason calcium replacement fails. Until the magnesium is repleted the calcium will not stay up, however much is given.' },
+        { type: 'recall', q: 'Why does low magnesium cause refractory hypocalcemia?', a: 'It blocks PTH release',
+          why: 'The parathyroid glands need magnesium to secrete PTH, and the bone and kidney need it to respond to PTH. With both steps impaired, the body cannot defend its calcium, and infusing calcium only works briefly.' },
+        { type: 'recall', q: 'Low calcium with a high phosphate and a low PTH after thyroid surgery. Cause?', a: 'Surgical hypoparathyroidism',
+          why: 'The parathyroid glands were removed or lost their blood supply. Without PTH the kidney stops wasting phosphate, so the phosphate climbs while the calcium falls.' },
+        { type: 'recall', q: 'Low calcium, low phosphate and a high PTH. Likely cause?', a: 'Vitamin D deficiency',
+          why: 'Less calcium is absorbed from the gut, the parathyroids respond by making more PTH, and the extra PTH wastes phosphate in the urine. The direction of the phosphate is what separates this from hypoparathyroidism.' }
+      ]
+    },
+
+    {
+      id: 'en-osteo-dx',
+      subject: 'Endocrine & Metabolism',
+      topic: 'Calcium & Bone',
+      name: 'OSTEOPOROSIS: DX',
+      blurb: 'Who gets a DXA, and the three ways the diagnosis is made',
+      cards: [
+        { type: 'number', q: 'DXA screening for all women starts at what age?', value: 65, unit: 'years',
+          why: 'Regardless of risk factors, a grade B. The scan is of the hip and lumbar spine.' },
+        { type: 'recall', q: 'When is a postmenopausal woman under 65 screened with DXA?', a: 'One risk factor plus a FRAX of 8.4% or more',
+          why: 'A ten-year major fracture risk of 8.4% is the risk of an average 65-year-old woman, so a younger woman who matches it is screened the same way.' },
+        { type: 'multi', q: 'Which count as osteoporosis risk factors for screening a woman under 65?',
+          answers: ['Parent with a hip fracture', 'Current smoking', '3+ drinks a day', 'BMI under 18.5–20'],
+          distractors: ['Aunt with a hip fracture', 'Caffeine'],
+          why: 'Also prednisone 5 mg or more a day for three months or longer, rheumatoid arthritis, and secondary causes of bone loss. The family history has to be a parent; an aunt does not count, and the exam has used exactly that distractor.' },
+        { type: 'truefalse', q: 'The USPSTF recommends routine DXA screening for men at 70.', a: false,
+          why: 'For men without a fragility fracture or a secondary cause such as androgen deprivation or chronic steroids, the evidence is insufficient, a grade I. Men with those exposures are evaluated on their own merits.' },
+        { type: 'recall', q: 'Vertebral compression fracture with a T-score of −1.9. Diagnosis?', a: 'Osteoporosis',
+          why: 'A fragility fracture of the hip or spine makes the diagnosis whatever the T-score says, and it calls for drug treatment. More than half of fragility fractures happen in people whose scan is in the osteopenic range.' },
+        { type: 'recall', q: 'Why does a fragility fracture diagnose osteoporosis even when the T-score is osteopenic?', a: 'The fracture itself proves the bone is fragile',
+          why: 'The T-score estimates fracture risk from bone density, but density is only one part of bone strength. A bone that broke under low trauma has already demonstrated the outcome the scan was trying to predict.' },
+        { type: 'recall', q: 'DXA T-score that defines osteoporosis?', a: '−2.5 or lower',
+          why: 'At the femoral neck, total hip, lumbar spine or distal third of the radius. Between −1.0 and −2.5 is osteopenia.' },
+        { type: 'multi', q: 'In osteopenia, which FRAX results justify starting treatment?',
+          answers: ['Hip fracture risk 3% or more', 'Major fracture risk 20% or more'],
+          distractors: ['Any FRAX above 1%', 'Age over 60 alone', 'Hip risk 1.5%'],
+          why: 'This is the third route to treatment, alongside a T-score of −2.5 or below and a fragility fracture. The ten-year probabilities are calculated from the T-score plus the clinical risk factors.' }
+      ]
+    },
+
+    {
+      id: 'en-osteo-tx',
+      subject: 'Endocrine & Metabolism',
+      topic: 'Calcium & Bone',
+      name: 'OSTEOPOROSIS: RX',
+      blurb: 'Bisphosphonates and their rules, denosumab, and the anabolic tier',
+      cards: [
+        { type: 'recall', q: 'First-line drug for osteoporosis at high fracture risk?', a: 'An oral bisphosphonate',
+          why: 'Alendronate or risedronate. They bind to bone and slow the osteoclasts that resorb it, and they are cheap and well studied.' },
+        { type: 'recall', q: 'How is an oral bisphosphonate taken?', a: 'Fasting, with water, upright for 30–60 minutes',
+          why: 'First thing in the morning with a full glass of plain water and nothing else, then staying upright before eating or drinking. Food blocks absorption almost completely, and lying down lets the tablet sit in the esophagus and burn it.' },
+        { type: 'multi', q: 'Which conditions rule out an oral bisphosphonate?',
+          answers: ['Achalasia or stricture', 'Barrett esophagus', 'Cannot sit upright 30 min', 'Prior gastric bypass'],
+          distractors: ['Hypertension', 'Type 2 diabetes'],
+          why: 'Anything that keeps the tablet in the esophagus or alters absorption. Severe esophagitis on the drug is also a reason to stop. These patients switch to yearly IV zoledronic acid or denosumab 60 mg every six months.' },
+        { type: 'number', q: 'Bisphosphonates are contraindicated below what creatinine clearance?', values: [30, 35], join: '–', unit: 'mL/min',
+          why: 'Oral and intravenous alike. In severe kidney disease denosumab is used instead, with close watching for hypocalcemia.' },
+        { type: 'recall', q: 'Why can denosumab be used in severe kidney disease when bisphosphonates cannot?', a: 'It is an antibody, not cleared by the kidney',
+          why: 'Denosumab is a monoclonal antibody against RANKL that is broken down like any protein, so renal function does not affect its clearance. Bisphosphonates leave through the kidney and accumulate when it fails. The caution with denosumab in CKD is hypocalcemia.' },
+        { type: 'number', q: 'Consider a drug holiday after how many years of an oral bisphosphonate?', value: 5, unit: 'years',
+          why: 'Or three years of IV zoledronic acid, in a moderate-risk patient with a T-score above −2.5 and no fractures. The pause reduces the rare risks of jaw osteonecrosis and atypical femur fractures; the drug stays in bone and keeps working for a while.' },
+        { type: 'truefalse', q: 'Denosumab can be paused for a drug holiday like a bisphosphonate.', a: false,
+          why: 'Stopping it causes a rebound in bone turnover and a burst of vertebral fractures within months. If it has to stop, the patient is moved straight onto a bisphosphonate.' },
+        { type: 'recall', q: 'Why does stopping denosumab cause rebound fractures?', a: 'Suppressed osteoclasts rebound and resorb fast',
+          why: 'Denosumab does not stay in bone; it blocks RANKL only while it is in the blood. When it clears, the osteoclasts it had held back come back in excess and bone turnover overshoots, dissolving the gained bone quickly. A bisphosphonate given at that point blunts the surge.' },
+        { type: 'multi', q: 'Which findings put a patient in the very-high fracture risk group?',
+          answers: ['T-score below −3.0', 'Fragility fracture in past year', 'Multiple fragility fractures', 'Fracture on osteoporosis therapy'],
+          distractors: ['T-score −2.6', 'Age over 65'],
+          why: 'Also a very high FRAX: 4.5% or more for hip or 30% or more for a major fracture. Very-high risk changes the first drug from a bisphosphonate to an anabolic agent.' },
+        { type: 'recall', q: 'First-line treatment for very-high fracture risk?', a: 'An anabolic agent such as teriparatide',
+          why: 'Teriparatide or abaloparatide, daily injections for up to two years, build new bone by stimulating osteoblasts; romosozumab is the one-year alternative. Starting with an antiresorptive in these patients leaves them under-treated.' },
+        { type: 'recall', q: 'Why must an anabolic course be followed by a bisphosphonate or denosumab?', a: 'Otherwise the new bone is lost again',
+          why: 'Anabolic agents build bone only while they are given; after they stop, resorption takes the gains away within a year or two. An antiresorptive afterward locks in the new bone.' },
+        { type: 'recall', q: 'Which osteoporosis drug is avoided after a heart attack or stroke in the past year?', a: 'Romosozumab',
+          why: 'The sclerostin inhibitor carried a signal for cardiovascular events in its trials. Teriparatide or abaloparatide are used instead in those patients.' }
+      ]
+    },
+
   ];
 
   global.Decks = { BUILTIN: BUILTIN };
