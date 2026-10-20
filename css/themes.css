@@ -785,6 +785,10 @@
   /* Sized from the visible height (dvh) where the browser knows it; vh
      can include space behind a hidden navigation bar. */
   --key: clamp(54px, 7.6vh, 76px);
+  /* The CHECK button's front lip is a shadow drawn below its box. As
+     the last thing in a clipping container, that lip was cut off; this
+     gives it room. */
+  padding-bottom: 8px;
   display: grid;
   grid-template-columns: repeat(3, var(--key));
   justify-content: center;
