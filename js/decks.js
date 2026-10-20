@@ -6177,6 +6177,281 @@
       ]
     },
 
+    {
+      id: 'mx-shoulder', subject: 'MSK & Sports Medicine', topic: 'Exam & Diagnosis', name: 'SHOULDER EXAM',
+      blurb: 'The shoulder tests the ITE uses and what a positive one tells you.',
+      cards: [
+        { type: 'recall', q: 'Arm abducted to 90 degrees, thumbs pointing down, examiner pushes down and it hurts or gives way. Test and muscle?', a: 'Empty can test, supraspinatus',
+          why: 'Internal rotation with the thumb down isolates the supraspinatus and lifts it under the acromion. Pain means tendinopathy or impingement; frank weakness or giving way suggests a tear. It is the single most used cuff test on the exam.' },
+        { type: 'recall', q: 'Pain only between 60 and 120 degrees of active abduction, free above and below. Finding and meaning?', a: 'Painful arc, subacromial impingement',
+          why: 'The supraspinatus tendon passes under the acromion through the middle of the arc and is pinched there. Pain at the very top of abduction points to the acromioclavicular joint instead, and pain through the whole arc points to adhesive capsulitis or arthritis.' },
+        { type: 'recall', q: 'Patient cannot slowly lower the abducted arm and it falls to the side. Test and meaning?', a: 'Drop-arm test, full-thickness supraspinatus tear',
+          why: 'Tendinopathy hurts but the tendon still holds. A complete tear removes the brake on the lowering arm. The drop-arm test is how you tell a tear from impingement at the bedside, and a positive result in a young patient is an indication for MRI and early repair.' },
+        { type: 'recall', q: 'Hand placed behind the back, patient cannot lift it away from the spine. Test and muscle?', a: 'Lift-off test, subscapularis',
+          why: 'Pushing the hand backward off the lumbar spine is pure internal rotation, which only the subscapularis provides in that position. The belly-press test, pushing the palm into the abdomen with the elbow forward, tests the same muscle for patients who cannot reach behind.' },
+        { type: 'recall', q: 'Elbows at the side bent to 90 degrees, patient cannot push the hands outward against resistance. Muscles tested?', a: 'Infraspinatus and teres minor',
+          why: 'Resisted external rotation with the arm at the side isolates the posterior cuff. Weakness with pain is a tear; pain alone is tendinopathy. Combined with the empty can and lift-off tests this covers the whole cuff in under a minute.' },
+        { type: 'recall', q: 'Arm abducted and externally rotated, patient looks alarmed and resists further rotation. Test and meaning?', a: 'Apprehension test, anterior instability',
+          why: 'The position reproduces the moment of an anterior dislocation and the patient senses the head about to slip. Pressing the humeral head backward relieves the fear, the relocation test, which confirms instability rather than cuff pain. A history of dislocation plus these two tests makes the diagnosis.' },
+        { type: 'recall', q: 'Arm forward flexed to 90 degrees and adducted, thumb down hurts and thumb up does not. Test and meaning?', a: "O'Brien test, superior labral tear",
+          why: 'With the thumb down the biceps anchor is loaded and a SLAP tear catches; turning the palm up unloads it. Deep pain or a click with the thumb down that eases with the palm up is positive. Pain on top of the shoulder in both positions points to the acromioclavicular joint instead.' },
+        { type: 'recall', q: 'Arm passively forced into full forward flexion while the scapula is held down. Test and meaning?', a: 'Neer impingement sign',
+          why: 'Forcing the greater tuberosity under the acromion pinches the supraspinatus and bursa. Hawkins does the same by internally rotating the forward-flexed arm. Both are sensitive for impingement but not specific, so they are paired with the empty can and drop-arm tests.' },
+        { type: 'recall', q: 'Shoulder pain with every motion and the examiner also cannot move it past 50 percent of external rotation. Diagnosis?', a: 'Adhesive capsulitis',
+          why: 'Lost passive motion is the finding no cuff problem produces. A torn or inflamed cuff limits what the patient can do but not what you can do for them. Films are normal and the treatment is steroid injection plus therapy, never a sling.' },
+        { type: 'match', q: 'Match each shoulder test to what a positive result means.',
+          pairs: [
+            { left: 'Empty can', right: 'Supraspinatus' },
+            { left: 'Drop arm', right: 'Full cuff tear' },
+            { left: 'Apprehension', right: 'Anterior instability' },
+            { left: "O'Brien", right: 'Labral tear' }
+          ] },
+        { type: 'bucket', q: 'Sort each shoulder finding by the diagnosis it points to.', bins: ['Cuff disease', 'Frozen shoulder'],
+          items: [
+            { label: 'Passive motion preserved', bin: 'Cuff disease' },
+            { label: 'Passive motion lost', bin: 'Frozen shoulder' },
+            { label: 'Night pain lying on the side', bin: 'Cuff disease' },
+            { label: 'Diabetic, 50s, insidious onset', bin: 'Frozen shoulder' },
+            { label: 'Positive empty can', bin: 'Cuff disease' },
+            { label: 'Normal films, stiff all round', bin: 'Frozen shoulder' }
+          ],
+          why: 'The one question to ask of any stiff painful shoulder is whether passive motion is normal. If you can move it and they cannot, think cuff. If neither of you can move it and the films are clean, it is adhesive capsulitis.' },
+        { type: 'recall', q: 'Pain at the top of the shoulder when the arm is brought across the chest. Test and diagnosis?', a: 'Cross-body adduction test, acromioclavicular joint',
+          why: 'Adduction compresses the AC joint, and the pain sits on top of the shoulder where the patient can point to it, unlike cuff pain over the lateral deltoid. Tenderness directly over the joint and pain at the very top of abduction confirm it.' }
+      ]
+    },
+
+    {
+      id: 'mx-elbowhand', subject: 'MSK & Sports Medicine', topic: 'Exam & Diagnosis', name: 'ELBOW, WRIST & HAND',
+      blurb: 'Epicondylitis, nerve entrapments, de Quervain, scaphoid, skier\'s thumb and finger tendons.',
+      cards: [
+        { type: 'recall', q: 'Lateral elbow pain reproduced by resisted wrist extension with the elbow straight. Diagnosis?', a: 'Lateral epicondylitis',
+          why: 'The wrist extensors originate on the lateral epicondyle and resisted extension of the wrist or middle finger loads the degenerated tendon origin. Tenderness just distal to the epicondyle confirms it. Gripping and lifting with the palm down bring it on, hence tennis elbow.' },
+        { type: 'recall', q: 'Medial elbow pain reproduced by resisted wrist flexion and forearm pronation. Diagnosis?', a: 'Medial epicondylitis',
+          why: 'The flexor-pronator mass originates on the medial epicondyle, so the resisted motions that load it reproduce the pain. Golfers and throwers are typical. Numbness in the ring and little fingers alongside it means the ulnar nerve is irritated too.' },
+        { type: 'recall', q: 'Numbness of the ring and little fingers brought on by holding the elbow fully flexed for a minute. Diagnosis?', a: 'Cubital tunnel syndrome',
+          why: 'Flexion stretches and compresses the ulnar nerve behind the medial epicondyle. The elbow flexion test and a Tinel sign at the cubital tunnel reproduce the symptoms. Weak finger abduction and wasting of the first dorsal interosseous appear late.' },
+        { type: 'recall', q: 'Toddler holds the arm pronated and slightly flexed, will not use it, after being pulled by the hand. Diagnosis?', a: 'Radial head subluxation, nursemaid\'s elbow',
+          why: 'Traction slips the annular ligament over the radial head. There is no swelling and radiographs are unnecessary when the history is classic. Reduce by hyperpronation or supination with flexion while pressing the radial head; the child uses the arm within minutes.' },
+        { type: 'recall', q: 'Night-time numbness of the thumb, index and middle fingers, relieved by shaking the hand. Diagnosis?', a: 'Carpal tunnel syndrome',
+          why: 'The median nerve is compressed under the transverse carpal ligament, and wrist flexion during sleep worsens it. Sparing of the little finger is the key to separating it from cubital tunnel. Thenar atrophy means a severe, long-standing lesion.' },
+        { type: 'recall', q: 'Backs of the hands pressed together with the wrists fully flexed for 60 seconds reproduces finger tingling. Test?', a: 'Phalen test',
+          why: 'Sustained flexion raises pressure in the carpal tunnel and provokes median nerve symptoms. Tapping over the carpal tunnel, Tinel sign, and pressing on it with the thumbs, the Durkan compression test, are the other bedside tests. Nerve conduction studies confirm before surgery.' },
+        { type: 'recall', q: 'Radial wrist pain when the thumb is tucked in a fist and the wrist bent toward the little finger. Test and diagnosis?', a: 'Finkelstein test, de Quervain tenosynovitis',
+          why: 'Ulnar deviation with the thumb enclosed stretches the abductor pollicis longus and extensor pollicis brevis through the inflamed first dorsal compartment. New mothers lifting infants are the classic patients. Treat with a thumb spica and a steroid injection into the sheath.' },
+        { type: 'recall', q: 'Tenderness in the anatomic snuffbox after a fall on the outstretched hand with normal films. Working diagnosis?', a: 'Occult scaphoid fracture',
+          why: 'Snuffbox tenderness, tenderness over the volar scaphoid tubercle and pain with axial loading of the thumb are the three signs, and together they outweigh a normal first radiograph. Splint in a thumb spica and reimage in 10 to 14 days or get an MRI.' },
+        { type: 'recall', q: 'Thumb MCP joint opens on sideways stress after a fall holding a ski pole. Diagnosis?', a: 'Ulnar collateral ligament tear, skier\'s thumb',
+          why: 'Forced abduction of the thumb tears the ulnar collateral ligament of the MCP joint. Valgus stress at 30 degrees of flexion that opens more than the other side is positive. A complete tear with a Stener lesion will not heal in a cast and needs surgical repair.' },
+        { type: 'recall', q: 'Finger catches or locks in flexion and then snaps straight, with a tender nodule in the palm. Diagnosis?', a: 'Trigger finger',
+          why: 'A thickened flexor tendon catches at the A1 pulley at the base of the finger. Diabetics are prone to it. Steroid injection into the sheath relieves most cases and surgical release is for failures.' },
+        { type: 'recall', q: 'Painless cord in the palm pulling the ring and little fingers into flexion. Diagnosis?', a: 'Dupuytren contracture',
+          why: 'Fibrous thickening of the palmar fascia, common in older men of northern European descent, diabetics and drinkers. Referral is for a contracture over 30 degrees at the MCP joint or any PIP contracture; the tabletop test, inability to lay the palm flat, is the trigger.' },
+        { type: 'recall', q: 'Joint that cannot actively straighten in mallet finger and cannot actively bend in jersey finger?', a: 'DIP in both',
+          why: 'Mallet finger is the extensor pulled off the distal phalanx, so the tip droops and cannot extend. Jersey finger is the flexor profundus pulled off the same bone, so the tip cannot flex when the PIP is held straight. Same joint, opposite tendon, opposite management.' },
+        { type: 'match', q: 'Match each wrist and hand test to the diagnosis it supports.',
+          pairs: [
+            { left: 'Phalen', right: 'Carpal tunnel' },
+            { left: 'Finkelstein', right: 'De Quervain' },
+            { left: 'Snuffbox tenderness', right: 'Scaphoid fracture' },
+            { left: 'Thumb valgus stress', right: "Skier's thumb" }
+          ] },
+        { type: 'bucket', q: 'Sort each finding by the nerve that is compressed.', bins: ['Median', 'Ulnar'],
+          items: [
+            { label: 'Numb thumb and index', bin: 'Median' },
+            { label: 'Numb ring and little finger', bin: 'Ulnar' },
+            { label: 'Positive Phalen test', bin: 'Median' },
+            { label: 'Positive elbow flexion test', bin: 'Ulnar' },
+            { label: 'Thenar wasting', bin: 'Median' },
+            { label: 'Weak finger spreading', bin: 'Ulnar' }
+          ],
+          why: 'Which fingers are numb decides the nerve. The median nerve supplies the radial three and a half digits and the thenar muscles; the ulnar nerve supplies the ulnar one and a half digits and the interossei that spread the fingers. The site of compression follows: wrist for median, elbow for ulnar.' }
+      ]
+    },
+
+    {
+      id: 'mx-hip', subject: 'MSK & Sports Medicine', topic: 'Exam & Diagnosis', name: 'HIP EXAM',
+      blurb: 'Reading hip pain by location and the tests that confirm each source.',
+      cards: [
+        { type: 'recall', q: 'Hip flexed to 90 degrees, then adducted and internally rotated, reproduces groin pain. Test and meaning?', a: 'FADIR test, intra-articular hip pathology',
+          why: 'Flexion, adduction and internal rotation drive the femoral neck against the acetabular rim, so it is positive in femoroacetabular impingement and labral tears. Groin pain with this maneuver means the problem is inside the joint and warrants imaging.' },
+        { type: 'recall', q: 'Heel on the opposite knee, bent knee pressed toward the table. Test, and the two sources a positive can mean?', a: 'FABER test, hip joint or sacroiliac joint',
+          why: 'Flexion, abduction and external rotation stress both structures. Pain in the groin is the hip; pain in the back or buttock is the sacroiliac joint. Where the patient feels it is the whole point of the test.' },
+        { type: 'recall', q: 'Examiner rolls the straight leg in and out on the table and it hurts in the groin. Test and meaning?', a: 'Log-roll test, intra-articular hip pathology',
+          why: 'Rolling the leg moves only the femoral head within the acetabulum, with no load on the muscles, tendons or spine. Pain is therefore very specific to the joint itself. It is the gentlest first test in a patient who might have a fracture.' },
+        { type: 'recall', q: 'Standing on one leg, the opposite side of the pelvis drops. Sign and meaning?', a: 'Trendelenburg sign, weak gluteus medius',
+          why: 'The gluteus medius on the stance side holds the pelvis level. When it is weak or its tendon torn, the other side sags. With lateral hip pain and trochanteric tenderness this points to gluteus medius tendinopathy or tear, the real cause of what used to be called trochanteric bursitis.' },
+        { type: 'recall', q: 'Side-lying patient, top leg extended and abducted then released, and it stays up instead of dropping. Test and meaning?', a: 'Ober test, tight iliotibial band',
+          why: 'A tight band holds the leg suspended in abduction. It supports iliotibial band syndrome at the knee and external snapping hip. Treatment is band stretching and hip abductor strengthening.' },
+        { type: 'recall', q: 'Short, externally rotated leg after a fall with groin pain and inability to bear weight. Diagnosis?', a: 'Hip fracture',
+          why: 'Muscle pull on the broken femur shortens it and rolls it outward. Films catch over 90 percent; a negative film with this picture gets an MRI, because up to a tenth of osteoporotic hip fractures are occult and a missed one displaces.' },
+        { type: 'recall', q: 'Runner with groin pain that began after long runs and now hurts walking and hopping on that leg. Diagnosis to exclude?', a: 'Femoral neck stress fracture',
+          why: 'Progressive activity-related groin pain in a runner, especially a woman with low energy availability, is a femoral neck stress fracture until MRI says otherwise. Films are usually normal early. A tension-side fracture can displace, so stop running and image now.' },
+        { type: 'recall', q: 'Limping 6-year-old with groin pain, limited hip internal rotation, no fever, normal labs. Diagnosis?', a: 'Legg-Calvé-Perthes disease',
+          why: 'Idiopathic avascular necrosis of the femoral head in young children. The lack of fever and normal inflammatory markers separate it from septic arthritis, and the age separates it from slipped capital femoral epiphysis. Films show a flattened sclerotic head.' },
+        { type: 'recall', q: 'Obese adolescent with weeks of knee pain and a limp, hip rolls into external rotation when flexed. Diagnosis?', a: 'Slipped capital femoral epiphysis',
+          why: 'The femoral head slips posteriorly off the neck through the growth plate, so flexion forces obligatory external rotation. Knee pain is referred and misleads. Get frog-leg lateral films of both hips, make the patient non-weight-bearing and refer for pinning the same day.' },
+        { type: 'recall', q: 'Febrile child refusing to bear weight, hip held flexed and externally rotated, ESR raised. Diagnosis?', a: 'Septic arthritis of the hip',
+          why: 'Fever, refusal to bear weight, ESR over 40 and white count over 12,000 are the Kocher criteria; three or four of them make septic arthritis likely and the joint is aspirated urgently. Transient synovitis looks similar but the child is well and afebrile.' },
+        { type: 'match', q: 'Match each hip test to what a positive result points to.',
+          pairs: [
+            { left: 'FADIR', right: 'Labral tear, impingement' },
+            { left: 'Log roll', right: 'Intra-articular pain' },
+            { left: 'Trendelenburg', right: 'Gluteus medius' },
+            { left: 'Ober', right: 'Tight iliotibial band' }
+          ] },
+        { type: 'bucket', q: 'Sort each pediatric hip presentation by diagnosis.', bins: ['SCFE', 'Perthes'],
+          items: [
+            { label: 'Obese 13-year-old', bin: 'SCFE' },
+            { label: 'Thin 6-year-old', bin: 'Perthes' },
+            { label: 'Externally rotates on flexion', bin: 'SCFE' },
+            { label: 'Flattened femoral head on film', bin: 'Perthes' },
+            { label: 'Urgent pinning', bin: 'SCFE' },
+            { label: 'Observation and bracing', bin: 'Perthes' }
+          ],
+          why: 'Age and body habitus do most of the work. Perthes is the thin young child with avascular necrosis that revascularizes over years. SCFE is the heavy adolescent whose epiphysis is sliding off and must be pinned before it slips further.' }
+      ]
+    },
+
+    {
+      id: 'mx-knee', subject: 'MSK & Sports Medicine', topic: 'Exam & Diagnosis', name: 'KNEE EXAM',
+      blurb: 'Ligament and meniscal tests, and telling the common knee diagnoses apart by history and site.',
+      cards: [
+        { type: 'recall', q: 'Knee flexed 20 to 30 degrees, examiner pulls the tibia forward and feels no firm endpoint. Test and meaning?', a: 'Lachman test, ACL tear',
+          why: 'At slight flexion the hamstrings cannot guard, so the test works even in a swollen acute knee, which is why it beats the anterior drawer. A soft or absent endpoint is positive. Sensitivity and specificity are both above 85 percent.' },
+        { type: 'recall', q: 'Knee flexed to 90 degrees, examiner pulls the tibia forward on the femur. Test and limitation?', a: 'Anterior drawer, hamstring guarding masks laxity',
+          why: 'At 90 degrees a painful knee tenses the hamstrings and masks ACL laxity, and the posterior horn of the meniscus can block translation. It is still taught, but Lachman is the answer when the question asks for the best test.' },
+        { type: 'recall', q: 'Knee flexed to 90 degrees and the tibia already sits back behind the femur before any force. Finding and meaning?', a: 'Posterior sag sign, PCL tear',
+          why: 'Gravity pulls the unrestrained tibia backward. Pushing it further back, the posterior drawer, confirms. The classic history is the shin striking a dashboard or a fall onto a flexed knee. If the sag is missed, the anterior drawer looks falsely positive as the tibia returns to neutral.' },
+        { type: 'recall', q: 'Knee flexed and extended while the tibia is rotated, with a painful click at the joint line. Test and meaning?', a: 'McMurray test, meniscal tear',
+          why: 'Rotation traps the torn fragment between femur and tibia. External rotation tests the medial meniscus and internal rotation the lateral. A click alone is not enough; it must be painful or palpable at the joint line.' },
+        { type: 'recall', q: 'Patient stands on one leg with the knee bent 20 degrees and twists the body left and right. Test and meaning?', a: 'Thessaly test, meniscal tear',
+          why: 'Rotating the loaded knee reproduces joint line pain or catching and is the most accurate meniscal test at the bedside. Joint line tenderness and McMurray back it up. A twisting injury with delayed swelling and locking is the matching history.' },
+        { type: 'recall', q: 'Knee bent 30 degrees, pushed inward from the outside, and the medial joint opens. Test and structure?', a: 'Valgus stress test, medial collateral ligament',
+          why: 'Force applied to the outside of the knee gaps the medial side. Laxity at 30 degrees means an isolated MCL tear; laxity at full extension means the cruciates are also gone. Varus stress tests the lateral collateral the same way.' },
+        { type: 'recall', q: 'Noncontact pivot, a pop, unable to continue, knee swollen within 2 hours. Diagnosis?', a: 'ACL tear',
+          why: 'The rapid hemarthrosis is the giveaway, because the ligament bleeds. Lachman confirms. Patellar dislocation is the other cause of a fast effusion after a pivot, and the patient usually reports the kneecap moving.' },
+        { type: 'recall', q: 'Twist on a planted foot, able to finish the game, swelling the next day, and now the knee catches and locks. Diagnosis?', a: 'Meniscal tear',
+          why: 'The avascular meniscus swells slowly and a displaced fragment catches in the joint. Joint line tenderness, Thessaly and McMurray confirm, MRI stages it. True locking that will not release is a bucket-handle tear and goes to orthopedics.' },
+        { type: 'recall', q: 'Pushing the kneecap sideways makes the patient grab the examiner\'s hand or tense up. Test and meaning?', a: 'Patellar apprehension test, patellar instability',
+          why: 'Lateral pressure recreates the sensation of the kneecap dislocating. It follows a dislocation or in a patient with generalized laxity. Different from patellofemoral pain, where the patellar grind test hurts but nothing feels unstable.' },
+        { type: 'recall', q: 'Fluid pushed up from the medial side of the knee and tapped back from the lateral side produces a visible wave. Finding?', a: 'Effusion, bulge sign',
+          why: 'The bulge sign detects a small effusion; a large one is confirmed by ballotting the patella. An acute effusion after injury is a ligament tear, fracture or patellar dislocation. A spontaneous warm effusion is gout, pseudogout or infection and needs a tap.' },
+        { type: 'match', q: 'Match each knee test to the structure it examines.',
+          pairs: [
+            { left: 'Lachman', right: 'ACL' },
+            { left: 'Posterior drawer', right: 'PCL' },
+            { left: 'Thessaly', right: 'Meniscus' },
+            { left: 'Valgus stress', right: 'MCL' }
+          ] },
+        { type: 'match', q: 'Match each knee pain location to its diagnosis.',
+          pairs: [
+            { left: 'Behind the kneecap', right: 'Patellofemoral pain' },
+            { left: 'Lateral epicondyle', right: 'Iliotibial band' },
+            { left: 'Inferior patellar pole', right: 'Patellar tendinopathy' },
+            { left: 'Below medial joint line', right: 'Pes anserine' }
+          ] },
+        { type: 'bucket', q: 'Sort each feature by the knee injury it fits.', bins: ['ACL', 'Meniscus'],
+          items: [
+            { label: 'Swollen within 2 hours', bin: 'ACL' },
+            { label: 'Swollen the next day', bin: 'Meniscus' },
+            { label: 'Heard a pop, could not continue', bin: 'ACL' },
+            { label: 'Locking and catching', bin: 'Meniscus' },
+            { label: 'Soft Lachman endpoint', bin: 'ACL' },
+            { label: 'Joint line tenderness', bin: 'Meniscus' }
+          ],
+          why: 'Speed of swelling and mechanical symptoms sort the two. Blood arrives in hours, reactive fluid overnight. A ligament gives instability, a meniscus gives locking. Both are confirmed by MRI, but the exam should already have told you which one.' }
+      ]
+    },
+
+    {
+      id: 'mx-ankle', subject: 'MSK & Sports Medicine', topic: 'Exam & Diagnosis', name: 'ANKLE & FOOT EXAM',
+      blurb: 'Sprain tests, syndesmosis, Achilles rupture, plantar fasciitis, posterior tibial tendon and Morton neuroma.',
+      cards: [
+        { type: 'recall', q: 'Heel pulled forward with the tibia held and the talus slides forward. Test and ligament?', a: 'Ankle anterior drawer, anterior talofibular ligament',
+          why: 'The ATFL is the first ligament torn in an inversion sprain and the anterior drawer tests it directly. The talar tilt test, inverting the heel, adds the calcaneofibular ligament when it opens more than the other side. Grade by laxity and ability to bear weight.' },
+        { type: 'recall', q: 'Squeezing the tibia and fibula together at mid-calf causes pain at the ankle. Test and diagnosis?', a: 'Squeeze test, syndesmotic (high ankle) sprain',
+          why: 'Compression above the ankle spreads the distal tibiofibular joint and hurts if the syndesmosis is torn. External rotation of the foot with the knee bent does the same. High ankle sprains follow external rotation injuries, heal slowly and may need surgical fixation if the mortise widens.' },
+        { type: 'recall', q: 'Prone patient, calf squeezed, and the foot does not plantar flex. Test and diagnosis?', a: 'Thompson test, Achilles rupture',
+          why: 'An intact tendon transmits the squeeze to the heel. Patients often describe being kicked in the back of the leg and can still weakly plantar flex using the other flexors, so active motion does not exclude rupture. A palpable gap confirms it.' },
+        { type: 'recall', q: 'Dorsiflexing the big toe reproduces heel pain at the medial calcaneal tuberosity. Test and diagnosis?', a: 'Windlass test, plantar fasciitis',
+          why: 'Toe extension tightens the fascia like a windlass and pulls on its inflamed origin. The history of stabbing pain with the first steps of the morning completes the picture. Radiographs and the presence or absence of a heel spur are irrelevant.' },
+        { type: 'recall', q: 'From behind, more toes show on one side and the heel will not invert on a single-leg heel raise. Diagnosis?', a: 'Posterior tibial tendon dysfunction',
+          why: 'The failing tendon lets the arch collapse and the forefoot drift outward, the too-many-toes sign, and cannot lock the heel into inversion for a heel raise. Pain and swelling behind the medial malleolus is where it starts. Orthotics and eccentric therapy, never a steroid injection.' },
+        { type: 'recall', q: 'Burning pain between the third and fourth toes in tight shoes, with a click when the forefoot is squeezed. Diagnosis?', a: 'Morton neuroma',
+          why: 'The interdigital nerve is thickened under the intermetatarsal ligament, and squeezing the metatarsal heads together produces pain and a palpable click, the Mulder sign. Wider shoes and a metatarsal pad are first line, then a steroid injection.' },
+        { type: 'recall', q: 'Tender base of the fifth metatarsal after an inversion injury. What on the film decides the management?', a: 'Whether the fracture is at the tuberosity or 2 cm distal',
+          why: 'Both are tender in the same place. The avulsion is at the very tip of the tuberosity and heals with weight bearing. The Jones fracture sits 1.5 to 3 cm distal at the metaphyseal-diaphyseal junction and needs a non-weight-bearing cast or a screw. The management hinges on a few millimeters.' },
+        { type: 'recall', q: 'Midfoot swelling and bruising on the sole of the arch after stumbling on a plantar-flexed foot. Diagnosis?', a: 'Lisfranc injury',
+          why: 'Plantar ecchymosis is pathognomonic for tarsometatarsal ligament disruption. Pain with passive pronation and abduction of the forefoot and inability to stand on tiptoe go with it. Normal films do not exclude it; get weight-bearing views or CT.' },
+        { type: 'recall', q: 'Tenderness at the posterior edge of the lateral malleolus after an ankle sprain. What does it change?', a: 'Radiographs are required by the Ottawa rule',
+          why: 'Ligament tenderness in front of the malleolus is a sprain; bony tenderness on the posterior edge or tip may be a fracture. The distinction between palpating the ligament and palpating the bone is exactly what the Ottawa question tests.' },
+        { type: 'match', q: 'Match each ankle and foot test to its diagnosis.',
+          pairs: [
+            { left: 'Thompson', right: 'Achilles rupture' },
+            { left: 'Squeeze test', right: 'High ankle sprain' },
+            { left: 'Windlass', right: 'Plantar fasciitis' },
+            { left: 'Anterior drawer', right: 'ATFL sprain' }
+          ] },
+        { type: 'match', q: 'Match each heel and foot pain location to its diagnosis.',
+          pairs: [
+            { left: 'Medial heel tuberosity', right: 'Plantar fasciitis' },
+            { left: 'Behind medial malleolus', right: 'Posterior tibial tendon' },
+            { left: 'Third web space', right: 'Morton neuroma' },
+            { left: '2 to 6 cm above the heel', right: 'Achilles tendinopathy' }
+          ] }
+      ]
+    },
+
+    {
+      id: 'mx-spine', subject: 'MSK & Sports Medicine', topic: 'Exam & Diagnosis', name: 'SPINE & NERVE ROOTS',
+      blurb: 'Straight-leg raise, Spurling, sacroiliac provocation and the root levels the ITE expects.',
+      cards: [
+        { type: 'recall', q: 'Supine patient, straight leg lifted between 30 and 70 degrees reproduces pain shooting below the knee. Test and meaning?', a: 'Straight-leg raise, L5 or S1 nerve root irritation',
+          why: 'Lifting the leg stretches the sciatic nerve and a herniated disc tethering a root reproduces the leg pain. Back pain alone is negative. Dorsiflexing the foot at the point of pain increases it and confirms the sign.' },
+        { type: 'recall', q: 'Lifting the unaffected leg reproduces pain down the painful leg. Test and meaning?', a: 'Crossed straight-leg raise, disc herniation',
+          why: 'The crossed sign is less sensitive than the ordinary straight-leg raise but far more specific, around 90 percent, for a herniated disc compressing a root. It is the exam finding that makes a disc the most likely cause rather than a muscular or facet problem.' },
+        { type: 'match', q: 'Match each lumbar nerve root to the finding that localizes it.',
+          pairs: [
+            { left: 'L4', right: 'Knee jerk, quadriceps' },
+            { left: 'L5', right: 'Big toe dorsiflexion' },
+            { left: 'S1', right: 'Ankle jerk, toe walking' },
+            { left: 'Cauda equina', right: 'Urinary retention' }
+          ] },
+        { type: 'recall', q: 'Numbness of the top of the foot and big toe with weak dorsiflexion and a normal ankle reflex. Root?', a: 'L5',
+          why: 'L5 has no reflex of its own, so weakness of the extensor hallucis longus and sensory loss over the dorsum of the foot and first web space localize it. Weak heel walking is the functional test. L5-S1 and L4-5 disc herniations are the two commonest.' },
+        { type: 'recall', q: 'Numbness of the lateral foot and little toe with a lost ankle reflex. Root?', a: 'S1',
+          why: 'S1 carries the ankle jerk and supplies the lateral border of the foot and plantar flexion. Weak toe walking is the functional test. Loss of the reflex is the most objective sign of root compression at this level.' },
+        { type: 'recall', q: 'Neck extended and tilted toward the painful side, head pressed down, reproduces arm pain. Test and meaning?', a: 'Spurling test, cervical radiculopathy',
+          why: 'The position narrows the neural foramen and pinches the root. Pain shooting into the arm is positive; neck pain alone is not. Relief when the patient rests the hand on top of the head, the shoulder abduction sign, supports it.' },
+        { type: 'match', q: 'Match each cervical nerve root to its reflex or motor finding.',
+          pairs: [
+            { left: 'C5', right: 'Deltoid, biceps reflex' },
+            { left: 'C6', right: 'Brachioradialis reflex' },
+            { left: 'C7', right: 'Triceps, triceps reflex' },
+            { left: 'C8', right: 'Finger flexion' }
+          ] },
+        { type: 'recall', q: 'Thumb and index finger numbness with a reduced brachioradialis reflex. Root?', a: 'C6',
+          why: 'C6 supplies the thumb side of the hand, wrist extension and the brachioradialis reflex. It is confused with carpal tunnel syndrome, but neck pain, a positive Spurling test and the reflex change place the lesion at the root.' },
+        { type: 'recall', q: 'Back pain that eases when the patient leans forward on a shopping cart and worsens walking downhill. Diagnosis?', a: 'Lumbar spinal stenosis',
+          why: 'Flexion opens the spinal canal and extension narrows it, so the posture that relieves the symptoms is the diagnostic clue. Neurogenic claudication is bilateral leg heaviness with standing and walking that resolves with sitting. Vascular claudication eases with standing still and has reduced pulses.' },
+        { type: 'recall', q: 'Young man with months of low back stiffness, worst in the morning and better with exercise. Diagnosis to consider?', a: 'Ankylosing spondylitis',
+          why: 'Inflammatory back pain starts before 40, comes on gradually, wakes the patient in the second half of the night and improves with activity rather than rest. Reduced lumbar flexion on the Schober test and sacroiliitis on imaging confirm. HLA-B27 supports it.' },
+        { type: 'recall', q: 'Pinpoint tenderness just below and inside the posterior superior iliac spine with a positive thigh thrust. Diagnosis?', a: 'Sacroiliac joint dysfunction',
+          why: 'The Fortin finger sign localizes the pain to the joint, and provocation tests such as FABER, thigh thrust, compression, distraction and Gaenslen reproduce it. The neurologic exam is normal and pain rarely passes the knee, which separates it from a radiculopathy.' },
+        { type: 'bucket', q: 'Sort each back pain feature by whether it suggests a mechanical or inflammatory cause.', bins: ['Mechanical', 'Inflammatory'],
+          items: [
+            { label: 'Worse with activity', bin: 'Mechanical' },
+            { label: 'Better with exercise', bin: 'Inflammatory' },
+            { label: 'Stiffness under 30 minutes', bin: 'Mechanical' },
+            { label: 'Wakes in the early hours', bin: 'Inflammatory' },
+            { label: 'Onset after lifting', bin: 'Mechanical' },
+            { label: 'Onset before 40, insidious', bin: 'Inflammatory' }
+          ],
+          why: 'Mechanical pain follows load and eases with rest. Inflammatory pain is the reverse: it stiffens with rest, loosens with movement and disturbs sleep. Picking up the inflammatory pattern in a young adult is how spondyloarthritis gets diagnosed years earlier.' }
+      ]
+    },
+
   ];
 
   global.Decks = { BUILTIN: BUILTIN };
