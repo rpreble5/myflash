@@ -4637,6 +4637,82 @@
       ]
     },
 
+    {
+      id: 'en-dka-dx',
+      subject: 'Endocrine & Metabolism',
+      topic: 'Hyperglycemic Emergencies',
+      name: 'DKA VS HHS',
+      blurb: 'Telling the three apart by numbers, breathing and mental state',
+      cards: [
+        { type: 'match', q: 'Match the lab picture to the diagnosis', pairs: [
+          { left: 'pH 7.20, glucose 400', right: 'Classic DKA' },
+          { left: 'pH 7.20, glucose 190', right: 'Euglycemic DKA' },
+          { left: 'pH 7.38, glucose 900', right: 'HHS' }
+        ] },
+        { type: 'number', q: 'Plasma glucose above which classic DKA is defined?', value: 250, unit: 'mg/dL',
+          why: 'Typically 300 to 600. The glucose is the least important of the three criteria; the acidosis and the ketones are what make it DKA, which is why it can occur below 250.' },
+        { type: 'number', q: 'Arterial pH at or below which DKA is diagnosed?', value: 7.3,
+          why: 'With a bicarbonate of 18 or less and an anion gap above 12. HHS, by contrast, has a pH above 7.30 and a bicarbonate above 18.' },
+        { type: 'number', q: 'Serum bicarbonate at or below which DKA is diagnosed?', value: 18, unit: 'mEq/L',
+          why: 'The bicarbonate is consumed buffering the ketoacids. It is also one of the values watched to decide when the acidosis has resolved.' },
+        { type: 'number', q: 'Plasma glucose above which the hyperosmolar hyperglycemic state is defined?', value: 600, unit: 'mg/dL',
+          why: 'Often 800 to 1200 or higher. The glucose climbs that far because the patient has been diuresing for days without the acidosis that would have brought a DKA patient to hospital sooner.' },
+        { type: 'number', q: 'Effective serum osmolality above which HHS is diagnosed?', value: 320, unit: 'mOsm/kg',
+          why: 'The osmolality drives the mental status: obtundation, coma, seizures and focal deficits. The total body water deficit is enormous, 8 to 12 liters.' },
+        { type: 'recall', q: 'Why does HHS produce no significant ketoacidosis?', a: 'Enough insulin remains to block lipolysis',
+          why: 'Type 2 patients still make some insulin, and only a small amount is needed to switch off fat breakdown and ketone production. It is not enough to control the glucose, so the sugar rises, water follows it into the urine, and the patient becomes profoundly dehydrated without turning acidotic.' },
+        { type: 'recall', q: 'Why can DKA develop at a glucose of 190 on an SGLT2 inhibitor?', a: 'Glycosuria keeps the glucose down while ketones rise',
+          why: 'The drug keeps dumping glucose into the urine, so the blood level stays near normal even as insulin deficiency, illness, fasting or surgery drive ketogenesis. A clinician who checks only a fingerstick misses it. The glycosuria persists 10 to 14 days after the drug is stopped.' },
+        { type: 'recall', q: 'Which breathing pattern marks DKA and is absent in HHS?', a: 'Kussmaul respirations',
+          why: 'Deep, rapid breathing is the lungs blowing off carbon dioxide to compensate for the acidosis. HHS has no acidosis to compensate for, so the patient is obtunded rather than hyperventilating.' },
+        { type: 'multi', q: 'Which features point to HHS rather than DKA?',
+          answers: ['Onset over days to weeks', 'Obtundation or coma', 'Osmolality above 320', 'Absent or trace ketones'],
+          distractors: ['Kussmaul breathing', 'Fruity breath'],
+          why: 'DKA comes on within a day with nausea, vomiting, abdominal pain, acetone on the breath and Kussmaul breathing. HHS creeps up in an older type 2 patient, who arrives profoundly dehydrated with altered consciousness and sometimes focal neurologic signs.' },
+        { type: 'recall', q: 'Which ketone is measured to diagnose and follow DKA?', a: 'Serum β-hydroxybutyrate',
+          why: 'It is the predominant ketoacid in DKA. The urine dipstick detects acetoacetate instead, which can read low early and paradoxically rise during recovery as β-hydroxybutyrate converts back to it.' }
+      ]
+    },
+
+    {
+      id: 'en-dka-tx',
+      subject: 'Endocrine & Metabolism',
+      topic: 'Hyperglycemic Emergencies',
+      name: 'TREATING DKA & HHS',
+      blurb: 'Fluids, then potassium, then insulin, then dextrose, then the handover',
+      cards: [
+        { type: 'recall', q: 'First step in treating DKA or HHS?', a: 'IV isotonic saline',
+          why: 'Normal saline or a balanced crystalloid at 15 to 20 mL/kg in the first hour, about 1 to 1.5 liters, to restore circulating volume and kidney perfusion. In HHS the fluid alone lowers the glucose by 35 to 70 mg/dL an hour.' },
+        { type: 'number', q: 'Isotonic saline rate in the first hour of DKA or HHS?', values: [15, 20], join: '–', unit: 'mL/kg/h',
+          why: 'The patient has lost liters to osmotic diuresis. Restoring volume comes before anything else, including insulin.' },
+        { type: 'recall', q: 'Why must fluids come before insulin in HHS?', a: 'Insulin shifts water into cells and drops the pressure',
+          why: 'Insulin moves glucose into cells and water follows it out of the vascular space. In a patient who is already several liters down, that shift can collapse the circulation. Filling the tank first makes the insulin safe.' },
+        { type: 'recall', q: 'After the first hour, when is 0.9% saline switched to 0.45%?', a: 'When the corrected sodium is normal or high',
+          why: 'The sodium is corrected for the glucose, adding 1.6 mEq/L for every 100 mg/dL above 100. A normal or high corrected sodium means the patient is short of free water, so half-normal saline at 250 to 500 mL/h follows. A low corrected sodium means normal saline continues.' },
+        { type: 'number', q: 'Serum potassium below which insulin is held in DKA?', value: 3.3, unit: 'mEq/L',
+          why: 'Insulin drives potassium into cells. Starting it with a potassium already under 3.3 can cause fatal arrhythmias or respiratory muscle paralysis. Potassium chloride is given at 20 to 40 mEq an hour until the level is 3.3 or above, and only then does insulin begin.' },
+        { type: 'recall', q: 'Why is the potassium often normal or high at presentation despite a large total deficit?', a: 'Acidosis shifts potassium out of cells',
+          why: 'The patient has lost 3 to 5 mEq/kg in the urine, but acidosis and hyperosmolality pull potassium out of the cells into the blood, so the measured level looks fine. Insulin and correction of the acidosis reverse the shift within hours, and the true deficit appears.' },
+        { type: 'mcq', q: 'DKA with a serum potassium of 4.2. How is insulin started?',
+          a: 'Insulin, with KCl in the fluids', distractors: ['Hold insulin until K is 5', 'Insulin, no potassium', 'Potassium only, no insulin'],
+          why: 'Between 3.3 and 5.2 insulin starts and 20 to 30 mEq of potassium chloride is added to each liter of fluid to hold the level between 4 and 5. Above 5.2 insulin starts without added potassium and the level is rechecked every two hours. Below 3.3 insulin is held.' },
+        { type: 'number', q: 'Starting rate of continuous IV regular insulin in DKA?', value: 0.1, unit: 'units/kg/h',
+          why: 'With or without a 0.1 units/kg bolus first. Hourly fingersticks follow, and the glucose should fall by 50 to 75 mg/dL an hour.' },
+        { type: 'number', q: 'In DKA, dextrose is added to the fluids when the glucose falls to what?', values: [200, 250], join: '–', unit: 'mg/dL',
+          why: 'In HHS the switch is made at 250 to 300. The fluid becomes 5% dextrose in half-normal saline and the insulin rate drops to 0.02 to 0.05 units/kg/h.' },
+        { type: 'recall', q: 'Why is dextrose added while the insulin continues, rather than stopping the insulin?', a: 'The acidosis clears more slowly than the glucose',
+          why: 'Glucose normalizes in 4 to 6 hours, but clearing the ketoacids and closing the anion gap takes 10 to 12 hours or more, and that requires insulin. Dextrose lets the insulin keep running at a lower rate without causing hypoglycemia or cerebral edema.' },
+        { type: 'multi', q: 'Which criteria allow the switch from IV to subcutaneous insulin in DKA?',
+          answers: ['Glucose under 200', 'Able to eat', 'Anion gap 12 or less', 'Bicarbonate 15–18 or more'],
+          distractors: ['Normal potassium', 'Urine ketones negative'],
+          why: 'The glucose must be under 200 and the patient eating, plus at least two of: anion gap 12 or less, bicarbonate 15 to 18 or more, venous pH above 7.30. Urine ketones lag behind and are not used.' },
+        { type: 'number', q: 'Give the subcutaneous basal insulin how long before stopping the IV infusion?', values: [1, 2], join: '–', unit: 'hours',
+          why: 'The long-acting insulin needs that long to start working. Stopping the drip before it does leaves a gap with no insulin at all.' },
+        { type: 'recall', q: 'Why does stopping IV insulin without an overlap cause rebound DKA?', a: 'IV insulin is gone within minutes',
+          why: 'Regular insulin given intravenously has a half-life of 4 to 5 minutes. Once the infusion stops, the patient has no insulin on board until the subcutaneous dose is absorbed, and ketogenesis restarts in that gap.' }
+      ]
+    },
+
   ];
 
   global.Decks = { BUILTIN: BUILTIN };
