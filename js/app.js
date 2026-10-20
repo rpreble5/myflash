@@ -58,12 +58,7 @@
   /* The chunky press for things that are not answer buttons: the target
      sinks into its bottom edge while a finger is on `el`. */
   function pressable(el, target) {
-    target = target || el;
-    function up() { target.classList.remove('is-pressed'); }
-    el.addEventListener('pointerdown', function () { target.classList.add('is-pressed'); });
-    el.addEventListener('pointerup', up);
-    el.addEventListener('pointercancel', up);
-    el.addEventListener('pointerleave', up);
+    global.Modes.pressable(el, target || el, true);
   }
 
   /* A deck of longer questions: locked and dimmed until the flashcards

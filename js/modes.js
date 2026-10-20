@@ -301,16 +301,52 @@
      a finger lands, with a light tick, and comes back up if the finger
      slides off. A class rather than :active, which iOS only applies
      reliably with a touch handler present. */
-  function pressable(b) {
-    function up() { b.classList.remove('is-pressed'); }
-    b.addEventListener('pointerdown', function () {
-      if (b.closest('.is-locked')) return;
-      b.classList.add('is-pressed');
-      global.Sfx.press();
+  /* A tap can be over in 40ms, too fast for the sink to register, so the
+     button stays down at least this long before it comes back up. */
+  var PRESS_MIN = 90;
+
+  /* `el` takes the finger, `target` (default el) does the moving. The
+     release is tracked on the document rather than with pointerleave:
+     cards capture the pointer for their swipes, and capture fires
+     pointerleave on the button the instant a finger lands. Sliding off
+     the button lets it up with no bounce; lifting gives it the bounce. */
+  function pressable(el, target, quiet) {
+    target = target || el;
+    el.addEventListener('pointerdown', function () {
+      if (el.closest('.is-locked') || el.disabled) return;
+      var t0 = Date.now();
+      target.classList.add('is-pressed');
+      if (!quiet) global.Sfx.press();
+      var r = el.getBoundingClientRect();
+      function unbind() {
+        document.removeEventListener('pointermove', move);
+        document.removeEventListener('pointerup', up);
+        document.removeEventListener('pointercancel', off);
+      }
+      function off() { unbind(); target.classList.remove('is-pressed'); }
+      function move(ev) {
+        if (ev.clientX < r.left || ev.clientX > r.right || ev.clientY < r.top || ev.clientY > r.bottom) off();
+      }
+      function up() {
+        unbind();
+        setTimeout(function () {
+          target.classList.remove('is-pressed');
+          release(target);
+        }, Math.max(0, PRESS_MIN - (Date.now() - t0)));
+      }
+      document.addEventListener('pointermove', move);
+      document.addEventListener('pointerup', up);
+      document.addEventListener('pointercancel', off);
     });
-    b.addEventListener('pointerup', up);
-    b.addEventListener('pointercancel', up);
-    b.addEventListener('pointerleave', up);
+  }
+
+  /* Coming back up: a hair past rest, then settled. Restarted if the
+     last one is still running, so a quick double tap bounces twice. */
+  function release(el) {
+    el.classList.remove('is-released');
+    void el.offsetWidth;
+    el.classList.add('is-released');
+    el.addEventListener('animationend', function () { el.classList.remove('is-released'); }, { once: true });
   }
 
   /* ═══════════════ multi: select all that apply ═══════════════ */
@@ -352,29 +388,9 @@
         b.appendChild(box);
         b.appendChild(h('span', 'choice-text', opt));
         b.style.setProperty('--i', i);
-        /* The box is the button: it sinks on press, the text beside it
-           only changes color. Not pressable(): the card captures the
-           pointer for the submit swipe, and capture fires pointerleave
-           on the row, which would lift the press the instant it lands.
-           So the release is tracked on the document instead. */
-        b.addEventListener('pointerdown', function () {
-          if (locked) return;
-          b.classList.add('is-pressed');
-          global.Sfx.press();
-          var r = b.getBoundingClientRect();
-          function move(ev) {
-            if (ev.clientX < r.left || ev.clientX > r.right || ev.clientY < r.top || ev.clientY > r.bottom) end();
-          }
-          function end() {
-            b.classList.remove('is-pressed');
-            document.removeEventListener('pointermove', move);
-            document.removeEventListener('pointerup', end);
-            document.removeEventListener('pointercancel', end);
-          }
-          document.addEventListener('pointermove', move);
-          document.addEventListener('pointerup', end);
-          document.addEventListener('pointercancel', end);
-        });
+        /* The box is the button: the row takes the finger, the box
+           sinks and bounces, and the text beside it only changes color. */
+        pressable(b, box);
         btns.push(b);
         keyMap[String(i + 1)] = function () { toggle(i); };
         grid.appendChild(b);
@@ -580,6 +596,7 @@
           b.setAttribute('role', 'button');
           b.setAttribute('aria-label', item.label + ' ' + d.name);
           b.addEventListener('click', function (e) { e.stopPropagation(); pick(i, d.key); });
+          pressable(b, b, true);
           byDir[d.key] = b;
           group.appendChild(b);
         });
@@ -1162,6 +1179,7 @@
       function key(label, cls, fn) {
         var b = h('button', 'key' + (cls ? ' ' + cls : ''), label);
         b.addEventListener('click', function (e) { e.stopPropagation(); fn(); });
+        pressable(b, b, true);
         pad.appendChild(b);
         return b;
       }
@@ -1289,7 +1307,7 @@
      ask the same function the dial asks. */
   global.Modes = {
     ALL: ALL, pickFor: pickFor, h: h, explanation: explanation,
-    scaleFor: scaleFor, layoutFor: layoutFor,
+    scaleFor: scaleFor, layoutFor: layoutFor, pressable: pressable,
     GRID_MAX_CHARS: GRID_MAX_CHARS
   };
 })(window);

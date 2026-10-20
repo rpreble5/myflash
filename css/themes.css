@@ -266,7 +266,6 @@
   background: var(--brand);
   border-color: var(--brand-dark);
   color: #fff;
-  animation: box-pop .24s cubic-bezier(.3, 1.6, .5, 1);
 }
 
 /* After CHECK. Every answer fills, so the set reads as the answer; the
@@ -289,7 +288,6 @@
   gap: .95rem;
   font-size: 1.15rem;
 }
-.is-multi .choice-btn.is-pressed { margin-top: 0; background: transparent; }
 .is-multi .choice-box {
   width: 46px; height: 46px;
   border: 3px solid var(--line);
@@ -302,7 +300,7 @@
               transform .07s ease, border-bottom-width .07s ease;
 }
 /* Sinks into its bottom edge, like every other button. */
-.is-multi .choice-btn.is-pressed .choice-box { border-bottom-width: 3px; transform: translateY(4px); }
+.is-multi .choice-box.is-pressed { border-bottom-width: 3px; transform: translateY(4px); }
 /* Picked: the box fills blue and the words go with it. */
 .choice-grid.is-multi:not(.is-locked) .choice-btn.is-picked .choice-text { color: var(--brand-dark); }
 /* After checking, the verdict lives in the box and tints the text:
@@ -604,7 +602,7 @@
   stroke-linecap: round;
   stroke-linejoin: round;
 }
-.dir-btn:active { transform: translateY(2px); }
+.dir-btn.is-pressed { transform: translateY(3px); border-bottom-width: 3px; }
 .trend-row.is-done .dir-btn { pointer-events: none; }
 
 /* A graded row fills exactly one arrow, the true direction, in the
@@ -850,7 +848,7 @@
   line-height: 1;
   transition: transform .06s ease, background-color .08s ease;
 }
-.key:active { transform: translateY(3px); border-bottom-width: 3px; background: var(--soft); }
+.key.is-pressed { transform: translateY(3px); border-bottom-width: 3px; background: var(--soft); }
 .key-del { color: var(--muted); font-size: calc(var(--key) * .36); }
 .key-blank { visibility: hidden; }
 .key-join { color: var(--brand); }
@@ -873,3 +871,23 @@
 .key-check:active { transform: translateY(3px); box-shadow: 0 2px 0 var(--brand-dark); }
 .key-check:disabled { background: var(--line); color: #AFAFAF; box-shadow: 0 5px 0 #D0D0D0; }
 
+
+/* ── The push ────────────────────────────────────────────────
+   Every chunky button sinks into its bottom edge the instant a finger
+   lands (the is-pressed rules above) and, on release, comes back up a
+   hair past rest before settling. Vertical only: real buttons do not
+   change size. --sink is how far each one went down, so the rise
+   starts exactly where the press left it. */
+.topic, .deck-row, .key, .dir-btn { --sink: 3px; }
+.path-go { --sink: 6px; }
+.path-go.has-face { --sink: 7px; }
+.match-btn.is-pressed { border-bottom-width: 3px; margin-top: 3px; background: var(--soft); --sink: 3px; }
+.choice-btn.is-released, .match-btn.is-released, .key.is-released, .dir-btn.is-released,
+.deck-list .topic.is-released, .topic .deck-row.is-released, .path-go.is-released,
+.is-multi .choice-box.is-released {
+  animation: press-up .24s cubic-bezier(.22, 1, .36, 1) both;
+  animation-delay: 0s;
+}
+/* The home rows ease their margin back on release; with the bounce
+   carrying the rise, that ease would stack on top of it. */
+.topic.is-released, .deck-row.is-released { transition: none; }

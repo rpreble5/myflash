@@ -31,6 +31,14 @@
   to   { opacity: 1; transform: none; }
 }
 
+/* A button coming back up after a press: from its sunk depth to a hair
+   above rest, then settled. Vertical only; nothing changes size. */
+@keyframes press-up {
+  0%   { transform: translateY(var(--sink, 4px)); }
+  55%  { transform: translateY(-1.5px); }
+  100% { transform: none; }
+}
+
 /* A select-all box being checked: small, so it can overshoot. */
 @keyframes box-pop {
   0%   { transform: scale(.7); }
