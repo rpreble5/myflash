@@ -5092,6 +5092,132 @@
       ]
     },
 
+    /* ═══════════════ GI & Hepatology ═══════════════
+       From the user's ITE gastroenterology study guide, module by module. */
+
+    {
+      id: 'gi-dysphagia',
+      subject: 'GI & Hepatology',
+      topic: 'Esophagus & Stomach',
+      name: 'DYSPHAGIA',
+      blurb: 'Transfer versus esophageal, motility versus mechanical, and each cause',
+      cards: [
+        { type: 'recall', q: 'Coughing or choking the moment a swallow starts, with nasal regurgitation. Which type of dysphagia?', a: 'Oropharyngeal (transfer) dysphagia',
+          why: 'The problem is getting the bolus out of the mouth and past the pharynx, which is neuromuscular: stroke, Parkinson disease, ALS, myasthenia gravis, polymyositis. Esophageal dysphagia is felt lower and a few seconds later, as food sticking behind the sternum.' },
+        { type: 'recall', q: 'First test for oropharyngeal dysphagia?', a: 'Modified barium swallow',
+          why: 'A videofluoroscopic swallowing study watches the bolus move in real time and shows aspiration and where the transfer fails. Endoscopy and manometry look at the esophagus, which is not where the problem is.' },
+        { type: 'recall', q: 'What separates a motility disorder from a mechanical obstruction in esophageal dysphagia?', a: 'Solids and liquids from the start, versus solids only',
+          why: 'A narrowed lumen lets liquids through and catches solids first, then liquids later as it tightens. A muscle or nerve problem fails for both from the beginning, because the esophagus cannot propel anything.' },
+        { type: 'recall', q: 'Dysphagia to solids and liquids from the outset, regurgitation of undigested food and weight loss. Likely cause?', a: 'Achalasia',
+          why: 'The inhibitory neurons of the myenteric plexus degenerate, so the lower sphincter cannot relax and the body of the esophagus stops contracting. Food sits above the sphincter, comes back bland and undigested, and causes nocturnal cough from aspiration.' },
+        { type: 'recall', q: 'Gold standard test for achalasia?', a: 'High-resolution esophageal manometry',
+          why: 'It shows absent peristalsis and a sphincter that does not relax. A barium esophagram shows the dilated esophagus tapering to a bird\'s beak and is often done first, but manometry makes the diagnosis.' },
+        { type: 'recall', q: 'Why is endoscopy done before treating presumed achalasia?', a: 'To rule out cancer at the GE junction',
+          why: 'An adenocarcinoma at the gastroesophageal junction can infiltrate the sphincter and mimic achalasia exactly, on barium and on manometry. Pseudoachalasia is the concern especially in a patient over 50 with rapid weight loss, and treating it with a myotomy would be a disaster.' },
+        { type: 'multi', q: 'Which are definitive treatments for achalasia?',
+          answers: ['Laparoscopic Heller myotomy', 'Peroral endoscopic myotomy', 'Pneumatic dilation'],
+          distractors: ['Daily PPI', 'Botulinum toxin first-line'],
+          why: 'All three disrupt the lower sphincter mechanically. Botulinum toxin injection, nifedipine and nitrates give temporary relief and are kept for patients who are too frail for a procedure.' },
+        { type: 'recall', q: 'A young man with asthma and eczema has a piece of steak stuck in his esophagus. Likely cause?', a: 'Eosinophilic esophagitis',
+          why: 'An allergic, Th2-driven inflammation of the esophageal lining in young atopic patients, presenting as intermittent solid dysphagia or acute food impaction. Endoscopy shows stacked rings, linear furrows, white exudates and sometimes strictures.' },
+        { type: 'number', q: 'Eosinophils per high-power field that diagnose eosinophilic esophagitis on biopsy?', value: 15, unit: '/hpf',
+          why: 'Biopsies are taken even when the mucosa looks normal, because the count is what makes the diagnosis.' },
+        { type: 'recall', q: 'First-line medical treatment for eosinophilic esophagitis?', a: 'Swallowed topical steroids',
+          why: 'Oral budesonide suspension or fluticasone puffs swallowed without a spacer, and/or a high-dose PPI. A six-food elimination diet (milk, wheat, egg, soy, nuts, seafood) is the dietary route. Dupilumab is for refractory disease and strictures are dilated.' },
+        { type: 'recall', q: 'Intermittent solid-food dysphagia with occasional meat impaction that never worsens. Likely cause?', a: 'Schatzki ring',
+          why: 'A thin mucosal ring at the squamocolumnar junction. It catches a large bolus now and then, the "steakhouse syndrome", but does not progress. Treated with endoscopic dilation and a PPI.' },
+        { type: 'recall', q: 'Steadily progressive solid-food dysphagia in a patient with years of severe reflux. Likely cause?', a: 'Peptic stricture',
+          why: 'Chronic acid injury lays down concentric collagen in the distal esophagus. It is dilated endoscopically and the patient stays on a daily PPI for life to stop it re-forming.' },
+        { type: 'recall', q: 'Why is every esophageal stricture biopsied?', a: 'To exclude adenocarcinoma',
+          why: 'A malignant stricture can look like a benign peptic one, and both occur in the same reflux patients. Dilating a cancer without diagnosing it delays treatment that is time-critical.' },
+        { type: 'recall', q: 'Dysphagia progressing from solids to liquids over weeks, with weight loss and iron deficiency. Likely cause?', a: 'Esophageal cancer',
+          why: 'Adenocarcinoma of the distal third arising from Barrett esophagus is the common type in the US; squamous cell cancer of the upper and middle thirds follows heavy smoking and alcohol. Endoscopy with biopsy confirms it and endoscopic ultrasound with PET-CT stages it.' },
+        { type: 'recall', q: 'Foul breath, gurgling in the neck, and regurgitation of old food hours after eating in a 70-year-old. Likely cause?', a: 'Zenker diverticulum',
+          why: 'A pouch of mucosa pushed out through Killian triangle above the upper sphincter when the cricopharyngeus fails to relax. It is diagnosed with a barium esophagram and treated with cricopharyngeal myotomy and removal or suspension of the pouch.' },
+        { type: 'recall', q: 'Why is a blind nasogastric tube dangerous in a patient with a Zenker diverticulum?', a: 'The tube can enter and perforate the pouch',
+          why: 'The pouch sits in line with the path of a tube or endoscope, and its wall is only mucosa and submucosa. Anything passed blindly can lodge in it and push through. The same caution applies to endoscopy.' }
+      ]
+    },
+
+    {
+      id: 'gi-gerd',
+      subject: 'GI & Hepatology',
+      topic: 'Esophagus & Stomach',
+      name: 'GERD & H. PYLORI',
+      blurb: 'Reflux treatment, Barrett surveillance, dyspepsia triage and eradication',
+      cards: [
+        { type: 'recall', q: 'Heartburn twice a week with no alarm features. First treatment?', a: 'An 8-week trial of a daily PPI',
+          why: 'Taken 30 to 60 minutes before the first meal, with weight loss, raising the head of the bed, no meals within three hours of bedtime, and avoiding tobacco, alcohol, chocolate, peppermint and fatty food.' },
+        { type: 'recall', q: 'Why isn\'t famotidine first-line for GERD?', a: 'Tachyphylaxis within weeks and less healing',
+          why: 'H2 blockers lose much of their effect within two to six weeks as the stomach adapts, and they heal erosive esophagitis far less reliably than a scheduled PPI. As-needed PPI dosing also underperforms a daily dose.' },
+        { type: 'multi', q: 'Which alarm features in GERD mean prompt endoscopy?',
+          answers: ['Dysphagia', 'Unintentional weight loss', 'GI bleeding or anemia', 'Persistent vomiting'],
+          distractors: ['Nocturnal heartburn', 'Symptoms twice a week'],
+          why: 'Odynophagia and a palpable epigastric mass are the others. Any of these can mean a stricture, cancer or an ulcer, so the empiric PPI trial is skipped and the esophagus is looked at.' },
+        { type: 'recall', q: 'Who is screened with endoscopy for Barrett esophagus?', a: 'GERD for 5+ years plus 3 risk factors',
+          why: 'The risk factors are male sex, age over 50, White race, central obesity, current or past smoking, and a first-degree relative with Barrett or esophageal adenocarcinoma.' },
+        { type: 'recall', q: 'What on biopsy defines Barrett esophagus?', a: 'Intestinal metaplasia with goblet cells',
+          why: 'Salmon-colored columnar lining extending at least 1 cm above the gastroesophageal junction, with the biopsy showing the stomach-type lining has become intestine-type. The goblet cells are the diagnostic feature.' },
+        { type: 'match', q: 'Match the Barrett biopsy result to its management', pairs: [
+          { left: 'No dysplasia', right: 'EGD every 3–5 years' },
+          { left: 'Low-grade dysplasia', right: 'Ablation or EGD 6–12 mo' },
+          { left: 'High-grade dysplasia', right: 'EMR then ablation' }
+        ] },
+        { type: 'number', q: 'Dyspepsia without alarm features: endoscopy first from what age?', value: 60, unit: 'years',
+          why: 'At 60 and over, or at any age with alarm features, endoscopy comes first to exclude gastric and esophageal cancer. Under 60 without alarm features the approach is test-and-treat for H. pylori.' },
+        { type: 'recall', q: 'Dyspepsia at 45 with no alarm features. First step?', a: 'Test and treat for H. pylori',
+          why: 'With a urea breath test or a monoclonal stool antigen, both over 90% sensitive and specific for active infection. If the test is negative, a four to eight week trial of a daily PPI follows.' },
+        { type: 'recall', q: 'Why isn\'t H. pylori serology used?', a: 'It can\'t tell active from past infection',
+          why: 'Antibodies stay positive for years after the organism is gone, so a positive result has a low positive predictive value and would lead to treating people who are no longer infected. Guidelines recommend against ordering it.' },
+        { type: 'number', q: 'Stop a PPI how long before an H. pylori breath or stool test?', value: 2, unit: 'weeks',
+          why: 'Antibiotics and bismuth are stopped for four weeks. Both suppress the organism enough to give a false negative. H2 blockers and antacids can bridge the symptoms until 24 to 48 hours before the test.' },
+        { type: 'recall', q: 'Preferred first-line regimen for H. pylori?', a: 'Bismuth quadruple therapy, 10–14 days',
+          why: 'A standard-dose PPI twice daily, bismuth four times daily, tetracycline 500 mg four times daily and metronidazole 500 mg three or four times daily.' },
+        { type: 'recall', q: 'Why is clarithromycin triple therapy no longer the default?', a: 'Resistance now exceeds 15–20%',
+          why: 'Clarithromycin resistance across North America has climbed past the level at which the regimen reliably works. It is used only where local resistance is documented under 15% and the patient has never had a macrolide for any reason.' },
+        { type: 'recall', q: 'After H. pylori treatment, what must every patient have?', a: 'A test of cure four or more weeks later',
+          why: 'With a breath test or stool antigen, after holding the PPI for two weeks. Rising resistance means a meaningful fraction of first courses fail, and an untreated infection carries on toward ulcers and gastric cancer.' }
+      ]
+    },
+
+    {
+      id: 'gi-ugib',
+      subject: 'GI & Hepatology',
+      topic: 'Esophagus & Stomach',
+      name: 'UPPER GI BLEED',
+      blurb: 'Resuscitation, the PPI, the transfusion threshold, varices and the perforated ulcer',
+      cards: [
+        { type: 'recall', q: 'Melena with a BUN-to-creatinine ratio of 25. Where is the bleeding from?', a: 'The upper GI tract',
+          why: 'Melena is black, tarry stool from digested blood. A ratio above 20 to 30 supports an upper source; a brisk upper bleed can also present as red blood per rectum with hemodynamic instability.' },
+        { type: 'recall', q: 'Why does an upper GI bleed raise the BUN out of proportion to the creatinine?', a: 'Blood proteins are digested and reabsorbed',
+          why: 'Blood in the small intestine is broken down into amino acids and absorbed, and the liver turns the nitrogen into urea. Blood that enters below the small bowel is not digested, so a colonic bleed does not raise the BUN.' },
+        { type: 'multi', q: 'Before endoscopy for a non-variceal upper GI bleed, what is done?',
+          answers: ['Two large IVs, crystalloid', 'High-dose IV PPI', 'Transfuse only if Hb ≤7', 'IV erythromycin before EGD'],
+          distractors: ['Octreotide', 'Transfuse to Hb 10'],
+          why: 'Two 18-gauge or larger lines with Ringer\'s or saline, an 80 mg bolus of pantoprazole or esomeprazole on arrival, a restrictive transfusion threshold, and erythromycin 250 mg 30 to 90 minutes before the scope to empty the stomach of clot.' },
+        { type: 'recall', q: 'Why is a high-dose PPI given before the endoscopy?', a: 'A gastric pH above 6 stabilizes the clot',
+          why: 'Acid and pepsin dissolve platelet plugs. Raising the pH lets the clot hold, downgrades the high-risk appearances the endoscopist would otherwise find, such as a spurting vessel, and reduces the need for endoscopic treatment.' },
+        { type: 'number', q: 'Transfusion threshold in a hemodynamically stable patient with an upper GI bleed?', value: 7, unit: 'g/dL',
+          why: 'Raised to 8 in patients with coronary disease, an acute coronary syndrome or recent bypass surgery. Transfusing more liberally than this increases rebleeding and mortality.' },
+        { type: 'recall', q: 'Why does transfusing above a hemoglobin of 7 worsen outcomes in a GI bleed?', a: 'It raises portal and splanchnic pressure',
+          why: 'Extra volume in the portal circulation increases the pressure at the bleeding site, so the clot is more likely to give way. The trials showed more rebleeding and more deaths with a liberal threshold.' },
+        { type: 'number', q: 'Endoscopy for an upper GI bleed should happen within how many hours?', value: 24, unit: 'hours',
+          why: 'After the patient has been resuscitated. A suspected variceal bleed in a cirrhotic is scoped sooner, within 12 hours.' },
+        { type: 'multi', q: 'A cirrhotic presents with hematemesis. What is added to the standard bleed care?',
+          answers: ['IV octreotide', 'IV ceftriaxone', 'EGD within 12 hours'],
+          distractors: ['Higher transfusion target', 'IV vitamin K first'],
+          why: 'Octreotide, a bolus then infusion for three to five days, lowers splanchnic blood flow and portal pressure. Ceftriaxone 1 g daily for up to seven days. The transfusion threshold stays at 7, because more volume means more portal pressure. Band ligation is done at the early endoscopy.' },
+        { type: 'recall', q: 'Why do cirrhotics with a variceal bleed get prophylactic antibiotics?', a: 'They cut infections, rebleeding and death',
+          why: 'Gut bacteria cross into the bloodstream during a variceal bleed, and the resulting infections drive rebleeding and mortality. A short course of ceftriaxone reduces all three, which is why it is given to every cirrhotic with an upper GI bleed, not only those who look infected.' },
+        { type: 'recall', q: 'Sudden severe epigastric pain and a rigid abdomen in a patient on daily NSAIDs. Test of choice?', a: 'CT of the abdomen and pelvis',
+          why: 'CT is about 98% sensitive for free intraperitoneal air and shows where the perforation is. Upright plain films miss 15 to 30% of perforations, particularly retroperitoneal duodenal ones, and do not localize them.' },
+        { type: 'recall', q: 'Why is endoscopy contraindicated when a perforated ulcer is suspected?', a: 'Insufflated air can turn it into tension pneumoperitoneum',
+          why: 'The endoscope inflates the stomach to see. Air pushed through a hole converts a contained leak into free peritonitis and a tense abdomen. The diagnosis is made with CT and the patient goes to surgery.' },
+        { type: 'recall', q: 'Definitive treatment for a perforated peptic ulcer?', a: 'Surgical repair with an omental patch',
+          why: 'The Graham patch closes the hole with a piece of omentum. Laparotomy is reserved for repair after CT confirmation, or for a patient too unstable to image.' }
+      ]
+    },
+
   ];
 
   global.Decks = { BUILTIN: BUILTIN };
