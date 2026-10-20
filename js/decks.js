@@ -5955,6 +5955,76 @@
       ]
     },
 
+    {
+      id: 'ms-spine', subject: 'MSK & Sports Medicine', topic: 'Spine & Chronic Pain', name: 'TMJ & LOW BACK',
+      blurb: 'Temporomandibular dysfunction, lumbar radiculopathy, red flags and sacroiliac pain.',
+      cards: [
+        { type: 'recall', q: 'Ear pain with a normal canal and eardrum, worse with chewing, and clicking over the jaw joint. Diagnosis?', a: 'Temporomandibular joint dysfunction',
+          why: 'The joint sits just in front of the ear and shares sensory nerves with it, so TMJ pain is one of the most common causes of referred otalgia. Look for restricted opening under 35 to 40 mm, jaw deviation, nocturnal grinding and tender masseter and temporalis muscles. An otoscope that shows nothing is the clue.' },
+        { type: 'recall', q: 'Imaging needed to diagnose temporomandibular joint dysfunction?', a: 'None',
+          why: 'It is a clinical diagnosis made from the history and palpation of the joint and the muscles of mastication. Radiographs, CT and MRI are reserved for trauma, suspected tumor or failure of months of conservative care.' },
+        { type: 'recall', q: 'First-line drug treatment for temporomandibular joint dysfunction?', a: 'Short course of an NSAID plus cyclobenzaprine',
+          why: 'The NSAID treats joint inflammation and the muscle relaxant breaks the masticatory muscle spasm, alongside a soft diet, avoiding wide yawning and gum, compresses and jaw exercises. A low-dose tricyclic or an occlusal nightguard helps chronic bruxism. Opioids and irreversible dental occlusal adjustments are avoided.' },
+        { type: 'number', q: 'Percent of acute lumbar radiculopathy cases that resolve with conservative care within 6 to 12 weeks?', value: 85, unit: '%',
+          why: 'Eighty to ninety percent of L4-5 and L5-S1 disc herniations improve on their own as the herniated fragment shrinks. That is why imaging and referral wait 4 to 6 weeks in the absence of red flags. Staying active, heat, NSAIDs, physical therapy and spinal manipulation are the first-line measures.' },
+        { type: 'recall', q: 'Why is bed rest avoided in acute sciatica?', a: 'It slows recovery compared with staying active',
+          why: 'Rest deconditions the trunk muscles, stiffens the spine and reinforces fear of movement, and trials show longer disability than with ordinary activity as tolerated. Patients are told to keep moving, use superficial heat and NSAIDs, and start physical therapy.' },
+        { type: 'truefalse', q: 'A short oral prednisone taper speeds recovery from acute sciatica.', a: false,
+          why: 'Randomized trials show systemic corticosteroids give no meaningful improvement in pain or function for acute low back pain or radiculopathy, and they add hyperglycemia and insomnia. They are a classic board distractor. Epidural steroid injection is a separate question with modest short-term benefit.' },
+        { type: 'multi', q: 'Select the red flags that justify an early lumbar MRI in acute back pain.',
+          answers: ['New urinary retention', 'Progressive foot drop', 'Fever in an injection drug user', 'History of cancer'],
+          distractors: ['Pain radiating below the knee', 'Positive straight-leg raise', 'Pain at night in bed'],
+          why: 'Urinary retention points to cauda equina, progressive weakness to a compressive lesion, fever with drug use to an epidural abscess and cancer history to metastasis, and each needs imaging now. Radiating pain and a positive straight-leg raise only confirm an ordinary radiculopathy that gets 4 to 6 weeks of conservative care first.' },
+        { type: 'recall', q: 'Symptom that signals cauda equina syndrome in a patient with sciatica?', a: 'New urinary retention',
+          why: 'Compression of the sacral roots paralyzes the bladder before anything else, and retention with overflow is the most consistent early sign, often with saddle numbness and bilateral leg symptoms. It is a surgical emergency, so the patient goes for urgent MRI and decompression rather than a trial of therapy.' },
+        { type: 'recall', q: 'Postpartum one-sided buttock pain when rising from a chair or climbing stairs, normal neurologic exam. Diagnosis?', a: 'Sacroiliac joint dysfunction',
+          why: 'Relaxin loosens the pelvic ligaments and delivery strains the joint, so the pain is mechanical, worst with transitional movements and lying on that side, and rarely goes below the knee. The Fortin finger sign, pinpoint tenderness just inferomedial to the posterior superior iliac spine, and provocation tests such as FABER and thigh thrust confirm it.' },
+        { type: 'recall', q: 'Exam sign where the patient points with one finger to the spot just below and inside the posterior superior iliac spine?', a: 'Fortin finger sign',
+          why: 'Sacroiliac pain is remarkably well localized, and a patient who puts a single finger on the joint line inferomedial to the PSIS is pointing at the diagnosis. Combine it with FABER, thigh thrust, compression, distraction and Gaenslen tests. Treat with a pelvic stabilization belt, physical therapy or manipulation and NSAIDs.' },
+        { type: 'recall', q: 'Why does sacroiliac pain rarely radiate below the knee while an L5 radiculopathy does?', a: 'It is referred joint pain, not nerve root compression',
+          why: 'The sacroiliac joint refers to the buttock and posterior thigh through its own sensory supply and does not involve a nerve root, so there is no dermatomal pattern, no weakness and no reflex loss. A positive straight-leg raise or pain into the foot points back to the disc.' }
+      ]
+    },
+
+    {
+      id: 'ms-painsyn', subject: 'MSK & Sports Medicine', topic: 'Spine & Chronic Pain', name: 'FIBROMYALGIA & CRPS',
+      blurb: 'Central sensitization, what works and what does not, and complex regional pain syndrome.',
+      cards: [
+        { type: 'recall', q: 'Why does fibromyalgia hurt everywhere when the muscles and joints are normal?', a: 'The central nervous system amplifies pain signals',
+          why: 'Central sensitization means ordinary input is processed as pain, with reduced descending serotonergic and noradrenergic inhibition. That is why exam, ESR, CRP, CK and TSH are all normal and why drugs that act on central pain pathways work while anti-inflammatories do not.' },
+        { type: 'multi', q: 'Select the features of the fibromyalgia clinical triad.',
+          answers: ['Widespread pain over 3 months', 'Fatigue and nonrestorative sleep', 'Cognitive fog'],
+          distractors: ['Objective joint swelling', 'Elevated inflammatory markers', 'Proximal muscle weakness'],
+          why: 'Chronic pain above and below the waist on both sides, profound fatigue with unrefreshing sleep and difficulty concentrating make the diagnosis, often alongside irritable bowel, migraine, TMJ dysfunction and depression. Swelling, raised markers or weakness mean a different disease.' },
+        { type: 'truefalse', q: 'ANA and rheumatoid factor should be ordered routinely in suspected fibromyalgia.', a: false,
+          why: 'Low-titer ANA is common in healthy people and a positive result sends the patient down a lupus workup for a disease they do not have. Order ESR, CRP, CK, TSH and a blood count, which are normal in fibromyalgia, and reserve autoantibodies for true synovitis on exam.' },
+        { type: 'recall', q: 'Treatment with the strongest evidence in fibromyalgia?', a: 'Graded aerobic and strength exercise',
+          why: 'Exercise improves pain, function and sleep more reliably than any drug and is the foundation every other treatment is added to. Cognitive behavioral therapy and sleep hygiene are the other nonpharmacologic pillars. Starting low and building gradually keeps patients from flaring and quitting.' },
+        { type: 'multi', q: 'Select the first-line medications for fibromyalgia.',
+          answers: ['Duloxetine', 'Pregabalin', 'Amitriptyline', 'Cyclobenzaprine'],
+          distractors: ['Naproxen', 'Tramadol', 'Prednisone'],
+          why: 'SNRIs such as duloxetine and milnacipran, the anticonvulsant pregabalin and low-dose amitriptyline or cyclobenzaprine at bedtime all act on central pain processing. NSAIDs, acetaminophen, corticosteroids and opioids including tramadol have no proven benefit and are avoided.' },
+        { type: 'recall', q: 'Why do NSAIDs and opioids fail in fibromyalgia?', a: 'There is no peripheral inflammation to treat',
+          why: 'The pain is generated centrally, so blocking prostaglandins in normal tissue does nothing, and opioids can worsen central sensitization and add dependence. Drugs that raise serotonin and norepinephrine or calm hyperexcitable neurons address the actual mechanism.' },
+        { type: 'recall', q: 'Fibromyalgia drug to favor when sleep disturbance is the dominant complaint?', a: 'Amitriptyline or cyclobenzaprine at bedtime',
+          why: 'Both are sedating at low doses and improve sleep quality, which in turn eases pain and fatigue. Duloxetine is better when depression coexists, and pregabalin when pain and anxiety dominate. Matching the drug to the leading symptom is the usual exam question.' },
+        { type: 'recall', q: 'Burning pain out of proportion to a healed wrist fracture, skin cold, mottled and painful to light touch. Diagnosis?', a: 'Complex regional pain syndrome',
+          why: 'CRPS develops 4 to 6 weeks after a distal radius fracture, ankle injury or limb surgery through autonomic and neuroinflammatory dysregulation. Allodynia, temperature or color asymmetry, swelling or sweating changes and trophic skin and nail changes make up the Budapest criteria. Pain that crosses nerve territories separates it from a nerve injury.' },
+        { type: 'multi', q: 'Select the Budapest criteria categories for complex regional pain syndrome.',
+          answers: ['Sensory: allodynia', 'Vasomotor: temperature asymmetry', 'Sudomotor: swelling or sweating', 'Motor or trophic changes'],
+          distractors: ['Dermatomal numbness', 'Positive Tinel sign', 'Elevated CRP'],
+          why: 'The diagnosis needs continuing disproportionate pain plus symptoms and signs across these four categories. Dermatomal findings and a Tinel sign belong to a single nerve lesion, and inflammatory markers are normal. Radiographs late on show patchy periarticular osteopenia.' },
+        { type: 'number', q: 'Skin temperature difference between limbs that counts as vasomotor asymmetry in complex regional pain syndrome?', value: 1, unit: '°C',
+          why: 'A difference of more than one degree, measured side to side, is the vasomotor criterion, alongside red, mottled or cyanotic color change. Patients often describe the limb as cold and discolored, and the asymmetry can swing warm early and cold later.' },
+        { type: 'recall', q: 'Supplement that reduces the risk of complex regional pain syndrome after a distal radius fracture?', a: 'Vitamin C 500 mg daily for 50 days',
+          why: 'Vitamin C is an antioxidant that appears to blunt the neuroinflammatory response after injury, and trials show fewer cases of CRPS when it is started at the time of the fracture. It is cheap and safe, so it is given routinely.' },
+        { type: 'recall', q: 'First-line treatment for complex regional pain syndrome?', a: 'Early multimodal physical and occupational therapy',
+          why: 'Tactile desensitization, graded motor imagery and mirror box therapy retrain the brain\'s map of the limb and restore movement, which immobilization makes worse. Gabapentin or pregabalin, duloxetine, tricyclics, bisphosphonates or an early short steroid burst support the therapy, and sympathetic blocks are for refractory pain.' },
+        { type: 'recall', q: 'Why is immobilization harmful in complex regional pain syndrome?', a: 'Disuse deepens the sensitization and trophic changes',
+          why: 'Splinting a painful limb seems kind but it feeds the cortical reorganization behind the condition and lets the skin, bone and joints atrophy. Movement is the treatment, so the limb is unloaded only as much as the therapy requires.' }
+      ]
+    },
+
   ];
 
   global.Decks = { BUILTIN: BUILTIN };
