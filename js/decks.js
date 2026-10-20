@@ -5686,6 +5686,98 @@
       ]
     },
 
+    {
+      id: 'ms-shoulder', subject: 'MSK & Sports Medicine', topic: 'Upper Extremity', name: 'SHOULDER',
+      blurb: 'Frozen shoulder, labral tears, anterior dislocation and the rotator cuff.',
+      cards: [
+        { type: 'recall', q: 'Exam finding that separates adhesive capsulitis from rotator cuff disease?', a: 'Loss of passive range of motion',
+          why: 'A contracted capsule blocks the joint no matter who moves it, so both active and passive motion are lost, worst in external rotation and abduction. A painful or torn cuff limits active motion through pain and weakness, but the examiner can still move the arm through a full passive arc.' },
+        { type: 'recall', q: 'Why is passive external rotation the most restricted movement in adhesive capsulitis?', a: 'The coracohumeral ligament contracts first',
+          why: 'Fibroblastic proliferation thickens the rotator interval and coracohumeral ligament, which are the main restraints to external rotation. Passive external rotation under half of the other side is the hallmark. Diabetes raises the risk to as high as 20 percent, and hypothyroidism, Parkinson disease and immobilization are the other associations.' },
+        { type: 'recall', q: 'Why are plain radiographs ordered in suspected adhesive capsulitis when the diagnosis is clinical?', a: 'To exclude arthritis or a locked posterior dislocation',
+          why: 'Both of those also take away passive motion and both look like a frozen shoulder on exam. The films in true adhesive capsulitis are normal. MRI adds nothing to the diagnosis and is not needed.' },
+        { type: 'recall', q: 'First-line treatment for adhesive capsulitis?', a: 'Intra-articular steroid injection plus physical therapy',
+          why: 'The combination restores motion and relieves pain faster than therapy or NSAIDs alone, especially in the painful freezing phase. A sling is the one thing to avoid because immobilization feeds the contracture. The condition runs through freezing, frozen and thawing phases over one to two years.' },
+        { type: 'recall', q: 'Overhead athlete with deep shoulder pain and catching or popping, and a positive O\'Brien test. Diagnosis?', a: 'Superior labral (SLAP) tear',
+          why: 'Repetitive overhead loading or a fall on the outstretched arm tears the labrum at the biceps anchor, producing mechanical symptoms that cuff tendinopathy does not. The anterior slide and O\'Brien active compression tests are the provocative maneuvers. Start with scapular stabilization and posterior capsule stretching.' },
+        { type: 'recall', q: 'Best nonoperative imaging for a suspected labral tear?', a: 'MR arthrography',
+          why: 'Intra-articular gadolinium distends the joint and outlines the labrum, which plain MRI often misses. Order it when therapy fails and arthroscopic repair or biceps tenodesis is being considered, not as a first step.' },
+        { type: 'recall', q: 'Nerve to examine before and after reducing an anterior shoulder dislocation?', a: 'Axillary nerve',
+          why: 'The axillary nerve wraps around the surgical neck of the humerus and is stretched when the head dislocates anteroinferiorly. Test sensation over the lateral deltoid, the regimental badge area, because deltoid strength cannot be tested in a dislocated or freshly reduced shoulder. Document it both times so a reduction is not blamed for the injury.' },
+        { type: 'match', q: 'Match each lesion that accompanies anterior shoulder dislocation to what it is.',
+          pairs: [
+            { left: 'Bankart lesion', right: 'Torn anteroinferior labrum' },
+            { left: 'Hill-Sachs defect', right: 'Humeral head dent' },
+            { left: 'Axillary nerve injury', right: 'Numb lateral deltoid' },
+            { left: 'Rotator cuff tear', right: 'Weakness after age 40' }
+          ] },
+        { type: 'number', q: 'Recurrence rate of anterior shoulder dislocation in young athletes treated with a sling alone?', value: 85, unit: '%',
+          why: 'Eighty to ninety percent of patients under 25 to 30 redislocate after nonoperative care because the torn labrum does not heal back to the glenoid. That is why a first-time dislocation in a young contact or overhead athlete goes to arthroscopic Bankart stabilization rather than a second trial of the sling.' },
+        { type: 'recall', q: 'Why is a first-time anterior dislocation in a 19-year-old rugby player referred for surgery?', a: 'Nonoperative treatment fails in most young athletes',
+          why: 'Young age and contact sport are the strongest predictors of recurrence, and each redislocation enlarges the Hill-Sachs defect and the bone loss on the glenoid. Early arthroscopic Bankart repair cuts recurrence to a fraction. Older adults rarely redislocate and are managed in a sling.' },
+        { type: 'recall', q: 'Complication to look for in a 55-year-old whose shoulder stays weak 3 weeks after reduction of a dislocation?', a: 'Rotator cuff tear',
+          why: 'Forty to sixty percent of patients over 40 tear the cuff during an anterior dislocation, because the aging tendon fails before the labrum does. Persistent weakness two to three weeks out needs MRI or ultrasound, since a delayed repair allows muscle atrophy and fatty infiltration.' },
+        { type: 'multi', q: 'Select the radiographic views needed before and after reducing a shoulder dislocation.',
+          answers: ['Anteroposterior', 'Scapular Y', 'Axillary'],
+          distractors: ['Lateral humerus', 'Stryker notch', 'Oblique clavicle'],
+          why: 'The AP view shows the dislocation, the scapular Y confirms direction and the axillary view catches a posterior dislocation and a Hill-Sachs defect that the other two miss. Films before reduction document fractures that a reduction would otherwise be blamed for.' },
+        { type: 'match', q: 'Match each exam maneuver to the rotator cuff muscle it tests.',
+          pairs: [
+            { left: 'Empty can', right: 'Supraspinatus' },
+            { left: 'Resisted external rotation', right: 'Infraspinatus' },
+            { left: 'Lift-off test', right: 'Subscapularis' },
+            { left: 'Drop-arm test', right: 'Full-thickness tear' }
+          ] },
+        { type: 'recall', q: 'Lateral shoulder pain with overhead reaching, worse lying on that side at night, painful arc 60 to 120 degrees. Diagnosis?', a: 'Rotator cuff tendinopathy',
+          why: 'The supraspinatus is pinched under the acromion through the middle of abduction, which is where the arc hurts, and lying on the shoulder compresses the inflamed tendon. Night pain is the classic complaint. Treat with eccentric cuff and scapular stabilizer strengthening, NSAIDs and a subacromial steroid injection if needed.' },
+        { type: 'recall', q: 'Exam test that indicates a full-thickness rotator cuff tear rather than tendinopathy?', a: 'Drop-arm test',
+          why: 'With the supraspinatus torn through, the patient cannot lower the abducted arm slowly and it drops. The empty can and impingement signs are positive in both tendinopathy and tear, so they cannot make the distinction.' },
+        { type: 'recall', q: 'Why does an acute full-thickness cuff tear in a young patient need repair within 6 weeks?', a: 'The detached muscle atrophies and turns to fat',
+          why: 'Once the tendon retracts, the detached muscle undergoes fatty infiltration that does not reverse, and a late repair fails or retears. Prompt MRI and early surgery give the best function. Degenerative tears in older adults are managed with therapy first.' }
+      ]
+    },
+
+    {
+      id: 'ms-hand', subject: 'MSK & Sports Medicine', topic: 'Upper Extremity', name: 'WRIST & HAND',
+      blurb: 'Scaphoid fracture, pediatric buckle fracture, fingertip injuries and finger dislocations.',
+      cards: [
+        { type: 'recall', q: 'Most commonly fractured carpal bone?', a: 'Scaphoid',
+          why: 'A fall on the outstretched hand with the wrist hyperextended and radially deviated drives the scaphoid against the radius. Look for anatomic snuffbox tenderness, tenderness over the volar scaphoid tubercle and pain with axial compression of the thumb.' },
+        { type: 'number', q: 'Percent of acute scaphoid fractures missed on initial radiographs?', value: 20, unit: '%',
+          why: 'Fifteen to twenty-five percent are invisible on the first films, even with a dedicated scaphoid view. That is why snuffbox tenderness with a normal x-ray is treated as a fracture until proven otherwise.' },
+        { type: 'recall', q: 'Why does a missed scaphoid waist fracture lead to avascular necrosis?', a: 'Blood enters distally and flows back to the proximal pole',
+          why: 'Branches of the radial artery enter at the distal pole, so a fracture through the waist cuts off the proximal fragment. Untreated, that fragment dies, the fracture fails to unite and the wrist develops arthritis, the SNAC wrist. Early immobilization protects the supply while it heals.' },
+        { type: 'recall', q: 'Management of snuffbox tenderness with normal wrist radiographs?', a: 'Thumb spica splint and repeat films in 10 to 14 days',
+          why: 'Bone resorbs along an occult fracture line over two weeks and makes it visible on the repeat films. If an athlete or manual worker needs an immediate answer, a noncontrast MRI or CT settles it the same day. Never discharge on the strength of the first x-ray.' },
+        { type: 'recall', q: 'Why is a pediatric buckle fracture of the distal radius stable?', a: 'One cortex buckles and the periosteum stays intact',
+          why: 'A child\'s porous metaphysis crumples on the dorsal side under axial load while the volar cortex and thick periosteum hold, so the fracture cannot displace. That stability is the whole reason it can be treated so simply.' },
+        { type: 'recall', q: 'Treatment for a pediatric distal radius buckle fracture?', a: 'Removable wrist splint for 2 to 3 weeks',
+          why: 'Trials show a prefabricated splint or soft bandage heals these as well as a cast, with no orthopedic referral, no follow-up visit and no repeat films. Parents remove the splint once the child is pain free. Greenstick and complete fractures can angulate and still need casting and follow-up.' },
+        { type: 'truefalse', q: 'A pediatric buckle fracture of the distal radius needs a repeat radiograph to confirm healing.', a: false,
+          why: 'The fracture is inherently stable and cannot displace, so repeat imaging changes nothing and adds radiation and a visit. Clinical recovery is the endpoint. Repeat films are reserved for greenstick and bicortical fractures that can lose position.' },
+        { type: 'recall', q: 'Splint for a distal phalanx tuft fracture?', a: 'DIP joint in extension for 4 to 6 weeks, PIP free',
+          why: 'A stack or aluminum splint protects the fingertip while the crush injury heals. Including the PIP joint in the splint stiffens a joint that was never injured, so it is left free to move.' },
+        { type: 'number', q: 'Subungual hematoma covering less than what fraction of the nail bed needs no drainage?', value: 50, unit: '%',
+          why: 'A small hematoma that is not causing severe throbbing pain resolves on its own. Trephinate with cautery or an 18-gauge needle only for an acutely painful, throbbing collection. Removing the nail to repair the bed is obsolete as long as the nail edges are intact.' },
+        { type: 'recall', q: 'Structure disrupted in a dorsal PIP dislocation?', a: 'Volar plate',
+          why: 'Hyperextension with axial load, the jammed finger, tears the volar plate as the middle phalanx rides dorsally. Reduce under digital block, test stability and get a post-reduction lateral film to measure any volar lip fracture.' },
+        { type: 'recall', q: 'Management of a stable dorsal PIP dislocation with a volar lip fragment under 30 percent of the joint surface?', a: 'Short extension splint, then buddy taping 3 to 6 weeks',
+          why: 'A few days in an extension splint settles the pain, and buddy taping to the neighbor finger then allows early protected motion, which prevents the stiffness that prolonged splinting causes. Unstable joints or fragments over 30 to 40 percent go to hand surgery for extension-block splinting or fixation.' },
+        { type: 'recall', q: 'Why does a central slip rupture produce PIP flexion with DIP hyperextension?', a: 'The lateral bands slip volar to the PIP axis',
+          why: 'Without the central slip holding them dorsally, the lateral bands drop below the joint axis and become PIP flexors while still pulling the DIP into extension. That is the boutonniere deformity. The Elson test catches the rupture before the deformity appears.' },
+        { type: 'recall', q: 'Splint for a central slip rupture?', a: 'PIP straight for 6 weeks while actively flexing the DIP',
+          why: 'Holding the PIP straight lets the central slip heal, and actively bending the DIP pulls the lateral bands back dorsally where they belong. Splinting both joints would leave the lateral bands displaced and the deformity fixed.' },
+        { type: 'recall', q: 'Ball strikes an extended fingertip and the patient cannot actively extend the DIP joint. Diagnosis?', a: 'Mallet finger',
+          why: 'Forced flexion avulses the terminal extensor tendon from the distal phalanx, with or without a small dorsal bone fragment. The fingertip droops and cannot be lifted actively but extends passively. Refer if the fragment is over a third of the joint surface or the joint subluxes volarly.' },
+        { type: 'number', q: 'Minimum weeks of continuous DIP extension splinting for a mallet finger?', value: 6, unit: 'weeks',
+          why: 'Six to eight weeks of uninterrupted extension lets the tendon scar back to bone. If the patient takes the splint off and lets the tip droop even once, the healing tendon pulls apart and the clock restarts. The PIP is left free throughout.' },
+        { type: 'recall', q: 'Cannot actively flex the DIP joint of the ring finger after grabbing an opponent\'s jersey. Diagnosis?', a: 'Jersey finger',
+          why: 'Forced extension of an actively flexed finger avulses the flexor digitorum profundus from the distal phalanx, and 75 percent occur in the ring finger. Test by holding the PIP in extension and asking for DIP flexion. The tendon retracts into the palm, so it cannot heal with a splint.' },
+        { type: 'recall', q: 'Why does jersey finger need urgent surgical referral while mallet finger is splinted?', a: 'The retracted flexor tendon cannot reach bone on its own',
+          why: 'The profundus tendon snaps back into the sheath or palm and loses its blood supply, so reinsertion within 7 to 10 days is the only way to restore DIP flexion. The extensor in mallet finger stays near the bone and heals in a splint.' }
+      ]
+    },
+
   ];
 
   global.Decks = { BUILTIN: BUILTIN };
