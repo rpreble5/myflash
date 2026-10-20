@@ -352,6 +352,29 @@
         b.appendChild(box);
         b.appendChild(h('span', 'choice-text', opt));
         b.style.setProperty('--i', i);
+        /* The box is the button: it sinks on press, the text beside it
+           only changes color. Not pressable(): the card captures the
+           pointer for the submit swipe, and capture fires pointerleave
+           on the row, which would lift the press the instant it lands.
+           So the release is tracked on the document instead. */
+        b.addEventListener('pointerdown', function () {
+          if (locked) return;
+          b.classList.add('is-pressed');
+          global.Sfx.press();
+          var r = b.getBoundingClientRect();
+          function move(ev) {
+            if (ev.clientX < r.left || ev.clientX > r.right || ev.clientY < r.top || ev.clientY > r.bottom) end();
+          }
+          function end() {
+            b.classList.remove('is-pressed');
+            document.removeEventListener('pointermove', move);
+            document.removeEventListener('pointerup', end);
+            document.removeEventListener('pointercancel', end);
+          }
+          document.addEventListener('pointermove', move);
+          document.addEventListener('pointerup', end);
+          document.addEventListener('pointercancel', end);
+        });
         btns.push(b);
         keyMap[String(i + 1)] = function () { toggle(i); };
         grid.appendChild(b);

@@ -274,9 +274,49 @@
    a missed answer is loud and solid, a wrong pick is quiet and hollow. */
 /* After checking: solid green you got, coral you shouldn't have
    picked, and a green outline for a right answer you missed. */
-.is-multi .choice-btn.is-missed { background: var(--bg); border-color: var(--ok); color: var(--ok-dark); }
-.is-multi .choice-btn.is-missed .choice-key { border-color: var(--ok); color: var(--ok-dark); }
 .is-multi .choice-btn.is-idle { opacity: .3; }
+
+/* ── Select all: the checkbox is the button ─────────────────
+   The row has no outline of its own. The box carries the chunk, the
+   press and the verdict; the text beside it only changes color. The
+   whole row still takes the tap, so a thumb on the words counts. */
+.choice-grid.is-multi { gap: .5rem; }
+.is-multi .choice-btn {
+  padding: .4rem .3rem;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  gap: .95rem;
+  font-size: 1.15rem;
+}
+.is-multi .choice-btn.is-pressed { margin-top: 0; background: transparent; }
+.is-multi .choice-box {
+  width: 46px; height: 46px;
+  border: 3px solid var(--line);
+  border-bottom-width: 7px;
+  border-radius: 14px;
+  background: var(--bg);
+  color: var(--muted);
+  font-size: 1.3rem;
+  transition: background-color .14s ease, color .14s ease, border-color .14s ease,
+              transform .07s ease, border-bottom-width .07s ease;
+}
+/* Sinks into its bottom edge, like every other button. */
+.is-multi .choice-btn.is-pressed .choice-box { border-bottom-width: 3px; transform: translateY(4px); }
+/* Picked: the box fills blue and the words go with it. */
+.choice-grid.is-multi:not(.is-locked) .choice-btn.is-picked .choice-text { color: var(--brand-dark); }
+/* After checking, the verdict lives in the box and tints the text:
+   solid blue for a right answer, magenta for a wrong pick, and a
+   hollow blue box for a right answer you missed. */
+.is-multi .choice-btn.is-right,
+.is-multi .choice-btn.is-wrong,
+.is-multi .choice-btn.is-missed { background: transparent; border-color: transparent; }
+.is-multi .choice-btn.is-right { color: var(--ok-dark); }
+.is-multi .choice-btn.is-right .choice-box { background: var(--ok); border-color: var(--ok-dark); color: #fff; }
+.is-multi .choice-btn.is-wrong { color: var(--bad-dark); }
+.is-multi .choice-btn.is-wrong .choice-box { background: var(--bad); border-color: var(--bad-dark); color: #fff; }
+.is-multi .choice-btn.is-missed { color: var(--ok-dark); }
+.is-multi .choice-btn.is-missed .choice-box { background: var(--bg); border-color: var(--ok); color: var(--ok-dark); }
 
 /* ── Explanation ─────────────────────────────────────────────
    Short notes render inline; long ones fold behind a toggle so the
