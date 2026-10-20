@@ -5864,7 +5864,7 @@
       blurb: 'Ottawa ankle and foot rules, fifth metatarsal zones, Lisfranc injury and stress fractures.',
       cards: [
         { type: 'multi', q: 'Select the Ottawa ankle rule findings that call for ankle radiographs.',
-          answers: ['Posterior lateral malleolus tender', 'Posterior medial malleolus tender', 'Cannot take 4 steps'],
+          answers: ['Back of lateral malleolus tender', 'Back of medial malleolus tender', 'Cannot take 4 steps'],
           distractors: ['Anterior talofibular tender', 'Lateral ankle swelling', 'Ecchymosis over the malleolus'],
           why: 'The rule asks about bone, not ligament. Tenderness along the posterior edge or tip of either malleolus over its distal 6 cm, or inability to bear weight for four steps both at injury and in the exam room, means films. Swelling, bruising and tenderness over the ligaments in front of the malleolus do not.' },
         { type: 'multi', q: 'Select the Ottawa foot rule findings that call for midfoot radiographs.',
