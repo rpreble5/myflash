@@ -6744,6 +6744,96 @@
       ]
     },
 
+    {
+      id: 'nu-incont', subject: 'Nephrology & Urology', topic: 'Bladder & Infection', name: 'INCONTINENCE & OAB',
+      blurb: 'The workup every incontinent patient gets, the three types, and the drugs by age.',
+      cards: [
+        { type: 'recall', q: 'Test ordered in every patient presenting with new urinary incontinence?', a: 'Urinalysis',
+          why: 'Infection, glycosuria and hematuria are reversible or important causes that history alone misses. The rest of the initial evaluation is a focused history with a voiding diary, a medication review and a pelvic or genitourinary exam. Post-void residual is measured only when overflow or poor emptying is suspected.' },
+        { type: 'multi', q: 'Select the reversible causes of incontinence in the DIAPPERS mnemonic.',
+          answers: ['Delirium', 'Urinary infection', 'Atrophic vaginitis', 'Diuretics and sedatives', 'Stool impaction'],
+          distractors: ['Detrusor overactivity', 'Multiparity'],
+          why: 'Delirium, infection, atrophic vaginitis, pharmaceuticals, psychological causes, excess urine output, restricted mobility and stool impaction are the transient causes to fix before labeling the type. Detrusor overactivity and pelvic floor weakness are the established mechanisms, not reversible triggers.' },
+        { type: 'number', q: 'Post-void residual volume above which urinary retention is diagnosed?', value: 200, unit: 'mL',
+          why: 'Normal is under 50 to 100 mL. A residual over 200 to 300 mL means the bladder is not emptying, from detrusor underactivity or outlet obstruction, and points to overflow incontinence. It is checked only when the history suggests poor emptying.' },
+        { type: 'recall', q: 'Leakage of small amounts of urine with coughing, sneezing or lifting, with a normal post-void residual. Type?', a: 'Stress incontinence',
+          why: 'A weak urethral sphincter or hypermobile pelvic floor cannot hold against a rise in abdominal pressure. Multiparity, obesity and prostatectomy are the usual causes. There is no urgency and the bladder empties normally.' },
+        { type: 'recall', q: 'First-line treatment for stress urinary incontinence?', a: 'Pelvic floor muscle training and weight loss',
+          why: 'Kegel exercises strengthen the sphincter complex and an 8 percent weight loss roughly halves leakage episodes. Topical vaginal estrogen helps when genitourinary syndrome of menopause is present. A pessary or midurethral sling is second line.' },
+        { type: 'truefalse', q: 'Systemic oral estrogen improves stress urinary incontinence in postmenopausal women.', a: false,
+          why: 'Oral estrogen worsens incontinence, as the WHI trial showed, and alpha blockers do too. Only topical vaginal estrogen helps, and only for the atrophic component. No oral drug is FDA approved for stress incontinence.' },
+        { type: 'recall', q: 'Sudden compelling urge to void with leakage on the way to the bathroom and frequency over 8 times a day. Type?', a: 'Urge incontinence, overactive bladder',
+          why: 'Uninhibited detrusor contractions produce the urgency, and leakage happens before the patient can reach the toilet. Nocturia is common and the post-void residual is normal. Bladder training with scheduled voiding and urge suppression is first line.' },
+        { type: 'recall', q: 'Preferred second-line drug class for overactive bladder in an older adult?', a: 'Beta-3 agonists, mirabegron or vibegron',
+          why: 'They relax the detrusor during filling without anticholinergic effects, so there is no cognitive impairment, delirium, dry mouth or constipation. Antimuscarinics such as oxybutynin are on the Beers list and add to the burden of other anticholinergics the patient may already take.' },
+        { type: 'recall', q: 'Why is mirabegron avoided when blood pressure is 180 over 110?', a: 'Beta-3 stimulation raises blood pressure',
+          why: 'Mirabegron has mild sympathomimetic effect and is contraindicated in severe uncontrolled hypertension, with blood pressure monitored in everyone else. Vibegron does not raise blood pressure and is the alternative in hypertensive patients.' },
+        { type: 'multi', q: 'Select the conditions in which antimuscarinic drugs for overactive bladder should be avoided.',
+          answers: ['Cognitive impairment', 'Narrow-angle glaucoma', 'Urinary retention', 'Gastric retention'],
+          distractors: ['Hypertension', 'Osteoporosis', 'Type 2 diabetes'],
+          why: 'M3 blockade impairs memory, raises intraocular pressure in a narrow angle, and slows both bladder and stomach emptying. Hypertension is the mirabegron concern, not the antimuscarinic one. Trospium crosses the blood-brain barrier least if an antimuscarinic is unavoidable.' },
+        { type: 'multi', q: 'Select the third-line options for refractory overactive bladder.',
+          answers: ['Intradetrusor onabotulinumtoxinA', 'Sacral neuromodulation', 'Tibial nerve stimulation'],
+          distractors: ['Midurethral sling', 'Oral estrogen', 'Tamsulosin'],
+          why: 'When behavioral therapy and drugs fail, botulinum toxin paralyzes the overactive detrusor, and sacral or percutaneous tibial nerve stimulation modulates the reflex arc. The sling treats stress incontinence and has no role in urgency.' },
+        { type: 'recall', q: 'Constant dribbling with a weak hesitant stream and a residual of 400 mL. Type?', a: 'Overflow incontinence',
+          why: 'The bladder is chronically overfilled and leaks from the top, either because the detrusor cannot contract, as in diabetic neuropathy, multiple sclerosis or anticholinergic use, or because the outlet is blocked by prostatic enlargement, prolapse or stricture. The high residual is the defining finding.' },
+        { type: 'recall', q: 'Treatment for overflow incontinence from neurogenic detrusor underactivity?', a: 'Clean intermittent catheterization',
+          why: 'A bladder that cannot contract has to be emptied mechanically, and intermittent catheterization carries less infection risk than an indwelling catheter. Anticholinergics and opioids are stopped. When the cause is obstruction, an alpha blocker and 5-alpha-reductase inhibitor or surgery relieve it instead.' },
+        { type: 'bucket', q: 'Sort each feature by the type of incontinence it belongs to.', bins: ['Stress', 'Urge'],
+          items: [
+            { label: 'Leaks with a cough', bin: 'Stress' },
+            { label: 'Cannot defer the urge', bin: 'Urge' },
+            { label: 'After prostatectomy', bin: 'Stress' },
+            { label: 'Nocturia and frequency', bin: 'Urge' },
+            { label: 'Treated with a sling', bin: 'Stress' },
+            { label: 'Treated with mirabegron', bin: 'Urge' }
+          ],
+          why: 'Stress leakage is mechanical and happens with pressure; urge leakage is neurologic and happens with a bladder contraction. Both have a normal residual, which is what separates them from overflow. Mixed incontinence has features of both and is treated for the dominant symptom.' }
+      ]
+    },
+
+    {
+      id: 'nu-uti', subject: 'Nephrology & Urology', topic: 'Bladder & Infection', name: 'UTI & PROSTATITIS',
+      blurb: 'Acute and chronic prostatitis, cystitis regimens, and who gets treated for asymptomatic bacteriuria.',
+      cards: [
+        { type: 'recall', q: 'High fever, dysuria, perineal pain and an exquisitely tender boggy prostate. Diagnosis?', a: 'Acute bacterial prostatitis',
+          why: 'Gram-negative organisms ascend into the gland and it becomes swollen, warm and tender. Examine gently and once; vigorous massage pushes bacteria into the bloodstream. Get urine and blood cultures and start a fluoroquinolone or TMP-SMX for 2 to 4 weeks, or IV therapy if septic.' },
+        { type: 'recall', q: 'Why is prostatic massage avoided in acute bacterial prostatitis?', a: 'It precipitates bacteremia',
+          why: 'Squeezing an acutely infected gland forces organisms into the prostatic venous plexus and can cause sepsis. A gentle digital exam to confirm tenderness is enough. Massage for expressed secretions is reserved for chronic prostatitis evaluation.' },
+        { type: 'recall', q: 'Man with recurrent urinary infections from the same E. coli strain, with dull perineal ache between episodes. Diagnosis?', a: 'Chronic bacterial prostatitis',
+          why: 'The prostate acts as a reservoir that reseeds the bladder after each course of antibiotics. Pain with ejaculation, low back or testicular ache and a normal or mildly tender prostate between flares complete the picture. Fever is absent.' },
+        { type: 'recall', q: 'Why do fluoroquinolones treat chronic prostatitis when beta-lactams and nitrofurantoin fail?', a: 'They cross the blood-prostate barrier',
+          why: 'In chronic infection the prostatic epithelium is not inflamed, so its lipid barrier is intact and only lipid-soluble zwitterionic drugs reach therapeutic levels inside. Ciprofloxacin or levofloxacin for 4 to 6 weeks cures over 70 percent. TMP-SMX and doxycycline are the second-line alternatives.' },
+        { type: 'number', q: 'Duration of fluoroquinolone treatment for chronic bacterial prostatitis?', value: 6, unit: 'weeks',
+          why: 'Four to six weeks is needed to sterilize a poorly perfused gland. The 2 to 4 weeks used for acute prostatitis and the 3 to 5 days for cystitis leave chronic infection behind and guarantee another recurrence.' },
+        { type: 'multi', q: 'Select the first-line regimens for uncomplicated cystitis in a nonpregnant woman.',
+          answers: ['Nitrofurantoin 5 days', 'TMP-SMX 3 days', 'Fosfomycin single dose'],
+          distractors: ['Ciprofloxacin 3 days', 'Cephalexin 7 days', 'Amoxicillin 7 days'],
+          why: 'These three concentrate in the bladder with little collateral damage. Fluoroquinolones are held in reserve for their tendon, nerve and resistance problems, and oral beta-lactams cure less reliably. TMP-SMX is used only where local E. coli resistance is under 20 percent.' },
+        { type: 'recall', q: 'Why is nitrofurantoin not used for pyelonephritis?', a: 'It does not reach therapeutic levels in kidney tissue',
+          why: 'Nitrofurantoin is concentrated in the urine but not in the renal parenchyma or blood, so it treats the bladder and nothing above it. It is also avoided when creatinine clearance is under 30, where too little reaches the urine to work.' },
+        { type: 'multi', q: 'Select the only two groups who should be screened and treated for asymptomatic bacteriuria.',
+          answers: ['Pregnant women', 'Before TURP or lithotripsy'],
+          distractors: ['Nursing home residents', 'Patients with diabetes', 'Catheterized patients', 'Women planning pregnancy'],
+          why: 'In pregnancy, bacteriuria progresses to pyelonephritis and preterm birth, and before TURP or lithotripsy mucosal bleeding seeds the blood. Everyone else, including older adults, diabetics and catheterized patients, gains nothing and acquires resistant organisms and C. difficile from treatment.' },
+        { type: 'recall', q: 'When in pregnancy is screening for asymptomatic bacteriuria done?', a: 'Urine culture at 12 to 16 weeks',
+          why: 'A single culture early in the second trimester catches most cases. Treat with cephalexin, amoxicillin-clavulanate, fosfomycin or nitrofurantoin, avoiding nitrofurantoin at term and in G6PD deficiency and TMP-SMX in the first trimester and at term.' },
+        { type: 'truefalse', q: 'An 80-year-old nursing home resident with bacteriuria and no urinary symptoms should be treated with antibiotics.', a: false,
+          why: 'Half of nursing home residents carry bacteria in the urine, and treating it does not reduce infections, improve function or lengthen life. It does breed resistance. Nonspecific changes such as confusion without urinary symptoms call for a search for other causes, not reflexive antibiotics.' },
+        { type: 'bucket', q: 'Sort each feature by the prostatitis it belongs to.', bins: ['Acute', 'Chronic'],
+          items: [
+            { label: 'High fever and chills', bin: 'Acute' },
+            { label: 'Same organism recurring', bin: 'Chronic' },
+            { label: 'Exquisitely tender gland', bin: 'Acute' },
+            { label: 'Pain after ejaculation', bin: 'Chronic' },
+            { label: 'Treat 2 to 4 weeks', bin: 'Acute' },
+            { label: 'Treat 4 to 6 weeks', bin: 'Chronic' }
+          ],
+          why: 'Acute prostatitis is a febrile illness with an inflamed gland that most antibiotics can reach. Chronic prostatitis is an afebrile relapsing infection behind an intact barrier that only fluoroquinolones penetrate well, and it takes longer to clear.' }
+      ]
+    },
+
   ];
 
   global.Decks = { BUILTIN: BUILTIN };
