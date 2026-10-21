@@ -310,7 +310,7 @@
      cards capture the pointer for their swipes, and capture fires
      pointerleave on the button the instant a finger lands. Sliding off
      the button lets it up with no bounce; lifting gives it the bounce. */
-  function pressable(el, target, quiet) {
+  function pressable(el, target, quiet, stays) {
     target = target || el;
     el.addEventListener('pointerdown', function () {
       if (el.closest('.is-locked') || el.disabled) return;
@@ -331,7 +331,8 @@
         unbind();
         setTimeout(function () {
           target.classList.remove('is-pressed');
-          release(target);
+          /* A toggle that is now on stays pushed in: no bounce. */
+          if (!(stays && stays())) release(target);
         }, Math.max(0, PRESS_MIN - (Date.now() - t0)));
       }
       document.addEventListener('pointermove', move);
@@ -390,7 +391,7 @@
         b.style.setProperty('--i', i);
         /* The box is the button: the row takes the finger, the box
            sinks and bounces, and the text beside it only changes color. */
-        pressable(b, box);
+        pressable(b, box, false, function () { return !!picked[i]; });
         btns.push(b);
         keyMap[String(i + 1)] = function () { toggle(i); };
         grid.appendChild(b);

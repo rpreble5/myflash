@@ -266,6 +266,10 @@
   background: var(--brand);
   border-color: var(--brand-dark);
   color: #fff;
+  /* Stays pushed in while selected, like a latching switch. Unpicking
+     lets it up with the bounce; checking the answer eases it up. */
+  transform: translateY(4px);
+  border-bottom-width: 3px;
 }
 
 /* After CHECK. Every answer fills, so the set reads as the answer; the
