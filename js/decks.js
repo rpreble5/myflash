@@ -6452,6 +6452,108 @@
       ]
     },
 
+    {
+      id: 'nu-ckd', subject: 'Nephrology & Urology', topic: 'Kidney Disease', name: 'CKD STAGING & CARE',
+      blurb: 'KDIGO definition and stages, the drugs that slow progression, and the complications to screen for.',
+      cards: [
+        { type: 'number', q: 'Minimum duration of reduced GFR or kidney damage markers required to diagnose chronic kidney disease?', value: 3, unit: 'months',
+          why: 'Chronicity is the whole definition. An eGFR under 60 or a marker of damage such as albuminuria, abnormal sediment or a structural abnormality has to persist for three months. Anything shorter is acute kidney injury or acute kidney disease, which may still recover.' },
+        { type: 'number', q: 'eGFR below which chronic kidney disease is diagnosed even without albuminuria or other damage markers?', value: 60, unit: 'mL/min',
+          why: 'Stage G3a begins at 59, and below that the GFR alone defines the disease once it has lasted three months. Above 60 the patient needs a marker of damage, most often a urine albumin-to-creatinine ratio of 30 mg/g or more, to carry the diagnosis.' },
+        { type: 'number', q: 'Urine albumin-to-creatinine ratio at or above which albuminuria is moderately increased (A2)?', value: 30, unit: 'mg/g',
+          why: 'A1 is under 30 and normal, A2 is 30 to 300, and A3 is over 300 and severely increased. Persistent A2 or worse is a kidney damage marker that makes the diagnosis at any GFR and is the trigger for an ACE inhibitor or ARB and an SGLT2 inhibitor.' },
+        { type: 'match', q: 'Match each KDIGO GFR stage to its eGFR range.',
+          pairs: [
+            { left: 'G2', right: '60 to 89' },
+            { left: 'G3a', right: '45 to 59' },
+            { left: 'G3b', right: '30 to 44' },
+            { left: 'G4', right: '15 to 29' }
+          ] },
+        { type: 'recall', q: 'eGFR at which complication screening for mineral bone disease and anemia begins in CKD?', a: 'Below 60, stage G3',
+          why: 'Phosphate retention, falling calcitriol and erythropoietin deficiency all start as nephron mass drops into stage 3. Check calcium, phosphate, intact PTH, alkaline phosphatase and 25-hydroxyvitamin D, plus a blood count, reticulocytes, ferritin and transferrin saturation.' },
+        { type: 'number', q: 'eGFR below which metformin must be stopped?', value: 30, unit: 'mL/min',
+          why: 'Metformin accumulates as clearance falls and the risk of lactic acidosis rises. It is stopped under 30 and not started between 30 and 44, with a dose reduction in that range for those already on it. NSAIDs are avoided at every CKD stage.' },
+        { type: 'number', q: 'eGFR below which nephrology referral is mandatory?', value: 30, unit: 'mL/min',
+          why: 'Stage G4 is when renal replacement planning begins: education on dialysis and transplant options, and protecting the nondominant arm veins for a future fistula. Earlier referral is reasonable for rapid decline, heavy albuminuria or unclear cause.' },
+        { type: 'recall', q: 'Why are PICC lines and subclavian catheters avoided in a patient with stage 4 CKD?', a: 'They scar the veins needed for a future dialysis fistula',
+          why: 'Central stenosis after a subclavian line and thrombosis after a PICC can make the arm unusable for an arteriovenous fistula, which is the best long-term dialysis access. Blood draws and IVs go in the dominant arm or hand veins, and the nondominant upper arm is kept untouched.' },
+        { type: 'multi', q: 'Select the anticoagulants that are appropriate for a patient with stage 4 CKD.',
+          answers: ['Warfarin', 'Unfractionated heparin', 'Renal-dosed enoxaparin'],
+          distractors: ['Rivaroxaban', 'Dabigatran'],
+          why: 'Dabigatran is mostly renally cleared and rivaroxaban substantially so, and both accumulate and bleed at low GFR. Warfarin and unfractionated heparin are not renally cleared. Enoxaparin can be used at 1 mg/kg once daily rather than twice when the eGFR is under 30.' },
+        { type: 'multi', q: 'Select the indications for urgent dialysis.',
+          answers: ['Refractory acidosis', 'Refractory hyperkalemia', 'Lithium or methanol poisoning', 'Diuretic-resistant pulmonary edema', 'Uremic pericarditis'],
+          distractors: ['eGFR of 12 with no symptoms', 'Mild hyperphosphatemia'],
+          why: 'AEIOU: acidosis, electrolytes, intoxications, overload and uremia, each when refractory to medical treatment. The GFR number itself is not an indication; dialysis starts for symptoms and complications, not for a threshold.' },
+        { type: 'recall', q: 'Why do ACE inhibitors and ARBs reduce albuminuria?', a: 'Efferent dilation lowers glomerular pressure',
+          why: 'Angiotensin II constricts the efferent arteriole, which raises pressure inside the glomerulus and forces protein through. Blocking it drops that pressure. The same mechanism explains the expected creatinine bump when the drug is started.' },
+        { type: 'number', q: 'Maximum acceptable rise in serum creatinine after starting an ACE inhibitor or ARB in CKD?', value: 30, unit: '%',
+          why: 'A rise of up to 30 percent within 2 to 4 weeks is the expected result of lowering glomerular pressure and is actually a sign the drug is working. Continue it. A rise beyond 30 percent or potassium above 5.5 means stop and look for bilateral renal artery stenosis, volume depletion or NSAID use.' },
+        { type: 'truefalse', q: 'Combining an ACE inhibitor with an ARB gives additional kidney protection in CKD.', a: false,
+          why: 'Dual blockade adds hyperkalemia and acute kidney injury without slowing progression, as the ONTARGET and VA NEPHRON-D trials showed. Use one agent at the maximal tolerated dose and add an SGLT2 inhibitor instead.' },
+        { type: 'recall', q: 'Why do SGLT2 inhibitors slow CKD progression even in patients without diabetes?', a: 'Afferent constriction by tubuloglomerular feedback',
+          why: 'Blocking proximal sodium reabsorption delivers more sodium to the macula densa, which constricts the afferent arteriole and relieves hyperfiltration. That lowers intraglomerular pressure and albuminuria independent of glucose. They can be started down to an eGFR of 20.' },
+        { type: 'number', q: 'Lowest eGFR at which an SGLT2 inhibitor can be started for CKD?', value: 20, unit: 'mL/min',
+          why: 'The glucose-lowering effect fades at low GFR but the kidney and heart protection persist, so the trials enrolled down to 20. Once started it can be continued until dialysis. The initial eGFR dip of a few points is expected and not a reason to stop.' },
+        { type: 'recall', q: 'Drug added for a type 2 diabetic with persistent albuminuria despite a maximal ACE inhibitor and an SGLT2 inhibitor?', a: 'Finerenone',
+          why: 'The nonsteroidal mineralocorticoid receptor antagonist reduces progression and cardiovascular events on top of standard therapy. Potassium must be 4.8 or lower to start because it raises potassium like spironolactone, though less so.' },
+        { type: 'recall', q: 'Why do thiazide diuretics stop working for edema when eGFR falls below 30?', a: 'Too little drug reaches the tubule to act',
+          why: 'Thiazides act from inside the distal tubule and depend on proximal secretion into the urine, which falls with GFR. Loop diuretics are more potent and still work at low GFR, though they need higher doses for the same reason. Furosemide, bumetanide or torsemide is the choice in advanced CKD.' },
+        { type: 'recall', q: 'Why does advanced CKD cause secondary hyperparathyroidism?', a: 'Phosphate retention and low calcitriol lower calcium',
+          why: 'Failing nephrons cannot excrete phosphate, FGF-23 rises, and 1-alpha-hydroxylase activity falls so less active vitamin D is made. Hyperphosphatemia and low calcium both stimulate PTH. Untreated, this produces renal osteodystrophy and vascular calcification.' },
+        { type: 'recall', q: 'What must be checked and corrected before starting an erythropoiesis-stimulating agent for anemia of CKD?', a: 'Iron stores',
+          why: 'Iron deficiency is common in CKD and an ESA cannot build red cells without it. Replete iron when transferrin saturation is 30 percent or less and ferritin 500 or less, then reassess. Starting an ESA on empty iron stores wastes the drug and raises the dose and its risks.' },
+        { type: 'number', q: 'Upper limit of the target hemoglobin when treating anemia of CKD with an erythropoiesis-stimulating agent?', value: 11.5, unit: 'g/dL',
+          why: 'Targeting 10 to 11.5 relieves symptoms and avoids transfusion. Aiming for 13 or above increased stroke, venous thromboembolism and death in the CHOIR, CREATE and TREAT trials. The ESA dose is lowered or held as hemoglobin approaches the ceiling.' },
+        { type: 'recall', q: 'Starting dose of allopurinol in a gout patient with stage 4 CKD?', a: '50 mg daily',
+          why: 'Allopurinol remains first line at every level of kidney function. The low start, 100 mg or less and 50 mg in stage 4, with slow titration to a urate under 6, keeps the risk of hypersensitivity down. Flare prophylaxis uses renally adjusted colchicine or low-dose prednisone, never an NSAID.' }
+      ]
+    },
+
+    {
+      id: 'nu-aki', subject: 'Nephrology & Urology', topic: 'Kidney Disease', name: 'ACUTE KIDNEY INJURY',
+      blurb: 'Prerenal, tubular, interstitial and glomerular injury and the urine findings that separate them.',
+      cards: [
+        { type: 'recall', q: 'BUN to creatinine ratio above which acute kidney injury is likely prerenal?', a: '20 to 1',
+          why: 'Low tubular flow lets the proximal tubule reabsorb urea avidly while creatinine is not reabsorbed, so BUN climbs out of proportion. Tubular necrosis damages the reabsorbing cells and the ratio stays near 10 to 15 to 1.' },
+        { type: 'number', q: 'Fractional excretion of sodium below which acute kidney injury is prerenal?', value: 1, unit: '%',
+          why: 'Intact tubules respond to low perfusion by holding onto sodium, so under one percent of filtered sodium escapes and urine sodium is under 20. Necrotic tubules leak it, giving a FENa over 2 percent and urine sodium over 40.' },
+        { type: 'recall', q: 'Why is fractional excretion of urea used instead of sodium in a patient on diuretics?', a: 'Diuretics force sodium loss regardless of volume status',
+          why: 'A loop diuretic makes the kidney waste sodium even when the patient is dry, so FENa reads falsely high. Urea handling is unaffected, and a fractional excretion of urea under 35 percent still identifies prerenal injury.' },
+        { type: 'recall', q: 'Why is urine osmolality above 500 in prerenal injury but below 350 in tubular necrosis?', a: 'Damaged tubules cannot concentrate the urine',
+          why: 'Volume depletion raises ADH and healthy tubules concentrate the urine to conserve water. Necrotic tubules lose their concentrating ability and produce urine with the osmolality of plasma, isosthenuria, whatever the body needs.' },
+        { type: 'match', q: 'Match each urine sediment finding to the type of kidney injury.',
+          pairs: [
+            { left: 'Hyaline casts', right: 'Prerenal' },
+            { left: 'Muddy brown casts', right: 'Tubular necrosis' },
+            { left: 'White cell casts', right: 'Interstitial nephritis' },
+            { left: 'Red cell casts', right: 'Glomerulonephritis' }
+          ] },
+        { type: 'recall', q: 'Fever, rash and peripheral eosinophilia with rising creatinine a week after starting an antibiotic. Diagnosis?', a: 'Acute interstitial nephritis',
+          why: 'A drug hypersensitivity in the interstitium, classically from beta-lactams, sulfa drugs, NSAIDs or proton pump inhibitors. Urine shows sterile pyuria, white cell casts and eosinophils. Stop the drug, and give steroids if function does not recover quickly.' },
+        { type: 'multi', q: 'Select the drug classes that cause acute interstitial nephritis.',
+          answers: ['Beta-lactam antibiotics', 'Sulfonamides', 'NSAIDs', 'Proton pump inhibitors'],
+          distractors: ['Statins', 'Beta blockers', 'Metformin'],
+          why: 'These four account for most cases, and PPIs are the one most often missed because the nephritis is subacute without the classic triad. Any new drug in the weeks before an unexplained creatinine rise with pyuria is suspect.' },
+        { type: 'recall', q: 'Hematuria with red cell casts, proteinuria, hypertension and edema. Diagnosis?', a: 'Acute glomerulonephritis',
+          why: 'Red cell casts form only when blood enters the tubule from an inflamed glomerulus, so they are diagnostic of glomerular bleeding. Dysmorphic red cells say the same thing. This is a nephrology referral, often with serologies and biopsy, not a urology workup.' },
+        { type: 'recall', q: 'Why do NSAIDs and ACE inhibitors cause prerenal acute kidney injury in a volume-depleted patient?', a: 'They undo the arteriolar compensation for low flow',
+          why: 'When perfusion falls, prostaglandins dilate the afferent arteriole and angiotensin II constricts the efferent one to hold up glomerular pressure. NSAIDs take away the first and ACE inhibitors the second. In a dehydrated patient, or with both drugs plus a diuretic, filtration collapses.' },
+        { type: 'bucket', q: 'Sort each finding by whether it points to prerenal injury or acute tubular necrosis.', bins: ['Prerenal', 'ATN'],
+          items: [
+            { label: 'FENa under 1 percent', bin: 'Prerenal' },
+            { label: 'Urine sodium over 40', bin: 'ATN' },
+            { label: 'Urine osmolality over 500', bin: 'Prerenal' },
+            { label: 'Muddy brown casts', bin: 'ATN' },
+            { label: 'BUN to creatinine over 20', bin: 'Prerenal' },
+            { label: 'Improves with fluids', bin: 'Prerenal' }
+          ],
+          why: 'Prerenal injury is a working kidney starved of flow, so it conserves sodium and water and the labs show it. Tubular necrosis is a kidney that has lost that ability, so the urine is salty and dilute with the debris of dead cells in it. Fluids fix the first and not the second.' },
+        { type: 'recall', q: 'Postrenal acute kidney injury in an older man with a distended bladder. First test?', a: 'Bladder ultrasound or catheterization',
+          why: 'Obstruction from prostatic enlargement is the commonest postrenal cause and is reversed by draining the bladder. A post-void residual or bladder scan confirms retention, and renal ultrasound shows hydronephrosis if the obstruction is higher. Relief of obstruction can trigger a post-obstructive diuresis that needs monitoring.' }
+      ]
+    },
+
   ];
 
   global.Decks = { BUILTIN: BUILTIN };
