@@ -6646,6 +6646,104 @@
       ]
     },
 
+    {
+      id: 'nu-hematuria', subject: 'Nephrology & Urology', topic: 'Hematuria & Stones', name: 'HEMATURIA',
+      blurb: 'Confirming true hematuria, glomerular versus urologic bleeding, and the AUA risk tiers.',
+      cards: [
+        { type: 'number', q: 'Minimum red cells per high-power field that defines microscopic hematuria?', value: 3, unit: 'RBC/hpf',
+          why: 'The dipstick reacts to heme, so myoglobin from rhabdomyolysis and free hemoglobin from hemolysis both turn it positive with no red cells present. A positive dipstick is always confirmed by microscopy before any workup begins.' },
+        { type: 'truefalse', q: 'Hematuria in a patient on warfarin or a DOAC can be attributed to the anticoagulant without further workup.', a: false,
+          why: 'Anticoagulated patients have the same rate of underlying urologic cancer as everyone else; the drug unmasks the lesion rather than causing the bleeding. They get the full risk-stratified evaluation. This is one of the most reliable board traps in the topic.' },
+        { type: 'multi', q: 'Select the urinalysis findings that point to a glomerular source of hematuria.',
+          answers: ['Dysmorphic red cells', 'Red cell casts', 'Significant proteinuria'],
+          distractors: ['Red cells of uniform shape', 'Clots in the urine', 'Isolated pyuria'],
+          why: 'Red cells squeezed through an inflamed glomerular basement membrane are deformed, and those packed in the tubule form casts. Protein leaks alongside. These findings, or a rising creatinine, send the patient to nephrology rather than down the urothelial cancer pathway. Clots never come from the glomerulus.' },
+        { type: 'multi', q: 'Select the features that place a patient in the AUA high-risk hematuria tier.',
+          answers: ['Age 60 or older', 'Over 30 pack-years of smoking', 'Over 25 RBC per hpf', 'Any gross hematuria'],
+          distractors: ['Age 45 with 5 pack-years', '5 RBC per hpf', 'Anticoagulant use'],
+          why: 'One high-risk feature is enough. Age, heavy smoking, a heavy microscopic count and any visible blood each carry a urothelial cancer rate that justifies the full evaluation. Occupational exposure to aromatic amines, prior pelvic radiation, cyclophosphamide and a chronic indwelling catheter also qualify.' },
+        { type: 'recall', q: 'Evaluation for a high-risk microscopic hematuria patient?', a: 'CT urography plus cystoscopy',
+          why: 'Multiphasic CT without and with contrast images the kidneys, ureters and collecting systems, and cystoscopy sees the bladder, which CT misses. Together they cover the whole urinary tract. Urine cytology and tumor markers are not part of the initial evaluation.' },
+        { type: 'recall', q: 'Evaluation for an intermediate-risk microscopic hematuria patient?', a: 'Renal ultrasound plus cystoscopy',
+          why: 'Men of 40 to 59, women of 60 or more, 10 to 30 pack-years, or 11 to 25 red cells per field sit in the middle tier, where ultrasound is enough to screen the upper tract and cystoscopy still covers the bladder. A low-risk patient who stays positive on repeat urinalysis moves into this tier.' },
+        { type: 'recall', q: 'Options for a low-risk patient with 5 red cells per field on a single urinalysis?', a: 'Repeat UA in 6 months, or ultrasound and cystoscopy',
+          why: 'A woman under 60 or a man under 40 who never smoked, with 3 to 10 cells and no other risk factors, has a very low cancer rate. Shared decision-making chooses between watching and testing. If the repeat urinalysis is positive the patient is evaluated with ultrasound and cystoscopy.' },
+        { type: 'truefalse', q: 'Urine cytology should be ordered as part of the initial workup of microscopic hematuria.', a: false,
+          why: 'Cytology and urine tumor markers are insensitive for low-grade tumors and add false positives without changing the plan, which is imaging plus cystoscopy by risk tier. Cytology is reserved for specific situations such as suspected carcinoma in situ.' },
+        { type: 'bucket', q: 'Sort each hematuria finding by the workup it sends the patient to.', bins: ['Nephrology', 'Urology'],
+          items: [
+            { label: 'Red cell casts', bin: 'Nephrology' },
+            { label: 'Gross painless hematuria', bin: 'Urology' },
+            { label: 'Dysmorphic red cells', bin: 'Nephrology' },
+            { label: '40 pack-year smoker', bin: 'Urology' },
+            { label: 'Proteinuria, rising creatinine', bin: 'Nephrology' },
+            { label: 'Prior cyclophosphamide', bin: 'Urology' }
+          ],
+          why: 'Glomerular bleeding leaves fingerprints in the sediment and comes with protein and falling function, so it is a medical kidney workup. Isomorphic cells with cancer risk factors mean the bleeding is from the urinary tract lining and the question is whether a tumor is there.' }
+      ]
+    },
+
+    {
+      id: 'nu-stones', subject: 'Nephrology & Urology', topic: 'Hematuria & Stones', name: 'KIDNEY STONES',
+      blurb: 'Renal colic imaging and pain control, when to decompress, prevention, and the stone types.',
+      cards: [
+        { type: 'recall', q: 'Imaging of choice for suspected renal colic?', a: 'Noncontrast helical CT',
+          why: 'Low-dose noncontrast CT finds nearly every stone including radiolucent uric acid stones and shows the degree of obstruction. Ultrasound is used first in pregnancy, children and patients with known recurrent stones to spare radiation.' },
+        { type: 'recall', q: 'Why are NSAIDs at least as effective as opioids for renal colic?', a: 'They block the prostaglandins that cause ureteral spasm',
+          why: 'Obstruction raises prostaglandin release, which drives ureteral spasm and afferent arteriolar dilation that increases pressure in the collecting system. Ketorolac treats the mechanism. Avoid NSAIDs in CKD, pregnancy and GI bleeding, where opioids become the fallback.' },
+        { type: 'number', q: 'Stone size at or below which spontaneous passage occurs in over 80 percent of cases?', value: 5, unit: 'mm',
+          why: 'Small stones pass on their own with fluids and analgesia. The patient strains the urine so the stone can be analyzed, which guides prevention. Stones over 10 mm rarely pass and go to urology for lithotripsy or ureteroscopy.' },
+        { type: 'recall', q: 'Medical expulsive therapy for a 7 mm distal ureteral stone?', a: 'Tamsulosin 0.4 mg daily for up to 4 weeks',
+          why: 'Alpha-1 blockade relaxes the distal ureteral smooth muscle and improves passage of stones in the 5 to 10 mm range. The benefit is clearest for distal stones. Calcium channel blockers are a less effective alternative.' },
+        { type: 'multi', q: 'Select the findings that require immediate decompression of an obstructing stone.',
+          answers: ['Fever or urosepsis', 'Acute kidney injury', 'Solitary kidney', 'Intractable pain or vomiting'],
+          distractors: ['Stone of 6 mm', 'Microscopic hematuria', 'Mild flank tenderness'],
+          why: 'An infected obstructed kidney can become septic shock within hours, so a stent or nephrostomy is placed first and the stone is dealt with later. Obstruction of the only functioning kidney or anuria is renal failure in progress. Size alone is not an emergency.' },
+        { type: 'recall', q: 'Why is lithotripsy delayed in a patient with fever and an obstructing stone?', a: 'Breaking an infected stone seeds the bloodstream',
+          why: 'Fragmenting the stone in an infected system seeds the bloodstream and worsens sepsis. Decompress with a stent or nephrostomy, treat the infection with antibiotics, and remove the stone once the urine is sterile.' },
+        { type: 'number', q: 'Target daily urine output for preventing recurrent kidney stones?', value: 2, unit: 'L/day',
+          why: 'Two to two and a half liters of urine a day dilutes every stone-forming solute and is the single most effective intervention for every stone type. Citrus drinks add citrate. The fluid target is set by urine volume, not by intake.' },
+        { type: 'truefalse', q: 'Patients with calcium oxalate stones should restrict dietary calcium.', a: false,
+          why: 'Dietary calcium binds oxalate in the gut so it is excreted in stool rather than absorbed. Restricting calcium leaves oxalate free to be absorbed and raises urinary oxalate, which makes more stones. Normal intake of 1000 to 1200 mg a day from food is the goal.' },
+        { type: 'recall', q: 'Why does a high-sodium diet promote calcium stones?', a: 'Sodium excretion drags calcium into the urine',
+          why: 'Sodium and calcium reabsorption are linked in the proximal tubule and loop, so every extra gram of sodium excreted raises urinary calcium. Restrict sodium to under 2 to 2.3 g a day. Animal protein is limited too, since it raises uric acid and calcium excretion and lowers citrate.' },
+        { type: 'match', q: 'Match each preventive drug to the urine abnormality it corrects.',
+          pairs: [
+            { left: 'Thiazide', right: 'Hypercalciuria' },
+            { left: 'Potassium citrate', right: 'Hypocitraturia' },
+            { left: 'Allopurinol', right: 'Hyperuricosuria' },
+            { left: 'Tiopronin', right: 'Cystinuria' }
+          ] },
+        { type: 'recall', q: 'Why does a thiazide prevent calcium stones?', a: 'It increases distal tubular calcium reabsorption',
+          why: 'Thiazides lower urinary calcium while raising serum calcium slightly, the opposite of loop diuretics, which waste calcium. Hydrochlorothiazide, chlorthalidone or indapamide is the choice for recurrent calcium stones with hypercalciuria once fluids alone have failed.' },
+        { type: 'recall', q: 'Why does potassium citrate prevent both calcium and uric acid stones?', a: 'Citrate binds calcium and alkalinizes the urine',
+          why: 'Urinary citrate complexes calcium so it cannot crystallize with oxalate or phosphate, and the alkali load raises urine pH, which dissolves uric acid and keeps cystine in solution. It is the drug for hypocitraturia, uric acid stones and cystine stones.' },
+        { type: 'recall', q: 'Stone that is invisible on a plain abdominal film but visible on CT, forming in persistently acidic urine?', a: 'Uric acid stone',
+          why: 'Uric acid is radiolucent, and it precipitates when urine pH stays under 5.5, as in gout, metabolic syndrome and chronic diarrhea. Alkalinizing the urine to 6.5 to 7 with potassium citrate dissolves existing stones, which no other stone type allows.' },
+        { type: 'recall', q: 'Large branching staghorn calculus in a patient with recurrent Proteus infections. Stone type?', a: 'Struvite',
+          why: 'Urease-producing organisms such as Proteus, Klebsiella, Pseudomonas and Staphylococcus saprophyticus split urea into ammonia, driving urine pH above 7.2 and precipitating magnesium ammonium phosphate. E. coli lacks urease. The stone harbors the infection, so complete surgical removal plus antibiotics is the treatment.' },
+        { type: 'recall', q: 'Hexagonal crystals in the urine of a young patient with recurrent stones. Diagnosis?', a: 'Cystinuria',
+          why: 'An autosomal recessive defect in the proximal tubular transporter for cystine, ornithine, lysine and arginine lets cystine spill into urine, where it is poorly soluble. The cyanide-nitroprusside test confirms. Treatment is over 3 liters of fluid a day, potassium citrate to a pH above 7, and tiopronin if that fails.' },
+        { type: 'recall', q: 'Why does Roux-en-Y gastric bypass cause calcium oxalate stones?', a: 'Malabsorbed fat binds calcium and frees oxalate',
+          why: 'Unabsorbed fatty acids in the gut saponify calcium, so none is left to bind oxalate and the colon absorbs it. Crohn ileitis, short bowel and chronic pancreatitis do the same. The treatment includes normal dietary calcium with meals, which is counterintuitive but correct.' },
+        { type: 'match', q: 'Match each stone type to its crystal shape.',
+          pairs: [
+            { left: 'Calcium oxalate', right: 'Envelope' },
+            { left: 'Uric acid', right: 'Rhomboid' },
+            { left: 'Struvite', right: 'Coffin lid' },
+            { left: 'Cystine', right: 'Hexagon' }
+          ] },
+        { type: 'bucket', q: 'Sort each stone type by whether it shows on a plain abdominal radiograph.', bins: ['Radiopaque', 'Radiolucent'],
+          items: [
+            { label: 'Calcium oxalate', bin: 'Radiopaque' },
+            { label: 'Uric acid', bin: 'Radiolucent' },
+            { label: 'Struvite', bin: 'Radiopaque' },
+            { label: 'Calcium phosphate', bin: 'Radiopaque' }
+          ],
+          why: 'Calcium-containing and struvite stones are bright on a plain film. Uric acid stones are invisible on it and show only on CT or ultrasound. Cystine is faintly radiopaque with a ground-glass look. A patient with colic and a clean plain film still needs a CT.' }
+      ]
+    },
+
   ];
 
   global.Decks = { BUILTIN: BUILTIN };
