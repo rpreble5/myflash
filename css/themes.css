@@ -837,11 +837,11 @@
   text-decoration-thickness: 4px;
   text-underline-offset: 6px;
 }
-/* Clear of the hidden navigation bar. On at least one phone running
-   fullscreen it covers about the bottom 60px while reporting the full
-   height and no inset (952px tall, inset 0), so the space is fixed
-   rather than read from the browser. */
-.card.is-keypad .card-body { padding-bottom: calc(5.25rem + env(safe-area-inset-bottom)); }
+/* The pad sits low. The large gap once kept here was a guess at a hidden
+   navigation bar; the CHECK button that looked cut off was in fact its
+   own front lip clipped by the mode area, fixed on .keypad below. The
+   room goes to the question and the number instead. */
+.card.is-keypad .card-body { padding-bottom: calc(2rem + env(safe-area-inset-bottom)); }
 /* The pad sets its own height; the mode area must not clip it. */
 .card.is-keypad .mode-area { max-height: none; }
 /* A custom property is not checked against the browser, so the dvh
