@@ -1191,7 +1191,9 @@
       else pad.appendChild(h('span', 'key key-blank'));
       key('0', null, function () { press('0'); });
       key('⌫', 'key-del', del).setAttribute('aria-label', 'Delete');
-      var joinKey = multi ? key(join, 'key-join', next) : null;
+      /* The key is always an arrow: the readout above already shows the
+         separator, so the key only has to say "next blank". */
+      var joinKey = multi ? key('→', 'key-join', next) : null;
       if (joinKey) joinKey.setAttribute('aria-label', 'Next number');
       var check = h('button', 'key-check', 'CHECK');
       check.addEventListener('click', function (e) { e.stopPropagation(); submit(); });

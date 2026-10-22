@@ -145,10 +145,10 @@
 
 <!-- The real deck list, the real dial maths, the real store. A check
      against a copy of the rules is a check against nothing. -->
-<script src="../js/decks.js?v=130"></script>
-<script src="../js/modes.js?v=130"></script>
-<script src="../js/store.js?v=130"></script>
-<script src="validate.js?v=130"></script>
+<script src="../js/decks.js?v=131"></script>
+<script src="../js/modes.js?v=131"></script>
+<script src="../js/store.js?v=131"></script>
+<script src="validate.js?v=131"></script>
 
 <!-- The prompt lives here as inert text so there is exactly one copy of
      it: the page renders it and the clipboard button ships it. -->
@@ -289,6 +289,13 @@ Each type below has a condition. If the material does not meet it, skip it.
 
   number     Only when the answer IS a quantity: a threshold, a dose, a
              normal range. Never for a number buried in a longer answer.
+             Use "values" (two to four blanks, filled in order with an
+             arrow key) only when the answer is one fact that is
+             conventionally written as two numbers with a fixed separator:
+             a range 135–145, a fraction 20/40, a ratio 100:40, a blood
+             pressure 130/80. "join" is that separator and is shown in the
+             readout. Two separate thresholds ("glucose over 250 and pH
+             under 7.3") are two cards, never one with two blanks.
 
   trend      Only when the source states the direction of change of two or
              more related values under one named condition. Two is enough
