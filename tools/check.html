@@ -145,10 +145,10 @@
 
 <!-- The real deck list, the real dial maths, the real store. A check
      against a copy of the rules is a check against nothing. -->
-<script src="../js/decks.js?v=129"></script>
-<script src="../js/modes.js?v=129"></script>
-<script src="../js/store.js?v=129"></script>
-<script src="validate.js?v=129"></script>
+<script src="../js/decks.js?v=130"></script>
+<script src="../js/modes.js?v=130"></script>
+<script src="../js/store.js?v=130"></script>
+<script src="validate.js?v=130"></script>
 
 <!-- The prompt lives here as inert text so there is exactly one copy of
      it: the page renders it and the clipboard button ships it. -->
@@ -468,6 +468,47 @@ Each of these came from a real card that was rejected.
 - The explanation speaks like a tutor. No quips, no metaphors, no
   punchlines: not "turns the drop into a crash", not "an hour you do not
   have". Say what happens and why, in plain sentences.
+- Ask for the specific thing, not the category. "In whom is a GLP-1
+  agonist contraindicated?" has a dozen true answers. "Which cancer in the
+  history contraindicates a GLP-1 agonist?" has one.
+- A number question reads as a plain sentence. Not "Plasma glucose above
+  which DKA is defined?", not "Stop a PPI how long before the test?", not
+  "USPSTF: from what age is aspirin recommended against?". Write "Classic
+  DKA is defined by a glucose above what value?", "How long before an H.
+  pylori test must a PPI be stopped?", "Age at which the USPSTF recommends
+  against starting aspirin?".
+- One qualifier per number card. "Interval after an adenoma of 10 mm or
+  larger, villous histology or high-grade dysplasia?" is three cards, or
+  one number card for the size plus a multi-select of the features that
+  share the interval.
+- A dose is a number card. "Starting dose of allopurinol in stage 4 CKD?"
+  with 50 on the keypad, never a recall with "50 mg daily" as the answer.
+  A regimen with several doses is one number card per dose.
+- A surveillance schedule is a number card for the interval ("Longest
+  interval between TSH checks in an adult with Down syndrome?"), not a
+  recall asking "surveillance for X?".
+- Each side of a match pair is one short fact. "pH 7.20, glucose 400" on
+  one side cannot be matched without juggling two values; and never match
+  a named lesion to its definition when the pairs do not stand alone.
+  Ask each as a recall ("Avulsion of the anteroinferior labrum after a
+  dislocation. Name?").
+- Ranges that ascend (stages, intervals) are solvable by sorting. A match
+  of G2/G3a/G3b/G4 to their eGFR ranges tests nothing. One number card
+  per cut-off.
+- When the answer is a short list, make it a multi-select so the count is
+  designated. A recall answered "hydronephrosis, multicystic dysplasia or
+  pelvic ectopia" cannot be self-graded; the same three as answers with
+  two distractors can.
+- A vignette with a test as the answer ("Sudden pain and a rigid abdomen on
+  NSAIDs. Test of choice?") is two steps hidden in one. Ask the one step:
+  "Imaging of choice for suspected perforated ulcer?".
+- The explanation may only refer to things the question or answer
+  introduced. "A pH above 6 stabilizes the clot" when no clot was mentioned
+  leaves the reader asking "what clot?". Name it: "the clot over the
+  bleeding vessel".
+- When a vignette turns on a number (a BUN-to-creatinine ratio of 25), add
+  a number card for the threshold as well; the cut-off is what the exam
+  tests.
 
 ═══ "why": THE EXPLANATION ═══
 
