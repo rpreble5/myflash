@@ -45,7 +45,8 @@
   var DEFAULTS = {
     submitOnRelease: false,
     numberSlider: false,
-    /* The subject the home screen shows; null means the first one. */
+    /* The collection and subject last opened; null means the first one. */
+    collection: null,
     subject: null,
     sound: true,
     haptics: true
@@ -106,12 +107,77 @@
     return copy;
   }
 
-  function allDecks() {
-    return global.Decks.BUILTIN.concat(customDecks().map(retireOrder));
+  /* ── The library ──────────────────────────────────────────
+     Per-deck choices made in the app that the source cannot hold: a
+     deck hidden from the lists and drills, or moved to another
+     collection or subject. Kept apart from the decks so a built-in deck
+     can be hidden or moved without touching its file. */
+  var KEY_LIB = 'myflash.library.v1';
+  function library() { return read(KEY_LIB, { hidden: {}, moves: {} }); }
+
+  /* Every deck as the app should see it: the override applied, hidden
+     decks left out unless asked for. */
+  function allDecks(includeHidden) {
+    var lib = library();
+    var out = [];
+    global.Decks.BUILTIN.concat(customDecks().map(retireOrder)).forEach(function (deck) {
+      var hidden = !!lib.hidden[deck.id];
+      if (hidden && !includeHidden) return;
+      var mv = lib.moves[deck.id];
+      if (!mv && !hidden) { out.push(deck); return; }
+      var copy = {};
+      Object.keys(deck).forEach(function (k) { copy[k] = deck[k]; });
+      if (mv) { copy.collection = mv.collection; copy.subject = mv.subject; }
+      copy.hidden = hidden;
+      out.push(copy);
+    });
+    return out;
   }
 
   function deckById(id) {
-    return allDecks().filter(function (d) { return d.id === id; })[0] || null;
+    return allDecks(true).filter(function (d) { return d.id === id; })[0] || null;
+  }
+
+  function isCustom(id) {
+    return customDecks().some(function (d) { return d.id === id; });
+  }
+
+  function hideDeck(id, hidden) {
+    var lib = library();
+    if (hidden) lib.hidden[id] = true; else delete lib.hidden[id];
+    write(KEY_LIB, lib);
+  }
+
+  function moveDeck(id, collection, subject) {
+    var lib = library();
+    lib.moves[id] = { collection: collection, subject: subject };
+    write(KEY_LIB, lib);
+  }
+
+  function resetDeckProgress(id) {
+    var all = stats(), prefix = id + ':';
+    Object.keys(all).forEach(function (k) { if (k.indexOf(prefix) === 0) delete all[k]; });
+    write(KEY_STATS, all);
+  }
+
+  /* Decks pasted in as JSON: one deck or an array. Each must have an id,
+     a name and cards; subject and topic come from the deck, and the
+     collection from the deck or the one chosen at import. Returns what
+     was added, or throws with a reason. */
+  function importDecks(text, collection) {
+    var data = JSON.parse(text);
+    var list = Array.isArray(data) ? data : [data];
+    var added = [];
+    list.forEach(function (d, i) {
+      if (!d || typeof d !== 'object') throw new Error('Item ' + (i + 1) + ' is not a deck.');
+      if (!d.id || !d.name || !Array.isArray(d.cards) || !d.cards.length) {
+        throw new Error('Deck ' + (d.id || i + 1) + ' needs an id, a name and cards.');
+      }
+      if (!d.collection) d.collection = collection || DEFAULT_COLLECTION;
+      saveDeck(d);
+      added.push(d);
+    });
+    return added;
   }
 
   /* stats: { "deckId:cardIndex": { seen, right, wrong, streak, s, at } }
@@ -303,17 +369,70 @@
 
   function subjectOf(deck) { return deck.subject || DEFAULT_SUBJECT; }
 
-  function subjects() {
+  /* ── Collections ──────────────────────────────────────────
+     The level above subjects: separate bodies of material with their
+     own purpose. A deck names its collection; everything that names
+     none is exam material. The two below always exist, even empty, so
+     there is somewhere to put the first article. */
+  var DEFAULT_COLLECTION = 'ITE Prep';
+  var COLLECTIONS = ['ITE Prep', 'Journal Articles'];
+
+  function collectionOf(deck) { return deck.collection || DEFAULT_COLLECTION; }
+
+  function collections() {
+    var seen = {}, out = [];
+    COLLECTIONS.forEach(function (name) { seen[name] = { name: name, subjects: {}, cards: 0, sum: 0, decks: 0 }; out.push(seen[name]); });
+    allDecks().forEach(function (deck) {
+      if (isQuestions(deck)) return;
+      var name = collectionOf(deck);
+      if (!seen[name]) { seen[name] = { name: name, subjects: {}, cards: 0, sum: 0, decks: 0 }; out.push(seen[name]); }
+      var c = seen[name];
+      c.subjects[subjectOf(deck)] = true;
+      var d = deckStrength(deck);
+      c.cards += d.total;
+      c.sum += d.strength * d.total;
+      c.decks++;
+    });
+    return out.map(function (c) {
+      return { name: c.name, subjects: Object.keys(c.subjects).length, decks: c.decks, cards: c.cards,
+               strength: c.cards ? c.sum / c.cards : 0 };
+    });
+  }
+
+  function currentCollection() {
+    var want = setting('collection');
+    var all = collections();
+    var hit = all.filter(function (c) { return c.name === want; })[0];
+    return (hit || all[0]).name;
+  }
+
+  /* The subjects of one collection, weakest first, with the counts the
+     collection screen shows on each row. */
+  function subjects(collection) {
+    var coll = collection || currentCollection();
     var seen = {}, out = [];
     allDecks().forEach(function (deck) {
+      if (collectionOf(deck) !== coll) return;
       var name = subjectOf(deck);
       if (!seen[name]) { seen[name] = { name: name, topics: {}, cards: 0 }; out.push(seen[name]); }
       seen[name].topics[deck.topic || 'Other'] = true;
-      seen[name].cards += deck.cards.length;
+      if (!isQuestions(deck)) seen[name].cards += deck.cards.length;
     });
-    return out.map(function (s) {
-      return { name: s.name, topics: Object.keys(s.topics).length, cards: s.cards };
+    var rows = out.map(function (s) {
+      var ts = topics(s.name, coll);
+      var cards = 0, sum = 0, weak = 0, unseen = 0, due = 0, started = false;
+      ts.forEach(function (t) {
+        cards += t.cards; sum += t.strength * t.cards; weak += t.weak; unseen += t.unseen; due += t.due;
+        if (t.started) started = true;
+      });
+      return { name: s.name, collection: coll, topics: ts.length, cards: cards,
+               strength: cards ? sum / cards : 0, weak: weak, unseen: unseen, due: due, started: started };
     });
+    rows.sort(function (a, b) {
+      if (a.started !== b.started) return a.started ? -1 : 1;
+      return a.strength - b.strength;
+    });
+    return rows;
   }
 
   function currentSubject() {
@@ -321,6 +440,15 @@
     var want = setting('subject');
     var hit = all.filter(function (s) { return s.name === want; })[0];
     return (hit || all[0] || { name: DEFAULT_SUBJECT }).name;
+  }
+
+  /* Every flashcard deck in a collection, in subject order. */
+  function collectionDecks(collection) {
+    var out = [];
+    subjects(collection).forEach(function (s) {
+      topics(s.name, collection).forEach(function (t) { t.decks.forEach(function (d) { out.push(d); }); });
+    });
+    return out;
   }
 
   /* ── Question decks ───────────────────────────────────────
@@ -343,12 +471,13 @@
     return { learned: learned, total: total };
   }
 
-  function topics(subject) {
+  function topics(subject, collection) {
     var groups = {}, order = [];
+    var coll = collection || currentCollection();
     var want = subject || currentSubject();
 
     allDecks().forEach(function (deck) {
-      if (subjectOf(deck) !== want) return;
+      if (collectionOf(deck) !== coll || subjectOf(deck) !== want) return;
       var name = deck.topic || 'Other';
       if (!groups[name]) { groups[name] = { name: name, decks: [], questions: [] }; order.push(name); }
       (isQuestions(deck) ? groups[name].questions : groups[name].decks).push(deck);
@@ -469,6 +598,16 @@
     unseenCards: unseenCards,
     dueCount: dueCount,
     subjectDecks: subjectDecks,
+    collections: collections,
+    currentCollection: currentCollection,
+    collectionOf: collectionOf,
+    collectionDecks: collectionDecks,
+    COLLECTIONS: COLLECTIONS,
+    isCustom: isCustom,
+    hideDeck: hideDeck,
+    moveDeck: moveDeck,
+    resetDeckProgress: resetDeckProgress,
+    importDecks: importDecks,
     WEAK: WEAK,
     topics: topics,
     deckProgress: deckProgress,

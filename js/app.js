@@ -114,10 +114,8 @@
      every topic to repair, what has not been started, and how much has
      slipped under the line since it was last studied. Hidden on a subject
      with nothing to say. */
-  function renderSubjectDrill() {
-    var box = $('#subject-drill');
+  function renderDrillPanel(box, decks) {
     box.textContent = '';
-    var decks = global.Store.subjectDecks();
     var weak = global.Store.drillCards(decks, SHORT_RUN);
     var unseen = global.Store.unseenCards(decks);
     var due = global.Store.dueCount(decks);
@@ -145,23 +143,103 @@
     }
   }
 
-  /* Topics weakest first, each opening onto its decks in the same order.
-     The number itself stays out of it — a percentage invites you to farm
-     the metric instead of the material, and on a ten-card deck it is
-     mostly noise anyway. */
+  /* ── Navigation: home → collection → subject ─────────────────
+     Each step is a screen of its own with a back arrow; the list on each
+     arrives staggered the first time it is shown after a move. */
+  function goHome(animate) { homeShown = false; show('screen-home', animate, renderHome); }
+  function openCollection(name, animate) {
+    if (name) global.Store.setSetting('collection', name);
+    homeShown = false;
+    show('screen-collection', animate, renderCollection);
+  }
+  function openSubject(name, animate) {
+    if (name) global.Store.setSetting('subject', name);
+    homeShown = false;
+    show('screen-subject', animate, renderSubject);
+  }
+  function rendererFor(id) {
+    return id === 'screen-collection' ? renderCollection : id === 'screen-subject' ? renderSubject : renderHome;
+  }
+  function activeScreen() {
+    var s = document.querySelector('.screen.is-active');
+    return s ? s.id : 'screen-home';
+  }
+
+  /* Home: one tile per collection. */
   function renderHome() {
-    var list = $('#deck-list');
+    var list = $('#coll-list');
     list.textContent = '';
     list.classList.toggle('is-entering', !homeShown);
     homeShown = true;
-    $('#subject-name').textContent = global.Store.currentSubject();
     var beaten = global.Store.challengeBeaten();
     var won = global.Challenge.TOPICS.filter(function (t) { return beaten[t.id]; }).length;
     $('#challenge-line').textContent = won >= global.Challenge.TOPICS.length
       ? 'Complete'
       : won + ' of ' + global.Challenge.TOPICS.length;
 
-    renderSubjectDrill();
+    global.Store.collections().forEach(function (coll, ci) {
+      var tile = h('div', 'topic coll-tile');
+      tile.style.setProperty('--i', ci);
+      var head = h('button', 'topic-head');
+      head.appendChild(h('span', 'topic-name coll-name', coll.name));
+      var line = coll.cards
+        ? coll.subjects + (coll.subjects === 1 ? ' subject' : ' subjects') + ' · ' + coll.decks + (coll.decks === 1 ? ' deck' : ' decks') + ' · ' + coll.cards + ' cards'
+        : 'Nothing here yet';
+      head.appendChild(h('span', 'topic-line', line));
+      if (coll.cards) head.appendChild(meter(coll.strength));
+      pressable(head, tile);
+      head.addEventListener('click', function () { openCollection(coll.name, true); });
+      tile.appendChild(head);
+      list.appendChild(tile);
+    });
+  }
+
+  /* Collection: its subjects as rows, weakest first, under the
+     collection-wide drill. */
+  function renderCollection() {
+    var coll = global.Store.currentCollection();
+    $('#coll-title').textContent = coll;
+    renderDrillPanel($('#coll-drill'), global.Store.collectionDecks(coll));
+    var list = $('#subject-list');
+    list.textContent = '';
+    list.classList.toggle('is-entering', !homeShown);
+    homeShown = true;
+    var subs = global.Store.subjects(coll);
+    if (!subs.length) {
+      list.appendChild(h('p', 'settings-empty', 'No decks in this collection yet. Add some from Settings → Library.'));
+      return;
+    }
+    subs.forEach(function (sub, si) {
+      var row = h('div', 'topic');
+      row.style.setProperty('--i', si);
+      if (!sub.started) row.classList.add('is-fresh');
+      var head = h('button', 'topic-head');
+      head.appendChild(h('span', 'topic-name', sub.name));
+      var t = sub.topics + (sub.topics === 1 ? ' topic' : ' topics');
+      head.appendChild(h('span', 'topic-line', sub.started
+        ? t + ' · ' + sub.weak + ' weak' + (sub.due ? ' · ' + sub.due + ' slipped' : '') + (sub.unseen ? ' · ' + sub.unseen + ' unseen' : '')
+        : t + ' · ' + sub.cards + ' cards · not started'));
+      head.appendChild(meter(sub.strength));
+      head.appendChild(h('span', 'topic-tag', sub.started ? strengthLabel(sub.strength) : 'new'));
+      pressable(head, row);
+      head.addEventListener('click', function () { openSubject(sub.name, true); });
+      row.appendChild(head);
+      list.appendChild(row);
+    });
+  }
+
+  /* Subject: topics weakest first, each opening onto its decks in the
+     same order. The number itself stays out of it — a percentage invites
+     you to farm the metric instead of the material, and on a ten-card
+     deck it is mostly noise anyway. */
+  function renderSubject() {
+    var list = $('#deck-list');
+    list.textContent = '';
+    list.classList.toggle('is-entering', !homeShown);
+    homeShown = true;
+    $('#subject-title').textContent = global.Store.currentSubject();
+
+    renderDrillPanel($('#subject-drill'), global.Store.subjectDecks());
 
     global.Store.topics().forEach(function (topic, ti) {
       var group = h('div', 'topic');
@@ -445,44 +523,6 @@
     });
   }
 
-  /* ──────────────────── subjects ───────────────────── */
-  /* A sheet over the home screen listing every subject; picking one
-     switches the list underneath. */
-  function openSubjects() {
-    if ($('.sheet')) return;
-    var current = global.Store.currentSubject();
-    var sheet = h('div', 'sheet');
-    var panel = h('div', 'sheet-panel');
-    panel.appendChild(h('p', 'sheet-title', 'Subjects'));
-    global.Store.subjects().forEach(function (sub) {
-      var b = h('button', 'sheet-row' + (sub.name === current ? ' is-current' : ''));
-      b.appendChild(h('span', 'sheet-name', sub.name));
-      b.appendChild(h('span', 'sheet-line',
-        sub.topics + (sub.topics === 1 ? ' topic' : ' topics') + ' · ' + sub.cards + ' cards'));
-      pressable(b);
-      b.addEventListener('click', function (e) {
-        e.stopPropagation();
-        global.Store.setSetting('subject', sub.name);
-        closeSubjects();
-        homeShown = false;               // a new list arrives the same way the first did
-        renderHome();
-      });
-      panel.appendChild(b);
-    });
-    sheet.appendChild(panel);
-    sheet.addEventListener('click', closeSubjects);
-    panel.addEventListener('click', function (e) { e.stopPropagation(); });
-    $('#screen-home').appendChild(sheet);
-    requestAnimationFrame(function () { sheet.classList.add('is-in'); });
-  }
-
-  function closeSubjects() {
-    var sheet = $('.sheet');
-    if (!sheet) return;
-    sheet.classList.remove('is-in');
-    setTimeout(function () { if (sheet.parentNode) sheet.remove(); }, reduceMotion ? 0 : 220);
-  }
-
   /* What the phone says about its screen, to diagnose layouts that get
      cut off at the bottom: the reported heights, the bottom inset, and
      whether it runs fullscreen. */
@@ -565,43 +605,99 @@
     setTimeout(go, 2500);
   }
 
-  /* ──────────────────── deck manager ───────────────────── */
-  /* Only generated decks appear. The built-ins live in the source file,
-     so offering a delete that cannot work would be worse than offering
-     none at all. */
-  function renderDeckManager() {
-    var wrap = $('#deck-manager');
-    if (!wrap) return;
-    wrap.textContent = '';
+  /* ──────────────────── library ───────────────────── */
+  /* Every deck, hidden ones included, grouped by collection and subject,
+     with what can be done to it: hide or show, reset its progress, move
+     it, and delete it if it was added here. Built-in decks cannot be
+     deleted — they live in the source file — but they can be hidden. */
+  function renderLibrary() {
+    var sel = $('#lib-import-coll');
+    sel.textContent = '';
+    global.Store.collections().forEach(function (c) {
+      var o = document.createElement('option');
+      o.value = c.name; o.textContent = c.name;
+      if (c.name === global.Store.currentCollection()) o.selected = true;
+      sel.appendChild(o);
+    });
 
-    var mine = global.Store.customDecks();
-    if (!mine.length) {
-      wrap.appendChild(h('p', 'settings-empty',
-        'Decks you add with the deck check tool show up here.'));
-      return;
+    var list = $('#library-list');
+    list.textContent = '';
+    var groups = {}, order = [];
+    global.Store.allDecks(true).forEach(function (deck) {
+      var key = global.Store.collectionOf(deck) + ' › ' + (deck.subject || 'Family Medicine');
+      if (!groups[key]) { groups[key] = []; order.push(key); }
+      groups[key].push(deck);
+    });
+    order.sort();
+    order.forEach(function (key) {
+      list.appendChild(h('h3', 'settings-head', key));
+      var group = h('div', 'settings-group');
+      groups[key].forEach(function (deck) { group.appendChild(libraryRow(deck)); });
+      list.appendChild(group);
+    });
+  }
+
+  function libraryRow(deck) {
+    var row = h('div', 'lib-row');
+    var text = h('div', 'manage-text');
+    var name = h('span', 'manage-name', deck.name || deck.id);
+    if (deck.hidden) name.appendChild(h('span', 'lib-tag', 'hidden'));
+    if (deck.kind === 'questions') name.appendChild(h('span', 'lib-tag', 'questions'));
+    text.appendChild(name);
+    var n = deck.cards.length;
+    text.appendChild(h('span', 'manage-line',
+      (deck.topic ? deck.topic + ' · ' : '') + n + (n === 1 ? ' card' : ' cards') +
+      (global.Store.isCustom(deck.id) ? ' · added here' : '')));
+    row.appendChild(text);
+
+    var acts = h('div', 'lib-actions');
+    function act(label, fn) {
+      var b = h('button', 'lib-btn', label);
+      b.addEventListener('click', fn);
+      acts.appendChild(b);
     }
-
-    mine.forEach(function (deck) {
-      var row = h('div', 'manage-row');
-      var text = h('div', 'manage-text');
-      text.appendChild(h('span', 'manage-name', deck.name || deck.id));
-      var n = deck.cards.length;
-      text.appendChild(h('span', 'manage-line',
-        (deck.topic ? deck.topic + ' · ' : '') + n + (n === 1 ? ' card' : ' cards')));
-      row.appendChild(text);
-
-      var del = h('button', 'manage-del', 'Delete');
-      del.setAttribute('aria-label', 'Delete ' + (deck.name || deck.id));
-      del.addEventListener('click', function () {
+    act(deck.hidden ? 'Show' : 'Hide', function () {
+      global.Store.hideDeck(deck.id, !deck.hidden);
+      renderLibrary();
+    });
+    act('Reset', function () {
+      if (!confirm('Reset progress on ' + (deck.name || deck.id) + '?')) return;
+      global.Store.resetDeckProgress(deck.id);
+      renderLibrary();
+    });
+    act('Move', function () {
+      var coll = prompt('Collection for ' + (deck.name || deck.id) + ':', global.Store.collectionOf(deck));
+      if (coll == null || !coll.trim()) return;
+      var subj = prompt('Subject:', deck.subject || 'Family Medicine');
+      if (subj == null || !subj.trim()) return;
+      global.Store.moveDeck(deck.id, coll.trim(), subj.trim());
+      renderLibrary();
+    });
+    if (global.Store.isCustom(deck.id)) {
+      act('Delete', function () {
         if (!confirm('Delete ' + (deck.name || deck.id) + '?\n\n' +
               deck.cards.length + ' cards and their progress go with it. This cannot be undone.')) return;
         global.Store.deleteDeck(deck.id);
-        renderDeckManager();
-        renderHome();
+        renderLibrary();
       });
-      row.appendChild(del);
-      wrap.appendChild(row);
-    });
+    }
+    row.appendChild(acts);
+    return row;
+  }
+
+  function importFromLibrary() {
+    var ta = $('#lib-import'), msg = $('#lib-import-msg');
+    var text = ta.value.trim();
+    if (!text) { msg.textContent = 'Paste a deck first.'; return; }
+    try {
+      var added = global.Store.importDecks(text, $('#lib-import-coll').value);
+      msg.textContent = 'Added ' + added.length + (added.length === 1 ? ' deck: ' : ' decks: ') +
+        added.map(function (d) { return d.name; }).join(', ') + '.';
+      ta.value = '';
+      renderLibrary();
+    } catch (e) {
+      msg.textContent = 'Not added: ' + (e && e.message ? e.message : 'could not read that JSON.');
+    }
   }
 
   /* ───────────────────────── settings ──────────────────────── */
@@ -673,6 +769,8 @@
       streak: 0,
       best: 0,
       started: Date.now(),
+      /* The screen the run was started from, to return to. */
+      origin: activeScreen(),
       keydown: {},
       keyup: {},
       /* A challenge run: the topic being attempted and the hearts left.
@@ -1546,7 +1644,9 @@
     $('#summary-baddie').hidden = true;
     global.Sfx.done();
     show('screen-summary', true);
-    renderHome();
+    /* The screen behind the summary is brought up to date now, so it is
+       right the moment the summary is dismissed. */
+    rendererFor(session.origin)();
   }
 
   /* A challenge run ends in one of two ways, and the summary says which.
@@ -1729,20 +1829,24 @@
       if (confirm('Clear all card notes?')) { global.Store.clearNotes(); renderNotes(); }
     });
     $('#btn-settings').addEventListener('click', function () {
-      renderDeckManager();               // decks can arrive from the tool between visits
       renderScreenInfo();
       renderNotes();
       show('screen-settings');
     });
 
-    $('#btn-subject').addEventListener('click', openSubjects);
-    pressable($('#btn-subject'));
-    $('#btn-settings-back').addEventListener('click', function () { show('screen-home'); renderHome(); });
-    /* Leaving a challenge run lands back on the path, not the home list. */
+    $('#btn-settings-back').addEventListener('click', function () { goHome(); });
+    $('#btn-coll-back').addEventListener('click', function () { goHome(true); });
+    $('#btn-subject-back').addEventListener('click', function () { openCollection(null, true); });
+    $('#btn-library').addEventListener('click', function () { renderLibrary(); show('screen-library'); });
+    $('#btn-library-back').addEventListener('click', function () { show('screen-settings'); });
+    $('#btn-lib-import').addEventListener('click', importFromLibrary);
+    /* Leaving a run lands back where it was started from; a challenge
+       run goes back to the path. */
     function leaveSession() {
       if (session && session.challenge) { openChallenge(); return; }
-      homeShown = false;             // the topics arrive again, one after another
-      show('screen-home', true, renderHome);
+      var to = (session && session.origin) || 'screen-home';
+      homeShown = false;             // the list arrives again, one after another
+      show(to, true, rendererFor(to));
     }
     $('#btn-quit').addEventListener('click', leaveSession);
     $('#btn-home').addEventListener('click', leaveSession);

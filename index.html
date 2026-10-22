@@ -11,9 +11,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/base.css?v=140">
-<link rel="stylesheet" href="css/themes.css?v=140">
-<link rel="stylesheet" href="css/animations.css?v=140">
+<link rel="stylesheet" href="css/base.css?v=141">
+<link rel="stylesheet" href="css/themes.css?v=141">
+<link rel="stylesheet" href="css/animations.css?v=141">
 </head>
 <body>
 
@@ -26,24 +26,66 @@
       <h1 class="wordmark">
         <span class="wordmark-a">my</span><span class="wordmark-b">flash</span>
       </h1>
-      <!-- Which subject the list below shows; tapping it opens the list
-           of subjects to switch between. -->
-      <button class="subject-switch" id="btn-subject" aria-haspopup="true">
-        <span id="subject-name">Family Medicine</span><span class="subject-caret" aria-hidden="true">▾</span>
-      </button>
-
       <!-- The Challenge: ten topics on a path, each beaten on a run of
-           limited hearts. -->
-      <button class="challenge-entry" id="btn-challenge">
+           limited hearts. Set aside for now. -->
+      <button class="challenge-entry" id="btn-challenge" hidden>
         <span class="challenge-entry-name">CHALLENGE</span>
         <span class="challenge-entry-line" id="challenge-line"></span>
       </button>
 
+      <!-- The collections: one tile each, opening onto its subjects. -->
+      <div class="deck-list" id="coll-list"></div>
+    </div>
+  </section>
+
+  <!-- ─────────────────────── COLLECTION ───────────────────── -->
+  <section class="screen" id="screen-collection">
+    <div class="home-wrap">
+      <div class="screen-head">
+        <button class="icon-btn" id="btn-coll-back" aria-label="Back">&#8592;</button>
+        <h2 class="screen-title" id="coll-title"></h2>
+      </div>
+      <!-- The collection as a whole: worst cards across every subject,
+           and what has not been started. -->
+      <div class="subject-drill" id="coll-drill" hidden></div>
+      <div class="deck-list" id="subject-list"></div>
+    </div>
+  </section>
+
+  <!-- ──────────────────────── SUBJECT ─────────────────────── -->
+  <section class="screen" id="screen-subject">
+    <div class="home-wrap">
+      <div class="screen-head">
+        <button class="icon-btn" id="btn-subject-back" aria-label="Back">&#8592;</button>
+        <h2 class="screen-title" id="subject-title"></h2>
+      </div>
       <!-- The subject as a whole: what has slipped, the worst cards
            across every topic, and what has not been started. -->
       <div class="subject-drill" id="subject-drill" hidden></div>
-
       <div class="deck-list" id="deck-list"></div>
+    </div>
+  </section>
+
+  <!-- ──────────────────────── LIBRARY ─────────────────────── -->
+  <section class="screen" id="screen-library">
+    <div class="settings-wrap">
+      <div class="screen-head">
+        <button class="icon-btn" id="btn-library-back" aria-label="Back">&#8592;</button>
+        <h2 class="screen-title">Library</h2>
+      </div>
+
+      <h3 class="settings-head">Add decks</h3>
+      <div class="settings-group">
+        <textarea class="lib-import" id="lib-import" rows="4" placeholder="Paste deck JSON: one deck or a list of decks"></textarea>
+        <label class="lib-into">Into
+          <select id="lib-import-coll"></select>
+        </label>
+        <button class="btn btn-ghost" id="btn-lib-import">Add decks</button>
+        <p class="settings-empty" id="lib-import-msg"></p>
+      </div>
+
+      <h3 class="settings-head">Every deck</h3>
+      <div id="library-list"></div>
     </div>
   </section>
 
@@ -105,8 +147,11 @@
 
       <!-- Destructive, so it lives here rather than a tap away from
            starting a session on the home screen. -->
-      <h3 class="settings-head">Your decks</h3>
-      <div class="settings-group" id="deck-manager"></div>
+      <h3 class="settings-head">Decks</h3>
+      <div class="settings-group">
+        <button class="btn btn-ghost" id="btn-library">Open library</button>
+        <p class="settings-empty">Hide, move or reset any deck, delete ones you added, and paste in new ones.</p>
+      </div>
 
       <h3 class="settings-head">App</h3>
       <div class="settings-group">
@@ -159,12 +204,12 @@
 
 </div>
 
-<script src="js/audio.js?v=140"></script>
-<script src="js/decks.js?v=140"></script>
-<script src="js/challenge.js?v=140"></script>
-<script src="js/store.js?v=140"></script>
-<script src="js/text.js?v=140"></script>
-<script src="js/modes.js?v=140"></script>
-<script src="js/app.js?v=140"></script>
+<script src="js/audio.js?v=141"></script>
+<script src="js/decks.js?v=141"></script>
+<script src="js/challenge.js?v=141"></script>
+<script src="js/store.js?v=141"></script>
+<script src="js/text.js?v=141"></script>
+<script src="js/modes.js?v=141"></script>
+<script src="js/app.js?v=141"></script>
 </body>
 </html>

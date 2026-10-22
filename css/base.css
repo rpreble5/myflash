@@ -783,3 +783,70 @@ button { cursor: pointer; border: 0; background: none; }
 .subject-drill .btn { width: 100%; font-size: .9rem; }
 .subject-drill .btn + .btn { margin-top: .6rem; }
 .btn-subject-weak { background: var(--brand); color: #fff; border: 0; box-shadow: 0 5px 0 var(--brand-dark); }
+
+/* ── Collections, subjects, library ─────────────────────────
+   Home shows one tile per collection; a collection shows its subjects as
+   rows. Both reuse the topic card, the tile with a larger name. */
+.home-wrap .screen-head { margin: .4rem 0 1.25rem; }
+.coll-tile .topic-head { padding: 1.25rem 1.2rem; }
+.coll-name { font-size: 1.6rem; }
+.coll-tile .meter { margin-top: .6rem; }
+
+.lib-row {
+  display: flex;
+  flex-direction: column;
+  gap: .55rem;
+  padding: .8rem 0;
+  border-bottom: 2px solid var(--line);
+}
+.lib-row:last-child { border-bottom: 0; }
+.lib-tag {
+  display: inline-block;
+  margin-left: .5rem;
+  padding: .1rem .5rem;
+  border-radius: 999px;
+  background: var(--brand-soft);
+  color: var(--brand-dark);
+  font-size: .65rem;
+  font-weight: 800;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  vertical-align: middle;
+}
+.lib-actions { display: flex; flex-wrap: wrap; gap: .4rem; }
+.lib-btn {
+  padding: .4rem .8rem;
+  border-radius: 10px;
+  border: 2px solid var(--line);
+  border-bottom-width: 4px;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--body-face);
+  font-size: .8rem;
+  font-weight: 800;
+  letter-spacing: .03em;
+  text-transform: uppercase;
+}
+.lib-btn:active { border-bottom-width: 2px; margin-top: 2px; background: var(--soft); }
+.lib-import {
+  width: 100%;
+  padding: .7rem .8rem;
+  border-radius: 12px;
+  border: 2px solid var(--line);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: .8rem;
+  resize: vertical;
+  margin-bottom: .6rem;
+}
+.lib-into { display: flex; align-items: center; gap: .6rem; margin-bottom: .6rem; font-size: .9rem; font-weight: 700; color: var(--muted); }
+.lib-into select {
+  flex: 1;
+  padding: .5rem .6rem;
+  border-radius: 10px;
+  border: 2px solid var(--line);
+  background: var(--bg);
+  font-family: var(--body-face);
+  font-size: .9rem;
+  font-weight: 700;
+  color: var(--ink);
+}
