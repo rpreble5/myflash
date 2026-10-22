@@ -841,6 +841,9 @@
    above grows and the correct answer and explanation have the room. */
 .keypad.is-done { opacity: 0; pointer-events: none; height: 0; overflow: hidden; padding: 0; }
 .card.is-keypad .stack-answer { white-space: nowrap; }
+/* The number and the correct answer under it sit centered over the
+   keypad; the question stays set left like every other card. */
+.kp-entry, .card.is-keypad .stack-answer { text-align: center; }
 
 /* Rounded squares with a deep bottom edge: the same chunk as the choice
    buttons, scaled to the key. The radius follows the key size so the
