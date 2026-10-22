@@ -1008,10 +1008,13 @@
         var body = h('div', 'note-body');
         body.appendChild(h('p', 'note-text', text));
         sheet.appendChild(body);
-        var cue = h('div', 'note-cue');
-        if (noteSwipe) cue.appendChild(h('span', 'note-cue-grade', '← MISSED · GOT IT →'));
-        cue.appendChild(h('span', null, 'TAP TO CLOSE'));
-        sheet.appendChild(cue);
+        /* Only the grading directions, and only when a swipe here grades;
+           no "tap to close". */
+        if (noteSwipe) {
+          var cue = h('div', 'note-cue');
+          cue.appendChild(h('span', 'note-cue-grade', '← MISSED · GOT IT →'));
+          sheet.appendChild(cue);
+        }
         el.appendChild(sheet);
         el.classList.add('has-note');
         session.noteOpen = true;
@@ -1168,7 +1171,7 @@
       },
 
       waitForTap: function (fn) {
-        var cue = h('div', 'tap-cue', 'TAP TO CONTINUE');
+        var cue = h('div', 'tap-cue', '');
         el.appendChild(cue);
         el.classList.add('is-tappable');
         requestAnimationFrame(function () { cue.classList.add('is-in'); });

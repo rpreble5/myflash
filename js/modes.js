@@ -191,7 +191,7 @@
   var STACK_WHY_INLINE = 220;
 
   var recall = {
-    id: 'recall', label: 'TAP TO REVEAL', types: ['recall'], weight: 1,
+    id: 'recall', label: '', types: ['recall'], weight: 1,
     eligible: function () { return true; },
     mount: function (area, ctx) {
       var bar = swipeBar(ctx);
@@ -371,7 +371,9 @@
          make the question hard — they shouldn't also force a tall list. */
       grid.dataset.lay = layoutFor(options, 6, GRID_MAX_CHARS_BOXED);
 
-      var hint = h('div', 'hint is-static submit-cue', 'select all that apply');
+      /* No instruction: the boxes say what to do. The line stays, empty,
+         so it keeps holding its box under the options. */
+      var hint = h('div', 'hint is-static submit-cue', ' ');
       var keyMap = { 'Enter': submit };
       var btns = [];
 
@@ -412,7 +414,7 @@
         btns[i].setAttribute('aria-pressed', picked[i] ? 'true' : 'false');
         var live = anyPicked();
         hint.classList.toggle('is-live', live);
-        hint.textContent = live ? 'swipe right to check →' : 'select all that apply';
+        hint.textContent = ' ';
       }
 
       function isAnswer(opt) {
@@ -988,7 +990,7 @@
   }
 
   var number = {
-    id: 'number', label: 'DRAG TO SET', types: ['number'], weight: 1,
+    id: 'number', label: '', types: ['number'], weight: 1,
     /* The value is the interaction; the question is only the prompt. */
     compact: true,
     /* Kept for anyone who prefers it: Settings → Slider for number cards. */
@@ -1034,9 +1036,6 @@
       dial.appendChild(down);
       area.appendChild(dial);
 
-      var hint = h('div', 'hint', 'drag up or down');
-      area.appendChild(hint);
-
       var locked = false;
 
       function nudge(n) {
@@ -1045,7 +1044,6 @@
         if (next === value) return;
         value = next;
         val.textContent = fmt(value, sc.dp);
-        hint.classList.add('is-gone');
         global.Sfx.tick();
       }
 
@@ -1055,7 +1053,6 @@
         if (locked) return;
         locked = true;
         check.classList.add('is-hidden');
-        hint.classList.add('is-gone');
 
         var ok = isCorrect(card, value);
         dial.classList.add(ok ? 'is-right' : 'is-wrong');
@@ -1111,7 +1108,6 @@
       });
 
       if (autoSubmit) {
-        hint.textContent = 'release to answer';
         check.classList.add('is-hidden');
       }
       check.disabled = false;
