@@ -554,6 +554,31 @@
   }
   function clearNotes() { write(KEY_NOTES, []); }
 
+  /* ── Flags ────────────────────────────────────────────────
+     A card marked while studying to come back to, or to export. Notes
+     are about fixing the card; a flag is about learning it. */
+  var KEY_FLAGS = 'myflash.flags.v1';
+  function flags() { return read(KEY_FLAGS, {}); }
+  function isFlagged(deckId, cardIndex) { return !!flags()[deckId + ':' + cardIndex]; }
+  function toggleFlag(deckId, cardIndex) {
+    var all = flags(), k = deckId + ':' + cardIndex;
+    if (all[k]) delete all[k]; else all[k] = Date.now();
+    write(KEY_FLAGS, all);
+    return !!all[k];
+  }
+  /* Positions into `decks` of every flagged card, most recently flagged first. */
+  function flaggedCards(decks) {
+    var all = flags(), out = [];
+    decks.forEach(function (deck, di) {
+      for (var i = 0; i < deck.cards.length; i++) {
+        var at = all[deck.id + ':' + i];
+        if (at) out.push({ deck: di, card: i, at: at });
+      }
+    });
+    out.sort(function (a, b) { return b.at - a.at; });
+    return out;
+  }
+
   /* Challenge progress: which topics have been beaten, by id. Kept apart
      from the card stats, since a challenge run teaches the strength model
      nothing it should act on. */
@@ -608,6 +633,9 @@
     moveDeck: moveDeck,
     resetDeckProgress: resetDeckProgress,
     importDecks: importDecks,
+    isFlagged: isFlagged,
+    toggleFlag: toggleFlag,
+    flaggedCards: flaggedCards,
     WEAK: WEAK,
     topics: topics,
     deckProgress: deckProgress,

@@ -114,12 +114,107 @@
      every topic to repair, what has not been started, and how much has
      slipped under the line since it was last studied. Hidden on a subject
      with nothing to say. */
-  function renderDrillPanel(box, decks) {
+  /* ── Export ──────────────────────────────────────────────
+     A set of cards as plain text, to feed something else: a podcast
+     generator, a study buddy, a document. Each card is its question, its
+     answer in words, and its explanation. */
+  function cardAnswer(card) {
+    var unit = card.unit ? ' ' + card.unit : '';
+    switch (card.type) {
+      case 'truefalse': return card.a ? 'True' : 'False';
+      case 'multi': return card.answers.join('; ') +
+        (card.distractors && card.distractors.length ? ' (not: ' + card.distractors.join(', ') + ')' : '');
+      case 'number':
+        if (card.values) return card.values.join(' ' + (card.join || '–') + ' ') + unit;
+        if (card.low != null) return card.low + ' to ' + card.high + unit;
+        return card.value + unit;
+      case 'bucket': return card.bins.map(function (b) {
+        return b + ': ' + card.items.filter(function (i) { return i.bin === b; }).map(function (i) { return i.label; }).join(', ');
+      }).join(' | ');
+      case 'match': return card.pairs.map(function (p) { return p.left + ' → ' + p.right; }).join('; ');
+      case 'trend': return card.items.map(function (i) {
+        return i.label + ' ' + (i.dir === 'up' ? 'up' : i.dir === 'down' ? 'down' : 'unchanged');
+      }).join(', ');
+      case 'order': return (card.steps || []).join(' → ');
+      default: return String(card.a == null ? '' : card.a);
+    }
+  }
+
+  function exportText(decks, picks, heading) {
+    var lines = ['MYFLASH · ' + heading + ' · ' + new Date().toISOString().slice(0, 10), ''];
+    picks.forEach(function (p, i) {
+      var deck = decks[p.deck], card = deck.cards[p.card];
+      lines.push((i + 1) + '. ' + card.q + '  [' + deck.name + ']');
+      lines.push('   Answer: ' + cardAnswer(card));
+      if (card.why) lines.push('   Why: ' + card.why);
+      lines.push('');
+    });
+    return lines.join('\n');
+  }
+
+  /* The chooser: how many of the worst, or the flagged set, then copy
+     or share. */
+  function openExport(decks, label) {
+    if ($('.sheet')) return;
+    var sheet = h('div', 'sheet');
+    var panel = h('div', 'sheet-panel');
+    panel.appendChild(h('p', 'sheet-title', 'Export ' + label));
+    var weakAll = global.Store.drillCards(decks);
+    var flagged = global.Store.flaggedCards(decks);
+
+    function row(name, picks, heading) {
+      var r = h('div', 'sheet-row export-row');
+      r.appendChild(h('span', 'sheet-name', name));
+      var acts = h('span', 'export-acts');
+      var copy = h('button', 'lib-btn', 'Copy');
+      copy.addEventListener('click', function (e) {
+        e.stopPropagation();
+        copyText(exportText(decks, picks, heading), copy, 'Copy');
+      });
+      acts.appendChild(copy);
+      if (navigator.share) {
+        var share = h('button', 'lib-btn', 'Share');
+        share.addEventListener('click', function (e) {
+          e.stopPropagation();
+          navigator.share({ title: 'MYFLASH · ' + heading, text: exportText(decks, picks, heading) }).catch(function () { /* dismissed */ });
+        });
+        acts.appendChild(share);
+      }
+      r.appendChild(acts);
+      panel.appendChild(r);
+    }
+
+    /* Sizes smaller than the weak set, then the whole set (capped so a
+       barely-started subject does not export everything). */
+    [10, 20, 40].forEach(function (n) {
+      if (n < weakAll.length) row(n + ' weakest', weakAll.slice(0, n), label + ' · ' + n + ' weakest cards');
+    });
+    if (weakAll.length) {
+      var all = weakAll.slice(0, 60);
+      row(all.length === weakAll.length ? 'All ' + all.length + ' weak' : all.length + ' weakest', all,
+          label + ' · ' + all.length + ' weakest cards');
+    }
+    if (flagged.length) row(flagged.length + ' flagged', flagged, label + ' · ' + flagged.length + ' flagged cards');
+    if (!weakAll.length && !flagged.length) panel.appendChild(h('p', 'sheet-line', 'Nothing weak or flagged here yet.'));
+
+    sheet.appendChild(panel);
+    function close() {
+      sheet.classList.remove('is-in');
+      setTimeout(function () { if (sheet.parentNode) sheet.remove(); }, reduceMotion ? 0 : 220);
+    }
+    sheet.addEventListener('click', close);
+    panel.addEventListener('click', function (e) { e.stopPropagation(); });
+    document.querySelector('.screen.is-active').appendChild(sheet);
+    requestAnimationFrame(function () { sheet.classList.add('is-in'); });
+  }
+
+  function renderDrillPanel(box, decks, label) {
     box.textContent = '';
     var weak = global.Store.drillCards(decks, SHORT_RUN);
     var unseen = global.Store.unseenCards(decks);
     var due = global.Store.dueCount(decks);
-    box.hidden = !weak.length && !unseen.length;
+    var flagged = global.Store.flaggedCards(decks);
+    box.hidden = !weak.length && !unseen.length && !flagged.length;
     if (box.hidden) return;
 
     var total = global.Store.drillCards(decks).length;
@@ -127,6 +222,7 @@
     if (total) bits.push(total + ' weak');
     if (due) bits.push(due + ' slipped');
     if (unseen.length) bits.push(unseen.length + ' unseen');
+    if (flagged.length) bits.push(flagged.length + ' flagged');
     box.appendChild(h('div', 'subject-drill-line', bits.join(' · ')));
 
     if (weak.length) {
@@ -141,6 +237,16 @@
       start.addEventListener('click', function () { startPicked(decks, unseen.slice(0, SHORT_RUN)); });
       box.appendChild(start);
     }
+    if (flagged.length) {
+      var fl = h('button', 'btn btn-ghost btn-subject-unseen',
+        'Drill ' + flagged.length + ' flagged');
+      fl.addEventListener('click', function () { startPicked(decks, flagged.slice(0, SHORT_RUN * 2)); });
+      box.appendChild(fl);
+    }
+    /* The worst or the flagged, as text, for use outside the app. */
+    var exp = h('button', 'subject-export', 'Export cards');
+    exp.addEventListener('click', function () { openExport(decks, label || ''); });
+    box.appendChild(exp);
   }
 
   /* ── Navigation: home → collection → subject ─────────────────
@@ -199,7 +305,7 @@
   function renderCollection() {
     var coll = global.Store.currentCollection();
     $('#coll-title').textContent = coll;
-    renderDrillPanel($('#coll-drill'), global.Store.collectionDecks(coll));
+    renderDrillPanel($('#coll-drill'), global.Store.collectionDecks(coll), coll);
     var list = $('#subject-list');
     list.textContent = '';
     list.classList.toggle('is-entering', !homeShown);
@@ -239,7 +345,7 @@
     homeShown = true;
     $('#subject-title').textContent = global.Store.currentSubject();
 
-    renderDrillPanel($('#subject-drill'), global.Store.subjectDecks());
+    renderDrillPanel($('#subject-drill'), global.Store.subjectDecks(), global.Store.currentSubject());
 
     global.Store.topics().forEach(function (topic, ti) {
       var group = h('div', 'topic');
@@ -1719,6 +1825,15 @@
     var b = $('#btn-note');
     var cur = session && session.current;
     b.classList.toggle('has-note', !!(cur && noteFor(cur.deck.id, cur.index)));
+    $('#btn-flag').classList.toggle('is-flagged', !!(cur && global.Store.isFlagged(cur.deck.id, cur.index)));
+  }
+
+  function toggleCardFlag() {
+    var cur = session && session.current;
+    if (!cur) return;
+    var on = global.Store.toggleFlag(cur.deck.id, cur.index);
+    global.Sfx.select();
+    $('#btn-flag').classList.toggle('is-flagged', on);
   }
 
   function openCardNote() {
@@ -1788,11 +1903,14 @@
     }).join('\n\n');
   }
 
-  function copyNotes(btn) {
-    var text = notesText();
+  function copyNotes(btn) { copyText(notesText(), btn, 'Copy notes'); }
+
+  /* Copies `text`, reporting on the button pressed, which reads `label`
+     again afterwards. */
+  function copyText(text, btn, label) {
     function done(ok) {
       btn.textContent = ok ? 'Copied' : 'Could not copy';
-      setTimeout(function () { btn.textContent = 'Copy notes'; }, 1600);
+      setTimeout(function () { btn.textContent = label; }, 1600);
     }
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(text).then(function () { done(true); }, function () { done(false); });
@@ -1824,6 +1942,7 @@
     }
 
     $('#btn-note').addEventListener('click', openCardNote);
+    $('#btn-flag').addEventListener('click', toggleCardFlag);
     $('#btn-notes-copy').addEventListener('click', function () { copyNotes(this); });
     $('#btn-notes-clear').addEventListener('click', function () {
       if (confirm('Clear all card notes?')) { global.Store.clearNotes(); renderNotes(); }
