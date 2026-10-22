@@ -1114,10 +1114,18 @@
         if (typeof answerText !== 'string') node.appendChild(answerText);
         front.appendChild(node);
         if (entry) front.appendChild(entry);
-        stack = { answer: node, entry: entry || null, makeWhy: makeWhy, why: null, cue: false, shown: false, flow: flow };
-        /* Built now rather than at layout, so the fallback below that adds
-           a missing explanation sees this one and does not add a second. */
-        if (makeWhy) setWhy(makeWhy(true));
+        /* The explanation has one home: a faded WHY button docked at the
+           bottom of the card, the same place on every card, opening the
+           note. Only a vignette, which scrolls, shows it in full inline. */
+        stack = { answer: node, entry: entry || null, makeWhy: flow ? makeWhy : null, why: null, dock: null, cue: false, shown: false, flow: flow };
+        if (flow && makeWhy) {
+          setWhy(makeWhy(true));
+        } else if (makeWhy) {
+          var dock = makeWhy(false);
+          dock.classList.add('why-dock');
+          el.appendChild(dock);
+          stack.dock = dock;
+        }
         layoutStackLater();
       },
 
@@ -1130,6 +1138,7 @@
           stack.answer.classList.add('is-in');
         }
         if (stack.why) stack.why.classList.remove('is-held');
+        if (stack.dock) stack.dock.classList.remove('is-held');
       },
 
       /* A mode that grades by swiping hands that over here, so the same

@@ -87,12 +87,20 @@
     var wrap = h('div', 'why-wrap');
     var limit = inlineMax == null ? WHY_INLINE_MAX : inlineMax;
 
-    if (text.length <= limit || !ctx || !ctx.openNote) {
+    /* A limit of zero means the button, whatever the length. */
+    if ((limit > 0 && text.length <= limit) || !ctx || !ctx.openNote) {
       var inline = h('div', 'why', text);
       wrap.appendChild(inline);
       requestAnimationFrame(function () { inline.classList.add('is-in'); });
       return wrap;
     }
+
+    /* The text the button opens can be changed before the reveal — a
+       wrong multiple-choice pick adds its own reason in front. With no
+       text at all the button has nothing to show and stays hidden. */
+    var full = text;
+    wrap.setText = function (t) { full = t; wrap.classList.toggle('is-empty', !full); };
+    wrap.classList.toggle('is-empty', !full);
 
     /* A button, so the card's own swipe handler skips it — enableSwipe
        ignores anything inside a button, which means no pointer capture
@@ -108,8 +116,8 @@
        explain. On a number card that is not merely early: the dial IS an
        upward drag, so setting the value would open the answer. */
     function open() {
-      if (wrap.classList.contains('is-held')) return;
-      ctx.openNote(text);
+      if (wrap.classList.contains('is-held') || !full) return;
+      ctx.openNote(full);
     }
 
     cue.addEventListener('click', function (e) { e.stopPropagation(); open(); });
@@ -213,7 +221,7 @@
         revealed = true;
         global.Sfx.flip();
         ctx.stackReveal();
-        ctx.setKicker('KNEW IT?');
+        ctx.setKicker('');
         bar.arm();
       }
 
@@ -258,10 +266,14 @@
           /* A wrong pick gets its own reason first, above the explanation
              of the right answer. */
           if (!ok && whyNot && whyNot[opt] && whyWrap) {
-            var note = h('div', 'why why-not is-in');
-            note.appendChild(h('strong', null, 'Why not: '));
-            note.appendChild(document.createTextNode(whyNot[opt]));
-            whyWrap.insertBefore(note, whyWrap.firstChild);
+            if (whyWrap.setText) {
+              whyWrap.setText('Why not: ' + whyNot[opt] + (why ? '\n\n' + why : ''));
+            } else {
+              var note = h('div', 'why why-not is-in');
+              note.appendChild(h('strong', null, 'Why not: '));
+              note.appendChild(document.createTextNode(whyNot[opt]));
+              whyWrap.insertBefore(note, whyWrap.firstChild);
+            }
           }
           /* The options already show the answer; only the explanation
              comes in. */

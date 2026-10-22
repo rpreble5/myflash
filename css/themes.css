@@ -396,7 +396,34 @@
    question and answer get the room. */
 /* Clear of the rounded corners at the bottom of the screen, which
    safe-area insets do not always report. */
-.card.is-stack .card-body { padding-bottom: calc(1.75rem + env(safe-area-inset-bottom)); }
+/* Room at the foot of every card for the docked WHY button. */
+.card.is-stack .card-body { padding-bottom: calc(3.75rem + env(safe-area-inset-bottom)); }
+
+/* ── The WHY dock ────────────────────────────────────────────
+   One place on every card: bottom center, faded, borderless. Held
+   invisible until the answer is in, then eased in late so it never
+   competes with the reveal. */
+.why-dock {
+  position: absolute;
+  left: 0; right: 0;
+  bottom: calc(.7rem + env(safe-area-inset-bottom));
+  z-index: 3;
+  width: auto;
+  align-items: center;
+  justify-content: center;
+  animation: none;
+  transition: opacity .35s ease .4s;
+}
+.why-dock.is-held { opacity: 0; pointer-events: none; transition: none; }
+.why-dock.is-empty { display: none; }
+.why-dock .why-cue {
+  border: 0;
+  padding: .45rem 1rem;
+  background: transparent;
+  color: var(--muted);
+}
+.why-dock .why-cue.is-in { opacity: .45; }
+.why-dock .why-cue:hover, .why-dock .why-cue:active { opacity: .9; transform: none; }
 /* Option blocks sit a little higher than the bottom edge allows: the
    lowest one was uncomfortable to read and to reach. */
 .card.is-stack.is-choice .card-body { padding-bottom: calc(4rem + env(safe-area-inset-bottom)); }
@@ -909,3 +936,5 @@
 /* The home rows ease their margin back on release; with the bounce
    carrying the rise, that ease would stack on top of it. */
 .topic.is-released, .deck-row.is-released { transition: none; }
+/* A note built from two parts (why not, then why) keeps its blank line. */
+.note-text { white-space: pre-line; }
