@@ -752,6 +752,17 @@
          placed: the CSS lays it out as ordinary text. */
       if (stack.flow) { qEl.style.fontSize = ''; return; }
       var R = flipper.clientHeight, GAP = STACK_GAP;
+      /* The typed number is as big as the card allows, stepping down only
+         when a long range and unit would run off the edge. */
+      if (stack.entry) {
+        if (!stack.entrySize) stack.entrySize = parseFloat(global.getComputedStyle(stack.entry).fontSize) || 40;
+        var eSize = stack.entrySize;
+        stack.entry.style.fontSize = eSize + 'px';
+        while (eSize > 28 && stack.entry.scrollWidth > stack.entry.clientWidth) {
+          eSize -= 2;
+          stack.entry.style.fontSize = eSize + 'px';
+        }
+      }
       /* Under a typed number the correct one matches it in size. */
       stack.answer.style.fontSize = (stack.entry
         ? parseFloat(global.getComputedStyle(stack.entry).fontSize) || 40
@@ -767,7 +778,10 @@
       var qSize = questionSize(qEl.textContent);
       qEl.style.fontSize = qSize + 'px';
       var qH = qEl.getBoundingClientRect().height;
-      while (!stack.shown && qSize > 18 && qH + GAP + eH + aH > R) {
+      /* Under a keypad the answer is not part of the block: it arrives
+         after CHECK, once the keypad has gone and there is room. */
+      var reserve = stack.entry ? 0 : aH;
+      while (!stack.shown && qSize > 18 && qH + GAP + eH + reserve > R) {
         qSize -= 2;
         qEl.style.fontSize = qSize + 'px';
         qH = qEl.getBoundingClientRect().height;
@@ -775,29 +789,54 @@
 
       var block = qH + GAP + eH + aH;
       var top = Math.max(0, R * STACK_SETTLE - block / 2);
+      /* Under a keypad the question stays at the top and the number being
+         typed sits in the middle of what is left. Once checked it stays
+         where it was: the keypad collapses, the card grows, and the
+         correct answer and the explanation take the room below it. */
+      var eTop = 0;
+      if (stack.entry) {
+        top = 0;
+        var minE = qH + GAP;
+        eTop = minE + Math.max(0, (R - minE - (eH - GAP)) / 2);
+        if (stack.shown && stack.eTop != null) eTop = stack.eTop;
+        else stack.eTop = eTop;
+      }
+      /* Room for the correct answer: always while it may still appear,
+         and after the reveal only if it did. */
+      var aRoom = !stack.shown || stack.answer.classList.contains('is-in') ? aH + GAP : 0;
 
       /* The explanation: inline if it fits under the answer, lifting the
-         block if need be; otherwise the WHY button. */
+         block if need be; otherwise the WHY button. Under a keypad the
+         decision waits for the reveal, when the card has its final size. */
       var whyH = 0;
       if (stack.makeWhy) {
         if (!stack.why) setWhy(stack.makeWhy(true));
         whyH = stack.why.getBoundingClientRect().height;
-        var need = block + 2 * GAP + whyH;
-        if (top + need > R) top = Math.max(0, R - need);
-        if (top + need > R && !stack.cue) {
-          setWhy(stack.makeWhy(false));
-          stack.cue = true;
-          whyH = stack.why.getBoundingClientRect().height;
+        if (stack.entry) {
+          var needE = eTop + eH + aRoom + GAP + whyH;
+          if (stack.shown && needE > R && !stack.cue) {
+            setWhy(stack.makeWhy(false));
+            stack.cue = true;
+            whyH = stack.why.getBoundingClientRect().height;
+          }
+        } else {
+          var need = block + 2 * GAP + whyH;
+          if (top + need > R) top = Math.max(0, R - need);
+          if (top + need > R && !stack.cue) {
+            setWhy(stack.makeWhy(false));
+            stack.cue = true;
+            whyH = stack.why.getBoundingClientRect().height;
+          }
         }
       }
 
-      var aEnd = top + qH + GAP + eH;
+      var aEnd = stack.entry ? eTop + eH : top + qH + GAP + eH;
       place(qEl, top);
-      if (stack.entry) place(stack.entry, top + qH + GAP);
+      if (stack.entry) place(stack.entry, eTop);
       place(stack.answer, stack.shown ? aEnd : aEnd + STACK_RISE);
       stack.aEnd = aEnd;
       if (stack.why) {
-        var lowest = top + block + 2 * GAP;
+        var lowest = aEnd + (stack.entry ? aRoom : aH + GAP);
         var bottom = R - whyH - GAP;
         place(stack.why, bottom > lowest ? bottom - (bottom - lowest) * STACK_LIFT : lowest);
       }
@@ -1000,7 +1039,10 @@
           el.classList.add('is-flow');
           front.insertBefore(h('p', 'q-stem', card.stem), qEl);
         }
-        var node = h('div', 'q a-face stack-answer', answerText);
+        /* A string, or a node when the answer needs its own markup (the
+           keypad's number with a small unit beside it). */
+        var node = h('div', 'q a-face stack-answer', typeof answerText === 'string' ? answerText : '');
+        if (typeof answerText !== 'string') node.appendChild(answerText);
         front.appendChild(node);
         if (entry) front.appendChild(entry);
         stack = { answer: node, entry: entry || null, makeWhy: makeWhy, why: null, cue: false, shown: false, flow: flow };

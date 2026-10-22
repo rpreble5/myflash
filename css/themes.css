@@ -794,7 +794,7 @@
 /* ── Number: the keypad ──────────────────────────────────────
    Round keys sized from the screen height, so the pad fills the bottom
    of a tall phone and still leaves the question room on a short one. */
-.kp-entry { font-size: 40px; font-weight: 900; line-height: 1.2; white-space: nowrap; transition: color .2s ease; }
+.kp-entry { font-size: 56px; font-weight: 900; line-height: 1.2; white-space: nowrap; transition: color .2s ease; }
 .kp-num { font-variant-numeric: tabular-nums; }
 .kp-num.is-empty { color: var(--line); }
 .kp-unit { margin-left: .3em; font-size: .5em; font-weight: 700; color: var(--muted); }
@@ -802,7 +802,7 @@
 .kp-num.is-wrong { color: var(--bad); }
 /* Several numbers: a little smaller so a range fits on one line, with
    the one being typed underlined. */
-.kp-entry.is-multi { font-size: 34px; }
+.kp-entry.is-multi { font-size: 46px; }
 .kp-join { margin: 0 .25em; color: var(--muted); }
 .kp-num.is-active {
   text-decoration: underline;
@@ -837,7 +837,10 @@
   gap: 10px 16px;
   transition: opacity .25s ease;
 }
-.keypad.is-done { opacity: 0; pointer-events: none; }
+/* After CHECK the pad fades and gives up its height at once, so the card
+   above grows and the correct answer and explanation have the room. */
+.keypad.is-done { opacity: 0; pointer-events: none; height: 0; overflow: hidden; padding: 0; }
+.card.is-keypad .stack-answer { white-space: nowrap; }
 
 /* Rounded squares with a deep bottom edge: the same chunk as the choice
    buttons, scaled to the key. The radius follows the key size so the

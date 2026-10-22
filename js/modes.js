@@ -1152,7 +1152,6 @@
          order of magnitude out can still be typed. */
       var maxDigits = String(Math.round(Math.max.apply(null, nums.concat(0)))).length + 1;
       var join = card.join || '–';
-      var unit = card.unit ? ' ' + card.unit : '';
       var typed = [], at = 0, locked = false;
       for (var t = 0; t < count; t++) typed.push('');
 
@@ -1174,7 +1173,11 @@
       var truth = multi
         ? card.values.map(function (v) { return fmt(v, dp); }).join(' ' + join + ' ')
         : card.low != null ? fmt(card.low, dp) + ' – ' + fmt(card.high, dp) : fmt(card.value, dp);
-      ctx.stack(truth + unit, stackWhy(ctx), entry);
+      /* The correct answer is set like the entry: number, then the unit
+         small beside it, so the two line up when both are on screen. */
+      var truthNode = h('span', 'kp-truth', truth);
+      if (card.unit) truthNode.appendChild(h('span', 'kp-unit', card.unit));
+      ctx.stack(truthNode, stackWhy(ctx), entry);
 
       var pad = h('div', 'keypad' + (multi ? ' has-join' : ''));
       function key(label, cls, fn) {
