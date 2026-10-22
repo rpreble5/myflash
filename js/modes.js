@@ -157,13 +157,13 @@
     var bar = h('div', 'swipe-bar is-waiting');
     var miss = h('button', 'swipe-side swipe-miss', 'MISSED');
     var got  = h('button', 'swipe-side swipe-got', 'GOT IT');
-    var cueText = h('span', 'swipe-cue', 'tap anywhere');
+    /* No words between the buttons; the span only keeps them apart. */
+    var cueText = h('span', 'swipe-cue', '');
     bar.appendChild(miss);
     bar.appendChild(cueText);
     bar.appendChild(got);
     bar.arm = function () {
       bar.classList.remove('is-waiting');
-      cueText.textContent = 'swipe';
       armSwipe(ctx, miss, got);
     };
     return bar;
@@ -516,7 +516,7 @@
       var bar = h('div', 'swipe-bar tf-bar');
       var fBtn = h('button', 'swipe-side tf-side tf-false', 'FALSE');
       var tBtn = h('button', 'swipe-side tf-side tf-true', 'TRUE');
-      var cueText = h('span', 'swipe-cue', 'swipe');
+      var cueText = h('span', 'swipe-cue', '');
       bar.appendChild(fBtn);
       bar.appendChild(cueText);
       bar.appendChild(tBtn);
