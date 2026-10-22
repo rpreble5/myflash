@@ -766,3 +766,20 @@ button { cursor: pointer; border: 0; background: none; }
   animation-delay: calc(180ms + var(--i) * 70ms);
 }
 .home-actions .btn { animation: deck-in .3s cubic-bezier(.22,1,.36,1) both; animation-delay: 480ms; }
+
+/* ── Subject drill ───────────────────────────────────────────
+   Above the topics: the subject's state in one line and the two actions
+   that follow from it, repair the worst and start the unseen. Styled as a
+   quiet panel so the CHALLENGE button above keeps the color. */
+.subject-drill {
+  margin: 0 0 1rem;
+  padding: .9rem 1rem 1rem;
+  border-radius: 20px;
+  border: 3px solid var(--line);
+  border-bottom-width: 6px;
+  background: var(--bg);
+}
+.subject-drill-line { font-size: .85rem; font-weight: 800; color: var(--muted); margin: 0 0 .7rem .1rem; }
+.subject-drill .btn { width: 100%; font-size: .9rem; }
+.subject-drill .btn + .btn { margin-top: .6rem; }
+.btn-subject-weak { background: var(--brand); color: #fff; border: 0; box-shadow: 0 5px 0 var(--brand-dark); }

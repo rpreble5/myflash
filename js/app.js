@@ -72,7 +72,7 @@
     if (gate.unlocked) {
       var d = deck._strength;
       row.appendChild(h('span', 'deck-line', d.started
-        ? d.weak + ' of ' + d.total + ' weak'
+        ? d.weak + ' weak' + (d.unseen ? ' · ' + d.unseen + ' unseen' : '') + ' · ' + d.total + ' questions'
         : d.total + ' questions · not started'));
       row.appendChild(meter(d.strength));
       pressable(row);
@@ -98,6 +98,53 @@
      short enough to finish in a queue. */
   var SHORT_RUN = 20;
 
+  /* A run of chosen positions, grouped by deck with the worst deck first.
+     `picked` is in priority order across many decks; the session keeps
+     each deck together, so the decks are ordered by where their first
+     (worst) card falls and the positions are remapped onto that list. */
+  function startPicked(decks, picked) {
+    var order = [], index = {};
+    picked.forEach(function (p) {
+      if (index[p.deck] == null) { index[p.deck] = order.length; order.push(decks[p.deck]); }
+    });
+    startSession(order, picked.map(function (p) { return { deck: index[p.deck], card: p.card }; }));
+  }
+
+  /* The subject as a whole, above the topics: the worst cards across
+     every topic to repair, what has not been started, and how much has
+     slipped under the line since it was last studied. Hidden on a subject
+     with nothing to say. */
+  function renderSubjectDrill() {
+    var box = $('#subject-drill');
+    box.textContent = '';
+    var decks = global.Store.subjectDecks();
+    var weak = global.Store.drillCards(decks, SHORT_RUN);
+    var unseen = global.Store.unseenCards(decks);
+    var due = global.Store.dueCount(decks);
+    box.hidden = !weak.length && !unseen.length;
+    if (box.hidden) return;
+
+    var total = global.Store.drillCards(decks).length;
+    var bits = [];
+    if (total) bits.push(total + ' weak');
+    if (due) bits.push(due + ' slipped');
+    if (unseen.length) bits.push(unseen.length + ' unseen');
+    box.appendChild(h('div', 'subject-drill-line', bits.join(' · ')));
+
+    if (weak.length) {
+      var drill = h('button', 'btn btn-subject-weak',
+        total > SHORT_RUN ? 'Drill the ' + SHORT_RUN + ' weakest' : 'Drill ' + weak.length + ' weak card' + (weak.length === 1 ? '' : 's'));
+      drill.addEventListener('click', function () { startPicked(decks, weak); });
+      box.appendChild(drill);
+    }
+    if (unseen.length) {
+      var start = h('button', 'btn btn-ghost btn-subject-unseen',
+        unseen.length > SHORT_RUN ? 'Start ' + SHORT_RUN + ' unseen' : 'Start ' + unseen.length + ' unseen');
+      start.addEventListener('click', function () { startPicked(decks, unseen.slice(0, SHORT_RUN)); });
+      box.appendChild(start);
+    }
+  }
+
   /* Topics weakest first, each opening onto its decks in the same order.
      The number itself stays out of it — a percentage invites you to farm
      the metric instead of the material, and on a ten-card deck it is
@@ -114,6 +161,8 @@
       ? 'Complete'
       : won + ' of ' + global.Challenge.TOPICS.length;
 
+    renderSubjectDrill();
+
     global.Store.topics().forEach(function (topic, ti) {
       var group = h('div', 'topic');
       group.style.setProperty('--i', ti);
@@ -126,7 +175,7 @@
       var n = topic.decks.length;
       var decks = n + (n === 1 ? ' deck' : ' decks');
       var line = topic.started
-        ? topic.startedDecks + ' of ' + decks + ' · ' + topic.weak + ' weak'
+        ? topic.startedDecks + ' of ' + decks + ' · ' + topic.weak + ' weak' + (topic.due ? ' · ' + topic.due + ' slipped' : '')
         : decks + ' · not started';
       head.appendChild(h('span', 'topic-line', line));
       head.appendChild(meter(topic.strength));
@@ -158,18 +207,33 @@
          Hidden when there is nothing weak — a topic that is entirely solid
          has no drill to offer, and a button that would start a run of zero
          cards is worse than no button. */
-      var weak = global.Store.weakCards(topic.decks, SHORT_RUN);
+      var weak = global.Store.drillCards(topic.decks, SHORT_RUN);
       if (weak.length) {
-        var capped = weak.length === SHORT_RUN && topic.weak > SHORT_RUN;
+        var capped = weak.length === SHORT_RUN;
         var drill = h('button', 'btn btn-ghost btn-topic-weak',
           capped ? 'Drill the ' + SHORT_RUN + ' weakest'
                  : 'Drill ' + weak.length + ' weak card' + (weak.length === 1 ? '' : 's'));
         drill.addEventListener('click', function (e) {
           e.stopPropagation();
-          startSession(topic.decks.slice(), weak);
+          startPicked(topic.decks, weak);
         });
         drill.style.setProperty('--i', 1);
         inner.appendChild(drill);
+      }
+      /* Coverage is its own action: cards never met are not drilled, they
+         are started, and only once the topic is under way — on a fresh
+         topic "Study all" is that button. */
+      if (topic.started && topic.unseen) {
+        var fresh = global.Store.unseenCards(topic.decks, SHORT_RUN);
+        var start = h('button', 'btn btn-ghost btn-topic-weak',
+          topic.unseen > SHORT_RUN ? 'Start ' + SHORT_RUN + ' of ' + topic.unseen + ' unseen'
+                                   : 'Start ' + topic.unseen + ' unseen');
+        start.addEventListener('click', function (e) {
+          e.stopPropagation();
+          startPicked(topic.decks, fresh);
+        });
+        start.style.setProperty('--i', weak.length ? 2 : 1);
+        inner.appendChild(start);
       }
 
       var questionsFor = {};
@@ -182,7 +246,7 @@
         pressable(row);
         row.appendChild(h('span', 'deck-name', deck.name));
         row.appendChild(h('span', 'deck-line', d.started
-          ? d.weak + ' of ' + d.total + ' weak'
+          ? d.weak + ' weak' + (d.unseen ? ' · ' + d.unseen + ' unseen' : '') + ' · ' + d.total + ' cards'
           : d.total + ' cards · not started'));
         row.appendChild(meter(d.strength));
         row.addEventListener('click', function (e) {
@@ -601,6 +665,8 @@
          deck would leave a filtered run stuck short of full. */
       total: order.length,
       resolved: {},        // card index -> true once answered correctly
+      misses: {},          // card key -> times missed this session
+      encore: {},          // card key -> true once sent back to the end
       answers: 0,
       correct: 0,
       score: 0,
@@ -1354,17 +1420,25 @@
         session.answers++;
         session.score += score;
 
+        var key = deck.id + ':' + cardIndex;
         if (clean) {
           session.correct++;
           session.streak++;
           session.best = Math.max(session.best, session.streak);
-          session.resolved[deck.id + ':' + cardIndex] = true;
+          session.resolved[key] = true;
+          /* Missed twice, now right once: once more at the end of the
+             run, so the session closes on a second clean answer. */
+          if (!session.challenge && session.misses[key] >= 2 && !session.encore[key]) {
+            session.encore[key] = true;
+            session.queue.push(ref);
+          }
         } else {
           session.streak = 0;
           /* A challenge miss costs a heart and the card does not come
              back; a study miss is requeued a few positions back so it
              comes around again inside the same session. */
           if (!session.challenge) {
+            session.misses[key] = (session.misses[key] || 0) + 1;
             var at = Math.min(3, session.queue.length);
             session.queue.splice(at, 0, ref);
           }

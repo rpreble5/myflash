@@ -145,7 +145,7 @@
     var clean = score >= 0.999;
 
     e.seen++;
-    if (clean) { e.right++; e.streak++; } else { e.wrong++; e.streak = 0; }
+    if (clean) { e.right++; e.streak++; } else { e.wrong++; e.streak = 0; e.wrongAt = Date.now(); }
     e.s = e.s == null ? score : e.s + ALPHA * (score - e.s);
     e.at = Date.now();
 
@@ -172,18 +172,21 @@
     var total = deck.cards.length;
     var sum = 0, weak = 0, seen = 0;
 
+    /* "Weak" means met and not known. A card never met counts against
+       the strength, since you do not know it, but it is unseen, not
+       weak: the two call for different actions. */
     for (var i = 0; i < total; i++) {
       var e = all[deck.id + ':' + i];
       var v = cardStrength(e, now);
       sum += v;
-      if (v < WEAK) weak++;
-      if (e && e.seen) seen++;
+      if (e && e.seen) { seen++; if (v < WEAK) weak++; }
     }
 
     return {
       strength: total ? sum / total : 0,
       weak: weak,
       seen: seen,
+      unseen: total - seen,
       total: total,
       started: seen > 0
     };
@@ -214,6 +217,76 @@
 
     picked.sort(function (a, b) { return a.strength - b.strength; });
     return limit ? picked.slice(0, limit) : picked;
+  }
+
+  /* ── Repair, coverage and slippage ─────────────────────────
+     Three different situations hide inside "weak":
+       - a card you have met and keep getting wrong (repair: drill it),
+       - a card you have never met (coverage: start it, do not drill it),
+       - a card you knew whose score has decayed under the line since you
+         last answered it (slippage: it is due).
+     A drill that mixes the first two is mostly a first pass in disguise,
+     so the three are kept apart. */
+
+  /* How much a recent miss pulls a card up the drill order. A miss
+     yesterday is worth more than the same score reached by a slow fade
+     over a month; the pull halves every three days. */
+  var MISS_PULL = 0.3, MISS_HALF = 3;
+
+  function drillPriority(e, now) {
+    var v = cardStrength(e, now);
+    if (!e || e.wrongAt == null) return v;
+    var days = Math.max(0, (now - e.wrongAt) / DAY);
+    return v - MISS_PULL * Math.pow(0.5, days / MISS_HALF);
+  }
+
+  /* Seen cards that are weak, the ones to repair first at the front.
+     Returns positions into `decks`, worst first. */
+  function drillCards(decks, limit) {
+    var all = stats(), now = Date.now(), picked = [];
+    decks.forEach(function (deck, di) {
+      for (var i = 0; i < deck.cards.length; i++) {
+        var e = all[deck.id + ':' + i];
+        if (!e || !e.seen) continue;
+        if (cardStrength(e, now) < WEAK) picked.push({ deck: di, card: i, priority: drillPriority(e, now) });
+      }
+    });
+    picked.sort(function (a, b) { return a.priority - b.priority; });
+    return limit ? picked.slice(0, limit) : picked;
+  }
+
+  /* Cards never answered, in deck order. */
+  function unseenCards(decks, limit) {
+    var all = stats(), picked = [];
+    decks.forEach(function (deck, di) {
+      for (var i = 0; i < deck.cards.length; i++) {
+        var e = all[deck.id + ':' + i];
+        if (!e || !e.seen) picked.push({ deck: di, card: i });
+      }
+    });
+    return limit ? picked.slice(0, limit) : picked;
+  }
+
+  /* Cards that were above the line when last answered and have faded
+     under it since. No schedule, only the decay the ranking already uses. */
+  function dueCount(decks) {
+    var all = stats(), now = Date.now(), n = 0;
+    decks.forEach(function (deck) {
+      for (var i = 0; i < deck.cards.length; i++) {
+        var e = all[deck.id + ':' + i];
+        if (!e || !e.seen || e.s == null) continue;
+        if (e.s >= WEAK && cardStrength(e, now) < WEAK) n++;
+      }
+    });
+    return n;
+  }
+
+  /* The decks of a subject, in home order (topics weakest first, decks
+     weakest first within each), with question decks left out. */
+  function subjectDecks(subject) {
+    var out = [];
+    topics(subject).forEach(function (t) { t.decks.forEach(function (d) { out.push(d); }); });
+    return out;
   }
 
   /* Decks grouped by their topic, everything ranked weakest first.
@@ -314,6 +387,8 @@
         flashcards: gate.total,
         strength: cards ? sum / cards : 0,
         weak: weak,
+        unseen: unseenCards(g.decks).length,
+        due: dueCount(g.decks),
         cards: cards,
         startedDecks: started,
         started: started > 0
@@ -390,6 +465,10 @@
     cardStrength: cardStrength,
     deckStrength: deckStrength,
     weakCards: weakCards,
+    drillCards: drillCards,
+    unseenCards: unseenCards,
+    dueCount: dueCount,
+    subjectDecks: subjectDecks,
     WEAK: WEAK,
     topics: topics,
     deckProgress: deckProgress,
