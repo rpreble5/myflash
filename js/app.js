@@ -818,6 +818,9 @@
          placed: the CSS lays it out as ordinary text. */
       if (stack.flow) { qEl.style.fontSize = ''; return; }
       var R = flipper.clientHeight, GAP = STACK_GAP;
+      /* Not yet sized: nothing measured now would mean anything, and the
+         resize observer below brings the layout back once it is. */
+      if (!R) return;
       /* The typed number is as big as the card allows, stepping down only
          when a long range and unit would run off the edge. */
       if (stack.entry) {
@@ -876,22 +879,27 @@
          decision waits for the reveal, when the card has its final size. */
       var whyH = 0;
       if (stack.makeWhy) {
-        if (!stack.why) setWhy(stack.makeWhy(true));
-        whyH = stack.why.getBoundingClientRect().height;
-        if (stack.entry) {
-          var needE = eTop + eH + aRoom + GAP + whyH;
-          if (stack.shown && needE > R && !stack.cue) {
-            setWhy(stack.makeWhy(false));
-            stack.cue = true;
-            whyH = stack.why.getBoundingClientRect().height;
+        /* Early passes can run before the card has its full height, so a
+           dock chosen for want of room is reconsidered on every pass
+           until the reveal. A dock chosen because the text is long, and
+           anything after the reveal, stays. */
+        if (!stack.shown && stack.dock && stack.dock.noFit) setWhy(stack.makeWhy(true));
+        if (!stack.why && !stack.dock) setWhy(stack.makeWhy(true));
+        if (stack.why) {
+          whyH = stack.why.getBoundingClientRect().height;
+          var crowded;
+          if (stack.entry) {
+            crowded = stack.shown && eTop + eH + aRoom + GAP + whyH > R;
+          } else {
+            var need = block + 2 * GAP + whyH;
+            if (top + need > R) top = Math.max(0, R - need);
+            crowded = top + need > R;
           }
-        } else {
-          var need = block + 2 * GAP + whyH;
-          if (top + need > R) top = Math.max(0, R - need);
-          if (top + need > R && !stack.cue) {
-            setWhy(stack.makeWhy(false));
-            stack.cue = true;
-            whyH = stack.why.getBoundingClientRect().height;
+          if (crowded) {
+            useDock();
+            stack.dock.noFit = true;
+            whyH = 0;
+            if (!stack.entry) top = Math.max(0, R * STACK_SETTLE - block / 2);
           }
         }
       }
@@ -908,11 +916,27 @@
       }
     }
 
-    function setWhy(node) {
-      if (stack.why) stack.why.remove();
-      stack.why = node;
-      front.appendChild(node);
+    /* Where the explanation lives. Inline text sits in the card's flow
+       under the answer. A WHY button — because the text is long, or
+       because the inline copy did not fit — is docked at the bottom of
+       the card, the same place on every card. */
+    function clearWhy() {
+      if (stack.why) { stack.why.remove(); stack.why = null; }
+      if (stack.dock) { stack.dock.remove(); stack.dock = null; }
     }
+    function setWhy(node) {
+      clearWhy();
+      if (node.querySelector('.why-cue')) {
+        node.classList.add('why-dock');
+        if (stack.shown) node.classList.remove('is-held');
+        el.appendChild(node);
+        stack.dock = node;
+      } else {
+        front.appendChild(node);
+        stack.why = node;
+      }
+    }
+    function useDock() { setWhy(stack.makeWhy(false)); }
 
     function layoutStackLater() {
       requestAnimationFrame(layoutStack);
@@ -1114,18 +1138,11 @@
         if (typeof answerText !== 'string') node.appendChild(answerText);
         front.appendChild(node);
         if (entry) front.appendChild(entry);
-        /* The explanation has one home: a faded WHY button docked at the
-           bottom of the card, the same place on every card, opening the
-           note. Only a vignette, which scrolls, shows it in full inline. */
-        stack = { answer: node, entry: entry || null, makeWhy: flow ? makeWhy : null, why: null, dock: null, cue: false, shown: false, flow: flow };
-        if (flow && makeWhy) {
-          setWhy(makeWhy(true));
-        } else if (makeWhy) {
-          var dock = makeWhy(false);
-          dock.classList.add('why-dock');
-          el.appendChild(dock);
-          stack.dock = dock;
-        }
+        /* A short explanation that fits shows itself under the answer.
+           One that does not becomes the WHY button, docked at the bottom
+           of the card, the same place on every card (see useDock). */
+        stack = { answer: node, entry: entry || null, makeWhy: makeWhy, why: null, dock: null, cue: false, shown: false, flow: flow };
+        if (makeWhy) setWhy(makeWhy(true));
         layoutStackLater();
       },
 
