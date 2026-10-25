@@ -6943,7 +6943,7 @@
     },
 
     {
-      id: 'afp-htn-def', collection: 'Journal Articles', subject: 'Severe Hypertension', topic: 'AFP · May 2026', name: 'DEFINITIONS & RISK',
+      id: 'afp-htn-def', collection: 'Journal Articles', subject: 'Hypertension', topic: 'Severe Hypertension · AFP 2026', name: 'DEFINITIONS & RISK',
       blurb: 'Gauer, Rifaat and Blankinship, Am Fam Physician 2026;113(5):459-468. What severe hypertension is, how common it is, and what it does and does not do.',
       cards: [
         { type: 'recall', q: 'Term the American Heart Association now uses instead of hypertensive urgency?', a: 'Severe hypertension',
@@ -6972,7 +6972,7 @@
     },
 
     {
-      id: 'afp-htn-measure', collection: 'Journal Articles', subject: 'Severe Hypertension', topic: 'AFP · May 2026', name: 'MEASURING IT RIGHT',
+      id: 'afp-htn-measure', collection: 'Journal Articles', subject: 'Hypertension', topic: 'Severe Hypertension · AFP 2026', name: 'MEASURING IT RIGHT',
       blurb: 'Before anything else: was the number real? Technique, devices, rest, and out-of-office monitoring.',
       cards: [
         { type: 'recall', q: 'Which office method tracks ambulatory blood pressure more closely, manual auscultation or an automated device?', a: 'Automated device',
@@ -6999,7 +6999,7 @@
     },
 
     {
-      id: 'afp-htn-causes', collection: 'Journal Articles', subject: 'Severe Hypertension', topic: 'AFP · May 2026', name: 'CAUSES & WORKUP',
+      id: 'afp-htn-causes', collection: 'Journal Articles', subject: 'Hypertension', topic: 'Severe Hypertension · AFP 2026', name: 'CAUSES & WORKUP',
       blurb: 'What pushes pressure up, when to look for a secondary cause, and why routine testing is not indicated.',
       cards: [
         { type: 'recall', q: 'Most common cause of severe hypertension in the outpatient setting?', a: 'Nonadherence to antihypertensive therapy',
@@ -7040,7 +7040,7 @@
     },
 
     {
-      id: 'afp-htn-inpt', collection: 'Journal Articles', subject: 'Severe Hypertension', topic: 'AFP · May 2026', name: 'IN THE HOSPITAL',
+      id: 'afp-htn-inpt', collection: 'Journal Articles', subject: 'Hypertension', topic: 'Severe Hypertension · AFP 2026', name: 'IN THE HOSPITAL',
       blurb: 'The evidence that treating asymptomatic severe hypertension on the ward does harm, and what to do instead.',
       cards: [
         { type: 'number', q: 'Share of hospitalized patients who have hypertension?', value: 50, unit: '%',
@@ -7079,7 +7079,7 @@
     },
 
     {
-      id: 'afp-htn-outpt', collection: 'Journal Articles', subject: 'Severe Hypertension', topic: 'AFP · May 2026', name: 'IN THE OFFICE',
+      id: 'afp-htn-outpt', collection: 'Journal Articles', subject: 'Hypertension', topic: 'Severe Hypertension · AFP 2026', name: 'IN THE OFFICE',
       blurb: 'The outpatient algorithm: do not send them to the emergency department, find the cause, treat chronically.',
       cards: [
         { type: 'truefalse', q: 'A patient at 190/115 with no sign of target organ damage should be referred to the emergency department.', a: false,
