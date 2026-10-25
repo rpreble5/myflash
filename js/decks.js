@@ -7308,7 +7308,7 @@
       id: 'afp-le-profile', collection: 'Journal Articles', subject: 'Pediatric Orthopedics', topic: 'Lower Extremity Abnormalities · AFP 2025', name: 'TORSIONAL PROFILE',
       blurb: 'The examination: what to look at, the four rotational measurements, and the screening findings that point beyond a variation.',
       cards: [
-        { type: 'recall', q: 'How is the foot progression angle measured?', a: 'Angle between the long axis of the foot and the walking line',
+        { type: 'recall', q: 'How is the foot progression angle measured?', a: 'Angle of the foot axis to the walking line',
           why: 'Chalk or hand sanitizer on bare feet and a walk down examination paper leave the footprints. Internal rotation is intoeing, external is out-toeing. The normal range changes with age until 10 to 15 years, and more than 2 standard deviations from the mean is abnormal.' },
         { type: 'recall', q: 'Position of the child for measuring internal and external hip rotation?', a: 'Prone with the knees bent to 90 degrees',
           why: 'Swinging the tibia outward measures internal hip rotation and swinging it inward measures external rotation, each as the angle from a line perpendicular to the table. Increased internal rotation with reduced external rotation is femoral anteversion; the reverse is retroversion.' },
@@ -7319,7 +7319,7 @@
         { type: 'number', q: 'Age by which the rotational angles stop changing?', value: 15, unit: 'years',
           why: 'Ten to fifteen. Bones keep growing and derotating on their long axes until then, which is why every measurement is read against an age-specific normal range and why most variations are given time.' },
         { type: 'multi', q: 'Select the findings that count as joint laxity on examination.',
-          answers: ['Elbow hyperextends past neutral', 'Thumb touches the forearm', 'Fingers lie flat along the forearm', 'Ankle dorsiflexes past 45 degrees'],
+          answers: ['Elbow hyperextends past neutral', 'Thumb touches the forearm', 'Fingers lie flat on the forearm', 'Ankle dorsiflexes over 45°'],
           distractors: ['Ankle dorsiflexes 20 degrees', 'Plantar flexes 50 degrees'],
           why: 'Normal dorsiflexion is 20 degrees and plantar flexion 50. Laxity can induce or worsen angular deformity, flat feet, hip dysplasia and patellar dislocation, and marked laxity suggests a connective tissue disorder such as Ehlers-Danlos.' },
         { type: 'number', q: 'Leg length difference above which a discrepancy is diagnosed?', value: 2, unit: 'cm',
@@ -7493,8 +7493,8 @@
         { type: 'recall', q: 'Rheumatologic reason a child\'s knee can look like genu valgum?', a: 'Juvenile arthritis distorting the knee',
           why: 'Synovitis and asymmetric growth at the knee produce an apparent valgus. Warmth, effusion or morning stiffness point to it, and the referral goes to rheumatology rather than orthopedics.' },
         { type: 'multi', q: 'Select the indications for orthopedic referral in genu valgum.',
-          answers: ['Asymmetry', 'Intermalleolar distance outside the age range', 'Syndromic features'],
-          distractors: ['Intermalleolar distance of 3 cm at age 3', 'Mild valgus at age 9'],
+          answers: ['Asymmetry', 'Distance outside the age range', 'Syndromic features'],
+          distractors: ['Intermalleolar 3 cm at age 3', 'Mild valgus at age 9'],
           why: 'Physiologic valgum within the age norms gets reassurance and follow-up. Anteroposterior radiography measures the angle and looks for a cause when any of the three triggers is present.' }
       ]
     },
