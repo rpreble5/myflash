@@ -7205,7 +7205,7 @@
         { type: 'truefalse', q: 'An ACE inhibitor and an ARB may be combined when blood pressure is not at goal on one of them.', a: false,
           why: 'The combination increases hyperkalemia and acute kidney injury and does not improve outcomes. Add a different class, usually a calcium channel blocker or a thiazide, instead.' },
         { type: 'multi', q: 'Select the stage 1 patients who should start medication without a lifestyle trial first.',
-          answers: ['Clinical ASCVD', '10-year ASCVD risk of 10% or more', 'Diabetes', 'Chronic kidney disease', 'Hypertensive end-organ damage'],
+          answers: ['Clinical ASCVD', '10-year ASCVD risk 10% or more', 'Diabetes', 'Chronic kidney disease', 'Hypertensive end-organ damage'],
           distractors: ['Family history of hypertension', 'Age over 50 alone'],
           why: 'For stage 1 hypertension with lower risk, lifestyle change comes first for three to six months, with medication considered alongside it when systolic pressure is more than 10 mm Hg above goal. Everyone with stage 2 starts medication.' },
         { type: 'number', q: 'Months of lifestyle modification before medication in low-risk stage 1 hypertension?', value: 3, unit: 'months',
@@ -7259,7 +7259,7 @@
             { left: 'JNC 8, age 60 and over', right: 'Under 150/90' },
             { left: 'NICE, age 80 and over', right: 'Under 150/90, by age 80' },
             { left: 'ISH, age 65 and over', right: 'Under 140/90' },
-            { left: 'ACC/AHA, risk 10% or more', right: 'Under 130/80' }
+            { left: 'ACC/AHA, risk 10%+', right: 'Under 130/80' }
           ] },
         { type: 'number', q: 'Follow-up interval once blood pressure is controlled on medication?', low: 3, high: 6, unit: 'months',
           why: 'Monthly visits until controlled, then every three to six months. Response is judged on office, home and ambulatory readings together, and lifestyle and medication are stepped up at each visit until target. Most patients need two or more agents. Simplified dosing, generics and team-based titration with health coaching and home monitoring all improve control.' }
