@@ -7111,6 +7111,161 @@
       ]
     },
 
+    {
+      id: 'afp-htn23-dx', collection: 'Journal Articles', subject: 'Hypertension', topic: 'Hypertension in Adults · AFP 2023', name: 'SCREENING & DIAGNOSIS',
+      blurb: 'Clarke, Am Fam Physician 2023;108:352-359 (October 2023). Who to screen, how to measure, and how the guidelines stage it.',
+      cards: [
+        { type: 'recall', q: 'USPSTF grade for screening adults 18 and older for hypertension with office blood pressure?', a: 'A',
+          why: 'Screening is one of the best-supported preventive services because treatment reduces coronary disease, infarction, heart failure, stroke and kidney disease. The office reading starts the process; the diagnosis is confirmed outside the office.' },
+        { type: 'number', q: 'Blood pressure above which cardiovascular risk begins rising in a straight line?', values: [110, 75], join: '/', unit: 'mm Hg',
+          why: 'There is no threshold below the diagnostic cut-offs where risk flattens; it climbs with every increment above 110/75 and compounds with other risk factors. Diagnostic thresholds are where treatment pays, not where harm begins.' },
+        { type: 'number', q: 'Minimum share of the arm circumference the cuff bladder should encircle?', value: 80, unit: '%',
+          why: 'A cuff that is too small overestimates pressure, and large arms are the commonest reason a healthy patient leaves with a diagnosis. Feet on the floor, back supported, arm at heart level, five minutes of quiet rest, and two or three readings one to two minutes apart.' },
+        { type: 'number', q: 'Minimum number of separate visits over which office readings are averaged to diagnose hypertension?', value: 3, unit: 'visits',
+          why: 'Unless the pressure exceeds 180/110, or 160/100 with evidence of end-organ damage, in which case the diagnosis is made at once. Averaging across visits removes the day-to-day swing that a single reading cannot.' },
+        { type: 'recall', q: 'What should confirm an office diagnosis of hypertension before medication is started?', a: 'Home or 24-hour ambulatory monitoring',
+          why: 'A grade A recommendation. Out-of-office readings typically run 5 to 10 mm Hg lower than office readings, and up to a fifth of patients with high office pressure have normal pressure elsewhere.' },
+        { type: 'number', q: 'Share of patients with high office blood pressure who have normal ambulatory pressure?', value: 20, unit: '%',
+          why: 'Up to one in five has white coat hypertension. Treating them means years of medication, side effects and cost for a condition they do not have, which is why confirmation outside the office comes before the prescription.' },
+        { type: 'number', q: 'Office blood pressure at or above which the 2017 ACC/AHA guideline diagnoses stage 1 hypertension?', values: [130, 80], join: '/', unit: 'mm Hg',
+          why: 'Stage 2 is 140/90 or higher. The older JNC thresholds were 140/90 for stage 1 and 160/100 for stage 2, and the International Society of Hypertension kept 140/90 in the office with 135/85 at home. The lower ACC/AHA threshold reclassified millions as hypertensive overnight.' },
+        { type: 'number', q: 'Office blood pressure at or above which the JNC and ISH guidelines diagnose stage 2 hypertension?', values: [160, 100], join: '/', unit: 'mm Hg',
+          why: 'Against 140/90 for stage 2 under ACC/AHA. The same patient can be stage 1 by one guideline and stage 2 by another, which matters because stage 2 is where initial two-drug therapy is recommended.' },
+        { type: 'number', q: 'Home blood pressure at or above which the ISH diagnoses hypertension?', values: [135, 85], join: '/', unit: 'mm Hg',
+          why: 'Home readings are lower than office readings, so the home threshold is lower too. The 24-hour ambulatory threshold is 130/80 under ISH and 125/75 under ACC/AHA, with a daytime average of 135/85 or 130/80 respectively.' },
+        { type: 'number', q: 'How much more often does hypertension affect Black adults than White adults in the United States, at least?', value: 30, unit: '%',
+          why: 'The disparity is largest among women. Access to care and social determinants of health explain much of it. Overall prevalence runs 32 to 46 percent of adults depending on the threshold used, and rises with age.' }
+      ]
+    },
+
+    {
+      id: 'afp-htn23-eval', collection: 'Journal Articles', subject: 'Hypertension', topic: 'Hypertension in Adults · AFP 2023', name: 'INITIAL EVALUATION',
+      blurb: 'What the first visit after diagnosis is for: complications, comorbid risk, secondary causes, and the baseline tests.',
+      cards: [
+        { type: 'recall', q: 'What is the first evaluation of a newly diagnosed hypertensive patient meant to find?', a: 'Complications and comorbid cardiovascular risk',
+          why: 'The history covers personal and family cardiovascular disease, diabetes, lipids, prior treatment, diet, salt, exercise, sleep, alcohol, tobacco and stimulants. The examination looks for cardiac, pulmonary, neurologic, visual, renal and peripheral vascular signs.' },
+        { type: 'multi', q: 'Select the recommended initial laboratory tests for a new diagnosis of hypertension.',
+          answers: ['12-lead electrocardiogram', 'Lipid panel', 'Serum creatinine and GFR', 'Serum potassium', 'Urine albumin-creatinine ratio'],
+          distractors: ['Echocardiogram', 'Aldosterone-to-renin ratio'],
+          why: 'The full list is electrocardiogram, glucose, hematocrit, lipids, calcium, creatinine with GFR, potassium, and urine albumin or urinalysis. Together they find diabetes, kidney disease, hypertrophy and the low potassium or high calcium that hint at a secondary cause. Echocardiography and endocrine testing wait for a reason.' },
+        { type: 'recall', q: 'Why is serum calcium on the initial hypertension panel?', a: 'To pick up primary hyperparathyroidism',
+          why: 'Hypercalcemia is an uncommon but treatable contributor, and the test is cheap and already drawn with the metabolic panel. Potassium plays the same role for primary aldosteronism, though it is often normal.' },
+        { type: 'multi', q: 'Select the common secondary causes of hypertension to consider at the initial evaluation.',
+          answers: ['Obstructive sleep apnea', 'Primary aldosteronism', 'Renovascular disease', 'Renal parenchymal disease', 'Alcohol or illicit drug use'],
+          distractors: ['Pheochromocytoma', 'Cushing syndrome'],
+          why: 'These five account for nearly all secondary hypertension. Pheochromocytoma and Cushing syndrome are rare and are sought when the picture points to them. Suspicion is highest in patients under 30 and in those with markedly elevated pressure.' },
+        { type: 'recall', q: 'Age range for which the ASCVD Risk Estimator applies in patients without known cardiovascular disease?', a: '20 to 79 years',
+          why: 'The estimate feeds the ACC/AHA treatment threshold and target, since a 10-year risk of 10 percent or more lowers both. It is a starting point for shared decision-making rather than a verdict.' },
+        { type: 'multi', q: 'Select the groups in which the ASCVD risk calculators overestimate risk.',
+          answers: ['Predicted risk above 10 percent', 'Higher socioeconomic status', 'High users of preventive care'],
+          distractors: ['Lower socioeconomic status', 'Chronic inflammatory disease'],
+          why: 'The tools were derived from older cohorts with higher event rates, so they run high in well-resourced populations. They run low in some racial and ethnic groups, in lower socioeconomic status and in chronic inflammatory disease. Knowing the direction of the error is what makes the number usable.' },
+        { type: 'truefalse', q: 'The ASCVD risk calculators underestimate risk in patients with chronic inflammatory disease.', a: true,
+          why: 'Conditions such as rheumatoid arthritis, lupus and HIV carry cardiovascular risk the equations do not see. For these patients the calculated number is a floor, and the clinical judgment that follows should lean toward treatment.' }
+      ]
+    },
+
+    {
+      id: 'afp-htn23-life', collection: 'Journal Articles', subject: 'Hypertension', topic: 'Hypertension in Adults · AFP 2023', name: 'LIFESTYLE NUMBERS',
+      blurb: 'What each lifestyle change is worth in millimeters of mercury, and the one combination that is proven to add up.',
+      cards: [
+        { type: 'number', q: 'Systolic reduction from the DASH diet combined with sodium restriction?', value: 11.5, unit: 'mm Hg',
+          why: 'With a diastolic fall of 5.8. This is the largest lifestyle effect in the article and the only combination shown to be additive. DASH alone gives 5.9 and sodium restriction alone 6.7, so together they rival a first-line drug.' },
+        { type: 'number', q: 'Systolic reduction from the DASH diet alone?', value: 5.9, unit: 'mm Hg',
+          why: 'Fruits, vegetables and low-fat dairy with reduced saturated and total fat. Diastolic falls by about 2.9. The effect appears within weeks and is independent of weight loss.' },
+        { type: 'number', q: 'Daily sodium intake below which blood pressure reduction from restriction is greatest?', value: 1200, unit: 'mg',
+          why: 'Restriction to under 1,200 mg lowers systolic pressure by 6.7 and diastolic by 3.5. The guideline target is 1,500 mg or less, or a cut of at least 1,000 mg from usual intake, which still helps.' },
+        { type: 'number', q: 'Systolic reduction from a potassium-based salt substitute?', value: 4.8, unit: 'mm Hg',
+          why: 'Salt substitutes also reduced cardiovascular and all-cause mortality in trial data. The caveat is hyperkalemia in chronic kidney disease or with drugs that block potassium excretion, so check the creatinine and the medication list first.' },
+        { type: 'recall', q: 'Why is dietary potassium enrichment used cautiously in a patient on an ACE inhibitor?', a: 'Risk of hyperkalemia',
+          why: 'ACE inhibitors, ARBs, potassium-sparing diuretics and kidney disease all impair potassium excretion, and a salt substitute or supplement on top can push potassium to dangerous levels. The benefit is real in everyone else.' },
+        { type: 'number', q: 'Minutes of aerobic activity per session, three or four times a week, advised to lower blood pressure?', value: 40, unit: 'min',
+          why: 'That matches the general recommendation of 150 minutes a week of moderate activity such as brisk walking, 75 minutes of vigorous activity such as running, or a mix. Aerobic exercise lowers systolic pressure by 4 to 6 mm Hg.' },
+        { type: 'number', q: 'Systolic reduction from losing 4 kg?', value: 4.5, unit: 'mm Hg',
+          why: 'About 9 pounds, with a 3.2 diastolic fall. The effect is graded, so more loss gives more reduction. The effect of weight loss on mortality in hypertension is unknown.' },
+        { type: 'number', q: 'Systolic reduction from moderating alcohol intake?', value: 5.5, unit: 'mm Hg',
+          why: 'With a 4.0 diastolic fall. One or more standard drinks a day raises the risk of hypertension in a dose-dependent way. Cutting heavy intake to two drinks a day captures the benefit; going lower may not add more.' },
+        { type: 'number', q: 'Daily drinks to which heavy drinkers should cut back to improve blood pressure?', value: 2, unit: 'drinks',
+          why: 'Reducing heavy intake to two a day improves pressure; further reduction may not add blood pressure benefit, though light intake of under one a day is associated with lower cardiovascular and all-cause mortality.' },
+        { type: 'truefalse', q: 'The blood pressure reductions from different lifestyle interventions are known to add together.', a: false,
+          why: 'Only the combination of the DASH diet with sodium restriction has been shown to be additive. For the others, the additive effect is unknown, which is why each is counseled on its own merits rather than summed into a promise.' }
+      ]
+    },
+
+    {
+      id: 'afp-htn23-drugs', collection: 'Journal Articles', subject: 'Hypertension', topic: 'Hypertension in Adults · AFP 2023', name: 'FIRST-LINE DRUGS',
+      blurb: 'When to start, which of the four classes, when two at once, the doses, and what to watch.',
+      cards: [
+        { type: 'multi', q: 'Select the four first-line antihypertensive classes.',
+          answers: ['ACE inhibitors', 'Angiotensin receptor blockers', 'Dihydropyridine CCBs', 'Thiazide diuretics'],
+          distractors: ['Beta blockers', 'Alpha blockers', 'Loop diuretics'],
+          why: 'A grade A recommendation. Beta blockers are not first line for hypertension alone but belong in the regimen when ischemic heart disease or heart failure calls for them. Nonpreferred classes are used for the comorbidity, not for the pressure.' },
+        { type: 'recall', q: 'Preferred first-line class for hypertension with proteinuric chronic kidney disease?', a: 'An ACE inhibitor or an ARB',
+          why: 'Grade B. They slow progression of kidney disease, most clearly in diabetic nephropathy. The two are never combined, because together they raise hyperkalemia and acute kidney injury without added benefit, and both are contraindicated in pregnancy.' },
+        { type: 'truefalse', q: 'An ACE inhibitor and an ARB may be combined when blood pressure is not at goal on one of them.', a: false,
+          why: 'The combination increases hyperkalemia and acute kidney injury and does not improve outcomes. Add a different class, usually a calcium channel blocker or a thiazide, instead.' },
+        { type: 'multi', q: 'Select the stage 1 patients who should start medication without a lifestyle trial first.',
+          answers: ['Clinical ASCVD', '10-year ASCVD risk of 10% or more', 'Diabetes', 'Chronic kidney disease', 'Hypertensive end-organ damage'],
+          distractors: ['Family history of hypertension', 'Age over 50 alone'],
+          why: 'For stage 1 hypertension with lower risk, lifestyle change comes first for three to six months, with medication considered alongside it when systolic pressure is more than 10 mm Hg above goal. Everyone with stage 2 starts medication.' },
+        { type: 'number', q: 'Months of lifestyle modification before medication in low-risk stage 1 hypertension?', value: 3, unit: 'months',
+          why: 'Three to six months. If goals are not met by then, medication is added. When systolic pressure is more than 10 mm Hg above goal at the outset, medication can be started together with the lifestyle work.' },
+        { type: 'recall', q: 'Blood pressure gap above goal at which treatment starts with two drugs from different classes?', a: 'More than 20 systolic or 10 diastolic',
+          why: 'Also for all stage 2 hypertension, across racial groups. Earlier guidance chose single agents by race; control rates stayed poor, and the article recommends initial combination therapy instead. Two drugs from different classes lower pressure more, with fewer side effects, than doubling one.' },
+        { type: 'number', q: 'Typical daily dose range of chlorthalidone?', values: [12.5, 25], join: '–', unit: 'mg',
+          why: 'Supplied only as an unscored 25 mg tablet, so the lower dose means splitting it. Hydrochlorothiazide uses the same range and indapamide 1.25 to 2.5 mg. Thiazides cause hypokalemia and hyponatremia.' },
+        { type: 'number', q: 'Typical daily dose range of amlodipine?', values: [2.5, 10], join: '–', unit: 'mg',
+          why: 'Extended-release felodipine shares the range and extended-release nifedipine runs 30 to 90 mg. Edema and headache are the common adverse effects of the dihydropyridines.' },
+        { type: 'number', q: 'Typical daily dose range of lisinopril?', values: [5, 40], join: '–', unit: 'mg',
+          why: 'Enalapril is the same; benazepril is 10 to 40 mg. ACE inhibitor adverse effects are cough, angioedema, dizziness, hyperkalemia and hypotension. Losartan runs 25 to 100 mg, valsartan 80 to 320 and olmesartan 20 to 40.' },
+        { type: 'match', q: 'Match each first-line class to its characteristic adverse effect.',
+          pairs: [
+            { left: 'ACE inhibitor', right: 'Cough, angioedema' },
+            { left: 'ARB', right: 'Hyperkalemia' },
+            { left: 'Amlodipine', right: 'Ankle edema' },
+            { left: 'Thiazide', right: 'Low potassium and sodium' }
+          ] },
+        { type: 'recall', q: 'What should be checked soon after starting or increasing an ACE inhibitor, ARB or diuretic?', a: 'Serum creatinine and potassium',
+          why: 'Once pressure is controlled, creatinine and electrolytes are repeated once or twice a year. A urine albumin-to-creatinine ratio every one to two years watches for microalbuminuria, though its value is uncertain once the patient is on an ACE inhibitor or ARB.' }
+      ]
+    },
+
+    {
+      id: 'afp-htn23-goals', collection: 'Journal Articles', subject: 'Hypertension', topic: 'Hypertension in Adults · AFP 2023', name: 'TARGETS & EVIDENCE',
+      blurb: 'What goal to treat to, why the AAFP did not follow ACC/AHA, and the trial numbers behind both positions.',
+      cards: [
+        { type: 'number', q: 'Blood pressure goal the AAFP recommends for all adults with hypertension to reduce mortality?', values: [140, 90], join: '/', unit: 'mm Hg',
+          why: 'A strong recommendation on high-quality evidence, grade A. Treating below 140/90 reduces all-cause and cardiovascular mortality. Lower targets reduce some events but not deaths, and bring more harm.' },
+        { type: 'number', q: 'Lower blood pressure goal the AAFP says may be considered to reduce myocardial infarction?', values: [135, 85], join: '/', unit: 'mm Hg',
+          why: 'A weak recommendation on moderate-quality evidence. Cochrane found a small reduction in infarction and heart failure at this target with no mortality benefit and more serious adverse events, so it is a shared decision rather than a rule.' },
+        { type: 'recall', q: 'Why did the AAFP not endorse the 2017 ACC/AHA blood pressure guideline?', a: 'Lower targets help little and harm low-risk patients',
+          why: 'The marginal benefit seen in high-risk trial populations may not outweigh hypotension, syncope, electrolyte disturbance and kidney injury when a 130/80 goal is applied to the large number of adults at low to moderate risk. A large cohort of low-risk mild hypertension showed no cardiovascular or mortality benefit from treatment at all.' },
+        { type: 'number', q: 'Number needed to treat in SPRINT to prevent one major cardiovascular event with intensive control?', value: 61, unit: 'patients',
+          why: 'Events fell from 2.2 to 1.7 percent, hazard ratio 0.75, in patients at increased cardiovascular risk treated to a systolic under 120 rather than under 140. Total mortality fell from 4.5 to 3.3 percent, number needed to treat 90.' },
+        { type: 'number', q: 'Number needed to harm in SPRINT for hypotension, syncope, electrolyte abnormality or acute kidney injury?', value: 45, unit: 'patients',
+          why: 'Serious adverse effects rose from 2.5 to 4.7 percent, hazard ratio 1.88. One harm for every 45 treated, against one event prevented for every 61: the two numbers are the whole argument about targets in one line.' },
+        { type: 'recall', q: 'What happened to the mortality benefit of intensive control 4.5 years after SPRINT ended?', a: 'It was no longer evident',
+          why: 'Mean systolic pressure drifted back up once trial support ended and the survival difference disappeared. The finding illustrates how hard trial-level control is to sustain in ordinary practice.' },
+        { type: 'number', q: 'Number needed to treat for a major cardiovascular event in the nine-trial meta-analysis of intensive lowering?', value: 91, unit: 'patients',
+          why: 'Events 6.2 versus 7.3 percent, relative risk 0.84. Stroke was the only other outcome reduced, 2.4 versus 2.9 percent, number needed to treat 200. Mortality was not reduced across the pooled trials.' },
+        { type: 'number', q: 'Number needed to treat to prevent one myocardial infarction at a goal under 135/85 in the Cochrane review?', value: 250, unit: 'patients',
+          why: 'Infarction 2.1 versus 2.5 percent over 3.7 years, and heart failure 1.9 versus 2.5 percent with a number needed to treat of 167. Against that, serious adverse events rose from 6.8 to 9.8 percent, number needed to harm 33, and mortality did not change.' },
+        { type: 'number', q: 'Number needed to harm for serious adverse events at a goal under 135/85 in the Cochrane review?', value: 33, unit: 'patients',
+          why: 'One serious adverse event for every 33 treated to the lower target, against one infarction prevented per 250. That ratio is why the lower goal is a weak recommendation and a conversation with the patient.' },
+        { type: 'number', q: 'Number needed to harm for syncope when low-risk patients with mild hypertension are treated?', value: 35, unit: 'patients',
+          why: 'In the large cohort of low-risk mild hypertension, treatment brought no cardiovascular or mortality benefit, but hypotension in 1 of 41, syncope in 1 of 35, electrolyte abnormality in 1 of 111 and acute kidney injury in 1 of 91. Clinical judgment and shared decision-making are the recommendation for this group.' },
+        { type: 'match', q: 'Match each guideline to its blood pressure goal for most older adults.',
+          pairs: [
+            { left: 'JNC 8, age 60 and over', right: 'Under 150/90' },
+            { left: 'NICE, age 80 and over', right: 'Under 150/90, by age 80' },
+            { left: 'ISH, age 65 and over', right: 'Under 140/90' },
+            { left: 'ACC/AHA, risk 10% or more', right: 'Under 130/80' }
+          ] },
+        { type: 'number', q: 'Follow-up interval once blood pressure is controlled on medication?', low: 3, high: 6, unit: 'months',
+          why: 'Monthly visits until controlled, then every three to six months. Response is judged on office, home and ambulatory readings together, and lifestyle and medication are stepped up at each visit until target. Most patients need two or more agents. Simplified dosing, generics and team-based titration with health coaching and home monitoring all improve control.' }
+      ]
+    },
+
   ];
 
   global.Decks = { BUILTIN: BUILTIN };
