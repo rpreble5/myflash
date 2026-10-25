@@ -7266,6 +7266,239 @@
       ]
     },
 
+    {
+      id: 'afp-le-overview', collection: 'Journal Articles', subject: 'Pediatric Orthopedics', topic: 'Lower Extremity Abnormalities · AFP 2025', name: 'OVERVIEW & HISTORY',
+      blurb: 'Baird, Dickison and Spires, Am Fam Physician 2025;111(2):125-139. How common these are, why most need no referral, and what the history tells you.',
+      cards: [
+        { type: 'number', q: 'Share of children under 6 who have some form of intoeing?', value: 25, unit: '%',
+          why: 'Twenty-five to thirty percent, and 80 to 95 percent of those cases are benign. Musculoskeletal concerns make up as much as a third of pediatric primary care visits, and rotational variation is a large part of that.' },
+        { type: 'number', q: 'Share of intoeing cases in young children that are benign?', value: 90, unit: '%',
+          why: 'Eighty to ninety-five percent. Even so, intoeing accounts for 10 to 15 percent of referrals to pediatric orthopedists, most driven by parental worry about long-term effects. Explaining the natural history is the treatment.' },
+        { type: 'recall', q: 'Three conditions that make intoeing in a child 6 or younger safe to manage without referral?', a: 'Symmetrical, painless, and age 6 or under',
+          why: 'All three together. Asymmetry, pain or persistence past the expected age of resolution each change the picture and call for measurement against the age norms and possibly referral.' },
+        { type: 'recall', q: 'General rule for when a rotational or angular measurement warrants orthopedic referral?', a: 'More than 2 standard deviations outside normal for age',
+          why: 'That line defines a deformity rather than a variation. The other triggers are pain and impaired function. Within the normal range, asymptomatic children need reassurance and follow-up, not consultation, orthotics or bracing.' },
+        { type: 'match', q: 'Match each age of onset of intoeing to its usual cause.',
+          pairs: [
+            { left: 'Birth to 1 year', right: 'Metatarsus adductus' },
+            { left: '1 to 3 years', right: 'Internal tibial torsion' },
+            { left: '3 to 6 years', right: 'Femoral anteversion' },
+            { left: 'Adolescence, new', right: 'Think SCFE' }
+          ] },
+        { type: 'recall', q: 'Cause of out-toeing that first appears at 4 to 7 years of age?', a: 'External tibial torsion',
+          why: 'Out-toeing present from birth is femoral retroversion, which resolves by 1 to 2 years, or pes planus, which resolves by about 10. New out-toeing in an adolescent raises slipped capital femoral epiphysis.' },
+        { type: 'recall', q: 'Age at which physiologic genu valgum is most noticeable?', a: '3 years',
+          why: 'Knock knee appears at 13 to 18 months, peaks around 3 and resolves or nearly resolves by 8. Bowing, genu varum, is the newborn state, resolves by about 2, and may return later.' },
+        { type: 'truefalse', q: 'W-sitting causes femoral anteversion and should be discouraged.', a: false,
+          why: 'A grade B recommendation. Prospective cohorts show W-sitting is a position of comfort for children who already have anteversion, not a cause of it, and hip dysplasia is no more common in W-sitters. Parents can be told to leave it alone.' },
+        { type: 'recall', q: 'Why does the history ask about calcium and vitamin D intake in a child with bowed or knock knees?', a: 'Deficiency causes rickets and abnormal long bone growth',
+          why: 'Rickets is on the differential of both genu varum and genu valgum. Poor growth, obesity, malnutrition and renal osteodystrophy all point the same way, and laboratory testing is reserved for when history or examination raises the concern.' },
+        { type: 'multi', q: 'Select the conditions that predispose to angular deformities of the legs.',
+          answers: ['Rickets', 'Osteogenesis imperfecta', 'Renal osteodystrophy', 'Skeletal dysplasia', 'Cerebral palsy'],
+          distractors: ['Asthma', 'Iron deficiency'],
+          why: 'These distort bone growth or load it abnormally. Cerebral palsy with its contractures predisposes to most lower extremity abnormalities, Klinefelter syndrome to pes planus, and rheumatologic disease can distort the knee to look like genu valgum.' },
+        { type: 'recall', q: 'Why does the birth history matter in a child with a rotational variation?', a: 'Breech presentation raises the risk of hip dysplasia',
+          why: 'Breech delivery predisposes to femoral retroversion and to developmental dysplasia of the hip, and the latter needs imaging. Prematurity and birth weight under 1,500 g raise the risk of cerebral palsy, which warrants investigation when the legs are abnormal.' },
+        { type: 'recall', q: 'Sport exposure the history asks about in a child with bowed legs?', a: 'Load-bearing sports',
+          why: 'Genu varum is associated with high-impact load-bearing sport in adolescents. It is one of the few modifiable associations in the history, alongside obesity, which is linked to genu valgum.' }
+      ]
+    },
+
+    {
+      id: 'afp-le-profile', collection: 'Journal Articles', subject: 'Pediatric Orthopedics', topic: 'Lower Extremity Abnormalities · AFP 2025', name: 'TORSIONAL PROFILE',
+      blurb: 'The examination: what to look at, the four rotational measurements, and the screening findings that point beyond a variation.',
+      cards: [
+        { type: 'recall', q: 'How is the foot progression angle measured?', a: 'Angle between the long axis of the foot and the walking line',
+          why: 'Chalk or hand sanitizer on bare feet and a walk down examination paper leave the footprints. Internal rotation is intoeing, external is out-toeing. The normal range changes with age until 10 to 15 years, and more than 2 standard deviations from the mean is abnormal.' },
+        { type: 'recall', q: 'Position of the child for measuring internal and external hip rotation?', a: 'Prone with the knees bent to 90 degrees',
+          why: 'Swinging the tibia outward measures internal hip rotation and swinging it inward measures external rotation, each as the angle from a line perpendicular to the table. Increased internal rotation with reduced external rotation is femoral anteversion; the reverse is retroversion.' },
+        { type: 'recall', q: 'What does the thigh-foot angle measure?', a: 'Tibial torsion',
+          why: 'With the child prone and the knee at 90 degrees, the angle between the long axis of the thigh and the long axis of the foot shows which way the tibia is turned. More than 10 degrees internal is internal tibial torsion; more than 30 degrees external is external tibial torsion.' },
+        { type: 'recall', q: 'What does the heel bisector line assess?', a: 'Metatarsus adductus',
+          why: 'With the child prone and the knee flexed, a line through the middle of the heel normally reaches the second toe. Falling on the third toe is mild, between the third and fourth moderate, and between the fourth and fifth severe adductus.' },
+        { type: 'number', q: 'Age by which the rotational angles stop changing?', value: 15, unit: 'years',
+          why: 'Ten to fifteen. Bones keep growing and derotating on their long axes until then, which is why every measurement is read against an age-specific normal range and why most variations are given time.' },
+        { type: 'multi', q: 'Select the findings that count as joint laxity on examination.',
+          answers: ['Elbow hyperextends past neutral', 'Thumb touches the forearm', 'Fingers lie flat along the forearm', 'Ankle dorsiflexes past 45 degrees'],
+          distractors: ['Ankle dorsiflexes 20 degrees', 'Plantar flexes 50 degrees'],
+          why: 'Normal dorsiflexion is 20 degrees and plantar flexion 50. Laxity can induce or worsen angular deformity, flat feet, hip dysplasia and patellar dislocation, and marked laxity suggests a connective tissue disorder such as Ehlers-Danlos.' },
+        { type: 'number', q: 'Leg length difference above which a discrepancy is diagnosed?', value: 2, unit: 'cm',
+          why: 'Measured from the anterior superior iliac spine to the medial malleolus, confirmed on at least two measurements and then by radiography. A true discrepancy may be femoral length or a hip distorted by dysplasia or arthritis.' },
+        { type: 'recall', q: 'Supine child, hips and knees flexed to 90 degrees, one knee sits higher than the other. Sign and meaning?', a: 'Galeazzi sign, hip dysplasia or a short femur',
+          why: 'A positive Galeazzi sign warrants hip imaging. Limited hip abduction with the knee flexed and a positive Trendelenburg sign point the same way, and the Ortolani and Barlow maneuvers make the diagnosis in newborns.' },
+        { type: 'recall', q: 'Standing on one leg, the pelvis drops toward the lifted side. Sign and what it suggests in a child?', a: 'Trendelenburg sign, hip dysplasia or unequal leg length',
+          why: 'Weak or mechanically disadvantaged abductors on the stance side let the opposite hemipelvis sag. In a child with a rotational complaint it redirects the workup to the hip.' },
+        { type: 'multi', q: 'Select the skin findings that change a lower extremity visit into a workup for something else.',
+          answers: ['Warmth or redness over a joint', 'Ecchymosis', 'Café au lait spots', 'Sacral dimple or hair tuft'],
+          distractors: ['Mongolian spot', 'Dry skin'],
+          why: 'Warmth and redness mean possible septic arthritis or inflammation and urgent testing. Bruising suggests fracture or nonaccidental trauma. Café au lait spots suggest neurofibromatosis or McCune-Albright. Midline sacral signs suggest spina bifida and need imaging.' },
+        { type: 'recall', q: 'Why are height, weight and body mass index plotted at the start of the examination?', a: 'Poor growth or obesity point to a systemic cause',
+          why: 'Poor growth suggests malnutrition, hypocalcemia, hypophosphatemia or vitamin D deficiency, all of which impair bone growth. Obesity contributes to angular deformity, particularly genu valgum.' }
+      ]
+    },
+
+    {
+      id: 'afp-le-femur', collection: 'Journal Articles', subject: 'Pediatric Orthopedics', topic: 'Lower Extremity Abnormalities · AFP 2025', name: 'FEMORAL ROTATION',
+      blurb: 'Femoral anteversion, the intoeing of the preschool child, and femoral retroversion, the out-toeing of the infant.',
+      cards: [
+        { type: 'recall', q: 'Most common cause of intoeing in a 3- to 6-year-old?', a: 'Femoral anteversion',
+          why: 'The distal femur is rotated inward relative to the femoral neck. It is a normal finding in newborns, more common in girls, usually symmetrical, and intrauterine positioning is the suspected cause.' },
+        { type: 'number', q: 'Degrees of femoral anteversion present at birth, at the top of the normal range?', value: 60, unit: 'degrees',
+          why: 'Thirty to sixty degrees in the newborn, derotating gradually to about 15 degrees by adulthood. The child who intoes at 4 is on that curve, not off it.' },
+        { type: 'number', q: 'Degrees of femoral anteversion in a typical adult?', value: 15, unit: 'degrees',
+          why: 'Derotation from the newborn 30 to 60 degrees is the natural history that makes anteversion a watch-and-wait diagnosis. Persistent excess beyond 11 years is the exception.' },
+        { type: 'number', q: 'Internal hip rotation above which femoral anteversion is diagnosed?', value: 60, unit: 'degrees',
+          why: 'Increased internal rotation with reduced external rotation under 10 to 15 degrees is the pattern. The measurements are taken prone with the knees at 90 degrees and compared with the age norms.' },
+        { type: 'number', q: 'Age by which femoral anteversion typically resolves?', value: 8, unit: 'years',
+          why: 'It can persist to 11. Radiography is rarely indicated and referral is generally not recommended before then, because nonsurgical treatments have minimal benefit and the condition improves on its own.' },
+        { type: 'number', q: 'Internal hip rotation beyond 11 years of age that warrants orthopedic referral for anteversion?', value: 80, unit: 'degrees',
+          why: 'Persistent rotation of more than 80 degrees past 11 may predispose to dysfunction. Functional difficulty after 8, pain and asymmetry are the other referral triggers. Surgery is reserved for persistent anteversion with recalcitrant pain or poor quality of life.' },
+        { type: 'truefalse', q: 'Femoral anteversion in childhood leads to osteoarthritis of the hip in adulthood.', a: false,
+          why: 'No association with adult osteoarthritis has been shown, for anteversion, internal tibial torsion or metatarsus adductus. That is the fact that makes reassurance honest and surgery for appearance unjustified.' },
+        { type: 'recall', q: 'Sitting position children with femoral anteversion often prefer?', a: 'W-sitting',
+          why: 'It is comfortable because the hips rotate inward easily. It does not cause or worsen the anteversion and does not need to be discouraged, a grade B recommendation.' },
+        { type: 'recall', q: 'Out-toeing in an infant who is not yet walking, with increased external and decreased internal hip rotation. Diagnosis?', a: 'Femoral retroversion',
+          why: 'The femoral shaft is rotated outward. It is part of normal development, is more common after breech positioning, and resolves during the first year of walking.' },
+        { type: 'number', q: 'Age beyond which persistent femoral retroversion is considered pathologic?', value: 3, unit: 'years',
+          why: 'Retroversion that persists past 3, or that is diagnosed for the first time later in childhood, gets radiography and orthopedic referral, because it can be a sign of slipped capital femoral epiphysis or Legg-Calvé-Perthes disease.' },
+        { type: 'recall', q: 'Diagnosis to consider when femoral retroversion appears for the first time in an older child or adolescent?', a: 'Slipped capital femoral epiphysis',
+          why: 'The slipped epiphysis forces the leg into external rotation. Legg-Calvé-Perthes disease is the other concern in the younger child. New out-toeing late in childhood is never a physiologic variation.' }
+      ]
+    },
+
+    {
+      id: 'afp-le-tibia', collection: 'Journal Articles', subject: 'Pediatric Orthopedics', topic: 'Lower Extremity Abnormalities · AFP 2025', name: 'TIBIAL TORSION',
+      blurb: 'Internal tibial torsion, the intoeing of the toddler, and external tibial torsion, the out-toeing of the school-age child.',
+      cards: [
+        { type: 'recall', q: 'Most common cause of intoeing in a 1- to 3-year-old?', a: 'Internal tibial torsion',
+          why: 'Excess internal rotation of the tibia relative to the knee and the malleolar axis. It is usually bilateral but unilateral in up to a third, and intrauterine positioning is the suspected cause.' },
+        { type: 'number', q: 'Thigh-foot angle, internally rotated, above which internal tibial torsion is diagnosed?', value: 10, unit: 'degrees',
+          why: 'The angle is measured prone with the knee at 90 degrees. Anything within 10 degrees internal is normal for a toddler and needs no more than reassurance and remeasurement at follow-up.' },
+        { type: 'number', q: 'Age by which internal tibial torsion usually resolves?', value: 4, unit: 'years',
+          why: 'Three to four, and rarely persisting beyond 6. Parents of children in the usual age range are reassured and the measurement is repeated at later visits rather than imaged or referred.' },
+        { type: 'number', q: 'Age at which a thigh-foot angle still more than 10 degrees internal warrants pediatric orthopedic consultation?', value: 8, unit: 'years',
+          why: 'A grade C recommendation. Pain, asymmetry and unequal leg lengths are the other referral triggers at any age. Radiography is rarely indicated unless a referral is being made.' },
+        { type: 'number', q: 'Share of internal tibial torsion cases that are unilateral, at most?', value: 33, unit: '%',
+          why: 'Up to one third. Asymmetry on its own is a referral consideration in the tables, so a one-sided case is examined with more care, but unilateral torsion is still within the condition\'s normal behavior.' },
+        { type: 'truefalse', q: 'Surgery for persistent internal tibial torsion is justified by its prevention of knee osteoarthritis.', a: false,
+          why: 'Multiple studies have found no correlation between internal tibial torsion and later osteoarthritis, which is why surgery is controversial and reserved for persistent rotation with severe pain affecting quality of life.' },
+        { type: 'recall', q: 'Out-toeing in a 5-year-old with patellae pointing forward and a thigh-foot angle over 30 degrees external. Diagnosis?', a: 'External tibial torsion',
+          why: 'Forward-facing patellae mean the femur is normally rotated; the tibia alone is turned out. Onset is 4 to 7 years, and it is usually asymptomatic and resolves without intervention by adulthood.' },
+        { type: 'number', q: 'Thigh-foot angle, externally rotated, above which external tibial torsion is diagnosed?', value: 30, unit: 'degrees',
+          why: 'With an out-toeing foot progression angle. The torsion may keep rotating until 4 to 7 years, and the altered gait can contribute to patellofemoral syndrome and knee instability.' },
+        { type: 'recall', q: 'Knee problem that external tibial torsion predisposes to?', a: 'Patellofemoral pain syndrome',
+          why: 'The outward-turned tibia changes the pull on the patella and loads the patellofemoral joint abnormally, and it also contributes to knee instability. That is the reason symptomatic severe cases are considered for correction.' },
+        { type: 'number', q: 'Earliest age at which surgical correction of external tibial torsion is performed?', value: 10, unit: 'years',
+          why: 'A thigh-foot angle over 20 to 30 degrees has been suggested as a threshold for surgical consideration in severe symptomatic cases, but the decision is individualized and the operation is done after 10, often in adolescence or adulthood.' }
+      ]
+    },
+
+    {
+      id: 'afp-le-ma', collection: 'Journal Articles', subject: 'Pediatric Orthopedics', topic: 'Lower Extremity Abnormalities · AFP 2025', name: 'METATARSUS ADDUCTUS',
+      blurb: 'The intoeing of the infant: how it is graded, what resolves, and what is referred.',
+      cards: [
+        { type: 'recall', q: 'Cause of intoeing that is present at birth or in the first year of life?', a: 'Metatarsus adductus',
+          why: 'The forefoot is adducted relative to the hindfoot, usually at the tarsometatarsal joint. It occurs in about 1 in 1,000 births, equally in boys and girls, and more often in first, late-term and twin pregnancies.' },
+        { type: 'number', q: 'Incidence of metatarsus adductus per 1,000 births?', value: 1, unit: 'per 1,000',
+          why: 'Theories of cause include intrauterine positioning, muscle imbalance, prone sleeping with hips and knees flexed and feet abducted, and abnormal bone structure. None is established.' },
+        { type: 'recall', q: 'Classification of metatarsus adductus that best predicts prognosis?', a: 'Flexibility: flexible, semi-flexible or rigid',
+          why: 'Flexibility is tested by abducting the forefoot. Flexible resolves in most cases and is reassured; semi-flexible is watched and referred if unresolved by 1 to 2 years; rigid is referred at diagnosis.' },
+        { type: 'recall', q: 'How far can the forefoot be abducted in flexible metatarsus adductus?', a: 'Past the midline of the heel bisector',
+          why: 'Flexible feet correct beyond neutral. Resolution is the rule, and even a residual deformity is usually asymptomatic, so treatment is reassurance alone.' },
+        { type: 'recall', q: 'Forefoot abducts only to the heel bisector midline and the child is 18 months old. Next step?', a: 'Consider pediatric orthopedic referral',
+          why: 'Semi-flexible adductus is given until 1 to 2 years to resolve. If it has not, it is managed like rigid adductus, with manipulation, serial casting or surgery as the orthopedist judges.' },
+        { type: 'recall', q: 'Management of rigid metatarsus adductus?', a: 'Refer to pediatric orthopedics',
+          why: 'A rigid forefoot cannot be brought to the midline. Treatment may involve manipulation, serial casting and, rarely, surgery. Radiography is rarely needed before referral.' },
+        { type: 'recall', q: 'Where does the heel bisector line fall in moderate metatarsus adductus?', a: 'Between the third and fourth toes',
+          why: 'Normal is the second toe, mild the third toe, moderate between third and fourth, and severe between fourth and fifth. The child is examined prone with the knee flexed to 90 degrees.' },
+        { type: 'number', q: 'Foot progression angle above which metatarsus adductus produces measurable intoeing?', value: 5, unit: 'degrees',
+          why: 'The intoeing comes from the forefoot rather than the tibia or femur, so hip rotation and the thigh-foot angle are normal while the foot itself points in. The heel bisector line confirms the source.' },
+        { type: 'truefalse', q: 'Metatarsus adductus that persists leads to osteoarthritis in adulthood.', a: false,
+          why: 'No association with adult osteoarthritis has been shown. The reasons to treat are a rigid foot and failure of a semi-flexible foot to resolve, not future joint disease.' }
+      ]
+    },
+
+    {
+      id: 'afp-le-flat', collection: 'Journal Articles', subject: 'Pediatric Orthopedics', topic: 'Lower Extremity Abnormalities · AFP 2025', name: 'PES PLANUS',
+      blurb: 'Flexible flat feet need nothing; rigid ones need a reason. The test that separates them and the evidence on orthotics.',
+      cards: [
+        { type: 'recall', q: 'Most common cause of out-toeing in children?', a: 'Pes planus',
+          why: 'A low medial longitudinal arch lets the foot roll into eversion and point outward. It appears at about 11 months with walking, peaks in prevalence at 3 to 4 years, typically resolves by 10, and can persist into adulthood without harm.' },
+        { type: 'recall', q: 'Bedside test that separates flexible from rigid pes planus?', a: 'Standing on the toes',
+          why: 'In flexible flatfoot the arch reappears on toe standing. In rigid flatfoot it stays flat. Flexible and painless is the common form and needs observation only; rigid points to tarsal coalition or arthropathy and needs imaging and referral.' },
+        { type: 'number', q: 'Age by which physiologic flexible pes planus typically resolves?', value: 10, unit: 'years',
+          why: 'Peak prevalence is at 3 to 4 years. Imaging and referral are not indicated for painless flexible flatfoot at any age; persistent pain is the only reason to look further.' },
+        { type: 'truefalse', q: 'Custom orthoses relieve pain in pediatric pes planus better than over-the-counter inserts.', a: false,
+          why: 'Randomized trials and a Cochrane review show no advantage of custom over prefabricated orthoses, and no clear benefit of any orthosis in painless flat feet. Painful flexible flatfoot gets stretching, supportive footwear, strengthening and an inexpensive insert if anything.' },
+        { type: 'recall', q: 'When does a painful flexible flatfoot go to orthopedics?', a: 'When conservative management fails',
+          why: 'Stretching, arch-supporting footwear, strengthening and orthoses are tried first, though the evidence for them is low quality. Surgical evaluation is rare and reserved for persistent pain or an inflexible foot.' },
+        { type: 'recall', q: 'Underlying cause to suspect when a rigid flatfoot develops in adolescence?', a: 'Tarsal coalition',
+          why: 'Two tarsal bones joined by bone, cartilage or fibrous tissue limit subtalar motion and keep the arch flat on toe standing. Radiography or CT shows it. Rigid flatfoot from birth is a severe congenital deformity and is rarer.' },
+        { type: 'recall', q: 'Examination finding that accompanies rigid pes planus besides the flat arch?', a: 'Limited subtalar joint motion',
+          why: 'The coalition or arthropathy stiffens the hindfoot. Radiography or CT is indicated to identify the cause, and orthopedic referral manages it.' },
+        { type: 'recall', q: 'Why check wrist laxity in a child with flat feet?', a: 'Pes planus accompanies connective tissue disorders',
+          why: 'Generalized ligamentous laxity lets the arch collapse. A thumb that touches the forearm or fingers that extend parallel to it suggest a connective tissue disorder behind the feet.' },
+        { type: 'recall', q: 'Chromosomal condition that predisposes boys to pes planus?', a: 'Klinefelter syndrome',
+          why: 'An extra X chromosome, with tall stature and small testes, and flat feet among its skeletal features. It also predisposes to other lower extremity abnormalities.' },
+        { type: 'recall', q: 'Imaging for suspected rigid pes planus?', a: 'Radiography or CT of the foot',
+          why: 'To find the tarsal coalition or arthropathy underneath. Flexible painless flatfoot gets no imaging at all, which is the commoner decision.' }
+      ]
+    },
+
+    {
+      id: 'afp-le-varum', collection: 'Journal Articles', subject: 'Pediatric Orthopedics', topic: 'Lower Extremity Abnormalities · AFP 2025', name: 'GENU VARUM',
+      blurb: 'Bowlegs: the newborn norm, when it should be gone, and the Blount disease and rickets that mimic it.',
+      cards: [
+        { type: 'recall', q: 'Knee alignment of a normal newborn?', a: 'Genu varum, bowlegs',
+          why: 'Medial ankles touch but medial knees do not. Alignment moves to neutral by 13 to 18 months, usually with walking, then into physiologic valgus that peaks at 3 and settles to neutral or slight valgus by 8.' },
+        { type: 'number', q: 'Intercondylar distance at the top of the normal range for a neonate?', value: 5, unit: 'cm',
+          why: 'Zero to five, averaging 3 cm, measured with the medial malleoli together. It falls steadily to 0 to 3 cm by 13 to 18 months and 0 to 2 cm from 8 years on.' },
+        { type: 'number', q: 'Age by which physiologic genu varum should have resolved to neutral?', value: 2, unit: 'years',
+          why: 'Thirteen to eighteen months is typical. Persistence beyond 2 years, or bowing that is asymmetrical or beyond the normal range, is the indication for orthopedic referral and consideration of surgery.' },
+        { type: 'recall', q: 'Two-year-old with bowing that is worse on one side and has not improved since walking began. Diagnosis to exclude?', a: 'Blount disease',
+          why: 'A growth plate abnormality of the proximal medial tibia that slows or stops its growth while the lateral side continues, bowing the knee outward. Asymmetry and persistence past 2 are its calling cards, and anteroposterior radiography of the legs shows it.' },
+        { type: 'multi', q: 'Select the nonphysiologic causes of genu varum.',
+          answers: ['Blount disease', 'Rickets', 'Growth plate injury', 'Osteogenesis imperfecta', 'Skeletal dysplasia'],
+          distractors: ['Femoral anteversion', 'Flexible pes planus'],
+          why: 'Also renal osteodystrophy and asymmetrical femoral growth. Rotational variations and flat feet do not bow the knees. Laboratory studies are added when history or examination suggests a metabolic or endocrine cause.' },
+        { type: 'recall', q: 'Imaging when genu varum is asymmetrical, painful or outside the normal range?', a: 'Anteroposterior radiography of the lower extremities',
+          why: 'It measures the degree of angulation and can show Blount disease, rickets or a prior fracture. Two-view films are used when the visual examination or the intercondylar distance is abnormal.' },
+        { type: 'recall', q: 'Why might bowlegs return in a school-age child after resolving as a toddler?', a: 'Load-bearing sports',
+          why: 'Genu varum is associated with high-impact sport in adolescents, and the history asks about it. Obesity is linked to the opposite deformity, genu valgum.' },
+        { type: 'number', q: 'Intercondylar distance at the top of the normal range from 8 years of age onward?', value: 2, unit: 'cm',
+          why: 'Zero to two, averaging zero. Intermalleolar distance at that age runs 0 to 3 cm. Alignment changes little after 8, so a measurement outside these ranges in an older child is a deformity, not a phase.' },
+        { type: 'recall', q: 'Bowlegs in a toddler with poor growth, low dairy intake and little sun exposure. Cause to test for?', a: 'Rickets from vitamin D deficiency',
+          why: 'Low vitamin D and calcium intake are associated with high rates of both varum and valgum in European children. Check calcium, phosphate, alkaline phosphatase and 25-hydroxyvitamin D when the history points this way.' }
+      ]
+    },
+
+    {
+      id: 'afp-le-valgum', collection: 'Journal Articles', subject: 'Pediatric Orthopedics', topic: 'Lower Extremity Abnormalities · AFP 2025', name: 'GENU VALGUM',
+      blurb: 'Knock knees: the preschool peak, the measurements, obesity, and the Cozen fracture that causes it.',
+      cards: [
+        { type: 'recall', q: 'Age at which physiologic genu valgum first appears?', a: '13 to 18 months',
+          why: 'Knock knee follows the resolution of newborn bowing, is most prominent at about 3 years and returns to neutral or slight valgus by 8. Medial knees touch while medial ankles do not.' },
+        { type: 'number', q: 'Intermalleolar distance at the top of the normal range at 3 years of age?', value: 5, unit: 'cm',
+          why: 'Zero to five, averaging 2.8 cm, measured with the femoral condyles together. It is zero at birth, peaks at 3 and falls to 0 to 3 cm by 8 years and after.' },
+        { type: 'number', q: 'Age by which physiologic genu valgum resolves or nearly resolves?', value: 8, unit: 'years',
+          why: 'A mild valgus can persist as a normal finding. Referral is for intermalleolar distances outside the age range, asymmetry, or associated syndromic or musculoskeletal findings.' },
+        { type: 'recall', q: 'Genu valgum developing after a healed fracture of the proximal tibial metaphysis. Name of the deformity?', a: 'Cozen deformity',
+          why: 'A grade C recommendation: children who have had this fracture are watched at routine examinations for valgus angulation and leg length disparity. It is a posttraumatic growth phenomenon rather than a malunion.' },
+        { type: 'multi', q: 'Select the nonphysiologic causes of genu valgum.',
+          answers: ['Rickets', 'Renal osteodystrophy', 'Growth plate injury', 'Cozen fracture', 'Skeletal dysplasia'],
+          distractors: ['Internal tibial torsion', 'Metatarsus adductus'],
+          why: 'Osteogenesis imperfecta and rheumatologic disease of the knee are the others. Idiopathic valgum is the commonest pathologic form, and obesity is increasingly recognized as a contributor.' },
+        { type: 'recall', q: 'Modifiable factor increasingly associated with idiopathic genu valgum?', a: 'Obesity',
+          why: 'Growing evidence links higher body mass index with knock knee in children and adolescents, and valgus alignment is in turn associated with patellofemoral instability. Growth parameters are plotted at every visit for this reason.' },
+        { type: 'recall', q: 'Rheumatologic reason a child\'s knee can look like genu valgum?', a: 'Juvenile arthritis distorting the knee',
+          why: 'Synovitis and asymmetric growth at the knee produce an apparent valgus. Warmth, effusion or morning stiffness point to it, and the referral goes to rheumatology rather than orthopedics.' },
+        { type: 'multi', q: 'Select the indications for orthopedic referral in genu valgum.',
+          answers: ['Asymmetry', 'Intermalleolar distance outside the age range', 'Syndromic features'],
+          distractors: ['Intermalleolar distance of 3 cm at age 3', 'Mild valgus at age 9'],
+          why: 'Physiologic valgum within the age norms gets reassurance and follow-up. Anteroposterior radiography measures the angle and looks for a cause when any of the three triggers is present.' }
+      ]
+    },
+
   ];
 
   global.Decks = { BUILTIN: BUILTIN };
