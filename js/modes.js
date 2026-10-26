@@ -221,7 +221,7 @@
         revealed = true;
         global.Sfx.flip();
         ctx.stackReveal();
-        ctx.setKicker('');
+        ctx.setKicker(ctx.card.ctx || '');
         bar.arm();
       }
 

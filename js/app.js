@@ -144,7 +144,7 @@
     var lines = ['MYFLASH · ' + heading + ' · ' + new Date().toISOString().slice(0, 10), ''];
     picks.forEach(function (p, i) {
       var deck = decks[p.deck], card = deck.cards[p.card];
-      lines.push((i + 1) + '. ' + card.q + '  [' + deck.name + ']');
+      lines.push((i + 1) + '. ' + (card.ctx ? card.ctx + ' — ' : '') + card.q + '  [' + deck.name + ']');
       lines.push('   Answer: ' + cardAnswer(card));
       if (card.why) lines.push('   Why: ' + card.why);
       lines.push('');
@@ -971,7 +971,10 @@
     if (mode.compact) el.dataset.qsize = 'compact';
 
     var body = h('div', 'card-body');
-    var kicker = h('div', 'kicker', mode.label);
+    /* The line above the question carries the card's context tag when it
+       has one ("DKA", "Severe HTN · inpatient"), so the question itself
+       can stay short. */
+    var kicker = h('div', 'kicker', card.ctx || mode.label);
     var flipper = h('div', 'flipper');
     var front = h('div', 'face face-front');
     var qEl = h('h2', 'q');

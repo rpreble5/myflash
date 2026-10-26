@@ -17,7 +17,8 @@
   /* Observed ceilings from the built-in decks, which have been read and
      approved on a phone. Thresholds sit a little above the real maxima so
      genuine content passes and only outliers are flagged. */
-  var Q_MAX = 120;         // a full question, not a headline
+  var Q_MAX = 120;
+  var CTX_MAX = 36;        // the context tag above the question         // a full question, not a headline
   var ANSWER_MAX = 56;     // a short phrase or one plain clause
   var OPTION_MAX = 32;     // longest built-in option is 30
   var LABEL_MAX = 28;      // trend rows are narrower than option buttons
@@ -29,7 +30,7 @@
                'trend', 'bucket', 'match'];
 
   var FIELDS = {
-    common:    ['type', 'q', 'why', 'ref'],
+    common:    ['type', 'q', 'why', 'ref', 'ctx'],
     recall:    ['a'],
     mcq:       ['a', 'distractors', 'stem', 'whyNot'],
     multi:     ['answers', 'distractors'],
@@ -538,6 +539,10 @@
         if (card.q.trim().length > Q_MAX) {
           r.warn(w, 'Question runs ' + card.q.trim().length + ' characters.',
             'Under ' + Q_MAX + '. Long questions shrink to fit and lose the card its impact.');
+        }
+        if (card.ctx != null && (typeof card.ctx !== 'string' || card.ctx.trim().length > CTX_MAX)) {
+          r.warn(w, 'Context tag runs ' + String(card.ctx).length + ' characters.',
+            'Under ' + CTX_MAX + ': two to five words naming the setting, such as "DKA" or "Severe HTN · inpatient".');
         }
         if (/which of the following|all of the above|none of the above/i.test(card.q)) {
           r.warn(w, 'Question uses exam-paper phrasing.',
