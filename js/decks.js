@@ -4685,7 +4685,7 @@
           why: 'The patient has lost liters to osmotic diuresis. Restoring volume comes before anything else, including insulin.' },
         { type: 'recall', q: 'Why must fluids come before insulin in HHS?', a: 'Insulin shifts water into cells and drops the pressure',
           why: 'Insulin moves glucose into cells and water follows it out of the vascular space. In a patient who is already several liters down, that shift can collapse the circulation. Filling the tank first makes the insulin safe.' },
-        { type: 'recall', q: 'After the first hour, when is 0.9% saline switched to 0.45%?', a: 'When the corrected sodium is normal or high',
+        { type: 'recall', q: 'In DKA, after the first hour of 0.9% saline, when is the fluid switched to 0.45% saline?', a: 'When the corrected sodium is normal or high',
           why: 'The sodium is corrected for the glucose, adding 1.6 mEq/L for every 100 mg/dL above 100. A normal or high corrected sodium means the patient is short of free water, so half-normal saline at 250 to 500 mL/h follows. A low corrected sodium means normal saline continues.' },
         { type: 'number', q: 'Serum potassium below which insulin is held in DKA?', value: 3.3, unit: 'mEq/L',
           why: 'Insulin drives potassium into cells. Starting it with a potassium already under 3.3 can cause fatal arrhythmias or respiratory muscle paralysis. Potassium chloride is given at 20 to 40 mEq an hour until the level is 3.3 or above, and only then does insulin begin.' },
@@ -4698,7 +4698,7 @@
           why: 'With or without a 0.1 units/kg bolus first. Hourly fingersticks follow, and the glucose should fall by 50 to 75 mg/dL an hour.' },
         { type: 'number', q: 'In DKA, dextrose is added to the fluids when the glucose falls to what?', values: [200, 250], join: '–', unit: 'mg/dL',
           why: 'In HHS the switch is made at 250 to 300. The fluid becomes 5% dextrose in half-normal saline and the insulin rate drops to 0.02 to 0.05 units/kg/h.' },
-        { type: 'recall', q: 'Why is dextrose added while the insulin continues, rather than stopping the insulin?', a: 'The acidosis clears more slowly than the glucose',
+        { type: 'recall', q: 'In DKA, why is dextrose added once glucose nears 200 rather than stopping the insulin?', a: 'The acidosis clears more slowly than the glucose',
           why: 'Glucose normalizes in 4 to 6 hours, but clearing the ketoacids and closing the anion gap takes 10 to 12 hours or more, and that requires insulin. Dextrose lets the insulin keep running at a lower rate without causing hypoglycemia or cerebral edema.' },
         { type: 'multi', q: 'Which criteria allow the switch from IV to subcutaneous insulin in DKA?',
           answers: ['Glucose under 200', 'Able to eat', 'Anion gap 12 or less', 'Bicarbonate 15–18 or more'],
@@ -6966,8 +6966,14 @@
           answers: ['Rising creatinine', 'New proteinuria', 'Hypertensive retinopathy', 'Pulmonary edema', 'New neurologic symptoms'],
           distractors: ['Headache alone', 'Dizziness'],
           why: 'Organ damage means the kidney, eye, heart or brain is being injured now. Headache, dizziness, dyspnea and nonanginal chest pain are reported by a minority of patients with severe hypertension and do not by themselves mean damage; they call for an exam, not a drip.' },
-        { type: 'number', q: 'Share of patients with severe hypertension who report dizziness, the commonest symptom?', value: 12, unit: '%',
-          why: 'Headache and dyspnea each about 8 percent and nonanginal chest pain 5 percent. Symptoms like these are common and nonspecific. What matters is whether the examination and, when indicated, the tests show organ injury.' }
+        { type: 'number', q: 'Share of patients with severe hypertension and no organ damage who report dizziness, the commonest symptom?', value: 12, unit: '%',
+          why: 'Dizziness leads at 12 percent, with headache and dyspnea at about 8 percent each and nonanginal chest pain at 5. These symptoms are common and nonspecific; what matters is whether examination and, when indicated, testing show organ injury.' },
+        { type: 'number', q: 'Share of patients with severe hypertension and no organ damage who report headache?', value: 8, unit: '%',
+          why: 'Headache is not a sign of target organ damage on its own. Encephalopathy, with confusion, seizures or visual change, is what would make a headache part of an emergency.' },
+        { type: 'number', q: 'Share of patients with severe hypertension and no organ damage who report dyspnea?', value: 8, unit: '%',
+          why: 'Dyspnea is a symptom to examine, not a verdict. Pulmonary edema on examination or chest film would make it organ damage; breathlessness from anxiety or deconditioning does not.' },
+        { type: 'number', q: 'Share of patients with severe hypertension and no organ damage who report nonanginal chest pain?', value: 5, unit: '%',
+          why: 'Chest pain that is not anginal in character is reported by one in twenty. Anginal pain or electrocardiographic change would move the patient into the emergency pathway.' }
       ]
     },
 
@@ -7051,7 +7057,7 @@
           answers: ['Acute kidney injury', 'Stroke', 'Myocardial infarction', 'Hypotension', 'Longer stay'],
           distractors: ['Fewer readmissions', 'Lower mortality'],
           why: 'Multiple cohorts, grade B. Treated patients had more kidney injury, more cardiovascular events, more hypotension, longer admissions, more readmissions and higher mortality, with no short-term benefit to set against them. Gradual reduction over days to weeks is the recommendation.' },
-        { type: 'number', q: 'Increase in acute kidney injury risk with as-needed antihypertensive medication in the VA cohort?', value: 23, unit: '%',
+        { type: 'number', q: 'In hospitalized veterans, by what percent did as-needed blood pressure drugs raise acute kidney injury risk over scheduled dosing?', value: 23, unit: '%',
           why: 'Adjusted hazard ratio 1.23 against scheduled medication, with a 2.9-fold relative risk of myocardial infarction, 2-fold of stroke and 1.5-fold of death. As-needed orders are how the harm reaches the patient: the nurse treats a number at 3 a.m. with no one examining the patient.' },
         { type: 'number', q: 'Share of inpatients given IV antihypertensives whose blood pressure fell by 25 percent or more within 6 hours?', value: 33, unit: '%',
           why: 'A fall of that size in a patient whose vessels are adapted to high pressure is what causes the strokes and kidney injury. Labetalol, metoprolol and hydralazine boluses produced it, along with bradycardia and the need for fluid resuscitation.' },
@@ -7059,7 +7065,7 @@
           why: 'Every major class behaves this way. A dose started on Tuesday has not done its work by discharge on Thursday, so the pressure at discharge says nothing about the regimen, and a dose titrated to it will overshoot at home.' },
         { type: 'recall', q: 'First thing to look for when a ward patient has a severe reading and no organ damage?', a: 'A contributing factor such as pain or missed home drugs',
           why: 'The algorithm goes: organ damage? contributing factor? offending inpatient drug? home medication withheld? Then monitor 2 to 6 hours. Only after all that does oral titration come up, and only for previous severe hypertension or high cardiovascular risk.' },
-        { type: 'number', q: 'Share of patients given as-needed IV antihypertensives whose home medications had been discontinued?', value: 41, unit: '%',
+        { type: 'number', q: 'Among inpatients given as-needed IV antihypertensives, what share had their home blood pressure drugs stopped on admission?', value: 41, unit: '%',
           why: 'The commonest fixable cause. Home antihypertensives continue through admission unless there is an absolute contraindication such as bowel obstruction, intractable vomiting, altered mental status or gastrointestinal surgery. Nothing-by-mouth for a test still allows tablets with sips of water.' },
         { type: 'truefalse', q: 'A patient who is nothing-by-mouth for a morning procedure should have antihypertensives held.', a: false,
           why: 'Tablets with small sips of water are permitted for medical tests and minor procedures. Holding the regimen is one of the main reasons the pressure climbs and the as-needed order gets triggered.' },
@@ -7086,7 +7092,7 @@
           why: 'Grade C against referral. In a cohort of 58,535 office patients at 180/110 or more, only 0.7 percent were referred, and propensity matching showed no difference in major adverse cardiovascular events at 7 days, 30 days or 6 months between those sent home and those sent in. Referral adds cost and a dose of something short-acting.' },
         { type: 'number', q: 'Share of office patients with severe hypertension who were referred to the hospital in the large cohort?', value: 0.7, unit: '%',
           why: 'Of 58,535 patients, 426 were referred and 61 admitted. Outcomes were the same as for the 58,109 sent home. The number says what experienced clinicians already do with asymptomatic severe pressure.' },
-        { type: 'number', q: 'Prevalence of severe hypertension in the ambulatory setting?', value: 4.6, unit: '%',
+        { type: 'number', q: 'Share of adults seen in outpatient clinics who have a blood pressure of 180/110 or higher?', value: 4.6, unit: '%',
           why: 'Seventy-three percent of those patients already carried a diagnosis of hypertension. The rest are new diagnoses, which need out-of-office confirmation and guideline-directed baseline testing rather than urgent treatment.' },
         { type: 'number', q: 'Share of emergency department patients with severe hypertension still uncontrolled one month later?', value: 80, unit: '%',
           why: 'More than 80 percent, whether they were given a one-time dose, a new prescription or nothing. Fifty-nine percent got a dose in the department and 83 percent went home with no change to their regimen. The visit treats a number; control comes from what happens afterwards.' },
@@ -7104,8 +7110,10 @@
           why: 'Ten kilograms is a drug\'s worth of reduction. Diet, sodium, activity and alcohol add to it, and together the lifestyle measures can rival a second agent.' },
         { type: 'number', q: 'Daily sodium limit that lowers systolic pressure by about 5 mm Hg?', value: 1500, unit: 'mg',
           why: 'Most patients eat two to three times that. Sodium restriction is listed alongside the drugs in the article because high intake is one of the contributing factors behind severe readings.' },
-        { type: 'recall', q: 'Next step when hypertension is uncontrolled on three agents including a diuretic and adherence is confirmed?', a: 'Add spironolactone and screen for secondary causes',
-          why: 'That is the resistant hypertension branch of the outpatient algorithm. Spironolactone is the fourth drug with the best evidence, and resistance is one of the triggers for the secondary workup, alongside onset under 30, abrupt worsening and disproportionate organ damage.' },
+        { type: 'recall', q: 'Drug added when hypertension stays uncontrolled on three agents including a diuretic, with adherence confirmed?', a: 'Spironolactone',
+          why: 'That is the resistant hypertension branch of the outpatient algorithm, and a mineralocorticoid receptor antagonist is the fourth drug with the best evidence. Confirm adherence first: more than half of patients labeled resistant are not taking their pills.' },
+        { type: 'recall', q: 'Besides a fourth drug, what does confirmed resistant hypertension trigger in the outpatient algorithm?', a: 'Screening for secondary hypertension',
+          why: 'Resistance sits alongside onset under 30, abrupt worsening, an abdominal bruit, features of sleep apnea and disproportionate organ damage as the reasons to look for sleep apnea, aldosteronism, renovascular disease and kidney disease.' },
         { type: 'recall', q: 'Why does the 2025 ACEP policy now allow starting antihypertensive therapy in the emergency department?', a: 'Most patients leave uncontrolled and stay that way',
           why: 'The policy supports considering initiation for asymptomatic elevated pressure, since 80 percent are uncontrolled a month later. It stops short of recommending it, because the trials to show which patients benefit and how follow-up should work have not been done.' }
       ]
@@ -7225,7 +7233,7 @@
             { left: 'Amlodipine', right: 'Ankle edema' },
             { left: 'Thiazide', right: 'Low potassium and sodium' }
           ] },
-        { type: 'recall', q: 'What should be checked soon after starting or increasing an ACE inhibitor, ARB or diuretic?', a: 'Serum creatinine and potassium',
+        { type: 'recall', q: 'Which two serum tests are rechecked soon after starting or increasing an ACE inhibitor, ARB or diuretic?', a: 'Creatinine and potassium',
           why: 'Once pressure is controlled, creatinine and electrolytes are repeated once or twice a year. A urine albumin-to-creatinine ratio every one to two years watches for microalbuminuria, though its value is uncertain once the patient is on an ACE inhibitor or ARB.' }
       ]
     },
@@ -7254,13 +7262,14 @@
           why: 'One serious adverse event for every 33 treated to the lower target, against one infarction prevented per 250. That ratio is why the lower goal is a weak recommendation and a conversation with the patient.' },
         { type: 'number', q: 'Number needed to harm for syncope when low-risk patients with mild hypertension are treated?', value: 35, unit: 'patients',
           why: 'In the large cohort of low-risk mild hypertension, treatment brought no cardiovascular or mortality benefit, but hypotension in 1 of 41, syncope in 1 of 35, electrolyte abnormality in 1 of 111 and acute kidney injury in 1 of 91. Clinical judgment and shared decision-making are the recommendation for this group.' },
-        { type: 'match', q: 'Match each guideline to its blood pressure goal for most older adults.',
-          pairs: [
-            { left: 'JNC 8, age 60 and over', right: 'Under 150/90' },
-            { left: 'NICE, age 80 and over', right: 'Under 150/90, by age 80' },
-            { left: 'ISH, age 65 and over', right: 'Under 140/90' },
-            { left: 'ACC/AHA, risk 10%+', right: 'Under 130/80' }
-          ] },
+        { type: 'number', q: 'JNC 8 blood pressure goal for most patients 60 and older?', values: [150, 90], join: '/', unit: 'mm Hg',
+          why: 'JNC 8 relaxed the goal for older adults to under 150/90 and kept under 140/90 for those younger than 60 and for anyone with diabetes or kidney disease. It is the most permissive of the guidelines in the article.' },
+        { type: 'number', q: 'NICE blood pressure goal for patients 80 and older?', values: [150, 90], join: '/', unit: 'mm Hg',
+          why: 'Under 140/90 below 80. NICE and JNC 8 both loosen the goal at the top of the age range because of orthostasis, falls and kidney injury in frail older adults.' },
+        { type: 'number', q: 'ISH blood pressure goal for patients 65 and older?', values: [140, 90], join: '/', unit: 'mm Hg',
+          why: 'For younger patients the ISH asks for under 140/90 within three months and under 130/80 in the long term. The older threshold matches the AAFP goal for all ages.' },
+        { type: 'number', q: 'ACC/AHA blood pressure goal when 10-year ASCVD risk is 10 percent or more?', values: [130, 80], join: '/', unit: 'mm Hg',
+          why: 'Also for known cardiovascular disease. Below 10 percent risk the recommended goal is under 140/90, with under 130/80 called reasonable. These are the SPRINT-influenced targets the AAFP declined to adopt.' },
         { type: 'number', q: 'Follow-up interval once blood pressure is controlled on medication?', low: 3, high: 6, unit: 'months',
           why: 'Monthly visits until controlled, then every three to six months. Response is judged on office, home and ambulatory readings together, and lifestyle and medication are stepped up at each visit until target. Most patients need two or more agents. Simplified dosing, generics and team-based titration with health coaching and home monitoring all improve control.' }
       ]
