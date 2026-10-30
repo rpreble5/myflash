@@ -145,10 +145,10 @@
 
 <!-- The real deck list, the real dial maths, the real store. A check
      against a copy of the rules is a check against nothing. -->
-<script src="../js/decks.js?v=154"></script>
-<script src="../js/modes.js?v=154"></script>
-<script src="../js/store.js?v=154"></script>
-<script src="validate.js?v=154"></script>
+<script src="../js/decks.js?v=155"></script>
+<script src="../js/modes.js?v=155"></script>
+<script src="../js/store.js?v=155"></script>
+<script src="validate.js?v=155"></script>
 
 <!-- The prompt lives here as inert text so there is exactly one copy of
      it: the page renders it and the clipboard button ships it. -->
@@ -312,7 +312,7 @@ Each type below has a condition. If the material does not meet it, skip it.
 ═══ THE SHAPES ═══
 
 { "type": "recall",    "q": "...", "a": "..." }
-{ "type": "recall",    "ctx": "DKA · fluids", "q": "...", "a": "..." }   ← any type may carry "ctx"
+{ "type": "recall",    "q": "...", "a": "..." }
 { "type": "mcq",       "q": "...", "a": "...", "distractors": ["...", "...", "..."] }
 { "type": "multi",     "q": "...", "answers": ["...", "..."], "distractors": ["...", "..."] }
 { "type": "truefalse", "q": "...", "a": true, "why": "..." }
@@ -536,20 +536,24 @@ Each of these came from a real card that was rejected.
 - "What should be asked before starting X?" has many true answers. Name
   the concern and ask why: "Why ask about planned cataract surgery before
   starting tamsulosin?"
-- Every card stands alone. The reader never saw the source, so the
-  condition and the setting must be on the card. When they would cost the
-  question a clause, put them in "ctx", a tag of two to five words shown
-  above the question: ctx "DKA · fluids", q "After the first hour of 0.9%
-  saline, when is the fluid switched to 0.45%?". Not "After the first
-  hour, when is 0.9% saline switched to 0.45%?" with no setting anywhere.
-- A statistic from a paper names its population and comparison. The
-  population goes in ctx, the comparison in the question: ctx "VA
-  inpatient cohort", q "By what percent did as-needed blood pressure drugs
-  raise acute kidney injury risk over scheduled dosing?" — not "Increase in
-  AKI risk with as-needed medication?".
-- ctx is a setting, not a hint. "Severe HTN · inpatient" is right;
-  "spironolactone" above a question whose answer is spironolactone is not.
-  Keep it under 36 characters.
+- Every card stands alone, and the question carries all of it. The reader
+  never saw the source, so the condition and the setting go in the
+  question itself: "In DKA, after the first hour of 0.9% saline, when is
+  the fluid switched to 0.45%?". Not "After the first hour, when is 0.9%
+  saline switched to 0.45%?" with the setting somewhere else or nowhere.
+  Do not use "ctx": a tag above the question was tried and read as half
+  the question hidden in a header. The field still renders but no card
+  should need it.
+- A statistic from a paper names its population and comparison in the
+  question: "In VA inpatients, by what percent did as-needed blood
+  pressure drugs raise kidney injury risk over scheduled dosing?" — not
+  "Increase in AKI risk with as-needed medication?".
+- A question that names a fact does not put the same fact in the answer.
+  "Two findings that make intoeing in a child 6 or younger safe to watch?"
+  answers "symmetrical and painless", not "symmetrical, painless, and 6 or
+  under".
+- "How many times higher" beats "relative to, more than?" when the answer
+  is a multiple. The question reads as a sentence someone could say aloud.
 - Several findings with their own frequencies are several number cards,
   one per finding, each naming the group: "Share of patients with severe
   hypertension and no organ damage who report headache?"
